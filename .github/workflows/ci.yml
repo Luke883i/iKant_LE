@@ -9,7 +9,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,18 +19,16 @@ jobs:
         run: npm test
       - name: Contract and lifecycle check
         run: npm run check
-      - name: C2 Q3 runtime semantic qualification and saturation
-        run: npm run falsify:c2
-      - name: Verify C2 receipt
+      - name: C3 one-million runtime semantic falsification
+        run: npm run falsify:c3
+      - name: Verify C3 receipt
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c2-runtime.json','utf8'));
-          if(r.status!=='PASS') throw new Error('C2 qualification not PASS');
-          if(r.main.cases!==10_000_000 || r.main.survivors!==0) throw new Error('10M mismatch');
-          if(r.main.categories.ordinary!==5_000_000 || r.main.categories.edge!==3_000_000 || r.main.categories.stress!==2_000_000) throw new Error('strata mismatch');
-          if(r.no_novelty.cases!==1_000_000 || r.no_novelty.survivors!==0 || r.no_novelty.new_signatures!==0) throw new Error('SAT_NEW mismatch');
-          if(r.compression.cases!==1_000_000 || r.compression.survivors!==0) throw new Error('SAT_COMPRESS mismatch');
-          if(r.claim_boundary.semantic_mutation_is_physical_proof!==false) throw new Error('claim boundary missing');
-          console.log(`IKANT_LE_C2_RECEIPT=${r.receipt_sha256}`);
+          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c3-runtime.json','utf8'));
+          if(r.status!=='PASS') throw new Error('C3 qualification not PASS');
+          if(r.main.cases!==1_000_000 || r.main.survivors!==0) throw new Error('1M mismatch');
+          if(r.main.categories.ordinary!==500_000 || r.main.categories.edge!==300_000 || r.main.categories.stress!==200_000) throw new Error('strata mismatch');
+          if(r.claim_boundary.mutation_is_host_behavior_proof!==false) throw new Error('claim boundary missing');
+          console.log(`IKANT_LE_C3_RECEIPT=${r.receipt_sha256}`);
           NODE

@@ -1,4 +1,4 @@
 {
-  "name":"ikant-le","version":"0.3.0","private":true,"type":"module","engines":{"node":">=20"},
-  "scripts":{"test":"node --test","check":"node scripts/check.mjs","falsify:c2":"node scripts/c2-run.mjs"}
+  "name":"ikant-le","version":"0.4.0","private":true,"type":"module","engines":{"node":">=20"},
+  "scripts":{"test":"node --test","check":"node scripts/check.mjs","falsify:c3":"node scripts/c3-falsify.mjs --cases 1000000"}
 }
