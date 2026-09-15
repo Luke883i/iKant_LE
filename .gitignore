@@ -1,0 +1,4 @@
+.ikant/
+node_modules/
+*.tmp
+.DS_Store
