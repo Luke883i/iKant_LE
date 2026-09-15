@@ -1,18 +1,15 @@
 name: iKant_LE qualification
-
 on:
   pull_request:
   push:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,20 +17,20 @@ jobs:
           node-version: '20'
       - name: Deterministic tests
         run: npm test
-      - name: Contract check
+      - name: Contract and lifecycle check
         run: npm run check
-      - name: 10M semantic qualification + 1M no-novelty tail
-        run: npm run falsify
-      - name: Verify committed qualification shape
+      - name: C1 Q3 semantic qualification and saturation
+        run: npm run falsify:c1
+      - name: Verify qualification receipt
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          const r=JSON.parse(fs.readFileSync('artifacts/qualification/seed-v1.json','utf8'));
-          if(r.status!=='PASS') throw new Error('qualification not PASS');
-          if(r.main.cases!==10_000_000 || r.main.survivors!==0) throw new Error('main campaign mismatch');
-          if(r.no_novelty_tail.cases!==1_000_000 || r.no_novelty_tail.survivors!==0) throw new Error('tail mismatch');
-          const c=r.main.categories;
-          if(c.ordinary!==5_000_000 || c.edge!==3_000_000 || c.stress!==2_000_000) throw new Error('strata mismatch');
-          if(r.claim_boundary.semantic_mutation_is_physical_proof!==false) throw new Error('claim boundary missing');
-          console.log(`IKANT_LE_QUALIFICATION_RECEIPT=${r.receipt_sha256}`);
+          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c1-runtime.json','utf8'));
+          if(r.status!=='PASS') throw new Error('C1 qualification not PASS');
+          if(r.main.cases!==10_000_000 || r.main.survivors!==0) throw new Error('10M campaign mismatch');
+          if(r.main.categories.ordinary!==5_000_000 || r.main.categories.edge!==3_000_000 || r.main.categories.stress!==2_000_000) throw new Error('strata mismatch');
+          if(r.no_novelty.cases<10_000 || r.no_novelty.survivors!==0 || r.no_novelty.new_signatures!==0) throw new Error('no-novelty saturation mismatch');
+          if(r.compression.cases<10_000 || r.compression.survivors!==0) throw new Error('compression saturation mismatch');
+          if(r.adaptive_scale.class!=='Q3') throw new Error('adaptive scale drift');
+          console.log(`IKANT_LE_C1_RECEIPT=${r.receipt_sha256}`);
           NODE

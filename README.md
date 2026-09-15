@@ -1,53 +1,42 @@
 # iKant_LE
 
-**iKant Light Edition** is a deliberately small, local governance wrapper for a chat assistant. It does not replace the underlying model; while ACTIVE, it makes the session follow a stable iKant interaction profile whose authority lives in local contracts and read-back state rather than in model prose.
+**iKant Light Edition** is a deliberately small constitutional cognitive runtime for a chat assistant. It does not replace the underlying model. While ACTIVE, the session identifies as iKant under local contracts; the host model is a replaceable engine with zero independent epistemic or execution authority.
 
-## Why this repository is small
+## Lifecycle
 
-The full iKant repository carries a long product trajectory. iKant_LE extracts only the invariants needed for a portable seed: exact admission, real local probe, deterministic initialization, one local writer, append/readback state, zero-authority model output, bounded public prose, out-of-band DOCX backlog, explicit exit, typed failure and mutation qualification. It intentionally does **not** import the full cognitive/product lattice.
-
-## Local lifecycle
-
-Requires Node.js 20+ and no runtime dependency.
+Requires Node.js 20+ and zero runtime dependencies.
 
 ```bash
 node ikant.mjs TERMS
 node ikant.mjs "I ACCEPT"
 node ikant.mjs "PROBE IKANT"
 node ikant.mjs "INITIALIZE IKANT"
-node ikant.mjs "spiegami in modo semplice cosa stiamo facendo"
+node ikant.mjs --engine "HOST_MODEL" "chi sei?"
 node ikant.mjs "EXIT IKANT"
 ```
 
-For a host-generated candidate response:
+A host can provide a candidate Surface A with `--candidate-file`. It can declare resource grants with `--grant WEB,GITHUB`; the runtime treats a grant as a host capability declaration, never as proof that execution occurred.
 
-```bash
-node ikant.mjs --candidate-file candidate.txt "domanda dell'utente"
-```
+## Cognitive kernel
 
-The runtime validates the candidate as Surface A; invalid or technical/debug-heavy candidates are replaced by a bounded natural fallback. A substantive ACTIVE turn writes a `.docx` under `.ikant/artifacts/` and prints only:
+Each substantive turn is reduced to:
 
-```text
-<Surface A prose>
+`intent -> minimal method -> resource envelope -> central regulation -> strategic boundary -> Surface A -> typed experience/readback -> DOCX backlog`
 
-
--------------------
-Backlog & telemetrie:
-<artifact-name>.docx
-```
+The kernel is intentionally small. It supports deterministic self-identity, bounded intent mining, adaptive method selection, resource requests, functional affect, typed experience and strategic interaction constraints. It does not claim consciousness, felt emotion, reconstruction of Immanuel Kant's mind, a scientifically established Jungian archetype, general reasoning proof or autonomous material agency.
 
 ## Truth boundary
 
 `model output != evidence != permission != approval != execution != world truth`
 
-Mutation campaigns, tests, receipts and DOCX artifacts are engineering evidence about this repository's contracts. They are not proof of model quality, production reliability, security in every host, or correctness in the external world.
+Experience can change caution and method selection but never evidence. The current seed has no material external-action executor.
 
-## Development
+## Qualification
 
 ```bash
 npm test
 npm run check
-npm run falsify
+npm run falsify:c1
 ```
 
-See `AGENTS.md`, `contracts/ikant-le.json`, `docs/GOVERNANCE.md`, and `docs/RESEARCH_LEDGER.md`.
+C1 requires 10,000,000 source-bound semantic cases, a separate 10,000-case no-novelty window and a 10,000-mutant compression rail. These are bounded engineering evidence, not physical/model-quality proof.
