@@ -1,0 +1,39 @@
+name: iKant_LE qualification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Deterministic tests
+        run: npm test
+      - name: Contract check
+        run: npm run check
+      - name: 10M semantic qualification + 1M no-novelty tail
+        run: npm run falsify
+      - name: Verify committed qualification shape
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('artifacts/qualification/seed-v1.json','utf8'));
+          if(r.status!=='PASS') throw new Error('qualification not PASS');
+          if(r.main.cases!==10_000_000 || r.main.survivors!==0) throw new Error('main campaign mismatch');
+          if(r.no_novelty_tail.cases!==1_000_000 || r.no_novelty_tail.survivors!==0) throw new Error('tail mismatch');
+          const c=r.main.categories;
+          if(c.ordinary!==5_000_000 || c.edge!==3_000_000 || c.stress!==2_000_000) throw new Error('strata mismatch');
+          if(r.claim_boundary.semantic_mutation_is_physical_proof!==false) throw new Error('claim boundary missing');
+          console.log(`IKANT_LE_QUALIFICATION_RECEIPT=${r.receipt_sha256}`);
+          NODE
