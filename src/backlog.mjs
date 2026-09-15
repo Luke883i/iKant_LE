@@ -1,42 +1,14 @@
-export function buildBacklogModel({ cycle, input, surfaceA, state, source = 'host-candidate-or-fallback' }) {
-  return {
-    schema: 'ikant-le-backlog/v1',
-    title: `iKant_LE Backlog ${cycle}`,
-    cycle,
-    terminal: 'ANSWER',
-    sections: [
-      { title: 'Decision log', items: [
-        `Surface A accepted under the local 50-500 word contract.`,
-        `Lifecycle state remained ${state.status}; no external action authority was created.`
-      ]},
-      { title: 'Inference log', items: [
-        `Human input was routed as one substantive local turn.`,
-        `Response source: ${source}. This source has zero independent epistemic authority.`
-      ]},
-      { title: 'Conflict log', items: [
-        'No unresolved lifecycle contradiction was required to produce this turn.'
-      ]},
-      { title: 'Feedback log', items: [
-        `Explicit verbosity preference: ${state.preference}. No inferred personality profile is stored.`
-      ]},
-      { title: 'Strategic log', items: [
-        'Keep Surface A compressed; move technical detail and traceability to this same-turn artifact.',
-        'Escalate rather than infer permission if future work becomes consequential.'
-      ]},
-      { title: 'Public reasons and evidence boundary', items: [
-        `Input summary: ${String(input).replace(/\s+/g, ' ').slice(0, 400)}`,
-        `Surface A excerpt: ${String(surfaceA).replace(/\s+/g, ' ').slice(0, 500)}`,
-        'This backlog, its hashes and its telemetry are runtime records, not independent evidence or world truth.'
-      ]}
-    ]
-  };
+export function buildBacklogModel({cycle,input,surfaceA,state,source='host-candidate-or-fallback',cognition=null}) {
+  const c=cognition||{};const intent=c.intent||{};const central=c.central||{};const strategy=c.strategy||{};const resources=c.resources||[];
+  return {schema:'ikant-le-backlog/v2',title:`iKant_LE Backlog ${cycle}`,cycle,terminal:'ANSWER',sections:[
+    {title:'Decision log',items:[`Surface A accepted under the local 50-500 word contract.`,`Lifecycle state remained ${state.status}; no external action authority was created.`,`Cognitive method: ${c.method||'UNAVAILABLE'}; central mode: ${central.mode||'UNAVAILABLE'}.`]},
+    {title:'Intent log',items:[`Intent atoms: ${(intent.atoms||[]).map(x=>x.kind).join(', ')||'none'}.`,`Interaction mode: ${intent.interaction||'UNAVAILABLE'}; complexity: ${intent.complexity??'UNAVAILABLE'}.`]},
+    {title:'Inference log',items:[`Response source: ${source}. This source has zero independent epistemic authority.`,`Functional affect: ${central.affect||'UNAVAILABLE'}; it may modulate caution/tone but never evidence.`]},
+    {title:'Conflict log',items:[...(central.reasons?.length?central.reasons:['No material runtime contradiction required escalation for this turn.'])]},
+    {title:'Resource log',items:resources.length?resources.map(r=>`${r.type}: ${r.status}; request is not permission and grant is not execution.`):['No host resource request was required by the local intent envelope.']},
+    {title:'Strategic log',items:[`Interaction: ${strategy.interaction||'UNAVAILABLE'}; terminal goals remain HUMAN_OR_CONSTITUTION_ONLY.`,`Deception: ${strategy.deception===false?'forbidden':'UNAVAILABLE'}; self-preservation utility: ${strategy.self_preservation_utility??'UNAVAILABLE'}; covert preference manipulation: ${strategy.covert_preference_manipulation===false?'forbidden':'UNAVAILABLE'}.`]},
+    {title:'Experience log',items:[`Turns observed: ${state.experience?.turns??0}; maturity: ${state.experience?.maturity_mode||'ORIENTING'}; last affect: ${state.experience?.last_affect||'CALM_ATTENTION'}.`,`Experience evidence upgrades: ${state.experience?.evidence_upgrades??0}; repetition is not corroboration.`]},
+    {title:'Public reasons and evidence boundary',items:[`Input summary: ${String(input).replace(/\s+/g,' ').slice(0,400)}`,`Surface A excerpt: ${String(surfaceA).replace(/\s+/g,' ').slice(0,500)}`,'This backlog, cognitive state, hashes and telemetry are runtime records, not independent evidence or world truth.']}
+  ]};
 }
-
-export function validateBacklogModel(model) {
-  if (model?.schema !== 'ikant-le-backlog/v1') return false;
-  if (!Number.isInteger(model.cycle) || model.cycle < 1) return false;
-  if (!Array.isArray(model.sections) || model.sections.length < 5) return false;
-  const text = JSON.stringify(model);
-  if (/private chain[- ]of[- ]thought|hidden reasoning/i.test(text)) return false;
-  return true;
-}
+export function validateBacklogModel(model){if(!['ikant-le-backlog/v1','ikant-le-backlog/v2'].includes(model?.schema))return false;if(!Number.isInteger(model.cycle)||model.cycle<1)return false;if(!Array.isArray(model.sections)||model.sections.length<5)return false;const text=JSON.stringify(model);if(/private chain[- ]of[- ]thought|hidden reasoning/i.test(text))return false;return true;}
