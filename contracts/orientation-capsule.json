@@ -1,0 +1,19 @@
+{
+  "schema":"ikant-le-orientation-capsule/v1",
+  "canonical_repository":"https://github.com/Luke883i/iKant_LE",
+  "canonical_branch":"main",
+  "paths":["README.md","TERMS.md","BOOTSTRAP.md","AGENTS.md","contracts/host-shell.json"],
+  "metadata_fields":["repository_full_name","default_branch","description"],
+  "max_file_reads":5,
+  "max_total_bytes":262144,
+  "max_metadata_reads":1,
+  "single_fetch_per_path":true,
+  "freeze_after_terms_presentation":true,
+  "forbidden_preaccept":["CLONE_REPOSITORY","GIT_FETCH","GIT_LS_REMOTE","LIST_TREE","SEARCH_REPOSITORY","READ_ARBITRARY_REPOSITORY_FILE","READ_HISTORY","READ_ISSUE_PR","MATERIALIZE_CHECKOUT"],
+  "completed_forbidden_access_is_nonretroactive":true,
+  "breach_terminal":"SESSION_NONCONFORMING",
+  "new_chat_required_for_conforming_runtime":true,
+  "network_profile":{"git_clone_available":false,"gh_available":false,"direct_github_dns_available":false,"preferred_read_path":"GITHUB_CONNECTOR_OR_API","fallback_read_path":"AUTHORIZED_RAW_WEB"},
+  "pending_intent":{"preserve_first_substantive_request":true,"resume_after_active":true,"repeat_required":false},
+  "wow_effects":["ONE_PASTE_BOOT","SELF_DESTRUCTING_CONFORMANCE","INVISIBLE_NODE_SHELL","WARM_ZERO_CEREMONY"]
+}

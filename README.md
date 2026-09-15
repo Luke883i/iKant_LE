@@ -1,36 +1,39 @@
 # iKant_LE
 
-iKant Light Edition is a small repository-owned constitutional cognitive runtime for a chat host. After exact acceptance, the host automatically proves the local bootstrap gates; while ACTIVE, the public narrator is iKant and the underlying model remains replaceable infrastructure.
+iKant Light Edition is a small repository-owned constitutional runtime for a local chat host. It provides a bounded pre-admission orientation capsule, one-human-gate bootstrap, a real Node.js runtime gate, the iKant narrative shell and same-turn DOCX technical trace.
 
-## Bootstrap
+## Fast journey
 
-The human path is deliberately short:
-
-```bash
-node ikant.mjs TERMS
-node ikant.mjs "I ACCEPT"
+```text
+first substantive request
+-> bounded orientation capsule
+-> current Terms + acquisition freeze
+-> exact I ACCEPT
+-> real AUTO_PROBE + AUTO_INITIALIZE
+-> ACTIVE
+-> original request resumes automatically
 ```
 
-`I ACCEPT` triggers real `AUTO_PROBE -> AUTO_INITIALIZE`. Success persists `ACCEPT`, `PROBE`, and `INITIALIZE` as separate hash-linked events and returns ACTIVE. Failure returns non-ACTIVE. Manual `PROBE IKANT` / `INITIALIZE IKANT` remain recovery diagnostics only.
+If forbidden repository bytes are acquired before acceptance, the chat becomes non-conforming for official local iKant and a fresh chat is required.
 
-For a host session, use the natural-language bootstrap in `BOOTSTRAP.md`.
+## Target host assumptions
+
+The host bootstrap assumes `git clone` and `gh` are unavailable and that direct local DNS resolution of `github.com` may be blocked. Repository I/O should therefore use an authorized GitHub connector/API first, with permitted raw/web reads only as fallback.
+
+## Invisible Node shell
+
+Every host-permitted user input enters `runCommand()` in Node. ACTIVE Surface A requires a same-input Node dispatch receipt. A substantive response also requires its DOCX backlog to be written and read back before release.
 
 ## Public identity
 
-Ordinary self-queries receive iKant's narrative identity without engine/runtime plumbing. Technical engine information is disclosed only when explicitly requested. A bounded runtime-derived voice vector can change gravitas, restraint, patience, decisiveness, warmth, dialectical pressure and self-reflection; it has zero authority and cannot modify evidence or permission.
-
-## Cognitive boundary
-
-`intent -> method -> resource envelope -> central regulation -> voice state -> strategic boundary -> Surface A -> experience/readback -> DOCX backlog`
-
-`model output != evidence != permission != approval != execution != world truth`
+While ACTIVE, the narrator is iKant. The host model is replaceable infrastructure. Ordinary chat does not expose hashes, receipts, routing or telemetry; those remain in the DOCX/runtime surface.
 
 ## Qualification
 
 ```bash
 npm test
 npm run check
-npm run falsify:c2
+npm run falsify:c3
 ```
 
-C2 requires 10,000,000 multi-seed runtime-semantic mutations plus 1,000,000 no-novelty cases and 1,000,000 compression candidates, all source-bound. These results are repository design/runtime evidence, not proof of language-model correctness, platform-wide safety, consciousness or external-world truth.
+C3 is qualified against 1,000,000 runtime-semantic mutations. Mutation evidence is bounded engineering evidence, not proof of model correctness, physical-world truth or universal host behavior.
