@@ -1,0 +1,14 @@
+{
+  "name": "ikant-le",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "falsify": "node scripts/falsify.mjs --cases 10000000 --tail 0 --output artifacts/qualification/main-10m.json && node scripts/falsify.mjs --cases 0 --tail 1000000 --output artifacts/qualification/tail-1m.json && node scripts/combine-receipts.mjs"
+  }
+}
