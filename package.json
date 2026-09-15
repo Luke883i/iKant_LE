@@ -1,4 +1,4 @@
 {
-  "name":"ikant-le","version":"0.2.0","private":true,"type":"module","engines":{"node":">=20"},
-  "scripts":{"test":"node --test","check":"node scripts/check.mjs","falsify:c1":"node scripts/c1-falsify.mjs --cases 10000000 --tail 10000 --compression 10000 --seed 3248586241 --output artifacts/qualification/c1-runtime.json"}
+  "name":"ikant-le","version":"0.3.0","private":true,"type":"module","engines":{"node":">=20"},
+  "scripts":{"test":"node --test","check":"node scripts/check.mjs","falsify:c2":"node scripts/c2-run.mjs"}
 }

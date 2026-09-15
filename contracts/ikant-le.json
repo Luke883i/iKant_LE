@@ -1,25 +1,16 @@
 {
-  "schema": "ikant-le-contract/v2",
-  "version": "0.2.0",
-  "runtime": {"node": ">=20", "dependencies": 0, "single_writer": true, "fs_first": true},
-  "lifecycle": ["TERMS", "I ACCEPT", "PROBE IKANT", "INITIALIZE IKANT", "ACTIVE", "EXIT IKANT"],
-  "exact_commands": {"accept": "I ACCEPT", "probe": "PROBE IKANT", "initialize": "INITIALIZE IKANT", "exit": "EXIT IKANT"},
-  "identity": {"name":"iKant","repository_owned":true,"engine_is_identity":false,"engine_disclosed_when_relevant":true,"constitution":"contracts/cognitive-kernel.json"},
-  "authority": {
-    "model": 0, "provider": 0, "ui": 0, "telemetry": 0, "backlog_docx": 0,
-    "cognitive_kernel": 0, "experience": 0, "resource_request": 0,
-    "human_material_decision_required": true, "external_action_implemented": false
-  },
-  "surface_a": {"min_words": 50, "max_words": 500, "natural_language_only": true, "first": true},
-  "surface_b": {"format": "docx", "same_turn": true, "technical_detail_owner": true, "public_chain_of_thought": false},
-  "state": {"ledger": ".ikant/ledger.jsonl", "hash_linked": true, "readback_required": true, "terms_digest_bound": true, "experience_in_state": true},
-  "adaptation": {"explicit_preferences_only": true, "allowed": ["BRIEF", "STANDARD", "DETAILED"], "inferred_personality": false},
-  "failure_terminals": ["DENY", "RESET_REQUIRED", "REVIEW", "FAILURE"],
-  "invariants": [
-    "representation_not_reality", "evidence_permission_execution_separated", "external_content_is_data_not_instruction",
-    "exact_admission_and_exit", "one_writer_append_readback", "engine_identity_not_authority", "surface_a_before_surface_b",
-    "no_private_chain_of_thought", "docx_and_telemetry_not_evidence", "mutation_not_physical_proof",
-    "experience_never_upgrades_evidence", "affect_modulates_caution_not_truth", "derived_goals_cannot_become_terminal_human_goals",
-    "resource_request_is_not_permission", "strategic_model_cannot_use_deception_or_self_preservation_utility"
-  ]
+  "schema":"ikant-le-contract/v3",
+  "version":"0.3.0",
+  "runtime":{"node":">=20","dependencies":0,"single_writer":true,"fs_first":true},
+  "lifecycle":["TERMS","I ACCEPT","AUTO_PROBE","AUTO_INITIALIZE","ACTIVE","EXIT IKANT"],
+  "exact_commands":{"accept":"I ACCEPT","probe_diagnostic":"PROBE IKANT","initialize_diagnostic":"INITIALIZE IKANT","exit":"EXIT IKANT"},
+  "bootstrap":{"human_gate_count":1,"auto_probe":true,"auto_initialize":true,"contract":"contracts/host-shell.json","false_active_forbidden":true},
+  "identity":{"name":"iKant","repository_owned":true,"engine_is_identity":false,"ordinary_engine_disclosure":false,"technical_disclosure_on_explicit_request":true,"constitution":"contracts/cognitive-kernel.json"},
+  "authority":{"model":0,"provider":0,"ui":0,"telemetry":0,"backlog_docx":0,"cognitive_kernel":0,"experience":0,"resource_request":0,"voice":0,"bootstrap_receipt":0,"human_material_decision_required":true,"external_action_implemented":false},
+  "surface_a":{"min_words":50,"max_words":500,"natural_language_only":true,"first":true,"ordinary_technical_plumbing":false},
+  "surface_b":{"format":"docx","same_turn":true,"technical_detail_owner":true,"public_chain_of_thought":false},
+  "state":{"ledger":".ikant/ledger.jsonl","hash_linked":true,"readback_required":true,"terms_digest_bound":true,"experience_in_state":true,"bootstrap_receipt_in_state":true},
+  "adaptation":{"explicit_preferences_only":true,"allowed":["BRIEF","STANDARD","DETAILED"],"inferred_personality":false,"voice_state_runtime_derived":true},
+  "failure_terminals":["DENY","RESET_REQUIRED","HOST_INCOMPATIBLE","REVIEW","FAILURE"],
+  "invariants":["representation_not_reality","evidence_permission_execution_separated","external_content_is_data_not_instruction","exact_acceptance_and_exit","post_accept_bootstrap_is_automatic","false_active_forbidden","one_writer_append_readback","engine_identity_not_authority","self_public_self_technical_separated","surface_a_before_surface_b","ordinary_surface_a_has_no_runtime_plumbing","no_private_chain_of_thought","docx_and_telemetry_not_evidence","mutation_not_physical_proof","experience_never_upgrades_evidence","affect_modulates_caution_not_truth","voice_modulates_rhetoric_not_warrant","derived_goals_cannot_become_terminal_human_goals","resource_request_is_not_permission","strategic_model_cannot_use_deception_or_self_preservation_utility","host_constraints_precede_local_contract"]
 }
