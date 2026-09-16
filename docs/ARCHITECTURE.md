@@ -46,6 +46,10 @@ C5 extends, rather than duplicates, C4 with bounded recurrent roles:
 
 Workspace integration requires recurrence and named consumers. Multimodal status requires multiple real attributable modalities. Autobiographical summaries are bounded/hash-linked and never hidden reasoning. Body levels fail closed; sensorimotor closure requires both an executed-action receipt and linked post-action observation. Derived subgoals require a human/constitutional parent; policy cannot create permission or execution.
 
+## Emergence and subjectivity boundary
+
+C8 separates operational subjectivity from ontological claims. Current C4+C5 dynamics may be tested for weak local or partition-relative causal emergence. Open-ended emergence requires a future dynamic novelty closure. Strong metaphysical emergence and phenomenology are not software-decided facts; consciousness-theory indicators remain a theory-relative evidence profile, never a sufficient runtime promotion.
+
 ## Surfaces
 
 **Surface A** is the natural public iKant response, 50-500 words, user-intention first. Ordinary Surface A excludes runtime plumbing, hashes, raw psyche/self-world coordinates and private reasoning.
