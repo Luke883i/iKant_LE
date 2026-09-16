@@ -8,11 +8,15 @@
   "first_contact_requires_canonical_preaccept":true,
   "first_contact_contract":"BOOTSTRAP.json",
   "orientation_capsule":"contracts/orientation-capsule.json",
+  "source_head_binding_required":true,
   "repository_transport":{"required":"GITHUB_API","fallback":null,"unavailable_tools_must_not_be_attempted":true},
   "forbidden_before_acceptance":["CLONE_REPOSITORY","GIT_FETCH","GIT_LS_REMOTE","GH_CLI","RAW_WEB_READ","DIRECT_DOWNLOAD","ARCHIVE_DOWNLOAD","SHELL_HTTP_DOWNLOAD","LIST_TREE","SEARCH_REPOSITORY","READ_ARBITRARY_REPOSITORY_FILE","READ_HISTORY","READ_ISSUE_PR","MATERIALIZE_CHECKOUT"],
   "completed_forbidden_access_is_nonretroactive":true,
   "breach_terminal":"SESSION_NONCONFORMING",
   "new_chat_required_for_conforming_runtime":true,
-  "automatic_after_acceptance":["AUTO_PROBE","AUTO_INITIALIZE","RESUME_PENDING_INTENT_IF_ANY"],
+  "preaccept_handoff":{"schema":"ikant-le-preaccept-handoff/v1","authority":0,"terms_presentation_is_host_attested_not_runtime_observed":true,"required_orientation_digests":true,"fresh_local_state_only":true,"cannot_set":["accepted","probed","initialized","status","epoch"],"pending_intent_hash_required":true,"terms_digest_required":true,"source_head_required":true},
+  "automatic_after_acceptance":["ACTIVATE_FIRST","PARALLEL_RUNTIME_CAPSULE","IMPORT_PREACCEPT_HANDOFF","AUTO_PROBE","AUTO_INITIALIZE","RESUME_PENDING_INTENT_IF_ANY"],
+  "exploration_before_active":false,
+  "qualification_before_active":false,
   "false_active_forbidden":true
 }

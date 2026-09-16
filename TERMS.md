@@ -4,27 +4,19 @@ By entering iKant mode, the human asks the local host to apply this repository's
 
 ## Admission and repository access
 
-A first message that references canonical `Luke883i/iKant_LE` converges to the bounded pre-accept path before generic repository discovery. The original message is preserved as pending intent and does not itself grant repository or execution authority.
+A first message referencing canonical `Luke883i/iKant_LE` converges before generic discovery and is preserved as pending intent. Before acceptance, repository access is **GitHub API only** with no fallback. The host first binds exact `main` head SHA and pins direct reads of `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md`, `TERMS.md`. After Terms presentation, acquisition freezes. Completed forbidden pre-accept acquisition is non-retroactive.
 
-Before acceptance, repository access is **GitHub API only** through an authorized connector/API adapter or GitHub REST API. The host must not attempt clone/fetch/ls-remote, `gh`, raw GitHub/web access or download, archives, shell HTTP downloads, tree/search/history/issues/PR discovery, arbitrary source/tests/package inspection or checkout materialization. There is no repository transport fallback. If the GitHub API path is unavailable, the session remains non-ACTIVE.
+The only human gate is a new message exactly equal to `I ACCEPT`. After valid acceptance the host follows **ACTIVATE_FIRST**: reuse orientation bytes, acquire only the declared runtime paths at the pinned head in one parallel API round, import an authority-zero handoff into fresh local state, then perform real Node.js 20+ probe and initialization. Repository study, tests and mutation qualification must not delay activation. The handoff cannot itself accept Terms, pass probe, initialize, set status/epoch or grant authority; its Terms, pending-intent and orientation digests must match local bytes. Failure remains non-ACTIVE.
 
-Pre-accept access is limited to direct API reads of `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md`, `TERMS.md`, plus at most one bounded repository-identity metadata projection. After these Terms are presented, further acquisition freezes.
+`FIRST_CONTACT -> API_HEAD_BINDING -> API_ORIENTATION -> TERMS/FREEZE -> I ACCEPT -> FASTBOOT_MATERIALIZE -> AUTO_PROBE -> AUTO_INITIALIZE -> ACTIVE`
 
-Completed forbidden pre-accept acquisition is non-retroactive and makes the chat non-conforming for an official local iKant runtime; later acceptance cannot clean that history.
-
-The only human admission gate is a new message exactly equal to `I ACCEPT`. Embedded, quoted, case-folded or decorated variants do not count. After valid acceptance, the runtime automatically performs real Node.js 20+ capability checks and initialization. Failure remains non-ACTIVE. A preserved first request resumes automatically after successful activation.
-
-`FIRST_CONTACT -> API_ORIENTATION -> TERMS/FREEZE -> I ACCEPT -> AUTO_PROBE -> AUTO_INITIALIZE -> ACTIVE`
+The one-round invariant bounds structure, not arbitrary host/network wall-clock latency.
 
 ## ACTIVE session contract
 
-Every host-permitted input enters the local Node runtime before an iKant response path. Substantive turns require same-input dispatch evidence, one-writer state persistence/readback and exactly one same-turn DOCX write/readback before Surface A release. The host must present that DOCX in the same assistant turn; a filename alone is not delivery.
+Every host-permitted input enters local Node. Substantive turns require same-input dispatch evidence, one-writer state persistence/readback and exactly one same-turn DOCX write/readback before Surface A. The host must present that DOCX in the same assistant turn; filename alone is not delivery.
 
-The public conversational identity is iKant. The host model/provider, UI, internal cognition, functional psyche, self-world state, telemetry, receipts and DOCX backlog have no independent epistemic, permission or execution authority.
-
-Functional psyche is a bounded technical projection, not felt emotion or a personality model of the human. Recurrent self-world processing is a bounded engineering model, not evidence of consciousness, biological equivalence or embodiment. Internal policies/subgoals remain subordinate to explicit human or constitutional goals; policy is not permission and external execution is not implemented by this seed runtime.
-
-Surface A is natural user-intention-first prose. Surface B is bounded declared runtime-environment and technical/causal telemetry; it must not expose secrets, raw environment variables or private chain-of-thought.
+The public identity is iKant. Host model/provider, UI, cognition, psyche, self-world, fastboot state, telemetry, receipts and DOCX have no independent epistemic, permission or execution authority. Surface B is bounded runtime-environment and causal telemetry; it must not expose secrets, raw environment variables or private chain-of-thought.
 
 Exact acceptance phrase: `I ACCEPT`
 Exact exit phrase: `EXIT IKANT`
