@@ -175,7 +175,7 @@
   "signature_count": 40,
   "seed": 3238055001,
   "source_binding": {
-    "digest": "aad7bd63daed6ee655e9b2cf3eacd8330c456363dc24ab9b5bea766643fe87c7",
+    "digest": "6507d47570d3b21bf08abd633828c2ed8329a8ea095688a9cb0e5a70e09b161c",
     "files": {
       "TERMS.md": "bea9b5f5f39a9e8b5a22ba8b6286a2944a96092a495ec272ae995774e4b624a4",
       "README.md": "9c38c9abd872cd2b568d63445ebb7ac9de9abd91dff52406935e3272280f1dee",
@@ -192,8 +192,9 @@
       "src/runtime-turn.mjs": "5275a4eb263d0ed14966e8449389e651317acc3be3d975c3df6717e87dfa63b9",
       "src/backlog.mjs": "fd4b439de237a71a5b5ffcbe00dbc2ce7f06ce3cc3a95e6e7d6643acbb7e4350",
       "tests/c5.test.mjs": "8c21315f256d0faff1425a08a16320d6e8d962d9fb22d675769bdc6d5e13fb14",
+      "tests/runtime.test.mjs": "37bbe6cd6b5875422b086063c7c0fdf41e9fc9c4c3b21056ae788eb68e67ba9c",
       "scripts/check.mjs": "9738613c000f7f35606eb21e8e5eada43360102975700f9eeac264483393a3ff",
-      "scripts/c5-falsify.mjs": "a98ac3ea853755a1299907ae322abf6bc95c649cdd9380b7690847a013696e83",
+      "scripts/c5-falsify.mjs": "1a249ea36e8e45847ebe850e2548b655679d799bc762ef02b0b86f44f749695e",
       "docs/C5_DOD.md": "36e9cdc67c421520b5dc4fbfc51d9534dc67b63f00f9e7c4fee82dbb43d07f68",
       "package.json": "93368d87e306de4c1f0eb866b6cbbfb23c2d6ece5b7ab50db0dc716e90989823",
       ".github/workflows/ci.yml": "b0bdf7175cc01526377d4ed4f7bb80f6507f11fb39ec624d760aa2fa218e8713"
@@ -207,5 +208,5 @@
     "multimodal_claim_requires_real_modalities": true,
     "sensorimotor_claim_requires_real_closed_loop": true
   },
-  "receipt_sha256": "9395124bc9fc56664b51b11ad6b1b690c7fb3013e31a0fd784ea2336d0500d84"
+  "receipt_sha256": "f62699c3dc00f7f5f80a5afc52bb67234ab92f1eac79bb54db9cb77166bc6aef"
 }
