@@ -9,7 +9,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,4 +33,19 @@ jobs:
           if(r.claim_boundary.consciousness_proof!==false || r.claim_boundary.biological_equivalence_proof!==false || r.claim_boundary.iit_phi_proof!==false) throw new Error('claim boundary missing');
           console.log(`IKANT_LE_C5_SOURCE=${r.source_binding.digest}`);
           console.log(`IKANT_LE_C5_RECEIPT=${r.receipt_sha256}`);
+          NODE
+      - name: C6 one-million end-user first-contact qualification
+        run: npm run falsify:c6
+      - name: Verify C6 receipt
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c6-enduser.json','utf8'));
+          if(r.status!=='PASS') throw new Error('C6 qualification not PASS');
+          if(r.cases!==1_000_000) throw new Error('C6 case count mismatch');
+          if(r.categories.typical!==500_000 || r.categories.edge!==300_000 || r.categories.stress!==200_000) throw new Error('C6 strata mismatch');
+          if(r.families_exercised!==288 || r.violations.length!==0) throw new Error('C6 family/violation mismatch');
+          if(r.claim_boundary.mutation_proves_conforming_host_behavior!==false || r.claim_boundary.mutation_proves_universal_agent_compliance!==false) throw new Error('C6 claim boundary missing');
+          console.log(`IKANT_LE_C6_SOURCE=${r.source_binding.digest}`);
+          console.log(`IKANT_LE_C6_RECEIPT=${r.receipt_sha256}`);
           NODE

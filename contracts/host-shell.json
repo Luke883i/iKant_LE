@@ -1,7 +1,8 @@
 {
-  "schema":"ikant-le-host-shell/v4",
+  "schema":"ikant-le-host-shell/v5",
   "human_bootstrap_gates":1,
   "human_acceptance":"I ACCEPT",
+  "first_contact":{"canonical_repository":"Luke883i/iKant_LE","manifest":"BOOTSTRAP.json","admission_manifest":"ADMISSION.json","convergence_before_generic_discovery":true,"preserve_pending_intent_verbatim":true,"embedded_acceptance_invalid":true},
   "orientation_capsule":"contracts/orientation-capsule.json",
   "automatic_after_acceptance":["AUTO_PROBE","AUTO_INITIALIZE","RESUME_PENDING_INTENT_IF_ANY"],
   "success_terminal":"ACTIVE",
@@ -9,7 +10,7 @@
   "manual_recovery_commands":["PROBE IKANT","INITIALIZE IKANT"],
   "host_relation":{"host_constraints_precede_local_contract":true,"local_contract_may_override_host":false,"incompatible_gate_must_not_be_simulated":true},
   "network_assumptions":{"git_clone":false,"gh":false,"direct_github_dns":false,"preferred":"GITHUB_CONNECTOR_OR_API","fallback":"AUTHORIZED_RAW_WEB"},
-  "cold_warm":{"fingerprint_bound":true,"warm_reuses_static_contract_validation":true,"warm_still_requires_live_fs_readback":true,"terms_or_contract_drift_forces_cold":true},
+  "cold_warm":{"fingerprint_bound":true,"warm_reuses_static_contract_validation":true,"warm_still_requires_live_fs_readback":true,"terms_or_contract_drift_forces_cold":true,"first_contact_manifest_drift_forces_cold":true},
   "universal_node_gate":{"all_user_inputs_enter_node_runtime":true,"surface_a_requires_current_dispatch_receipt":true,"direct_model_fast_path":false},
   "self_public":{"identity":"iKant","ordinary_engine_disclosure":false,"technical_plumbing_disclosure":false,"user_intention_first":true},
   "self_technical":{"engine_disclosure_on_explicit_request":true,"runtime_and_receipts_backlog_owned":true,"authority":0},
