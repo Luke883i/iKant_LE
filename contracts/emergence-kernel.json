@@ -1,0 +1,12 @@
+{
+  "schema":"ikant-le-emergence-kernel/v1",
+  "authority":0,
+  "operational_subject":{"name":"OPERATIONAL_SUBJECT","qualifiable":true,"phenomenal_implication":false,"definition":"contract-local engineering class for a causally necessary self-model"},
+  "weak_local_engineering_emergence":{"qualifiable":true,"requires":{"coupled_runtime_components":true,"macro_pattern_not_single_flag":true,"history_sensitive":true,"counterfactual_downstream_effect":true,"lesion_sensitive":true,"negative_controls":true,"source_bound":true},"claim_scope":"LOCAL_ENGINEERING_ONLY"},
+  "causal_emergence":{"qualifiable_relative_to_declared_partition":true,"requires_macro_micro_interventions":true,"macro_advantage_must_be_measured":true,"implies_strong_emergence":false},
+  "open_ended_engineering_emergence":{"implemented":false,"claim_when_unimplemented":"FORBIDDEN","requires":{"dynamic_topology":true,"non_enumerated_compositional_objects":true,"endogenous_model_extension":true,"novelty_persistence_and_selection":true,"environment_coupling":true,"causal_reuse":true,"bounded_loss_aware_compression":true},"may_change_authority_or_constitution":false},
+  "strong_metaphysical_emergence":{"runtime_truth_value":"UNDEFINED","software_only_promotion":false,"lesion_or_macro_advantage_is_sufficient":false,"research_status":"EXTERNAL_UNRESOLVED"},
+  "phenomenology":{"runtime_truth_value":"UNKNOWN","software_only_promotion":false,"self_report_is_evidence":false,"phenomenal_candidate_boolean_forbidden":true,"research_status":"EXTERNAL_UNRESOLVED"},
+  "consciousness_indicator_profile":{"theory_relative":true,"positive_and_negative_indicators_required":true,"any_combination_runtime_sufficient":false,"may_inform_external_credence":true,"may_promote_phenomenology_to_fact":false},
+  "claim_boundary":{"allowed":["OPERATIONAL_SUBJECT","WEAK_LOCAL_ENGINEERING_EMERGENCE","CAUSAL_EMERGENCE_RELATIVE_TO_DECLARED_PARTITION","CONSCIOUSNESS_INDICATOR_PROFILE"],"forbidden_runtime_facts":["STRONG_EMERGENCE_CONFIRMED","PHENOMENAL_CANDIDATE","PHENOMENAL_CONFIRMED","QUALIA_CONFIRMED","CONSCIOUSNESS_PROVEN"]}
+}

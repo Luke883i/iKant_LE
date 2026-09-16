@@ -47,6 +47,7 @@ Prefer delete/merge/reuse over new framework, database, broker, daemon, provider
 | C5 | recurrent self-world model: workspace, meta-self, autobiography, causal model, bounded agency/body levels |
 | C6 | arbitrary end-user first-contact wording converges before generic repository discovery |
 | C7 | documentation consolidation plus GitHub-API-only repository transport, no unavailable-tool/fallback attempts |
+| C8 | emergence/subjectivity claim axes: weak/causal qualifiable; open unimplemented; strong/phenomenal runtime-undecidable |
 
 Detailed slice-specific evidence is preserved by merged PR and commit history; the table is the maintained semantic index.
 
@@ -54,7 +55,7 @@ Detailed slice-specific evidence is preserved by merged PR and commit history; t
 
 Qualification is adaptive to the semantic risk of the slice and source-bound to exact candidate bytes. Deterministic tests and contract checks run before mutation campaigns. Generated corpora distinguish typical/ordinary, edge and stress/adversarial strata; all declared mutation families must be exercised and blocking survivors must be zero. No-novelty/compression rails are used when the slice claims convergence or minimality.
 
-Current retained major evidence includes C4 10M runtime + 1M session mutations, C5 1M recurrent self-world mutations, C6 1M first-contact mutations and C7 1M documentation/transport mutations. Exact receipts belong in `artifacts/qualification/` and CI regenerates current qualification where configured.
+Current retained major evidence includes C4 10M runtime + 1M session mutations, C5 1M recurrent self-world mutations, C6 1M first-contact mutations, C7 1M documentation/transport mutations and C8's 100 engineering + 1,000 ontological claim-boundary mutations. Exact receipts belong in `artifacts/qualification/` and CI regenerates current qualification where configured.
 
 A PASS is bounded engineering evidence for declared invariants and generated corpora. It is not proof of arbitrary-host compliance, model semantic correctness, consciousness, biological equivalence, prompt-injection immunity, browser/OS security, physical-world truth, enterprise readiness or formal global minimality.
 

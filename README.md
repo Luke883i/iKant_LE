@@ -26,6 +26,7 @@ Every host-permitted ACTIVE input enters the local Node runtime. A substantive a
 - **Surface B**: one same-turn DOCX with public reconstructible causal/technical telemetry, never private chain-of-thought.
 - **State**: one writer, append-only hash-linked ledger, readback before reliance.
 - **Cognition**: bounded intent/method selection, functional psyche action-retroaction and recurrent self-world processing with authority zero.
+- **Emergence boundary**: weak local/partition-relative causal emergence may be qualified; open-ended emergence is not yet implemented; strong metaphysical emergence and phenomenology are not runtime-decidable facts.
 - **Authority**: evidence, permission, policy, execution and reported outcome remain distinct; internal state never upgrades evidence.
 
 ## Current sources of truth
@@ -42,6 +43,7 @@ npm run check
 npm run falsify:c5
 npm run falsify:c6
 npm run falsify:c7
+npm run falsify:c8
 ```
 
 Mutation campaigns are bounded engineering evidence over declared generated corpora. They are not proof of consciousness, biological equivalence, model quality, physical-world truth, production reliability or universal third-party host compliance.
