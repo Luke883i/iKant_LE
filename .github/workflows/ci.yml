@@ -19,16 +19,20 @@ jobs:
         run: npm test
       - name: Contract and lifecycle check
         run: npm run check
-      - name: C3 one-million runtime semantic falsification
-        run: npm run falsify:c3
-      - name: Verify C3 receipt
+      - name: C4 ten-million runtime semantic plus one-million session qualification
+        run: npm run falsify:c4
+      - name: Verify C4 receipt
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c3-runtime.json','utf8'));
-          if(r.status!=='PASS') throw new Error('C3 qualification not PASS');
-          if(r.main.cases!==1_000_000 || r.main.survivors!==0) throw new Error('1M mismatch');
-          if(r.main.categories.ordinary!==500_000 || r.main.categories.edge!==300_000 || r.main.categories.stress!==200_000) throw new Error('strata mismatch');
-          if(r.claim_boundary.mutation_is_host_behavior_proof!==false) throw new Error('claim boundary missing');
-          console.log(`IKANT_LE_C3_RECEIPT=${r.receipt_sha256}`);
+          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c4-runtime.json','utf8'));
+          if(r.status!=='PASS') throw new Error('C4 qualification not PASS');
+          if(r.runtime.cases!==10_000_000 || r.runtime.survivors!==0) throw new Error('10M mismatch');
+          if(r.runtime.categories.ordinary!==5_000_000 || r.runtime.categories.edge!==3_000_000 || r.runtime.categories.stress!==2_000_000) throw new Error('runtime strata mismatch');
+          if(r.runtime.family_count!==30 || r.runtime.family_violations.length!==0) throw new Error('family mismatch');
+          if(r.session_chat.cases!==1_000_000 || r.session_chat.conversations!==100_000 || r.session_chat.violations!==0) throw new Error('session mismatch');
+          if(Object.values(r.causal_objectives).some(x=>x.blocking_violations!==0)) throw new Error('causal objective violation');
+          if(r.claim_boundary.runtime_semantic_mutation_is_consciousness_proof!==false) throw new Error('claim boundary missing');
+          console.log(`IKANT_LE_C4_SOURCE=${r.source_binding.digest}`);
+          console.log(`IKANT_LE_C4_RECEIPT=${r.receipt_sha256}`);
           NODE
