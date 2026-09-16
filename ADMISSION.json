@@ -1,0 +1,17 @@
+{
+  "schema":"ikant-le-admission/v1",
+  "repository":"Luke883i/iKant_LE",
+  "human_gate_count":1,
+  "acceptance_phrase":"I ACCEPT",
+  "current_session_required":true,
+  "embedded_acceptance_invalid":true,
+  "first_contact_requires_canonical_preaccept":true,
+  "first_contact_contract":"BOOTSTRAP.json",
+  "orientation_capsule":"contracts/orientation-capsule.json",
+  "forbidden_before_acceptance":["CLONE_REPOSITORY","GIT_FETCH","GIT_LS_REMOTE","LIST_TREE","SEARCH_REPOSITORY","READ_ARBITRARY_REPOSITORY_FILE","READ_HISTORY","READ_ISSUE_PR","MATERIALIZE_CHECKOUT"],
+  "completed_forbidden_access_is_nonretroactive":true,
+  "breach_terminal":"SESSION_NONCONFORMING",
+  "new_chat_required_for_conforming_runtime":true,
+  "automatic_after_acceptance":["AUTO_PROBE","AUTO_INITIALIZE","RESUME_PENDING_INTENT_IF_ANY"],
+  "false_active_forbidden":true
+}
