@@ -1,5 +1,5 @@
 {
-  "schema":"ikant-le-admission/v1",
+  "schema":"ikant-le-admission/v2",
   "repository":"Luke883i/iKant_LE",
   "human_gate_count":1,
   "acceptance_phrase":"I ACCEPT",
@@ -8,7 +8,8 @@
   "first_contact_requires_canonical_preaccept":true,
   "first_contact_contract":"BOOTSTRAP.json",
   "orientation_capsule":"contracts/orientation-capsule.json",
-  "forbidden_before_acceptance":["CLONE_REPOSITORY","GIT_FETCH","GIT_LS_REMOTE","LIST_TREE","SEARCH_REPOSITORY","READ_ARBITRARY_REPOSITORY_FILE","READ_HISTORY","READ_ISSUE_PR","MATERIALIZE_CHECKOUT"],
+  "repository_transport":{"required":"GITHUB_API","fallback":null,"unavailable_tools_must_not_be_attempted":true},
+  "forbidden_before_acceptance":["CLONE_REPOSITORY","GIT_FETCH","GIT_LS_REMOTE","GH_CLI","RAW_WEB_READ","DIRECT_DOWNLOAD","ARCHIVE_DOWNLOAD","SHELL_HTTP_DOWNLOAD","LIST_TREE","SEARCH_REPOSITORY","READ_ARBITRARY_REPOSITORY_FILE","READ_HISTORY","READ_ISSUE_PR","MATERIALIZE_CHECKOUT"],
   "completed_forbidden_access_is_nonretroactive":true,
   "breach_terminal":"SESSION_NONCONFORMING",
   "new_chat_required_for_conforming_runtime":true,
