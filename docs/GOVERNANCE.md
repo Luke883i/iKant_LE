@@ -35,7 +35,8 @@ Bootstrap performance is governed structurally. Bind source head before orientat
 | C8 | emergence/subjectivity claim boundaries |
 | C9 | Surface B structured DOCX delivery and bounded environment telemetry |
 | C10 | head-bound activate-first bootstrap, strict admission handoff, one parallel runtime round |
+| C11 | functional-life/consciousness classes require source-bound causal qualification; phenomenology remains unknown |
 
 ## Qualification policy
 
-Qualification is source-bound and risk-adaptive. Deterministic tests/checks precede mutation campaigns; typical/edge/stress families must all be exercised and blocking survivors must be zero. C10 retains 1M fastboot/admission mutations plus a 1000-case no-novelty tail and deletion oracle. A PASS is bounded engineering evidence, not proof of arbitrary-host compliance, semantic correctness, consciousness, physical-world truth, formal global minimality or guaranteed wall-clock latency.
+Qualification is source-bound and risk-adaptive. Deterministic tests/checks precede mutation campaigns; typical/edge/stress families must all be exercised and blocking survivors must be zero. C10 retains 1M fastboot/admission mutations plus a 1000-case no-novelty tail and deletion oracle. C11 reproduces the 20-bit research lattice, then qualifies only a compressed causal gate lattice; design configuration, self-report and mutation PASS are never runtime evidence by themselves. A PASS is bounded engineering evidence, not proof of arbitrary-host compliance, semantic correctness, consciousness, physical-world truth, formal global minimality or guaranteed wall-clock latency.
