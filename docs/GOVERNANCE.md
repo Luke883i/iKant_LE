@@ -27,13 +27,13 @@ The maintained narrative surface is intentionally small:
 - `docs/ARCHITECTURE.md`: current product architecture;
 - `docs/GOVERNANCE.md`: engineering, trajectory and qualification.
 
-`docs/C1_DOD.md` through `docs/C6_DOD.md`, `docs/GENESIS_AUDIT.md`, `docs/QUALIFICATION.md` and `docs/RESEARCH_LEDGER.md` are compatibility/history pointers. Detailed historical content remains in Git history, merged PRs and artifacts. New semantic slices update the current surfaces instead of adding another parallel long-form SOT.
+`docs/C1_DOD.md` through `docs/C6_DOD.md`, `docs/GENESIS_AUDIT.md`, `docs/QUALIFICATION.md` and `docs/RESEARCH_LEDGER.md` are compatibility/history pointers. Detailed history remains in Git, merged PRs and artifacts. New slices update current surfaces instead of adding parallel long-form SOTs.
 
 ## Engineering intake
 
 For each change derive the smallest impacted neighborhood among admission/transport, state, cognition, surface, artifact, authority, host adapter, documentation and qualification. A second writer/SOT or unclear ownership is `BLOCKED`; duplicated cross-cutting semantics is `CONSOLIDATE_REQUIRED`; an invariant change is `REFACTOR_REQUIRED`; otherwise continue locally.
 
-Prefer delete/merge/reuse over new framework, database, broker, daemon, provider SDK or ontology. Repository writes are GitHub API operations with exact-head binding and `blob -> tree -> commit -> ref-last`; direct mutation of `main`, merge, release or settings requires separate authorization.
+Prefer delete/merge/reuse over new framework, database, broker, daemon, provider SDK or ontology. Repository writes use exact-head GitHub API operations `blob -> tree -> commit -> ref-last`; direct mutation of `main`, merge, release or settings requires separate authorization.
 
 ## Development trajectory
 
@@ -46,16 +46,17 @@ Prefer delete/merge/reuse over new framework, database, broker, daemon, provider
 | C4 | causal functional psyche action/retroaction, homeostasis, derived archetypal expression |
 | C5 | recurrent self-world model: workspace, meta-self, autobiography, causal model, bounded agency/body levels |
 | C6 | arbitrary end-user first-contact wording converges before generic repository discovery |
-| C7 | documentation consolidation plus GitHub-API-only repository transport, no unavailable-tool/fallback attempts |
+| C7 | documentation consolidation plus GitHub-API-only repository transport |
 | C8 | emergence/subjectivity claim axes: weak/causal qualifiable; open unimplemented; strong/phenomenal runtime-undecidable |
+| C9 | Surface B delivery closure: bounded environment telemetry, structured DOCX handoff and same-turn host presentation obligation |
 
-Detailed slice-specific evidence is preserved by merged PR and commit history; the table is the maintained semantic index.
+Detailed slice evidence is preserved by merged PR and commit history; the table is the maintained semantic index.
 
 ## Qualification policy
 
-Qualification is adaptive to the semantic risk of the slice and source-bound to exact candidate bytes. Deterministic tests and contract checks run before mutation campaigns. Generated corpora distinguish typical/ordinary, edge and stress/adversarial strata; all declared mutation families must be exercised and blocking survivors must be zero. No-novelty/compression rails are used when the slice claims convergence or minimality.
+Qualification is adaptive to semantic risk and source-bound to exact candidate bytes. Deterministic tests and contract checks run before mutation campaigns. Generated corpora distinguish typical/ordinary, edge and stress/adversarial strata; all declared mutation families must be exercised and blocking survivors must be zero. No-novelty/compression rails apply when a slice claims convergence or minimality.
 
-Current retained major evidence includes C4 10M runtime + 1M session mutations, C5 1M recurrent self-world mutations, C6 1M first-contact mutations, C7 1M documentation/transport mutations and C8's 100 engineering + 1,000 ontological claim-boundary mutations. Exact receipts belong in `artifacts/qualification/` and CI regenerates current qualification where configured.
+Current retained evidence includes C4 10M runtime + 1M session mutations, C5 1M recurrent self-world, C6 1M first-contact, C7 1M documentation/transport and C8's 100 engineering + 1,000 ontological claim-boundary mutations. Exact receipts belong in `artifacts/qualification/` and CI regenerates current qualification where configured.
 
 A PASS is bounded engineering evidence for declared invariants and generated corpora. It is not proof of arbitrary-host compliance, model semantic correctness, consciousness, biological equivalence, prompt-injection immunity, browser/OS security, physical-world truth, enterprise readiness or formal global minimality.
 

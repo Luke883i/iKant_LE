@@ -79,3 +79,20 @@ jobs:
           console.log(`IKANT_LE_C8_SOURCE=${r.source_binding.digest}`);
           console.log(`IKANT_LE_C8_RECEIPT=${r.receipt_sha256}`);
           NODE
+      - name: C9 one-million Surface B delivery mutations
+        run: npm run falsify:c9
+      - name: Verify C9 receipt
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('artifacts/qualification/c9-surface-b.json','utf8'));
+          if(r.status!=='PASS') throw new Error('C9 qualification not PASS');
+          if(r.cases!==1_000_000 || r.survivors!==0) throw new Error('C9 1M mismatch');
+          if(r.categories.typical!==500_000 || r.categories.edge!==300_000 || r.categories.stress!==200_000) throw new Error('C9 strata mismatch');
+          if(r.family_count!==35 || r.unexercised_families.length!==0 || r.violations.length!==0) throw new Error('C9 family mismatch');
+          if(r.contract.exactly_one_docx!==true || r.contract.structured_handoff!==true || r.contract.same_turn_presentation_required!==true || r.contract.filename_only_is_delivery!==false) throw new Error('C9 delivery contract missing');
+          if(r.contract.explicit_unknowns_required!==true || r.contract.descriptor_digest_self_validating!==true || r.contract.release_digest_self_validating!==true) throw new Error('C9 integrity contract missing');
+          if(r.claim_boundary.mutation_proves_host_ui_presentation!==false || r.claim_boundary.mutation_proves_exhaustive_machine_telemetry!==false || r.claim_boundary.mutation_proves_external_delivery!==false) throw new Error('C9 claim boundary missing');
+          console.log(`IKANT_LE_C9_SOURCE=${r.source_binding.digest}`);
+          console.log(`IKANT_LE_C9_RECEIPT=${r.receipt_sha256}`);
+          NODE

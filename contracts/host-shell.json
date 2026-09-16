@@ -1,5 +1,5 @@
 {
-  "schema":"ikant-le-host-shell/v6",
+  "schema":"ikant-le-host-shell/v7",
   "human_bootstrap_gates":1,
   "human_acceptance":"I ACCEPT",
   "first_contact":{"canonical_repository":"Luke883i/iKant_LE","manifest":"BOOTSTRAP.json","admission_manifest":"ADMISSION.json","convergence_before_generic_discovery":true,"preserve_pending_intent_verbatim":true,"embedded_acceptance_invalid":true},
@@ -13,6 +13,7 @@
   "network_assumptions":{"git_clone":false,"gh":false,"raw_web":false,"direct_download":false,"archive_download":false,"shell_http_download":false,"required":"GITHUB_API","fallback":null},
   "cold_warm":{"fingerprint_bound":true,"warm_reuses_static_contract_validation":true,"warm_still_requires_live_fs_readback":true,"terms_or_contract_drift_forces_cold":true,"first_contact_manifest_drift_forces_cold":true,"agent_entrypoint_drift_forces_cold":true},
   "universal_node_gate":{"all_user_inputs_enter_node_runtime":true,"surface_a_requires_current_dispatch_receipt":true,"direct_model_fast_path":false},
+  "surface_b_delivery":{"contract":"contracts/surface-b-delivery.json","substantive_active_turn_artifacts":1,"structured_result_field":"artifacts","host_json_cli":"--host-json","same_turn_presentation_required":true,"host_must_present_before_surface_a_release":true,"filename_only_is_delivery":false,"if_host_cannot_present":"HOST_INCOMPATIBLE_FOR_CONFORMING_RELEASE","authority":0},
   "self_public":{"identity":"iKant","ordinary_engine_disclosure":false,"technical_plumbing_disclosure":false,"user_intention_first":true},
   "self_technical":{"engine_disclosure_on_explicit_request":true,"runtime_and_receipts_backlog_owned":true,"authority":0},
   "functional_psyche":{"contract":"contracts/psyche-kernel.json","persistent_projection":"state.psyche","appraisal_is_event_not_user_trait":true,"archetypal_mix_is_derived_not_persisted":true,"action_retroaction_each_substantive_turn":true,"authority":0},

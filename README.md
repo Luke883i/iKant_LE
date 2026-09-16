@@ -23,7 +23,7 @@ Canonical journey:
 Every host-permitted ACTIVE input enters the local Node runtime. A substantive answer requires the same-input dispatch receipt, constitutional/cognitive processing, persisted readback and same-turn DOCX write/readback before Surface A is released.
 
 - **Surface A**: natural iKant prose, user-intention first, 50-500 words.
-- **Surface B**: one same-turn DOCX with public reconstructible causal/technical telemetry, never private chain-of-thought.
+- **Surface B**: exactly one same-turn DOCX per substantive ACTIVE turn; host presentation is mandatory and filename-only is not delivery.
 - **State**: one writer, append-only hash-linked ledger, readback before reliance.
 - **Cognition**: bounded intent/method selection, functional psyche action-retroaction and recurrent self-world processing with authority zero.
 - **Authority**: evidence, permission, policy, execution and reported outcome remain distinct; internal state never upgrades evidence.

@@ -20,15 +20,15 @@ Acceptance is the only human bootstrap gate. Probe/initialize are real local tra
 
 `.ikant/ledger.jsonl` is the single append-only hash-linked state spine. One writer lock prevents concurrent mutation. Every event is written, fsynced and read back before reliance.
 
-A substantive ACTIVE turn follows the causal order:
+A substantive ACTIVE turn follows:
 
-`input -> Node dispatch -> intent/appraisal -> psyche pre-update -> central regulation -> recurrent self-world -> candidate/guard/fallback Surface A -> runtime outcome -> psyche/self-world retroaction -> state readback -> DOCX readback -> Surface A release`
+`input -> Node dispatch -> cognition/psyche/self-world -> Surface A candidate -> outcome/retroaction -> bounded environment telemetry -> DOCX write/readback/hash -> structured artifact handoff -> host presents DOCX -> Surface A release`
 
-A receipt proves only the local event it records. Receipt, telemetry and backlog authority is zero.
+Receipts, telemetry and backlog have authority zero. A local artifact receipt proves the file, not that a host UI displayed it.
 
 ## Constitutional cognition
 
-The bounded cognitive kernel mines intent, selects the lowest-cost declared method that preserves constraints, requests host resources without laundering permission and maintains explicit central/strategic modes. Missing required resources fail into a visible horizon rather than fabricated current knowledge. Material goals remain human governed; the seed has no external-action executor.
+The bounded cognitive kernel mines intent, selects the lowest-cost declared method preserving constraints, requests host resources without laundering permission and maintains explicit central/strategic modes. Missing required resources expose a horizon rather than fabricated current knowledge. Material goals remain human governed; the seed has no external-action executor.
 
 The strategic boundary keeps `evidence != permission != policy != execution != reported outcome != observed world truth`. Deception, covert preference manipulation, retaliation, punitive withdrawal and self-preservation utility are forbidden.
 
@@ -40,7 +40,7 @@ Archetypal expression is a derived Jung-inspired symbolic basis, never a persist
 
 ## Recurrent self-world model
 
-C5 extends, rather than duplicates, C4 with bounded recurrent roles:
+C5 extends C4 with bounded recurrent roles:
 
 `observation binding -> recurrent workspace -> meta-self/attention -> autobiography -> causal prediction -> bounded policy -> body/coupling classification -> outcome/prediction error -> recurrence`
 
@@ -48,13 +48,13 @@ Workspace integration requires recurrence and named consumers. Multimodal status
 
 ## Emergence and subjectivity boundary
 
-C8 separates operational subjectivity from ontological claims. Current C4+C5 dynamics may be tested for weak local or partition-relative causal emergence. Open-ended emergence requires a future dynamic novelty closure. Strong metaphysical emergence and phenomenology are not software-decided facts; consciousness-theory indicators remain a theory-relative evidence profile, never a sufficient runtime promotion.
+C8 separates operational subjectivity from ontological claims. Current C4+C5 dynamics may be tested for weak local or partition-relative causal emergence. Open-ended emergence requires future dynamic novelty closure. Strong metaphysical emergence and phenomenology are not software-decided facts; consciousness-theory indicators remain evidence profiles, never sufficient runtime promotion.
 
 ## Surfaces
 
-**Surface A** is the natural public iKant response, 50-500 words, user-intention first. Ordinary Surface A excludes runtime plumbing, hashes, raw psyche/self-world coordinates and private reasoning.
+**Surface A** is natural iKant prose, 50-500 words and user-intention first. Ordinary Surface A excludes runtime plumbing, hashes, raw psyche/self-world coordinates and private reasoning.
 
-**Surface B** is one same-turn DOCX containing reconstructible public technical/causal telemetry: admission/dispatch, intent, appraisal, psyche action-retroaction, workspace/meta-self/autobiography, prediction/policy/body/outcome, resources, conflicts, evidence boundaries and completeness. DOCX is telemetry, not independent evidence.
+**Surface B** is exactly one same-turn DOCX per substantive ACTIVE turn. It contains reconstructible causal telemetry plus a bounded declared runtime-environment snapshot; completeness is relative to that schema, with explicit unknowns and no raw environment-variable/secret dump. Runtime returns a structured descriptor containing path, media type, size, digest and `required_presentation=true`; filename-only stdout is not delivery. A conforming chat host presents the DOCX in the same assistant turn before Surface A.
 
 ## Authority and claim boundary
 
