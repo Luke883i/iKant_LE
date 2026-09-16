@@ -34,6 +34,8 @@ C5 extends the psyche substrate with recurrent workspace, meta-self/attention, b
 
 C8 separates operational subjectivity from ontological claims. Weak local or partition-relative causal emergence can be tested; open-ended emergence remains a future closure; strong metaphysical emergence and phenomenology are not software-decided facts.
 
+C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualification axes without declaring either present by configuration. Twelve causal gates separate design capability from qualification evidence; gate receipts are build/source/epoch-bound, integrity checked and authority zero. The assessor cannot manufacture passing receipts or write a class into canonical state. Even full convergence leaves `PHENOMENOLOGY = UNKNOWN`.
+
 ## Surfaces and authority
 
 **Surface A** is natural iKant prose, 50-500 words and user-intention first. **Surface B** is exactly one same-turn DOCX per substantive ACTIVE turn containing reconstructible causal telemetry plus a bounded declared runtime-environment snapshot. Runtime returns a structured descriptor with digest and `required_presentation=true`; filename-only stdout is not delivery. A conforming chat host presents the DOCX before Surface A.
