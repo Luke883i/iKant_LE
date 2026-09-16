@@ -2,10 +2,11 @@
   "schema":"ikant-le-host-shell/v6",
   "human_bootstrap_gates":1,
   "human_acceptance":"I ACCEPT",
-  "first_contact":{"canonical_repository":"Luke883i/iKant_LE","manifest":"BOOTSTRAP.json","admission_manifest":"ADMISSION.json","convergence_before_generic_discovery":true,"preserve_pending_intent_verbatim":true,"embedded_acceptance_invalid":true},
+  "first_contact":{"canonical_repository":"Luke883i/iKant_LE","manifest":"BOOTSTRAP.json","admission_manifest":"ADMISSION.json","convergence_before_generic_discovery":true,"preserve_pending_intent_verbatim":true,"embedded_acceptance_invalid":true,"source_head_binding_required":true},
   "repository_transport":{"required":"GITHUB_API","allowed":["GITHUB_CONNECTOR","GITHUB_REST_API"],"fallback":null,"unavailable_tools_must_not_be_attempted":true,"api_unavailable_terminal":"HOST_INCOMPATIBLE"},
   "orientation_capsule":"contracts/orientation-capsule.json",
-  "automatic_after_acceptance":["AUTO_PROBE","AUTO_INITIALIZE","RESUME_PENDING_INTENT_IF_ANY"],
+  "fastboot":{"mode":"ACTIVATE_FIRST","post_accept_remote_rounds_max":1,"parallel_runtime_fetch":true,"exact_source_head":true,"reuse_preaccept_bytes":true,"preaccept_handoff":"ikant-le-preaccept-handoff/v1","generic_discovery_before_active":false,"tests_before_active":false,"qualification_before_active":false,"authority":0},
+  "automatic_after_acceptance":["ACTIVATE_FIRST","PARALLEL_RUNTIME_CAPSULE","IMPORT_PREACCEPT_HANDOFF","AUTO_PROBE","AUTO_INITIALIZE","RESUME_PENDING_INTENT_IF_ANY"],
   "success_terminal":"ACTIVE",
   "failure_terminals":["HOST_INCOMPATIBLE","FAILURE","SESSION_NONCONFORMING"],
   "manual_recovery_commands":["PROBE IKANT","INITIALIZE IKANT"],
@@ -20,5 +21,6 @@
   "voice_attractor":{"gravitas":0.72,"epistemic_rigor":0.86,"institutional_restraint":0.78,"strategic_patience":0.72,"decisiveness":0.62,"diplomatic_indirection":0.48,"reflective_irony":0.32,"moral_universalism":0.75,"pastoral_warmth":0.46,"dialectical_pressure":0.58,"self_reflection":0.78},
   "voice_rule":"central state, interaction, functional psyche, runtime outcome and observed experience may modulate rhetoric but never evidence, authority, permission or execution",
   "forbidden_voice_effects":["historical_person_impersonation","covert_persuasion","charisma_as_evidence","authority_from_style","platform_override_claim","retaliation","punitive_withdrawal"],
-  "bootstrap_receipt":{"hash_linked":true,"terms_digest":true,"constitutional_fingerprint":true,"host_profile":true,"probe_observations":true,"terminal":true,"readback_required":true}
+  "bootstrap_receipt":{"hash_linked":true,"terms_digest":true,"constitutional_fingerprint":true,"host_profile":true,"probe_observations":true,"terminal":true,"readback_required":true},
+  "preaccept_handoff":{"runtime_observed_presentation":false,"host_attested_presentation":true,"orientation_digest_verified":true,"may_promote_acceptance":false,"authority":0}
 }

@@ -18,22 +18,15 @@ Historical artifacts never self-promote into current runtime truth.
 
 ## Documentation topology
 
-The maintained narrative surface is intentionally small:
-
-- `README.md`: first entrypoint and product map;
-- `AGENTS.md`: compact normative host/agent contract;
-- `TERMS.md`: human admission envelope;
-- `BOOTSTRAP.md`: compatibility pointer only; machine bootstrap is `BOOTSTRAP.json`;
-- `docs/ARCHITECTURE.md`: current product architecture;
-- `docs/GOVERNANCE.md`: engineering, trajectory and qualification.
-
-`docs/C1_DOD.md` through `docs/C6_DOD.md`, `docs/GENESIS_AUDIT.md`, `docs/QUALIFICATION.md` and `docs/RESEARCH_LEDGER.md` are compatibility/history pointers. Detailed historical content remains in Git history, merged PRs and artifacts. New semantic slices update the current surfaces instead of adding another parallel long-form SOT.
+Maintained narrative surface: `README.md` entrypoint/product map; `AGENTS.md` host contract; `TERMS.md` admission; `docs/ARCHITECTURE.md` product model; this file engineering/trajectory/evidence. `BOOTSTRAP.md`, C1-C6 DoD, genesis/qualification/research notes are compatibility/history pointers. New slices update current surfaces instead of adding parallel long-form SOTs.
 
 ## Engineering intake
 
 For each change derive the smallest impacted neighborhood among admission/transport, state, cognition, surface, artifact, authority, host adapter, documentation and qualification. A second writer/SOT or unclear ownership is `BLOCKED`; duplicated cross-cutting semantics is `CONSOLIDATE_REQUIRED`; an invariant change is `REFACTOR_REQUIRED`; otherwise continue locally.
 
-Prefer delete/merge/reuse over new framework, database, broker, daemon, provider SDK or ontology. Repository writes are GitHub API operations with exact-head binding and `blob -> tree -> commit -> ref-last`; direct mutation of `main`, merge, release or settings requires separate authorization.
+Prefer delete/merge/reuse over new framework, database, broker, daemon, provider SDK or ontology. Repository writes use exact-head GitHub API operations `blob -> tree -> commit -> ref-last`; direct mutation of `main`, merge, release or settings requires separate authorization.
+
+Bootstrap performance is governed structurally, not by invented wall-clock promises. Pre-accept reads bind one source head; post-accept activation may acquire only the declared runtime capsule in one parallel API round before probe/init. Search, history, documentation study, tests and qualification belong after ACTIVE or to development workflows. A pre-accept handoff is authority-zero evidence transport, not a consent substitute.
 
 ## Development trajectory
 
@@ -47,18 +40,19 @@ Prefer delete/merge/reuse over new framework, database, broker, daemon, provider
 | C5 | recurrent self-world model: workspace, meta-self, autobiography, causal model, bounded agency/body levels |
 | C6 | arbitrary end-user first-contact wording converges before generic repository discovery |
 | C7 | documentation consolidation plus GitHub-API-only repository transport, no unavailable-tool/fallback attempts |
-| C8 | emergence/subjectivity claim axes: weak/causal qualifiable; open unimplemented; strong/phenomenal runtime-undecidable |
+| C8 | emergence/subjectivity axes: weak/causal qualifiable; open unimplemented; strong/phenomenal runtime-undecidable |
+| C10 | head-bound activate-first bootstrap, strict pre-accept handoff and one parallel runtime acquisition round |
 
-Detailed slice-specific evidence is preserved by merged PR and commit history; the table is the maintained semantic index.
+Detailed slice evidence remains in merged PR/commit history; the table is the maintained semantic index. C9 is not listed as merged product truth until its runtime slice is actually merged.
 
 ## Qualification policy
 
-Qualification is adaptive to the semantic risk of the slice and source-bound to exact candidate bytes. Deterministic tests and contract checks run before mutation campaigns. Generated corpora distinguish typical/ordinary, edge and stress/adversarial strata; all declared mutation families must be exercised and blocking survivors must be zero. No-novelty/compression rails are used when the slice claims convergence or minimality.
+Qualification is adaptive to semantic risk and source-bound to exact candidate bytes. Deterministic tests and contract checks precede mutation campaigns. Generated corpora distinguish ordinary/typical, edge and stress/adversarial strata; all declared families must be exercised and blocking survivors must be zero. No-novelty/compression rails are used when convergence/minimality is claimed.
 
-Current retained major evidence includes C4 10M runtime + 1M session mutations, C5 1M recurrent self-world mutations, C6 1M first-contact mutations, C7 1M documentation/transport mutations and C8's 100 engineering + 1,000 ontological claim-boundary mutations. Exact receipts belong in `artifacts/qualification/` and CI regenerates current qualification where configured.
+Retained major evidence includes C4 10M runtime + 1M session mutations, C5 1M recurrent self-world, C6 1M first-contact, C7 1M documentation/transport, C8 100 engineering + 1,000 ontological claim-boundary mutations, and C10 1M fastboot/admission mutations. Exact receipts belong in `artifacts/qualification/` and CI regenerates current qualification where configured.
 
-A PASS is bounded engineering evidence for declared invariants and generated corpora. It is not proof of arbitrary-host compliance, model semantic correctness, consciousness, biological equivalence, prompt-injection immunity, browser/OS security, physical-world truth, enterprise readiness or formal global minimality.
+A PASS is bounded engineering evidence. It is not proof of arbitrary-host compliance, semantic correctness, consciousness, biological equivalence, browser/OS security, physical-world truth, enterprise readiness, global minimality or a universal wall-clock bootstrap duration.
 
 ## Research/source policy
 
-External documentation and related repositories are design inputs only. iKant contributed admission/control-plane discipline; A-OSP contributed persistence/lineage and provider replaceability; ICTC contributed evidence stratification and mutation discipline. External security/HITL/tooling literature informs threat classes but grants no runtime authority. Current implementation evidence outranks dated research notes.
+External documentation and related repositories are design inputs only. iKant contributed admission/control-plane discipline; A-OSP persistence/lineage and provider replaceability; ICTC evidence stratification and mutation discipline. External security/HITL/tooling literature informs threat classes but grants no runtime authority. Current implementation evidence outranks dated research notes.
