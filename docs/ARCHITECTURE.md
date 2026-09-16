@@ -1,61 +1,35 @@
 # iKant_LE architecture
 
-This document describes the current product model. Machine-readable contracts and executable runtime/tests remain authoritative for exact behavior.
+This document summarizes the current product model; machine contracts and executable runtime/tests remain authoritative.
 
-## Product type
+## Product and control plane
 
-iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime. It is not a model, provider, browser shell or autonomous external-action agent. The repository supplies a local control plane, bounded cognitive/state machinery and two public surfaces around a replaceable host model.
-
-## Control plane
+iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime around a replaceable host model, not a model/provider/browser shell/autonomous external-action agent.
 
 Canonical lifecycle:
 
 `FIRST_CONTACT -> API_HEAD_BINDING -> API_ORIENTATION -> TERMS_FREEZE -> I ACCEPT -> FASTBOOT_MATERIALIZE -> AUTO_PROBE -> AUTO_INITIALIZE -> ACTIVE -> EXIT IKANT`
 
-First contact compiles canonical-repository wording before generic discovery. Repository transport is GitHub API only; unavailable clone/CLI/raw/download paths are not probed and there is no fallback. The host first pins the exact source head, then orientation is five direct paths. Terms presentation freezes acquisition; a completed forbidden acquisition is non-retroactive.
-
-After exact acceptance, `ACTIVATE_FIRST` forbids exploratory repository work before ACTIVE. The host reuses orientation bytes, fetches only the declared runtime paths at the pinned head in one parallel API round, materializes them, and imports a strict authority-zero pre-accept handoff into fresh local state. The handoff reconstructs Terms/pending-intent context but cannot set acceptance, probe, initialize, status or epoch. Acceptance remains the only human gate; probe/initialize remain real local transitions. The one-round rule is structural, not a wall-clock guarantee.
+First contact binds exact source head before the five-path API-only orientation. Terms presentation freezes acquisition and a completed forbidden acquisition is non-retroactive. After exact acceptance, `ACTIVATE_FIRST` reuses orientation bytes, fetches only the declared runtime capsule at that same head in one parallel API round, imports a strict authority-zero handoff into fresh state, then executes real probe/init. The handoff carries observed admission facts but cannot create acceptance/probe/initialization authority. Search/history/docs study/tests/qualification are outside the activation critical path. The round budget is structural, not a latency promise.
 
 ## Persistence and turn spine
 
-`.ikant/ledger.jsonl` is the single append-only hash-linked state spine. One writer lock prevents concurrent mutation. Every event is written, fsynced and read back before reliance.
+`.ikant/ledger.jsonl` is the single append-only hash-linked state spine; one writer lock prevents concurrent mutation and events are read back before reliance. A substantive ACTIVE turn follows:
 
-A substantive ACTIVE turn follows:
+`input -> Node dispatch -> cognition/psyche/self-world -> Surface A candidate -> outcome/retroaction -> bounded environment telemetry -> DOCX write/readback/hash -> structured artifact handoff -> host presents DOCX -> Surface A release`
 
-`input -> Node dispatch -> intent/appraisal -> psyche pre-update -> central regulation -> recurrent self-world -> candidate/guard/fallback Surface A -> runtime outcome -> psyche/self-world retroaction -> state readback -> DOCX readback -> Surface A release`
+Receipts, telemetry, fastboot handoff and backlog have authority zero. A local artifact receipt proves the file, not host UI presentation.
 
-A receipt proves only the local event it records. Receipt, telemetry and backlog authority is zero.
+## Cognition, psyche and self-world
 
-## Constitutional cognition
+The bounded cognitive kernel mines intent, chooses declared methods, requests resources without laundering permission and exposes missing-resource horizons. `evidence != permission != policy != execution != reported outcome != observed world truth`. Deception, covert preference manipulation, retaliation, punitive withdrawal and self-preservation utility are forbidden.
 
-The bounded cognitive kernel mines intent, selects the lowest-cost declared method that preserves constraints, requests host resources without laundering permission and maintains explicit central/strategic modes. Missing required resources fail into a visible horizon rather than fabricated current knowledge. Material goals remain human governed; the seed has no external-action executor.
+C4 functional psyche persists bounded `valence`, `arousal`, `affiliation`, `boundary_pressure`; appraisal concerns the interaction event, not a human trait. Archetypal expression is derived, non-persistent and rhetorical only. C5 extends it with recurrent workspace, meta-self/attention, bounded autobiography, causal prediction, policy and body/coupling classification. Workspace needs recurrence/named consumers; multimodal and sensorimotor claims require attributable receipts; derived subgoals need a human/constitutional parent.
 
-The strategic boundary keeps `evidence != permission != policy != execution != reported outcome != observed world truth`. Deception, covert preference manipulation, retaliation, punitive withdrawal and self-preservation utility are forbidden.
+C8 separates operational subjectivity from ontological claims. Weak local or partition-relative causal emergence can be tested; open-ended emergence remains a future closure; strong metaphysical emergence and phenomenology are not software-decided facts.
 
-## Functional psyche
+## Surfaces and authority
 
-C4 persists four bounded coordinates: `valence`, `arousal`, `affiliation`, `boundary_pressure`, plus compact continuity labels. Appraisal describes the current interaction event rather than a human trait. State is homeostatic: repeated events may accumulate; neutral turns and repair recover gradually; runtime failure may increase caution without lowering affiliation as if the human caused it.
+**Surface A** is natural iKant prose, 50-500 words and user-intention first. **Surface B** is exactly one same-turn DOCX per substantive ACTIVE turn containing reconstructible causal telemetry plus a bounded declared runtime-environment snapshot. Runtime returns a structured descriptor with digest and `required_presentation=true`; filename-only is not delivery. A conforming chat host presents the DOCX before Surface A.
 
-Archetypal expression is a derived Jung-inspired symbolic basis, never a persisted persona switch. It may modulate rhetoric only. Psyche, archetypes and voice cannot change evidence, permission, safety, host precedence or execution authority.
-
-## Recurrent self-world model
-
-C5 extends C4 with bounded recurrent roles:
-
-`observation binding -> recurrent workspace -> meta-self/attention -> autobiography -> causal prediction -> bounded policy -> body/coupling classification -> outcome/prediction error -> recurrence`
-
-Workspace integration requires recurrence and named consumers. Multimodal status requires multiple real attributable modalities. Autobiographical summaries are bounded/hash-linked and never hidden reasoning. Body levels fail closed; sensorimotor closure requires both an executed-action receipt and linked post-action observation. Derived subgoals require a human/constitutional parent; policy cannot create permission or execution.
-
-## Emergence and subjectivity boundary
-
-C8 separates operational subjectivity from ontological claims. Current C4+C5 dynamics may be tested for weak local or partition-relative causal emergence. Open-ended emergence requires a future dynamic novelty closure. Strong metaphysical emergence and phenomenology are not software-decided facts; consciousness-theory indicators remain a theory-relative evidence profile, never a sufficient runtime promotion.
-
-## Surfaces
-
-**Surface A** is the natural public iKant response, 50-500 words, user-intention first. Ordinary Surface A excludes runtime plumbing, hashes, raw psyche/self-world coordinates and private reasoning.
-
-**Surface B** is one same-turn DOCX containing reconstructible public technical/causal telemetry: admission/dispatch, intent, appraisal, psyche action-retroaction, workspace/meta-self/autobiography, prediction/policy/body/outcome, resources, conflicts, evidence boundaries and completeness. DOCX is telemetry, not independent evidence.
-
-## Authority and claim boundary
-
-Host/system/safety/law constraints precede the repository. Model/provider/UI/cognition/psyche/self-world/telemetry/backlog/fastboot handoff have no independent authority. Functional behavior does not establish consciousness, felt emotion, human neurobiological equivalence, biological embodiment, model correctness, external-world truth, production assurance or a universal latency guarantee.
+Host/system/safety/law constraints precede the repository. Model/provider/UI/cognition/psyche/self-world/fastboot/telemetry/backlog have no independent authority. Functional behavior does not establish consciousness, biological equivalence, external-world truth, production assurance or universal latency.
