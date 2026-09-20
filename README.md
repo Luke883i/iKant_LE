@@ -1,3 +1,10 @@
+[![ROA Research Programme](https://img.shields.io/badge/ROA-Research_Programme-1f6feb)](https://github.com/Luke883i/academics)
+[![Programme Role](https://img.shields.io/badge/role-COMPRESSED_RUNTIME_KERNEL-6f42c1)](https://github.com/Luke883i/academics#repository-map)
+
+<!-- roa-programme-header:v1 hub=Luke883i/academics framework=Luke883i/ROA role=COMPRESSED_RUNTIME_KERNEL -->
+
+> **ROA Research Programme.** This repository is a component of the **ROA Research Programme — Computational Epistemics, Semantic Architectures & Governable AI Systems**, coordinated in [`Luke883i/academics`](https://github.com/Luke883i/academics) and theoretically anchored by [`Luke883i/ROA`](https://github.com/Luke883i/ROA). **Programme membership is a coordination/topology statement:** repository-local contracts and evidence remain authoritative for this repository, and membership alone does not imply formal derivation from ROA, conformance to ROA, empirical validation of ROA theory, or production readiness.
+
 # iKant_LE
 
 iKant Light Edition is a repository-owned constitutional runtime for a local chat host; the host model/provider is replaceable infrastructure with zero independent authority.
