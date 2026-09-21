@@ -28,6 +28,12 @@ The bounded cognitive kernel mines intent, chooses declared methods, requests re
 
 C4 persists bounded `valence`, `arousal`, `affiliation`, `boundary_pressure`; appraisal concerns the interaction event, not a human trait. Archetypal expression is derived, non-persistent and rhetorical only.
 
+## Embedded relational nuance profile
+
+LIB.0 exposes a separate package subpath, `./embedded/relational-nuance`, for hosts that want only the bounded relational/expression transform. It does not export the iKant_LE admission lifecycle, identity, persistence, intent mining, planner, Surface A/B, or execution ownership. The host supplies normalized appraisal plus canonical `valence/arousal`; the library may retain only `affiliation`, `boundary_pressure`, interaction count and the last appraisal/outcome. Its result is derivational, authority-zero and side-effect-free with respect to network, filesystem writes, host state and execution. A host remains the sole writer and may reject the enrichment without failing its canonical turn.
+
+The machine boundary is `contracts/embedded-library.json`; `contracts/embedded-library-vectors.json` is the cross-language conformance corpus. Standalone iKant_LE continues to use the full C4 psyche path unchanged.
+
 ## Recurrent self-world model
 
 C5 extends the psyche substrate with recurrent workspace, meta-self/attention, bounded autobiography, causal prediction, policy and body/coupling classification. Workspace needs recurrence and named consumers; multimodal and sensorimotor claims require attributable receipts; derived subgoals need a human/constitutional parent.
