@@ -1,0 +1,23 @@
+{
+  "schema": "ikant-le-lib0-falsification/v1",
+  "status": "PASS",
+  "cases": 100000,
+  "seed": 20260921,
+  "strata": {"typical": 50000, "edge": 30000, "stress": 20000},
+  "families": 33,
+  "unexercised_families": [],
+  "survivors": 0,
+  "semantic_signatures": 5280,
+  "no_novelty_tail": 1000,
+  "tail_new_signatures": 0,
+  "source_sha256": "b2a335d67d5ed1072f0e6c71180ac7fe0650e7bf5ab45420a222a1b220370b18",
+  "claim_boundary": {
+    "standalone_runtime_equivalence_from_this_campaign": false,
+    "external_host_correctness_proven": false,
+    "authority_created": false,
+    "physical_world_truth_proven": false,
+    "semantic_mutation_is_formal_proof": false
+  },
+  "first_survivor": null,
+  "receipt_sha256": "6ad462ecbee8549acb5afaea8d9742cc0fa4fe922dba7e6f0b7e2b13f9ace76f"
+}
