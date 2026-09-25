@@ -1,6 +1,6 @@
 {
   "schema": "ikant-le-chat-bootstrap-semantic/v1",
-  "slice": "C16.CHAT_BOOTSTRAP_SEMANTIC_RUNTIME",
+  "slice": "C17.CHAT_BOOTSTRAP_ACCEPTANCE_DEADLINE_INTEGRITY",
   "authority": 0,
   "intent": "Make SESSION_CHAT activation causally depend on immutable source binding, content-addressed post-accept delivery, verified local materialization, live host capability and an end-to-end deadline, while preserving exact admission and end-user pending intent.",
   "nodes": [
@@ -116,8 +116,10 @@
     "local materialization receipt valid and transfer-bound",
     "live host probe passed",
     "bootstrap evidence source/root/receipt bindings valid",
-    "elapsed from I ACCEPT within deadline",
-    "single-writer ACTIVE commit persisted/read back"
+    "single-writer ACTIVE commit persisted/read back",
+    "single-shot acceptance_event_id consumed exactly once",
+    "acceptance-origin receipt validates current Terms + immutable source head + MONOTONIC I_ACCEPT observation",
+    "deadline_result is DEADLINE_PASS and no sticky deadline terminal exists"
   ],
   "qualification": {
     "enduser_cases": 1000000,
@@ -135,7 +137,10 @@
     "max_flex_remote_rounds": 1,
     "runtime_availability_discovery_cases": 10000000,
     "runtime_availability_qualification_cases": 1000000,
-    "runtime_availability_failure_families": 76
+    "runtime_availability_failure_families": 76,
+    "deadline_integrity_cases": 1000000,
+    "deadline_integrity_independent_oracle": true,
+    "deadline_integrity_multi_mutation_min": 500000
   },
   "claim_boundary": {
     "corpus_and_contract_relative_irreducibility": true,
@@ -145,8 +150,12 @@
     "runtime_receipt_validation_does_not_create_host_capability": true,
     "transport_locator_is_authority": false,
     "flex_transport_does_not_weaken_active_predicate": true,
-    "degraded_is_active": false
+    "degraded_is_active": false,
+    "deadline_unavailable_is_deadline_exceeded": false,
+    "retry_may_reset_deadline_origin": false,
+    "current_main_may_replace_session_source_head": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
-  "availability_classifier": "src/runtime-availability.mjs"
+  "availability_classifier": "src/runtime-availability.mjs",
+  "deadline_integrity_contract": "contracts/deadline-integrity.json"
 }
