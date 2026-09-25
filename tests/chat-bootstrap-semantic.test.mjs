@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {runtimePaths,readLedger} from '../src/state.mjs';
+import {runCommand} from '../src/runtime.mjs';
+import {bootstrapArgs,bootstrapEvidence,bootstrapHandoff} from './bootstrap-fixture.mjs';
+function reset(){fs.rmSync(runtimePaths().dir,{recursive:true,force:true});}
+test('C14 exact acceptance cannot reach ACTIVE without post-accept evidence',{concurrency:false},()=>{reset();const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoff('inizializza'),hostEngine:'GPT-TEST'});assert.equal(out.code,1);assert.notEqual(readLedger().at(-1)?.state_after?.status,'ACTIVE');reset();});
+test('C14 verified transfer/materialization evidence gates ACTIVE',{concurrency:false},()=>{reset();const out=runCommand('I ACCEPT',{...bootstrapArgs('inizializza'),hostEngine:'GPT-TEST'});assert.equal(out.code,0);const events=readLedger();assert.ok(events.some(x=>x.kind==='BOOTSTRAP_EVIDENCE'));assert.equal(events.at(-1).state_after.status,'ACTIVE');const init=events.findLast(x=>x.kind==='INITIALIZE');assert.match(init.detail.receipt.source_head,/^[a-f0-9]{40}$/);assert.match(init.detail.receipt.runtime_root_sha256,/^[a-f0-9]{64}$/);assert.match(init.detail.receipt.materialization_receipt_sha256,/^[a-f0-9]{64}$/);reset();});
+test('C14 elapsed host time above 120s fails closed before ACTIVE',{concurrency:false},()=>{reset();const sourceHead='a'.repeat(40),e=bootstrapEvidence({sourceHead,elapsedBeforeRuntimeMs:120001});const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoff('inizializza',sourceHead),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST'});assert.equal(out.code,1);assert.equal(readLedger().at(-1).state_after.status,'BOOTSTRAP_DEADLINE_EXCEEDED');reset();});
+test('C14 transfer receipt tamper cannot be repaired by a valid local materialization receipt',{concurrency:false},()=>{reset();const sourceHead='a'.repeat(40),e=bootstrapEvidence({sourceHead});e.transfer.bytes_exact=false;const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoff('inizializza',sourceHead),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST'});assert.equal(out.code,1);assert.notEqual(readLedger().at(-1).state_after.status,'ACTIVE');reset();});
