@@ -28,7 +28,7 @@ test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime 
   const d=runtimeRootDescriptor(ROOT);
   assert.equal(d.member_count,33);
   assert.equal(d.shards.length,7);
-  assert.equal(d.runtime_root_sha256,'be3618c50d2dd6b576aa77c7410ccb419bcb27767ab43bd8adf7018d4fee4a73');
+  assert.equal(d.runtime_root_sha256,'1fcbd9d4eb677985d4254baf536aacbf714b9dcbbb76ffe0c7629210af483115');
   assert.deepEqual(validateRuntimeRootDescriptor(d),{ok:true,errors:[]});
 });
 
@@ -51,7 +51,7 @@ test('C13 materializes atomically and reopens the exact runtime root',()=>{
   const sink=path.join(base,'runtime');
   try{
     const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),transferReceiptSha256:'f'.repeat(64)});
-    assert.equal(receipt.runtime_root_sha256,'be3618c50d2dd6b576aa77c7410ccb419bcb27767ab43bd8adf7018d4fee4a73');
+    assert.equal(receipt.runtime_root_sha256,'1fcbd9d4eb677985d4254baf536aacbf714b9dcbbb76ffe0c7629210af483115');
     assert.equal(receipt.member_count,33);
     assert.equal(receipt.shard_count,7);
     assert.equal(receipt.atomic_publish,true);
