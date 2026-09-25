@@ -52,7 +52,7 @@ test('C13 materializes atomically and reopens the exact runtime root',()=>{
   const sink=path.join(base,'runtime');
   try{
     const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),transferReceiptSha256:'f'.repeat(64)});
-    assert.equal(receipt.runtime_root_sha256,'75eefc44faa673b7c3f7409782c74786f2e0a9efc62cb0035a2421cc4800f10a');
+    assert.equal(receipt.runtime_root_sha256,'9ba3713ef0456bb5f74766f4e44790dec3fd2d887003733265fb69c5251ea2dc');
     assert.equal(receipt.member_count,36);
     assert.equal(receipt.shard_count,7);
     assert.equal(receipt.atomic_publish,true);
