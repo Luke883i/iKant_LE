@@ -30,8 +30,12 @@ jobs:
           node-version: '20'
       - name: One-million real end-user semantic mutations
         run: npm run falsify:c14
-      - name: Semantic bootstrap runtime tests
-        run: node --test --test-concurrency=1 tests/fastboot.test.mjs tests/session-chat-fastboot.test.mjs tests/chat-bootstrap-semantic.test.mjs
+      - name: Fastboot regression tests
+        run: node --test --test-concurrency=1 tests/fastboot.test.mjs
+      - name: Session-chat runtime-root tests
+        run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
+      - name: C14 semantic evidence tests
+        run: node --test --test-concurrency=1 tests/chat-bootstrap-semantic.test.mjs
       - name: Contract and lifecycle check
         run: npm run check
       - name: Verify C14 receipt
