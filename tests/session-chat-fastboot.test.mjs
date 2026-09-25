@@ -19,7 +19,7 @@ function gitBlobSha1(bytes){const b=Buffer.isBuffer(bytes)?bytes:Buffer.from(byt
 test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime root',()=>{
   const b=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8'));
   assert.equal(b.post_accept_fastboot.remote_paths.length,8);
-  assert.equal(b.post_accept_fastboot.remote_paths[0],'src/runtime-root.mjs');
+  assert.equal(b.post_accept_fastboot.remote_paths[0],'src/runtime-root-verified.mjs');
   assert.equal(b.post_accept_fastboot.deadline_ms,120000);
   assert.equal(b.post_accept_fastboot.deadline_on_exceed,'FAIL_CLOSED_NON_ACTIVE');
   assert.equal(b.session_chat_profile.id,'SESSION_CHAT');

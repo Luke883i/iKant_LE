@@ -6,7 +6,7 @@ on:
       - 'C13_SESSION_CHAT_FASTBOOT_CONTRACT.json'
       - 'contracts/host-shell.json'
       - 'contracts/ikant-le.json'
-      - 'src/runtime-root.mjs'
+      - 'src/runtime-root-verified.mjs'
       - 'src/runtime-command.mjs'
       - 'runtime-root/**'
       - 'scripts/c13-session-chat-fastboot-falsify.mjs'
