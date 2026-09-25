@@ -25,6 +25,7 @@
     "falsify:c14": "node scripts/c14-chat-bootstrap-falsify.mjs --cases 1000000 --output artifacts/qualification/c14-chat-bootstrap-enduser.json",
     "falsify:c15": "node scripts/c15-flex-transfer-falsify.mjs --cases 1000000 --output artifacts/qualification/c15-flex-transfer.json",
     "falsify:c16:discover": "node scripts/c16-runtime-availability-falsify.mjs --phase discovery --cases 10000000 --output artifacts/qualification/c16-runtime-availability-discovery-10m.json",
-    "falsify:c16": "node scripts/c16-runtime-availability-falsify.mjs --phase qualification --cases 1000000 --output artifacts/qualification/c16-runtime-availability.json"
+    "falsify:c16": "node scripts/c16-runtime-availability-falsify.mjs --phase qualification --cases 1000000 --output artifacts/qualification/c16-runtime-availability.json",
+    "falsify:c17": "node scripts/c17-deadline-integrity-falsify.mjs --cases 1000000 --output artifacts/qualification/c17-deadline-integrity-1m.json"
   }
 }

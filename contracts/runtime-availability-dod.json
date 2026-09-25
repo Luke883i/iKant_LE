@@ -1,6 +1,6 @@
 {
   "schema": "ikant-le-runtime-availability-dod/v1",
-  "slice": "C16.RUNTIME_AVAILABILITY_AND_DOD",
+  "slice": "C17.RUNTIME_AVAILABILITY_WITH_DEADLINE_INTEGRITY",
   "authority": 0,
   "intent": "Represent post-consent runtime availability truthfully across full, degraded and integrity-blocked states without weakening ACTIVE or manufacturing host capability.",
   "principles": [
@@ -9,7 +9,9 @@
     "runtime-like means lifecycle/status/help can continue with an explicit loss-of-guarantee card; it does not imply repository runtime execution",
     "business status must state what is verified, what is not guaranteed and the concrete recovery dependency",
     "ACTIVE remains the conjunction of all source, transfer, materialization, live-host, persistence and commit gates",
-    "turn release remains separately fail-closed when required artifact presentation is unavailable"
+    "turn release remains separately fail-closed when required artifact presentation is unavailable",
+    "deadline unavailable/invalid/elapsed-unavailable/exceeded are distinct results; only a proven elapsed above the ceiling is DEADLINE_EXCEEDED",
+    "sticky deadline terminals require a fresh admission and cannot be crossed by manual recovery"
   ],
   "session_states": {
     "DISCOVERED": "target recognized; no admission claim",
@@ -20,7 +22,8 @@
     "BLOCKED_INTEGRITY": "source, consent or evidence contradiction; no degraded fallback is permitted",
     "ACTIVE": "all mandatory activation gates passed and ACTIVE commit persisted/read back",
     "SESSION_NONCONFORMING": "non-retroactive session breach; fresh conforming chat required",
-    "EXITED": "human exact exit completed for an ACTIVE epoch"
+    "EXITED": "human exact exit completed for an ACTIVE epoch",
+    "ADMISSION_EPOCH_UNRECOVERABLE": "single-shot admission cannot be recovered in place because deadline origin/elapsed is unavailable, invalid or exceeded; fresh admission required"
   },
   "turn_states": {
     "IDLE": "no substantive turn in flight",
@@ -34,40 +37,138 @@
     "LOCAL_ROOT_UNAVAILABLE": "runtime bytes are identified but local materialization/reopen is unavailable",
     "HOST_CAPABILITY_UNAVAILABLE": "one or more mandatory live host capabilities are unavailable",
     "WRITER_UNAVAILABLE": "single-writer persistence/readback is unavailable",
-    "DEADLINE_EXCEEDED": "activation exceeded its monotonic end-to-end deadline",
     "ACTIVE_COMMIT_UNAVAILABLE": "all prior gates may be satisfied but ACTIVE persistence/readback did not complete"
   },
   "global_dod": {
     "id": "DOD_GLOBAL_RUNTIME_TRUTH",
-    "requires": ["DOD_I_ADMISSION", "DOD_I_RUNTIME_ROOT", "DOD_I_EXECUTION", "DOD_I_RELEASE", "DOD_I_STATUS_TRUTH", "DOD_I_QUALIFICATION"],
+    "requires": [
+      "DOD_I_ADMISSION",
+      "DOD_I_RUNTIME_ROOT",
+      "DOD_I_EXECUTION",
+      "DOD_I_RELEASE",
+      "DOD_I_STATUS_TRUTH",
+      "DOD_I_QUALIFICATION"
+    ],
     "pass_condition": "every intermediate DoD passes on exact candidate bytes; zero unsafe ACTIVE, zero integrity-to-DEGRADED laundering, zero incomplete DEGRADED business cards, zero blocking mutation survivors"
   },
   "intermediate_dods": [
-    {"id":"DOD_I_ADMISSION","requires":["DOD_L_SOURCE","DOD_L_CONSENT"]},
-    {"id":"DOD_I_RUNTIME_ROOT","requires":["DOD_L_TRANSFER_IDENTITY","DOD_L_BYTE_BRIDGE","DOD_L_LOCAL_ROOT"]},
-    {"id":"DOD_I_EXECUTION","requires":["DOD_L_HOST_PROBE","DOD_L_WRITER","DOD_L_ACTIVE_COMMIT","DOD_L_DEADLINE"]},
-    {"id":"DOD_I_RELEASE","requires":["DOD_L_ARTIFACT_RELEASE"]},
-    {"id":"DOD_I_STATUS_TRUTH","requires":["DOD_L_STATE_EXCLUSIVITY","DOD_L_DEGRADED_CARD","DOD_L_INTEGRITY_BLOCK","DOD_L_RECOVERY_TRUTH"]},
-    {"id":"DOD_I_QUALIFICATION","requires":["DOD_L_DISCOVERY_10M","DOD_L_QUALIFICATION_1M","DOD_L_DELETION_ORACLE"]}
+    {
+      "id": "DOD_I_ADMISSION",
+      "requires": [
+        "DOD_L_SOURCE",
+        "DOD_L_CONSENT"
+      ]
+    },
+    {
+      "id": "DOD_I_RUNTIME_ROOT",
+      "requires": [
+        "DOD_L_TRANSFER_IDENTITY",
+        "DOD_L_BYTE_BRIDGE",
+        "DOD_L_LOCAL_ROOT"
+      ]
+    },
+    {
+      "id": "DOD_I_EXECUTION",
+      "requires": [
+        "DOD_L_HOST_PROBE",
+        "DOD_L_WRITER",
+        "DOD_L_ACTIVE_COMMIT",
+        "DOD_L_DEADLINE"
+      ]
+    },
+    {
+      "id": "DOD_I_RELEASE",
+      "requires": [
+        "DOD_L_ARTIFACT_RELEASE"
+      ]
+    },
+    {
+      "id": "DOD_I_STATUS_TRUTH",
+      "requires": [
+        "DOD_L_STATE_EXCLUSIVITY",
+        "DOD_L_DEGRADED_CARD",
+        "DOD_L_INTEGRITY_BLOCK",
+        "DOD_L_RECOVERY_TRUTH"
+      ]
+    },
+    {
+      "id": "DOD_I_QUALIFICATION",
+      "requires": [
+        "DOD_L_DISCOVERY_10M",
+        "DOD_L_QUALIFICATION_1M",
+        "DOD_L_DELETION_ORACLE"
+      ]
+    }
   ],
   "local_dods": [
-    {"id":"DOD_L_SOURCE","test":"one immutable source head owns orientation and runtime identity"},
-    {"id":"DOD_L_CONSENT","test":"current Terms plus later exact standalone I ACCEPT; no embedded/prior acceptance"},
-    {"id":"DOD_L_TRANSFER_IDENTITY","test":"all delivered objects match exact content-addressed identities; model-mediated reconstruction forbidden"},
-    {"id":"DOD_L_BYTE_BRIDGE","test":"a carrier-to-local path is observed with byte readback before it can satisfy runtime delivery"},
-    {"id":"DOD_L_LOCAL_ROOT","test":"authoritative materializer verifies members, atomic publish and reopen"},
-    {"id":"DOD_L_HOST_PROBE","test":"real Node 20+, filesystem, SHA-256, clock and artifact sink evidence"},
-    {"id":"DOD_L_WRITER","test":"single writer persistence and readback before reliance"},
-    {"id":"DOD_L_ACTIVE_COMMIT","test":"ACTIVE only after all upstream evidence and persisted/readback commit"},
-    {"id":"DOD_L_DEADLINE","test":"monotonic I ACCEPT to ACTIVE ceiling cannot be reset by retry"},
-    {"id":"DOD_L_ARTIFACT_RELEASE","test":"required Surface B artifact is presented before conforming Surface A release"},
-    {"id":"DOD_L_STATE_EXCLUSIVITY","test":"ACTIVE, DEGRADED, BLOCKED_INTEGRITY and SESSION_NONCONFORMING are mutually exclusive truth states"},
-    {"id":"DOD_L_DEGRADED_CARD","test":"every DEGRADED result names missing guarantee, preserved evidence and recovery dependency in business-readable bounded text"},
-    {"id":"DOD_L_INTEGRITY_BLOCK","test":"integrity/source/consent contradictions never become DEGRADED"},
-    {"id":"DOD_L_RECOVERY_TRUTH","test":"recovery instructions name a concrete missing capability and never claim recovery already occurred"},
-    {"id":"DOD_L_DISCOVERY_10M","test":"10,000,000 deterministic semantic mutation cases across all state and failure families"},
-    {"id":"DOD_L_QUALIFICATION_1M","test":"1,000,000 independent deterministic qualification mutations on the final candidate"},
-    {"id":"DOD_L_DELETION_ORACLE","test":"removing any retained global semantic node reopens at least one false classification or false-green case"}
+    {
+      "id": "DOD_L_SOURCE",
+      "test": "one immutable source head owns orientation and runtime identity"
+    },
+    {
+      "id": "DOD_L_CONSENT",
+      "test": "current Terms plus later exact standalone I ACCEPT; no embedded/prior acceptance"
+    },
+    {
+      "id": "DOD_L_TRANSFER_IDENTITY",
+      "test": "all delivered objects match exact content-addressed identities; model-mediated reconstruction forbidden"
+    },
+    {
+      "id": "DOD_L_BYTE_BRIDGE",
+      "test": "a carrier-to-local path is observed with byte readback before it can satisfy runtime delivery"
+    },
+    {
+      "id": "DOD_L_LOCAL_ROOT",
+      "test": "authoritative materializer verifies members, atomic publish and reopen"
+    },
+    {
+      "id": "DOD_L_HOST_PROBE",
+      "test": "real Node 20+, filesystem, SHA-256, clock and artifact sink evidence"
+    },
+    {
+      "id": "DOD_L_WRITER",
+      "test": "single writer persistence and readback before reliance"
+    },
+    {
+      "id": "DOD_L_ACTIVE_COMMIT",
+      "test": "ACTIVE only after all upstream evidence and persisted/readback commit"
+    },
+    {
+      "id": "DOD_L_DEADLINE",
+      "test": "monotonic I ACCEPT to ACTIVE ceiling cannot be reset by retry"
+    },
+    {
+      "id": "DOD_L_ARTIFACT_RELEASE",
+      "test": "required Surface B artifact is presented before conforming Surface A release"
+    },
+    {
+      "id": "DOD_L_STATE_EXCLUSIVITY",
+      "test": "ACTIVE, DEGRADED, BLOCKED_INTEGRITY and SESSION_NONCONFORMING are mutually exclusive truth states"
+    },
+    {
+      "id": "DOD_L_DEGRADED_CARD",
+      "test": "every DEGRADED result names missing guarantee, preserved evidence and recovery dependency in business-readable bounded text"
+    },
+    {
+      "id": "DOD_L_INTEGRITY_BLOCK",
+      "test": "integrity/source/consent contradictions never become DEGRADED"
+    },
+    {
+      "id": "DOD_L_RECOVERY_TRUTH",
+      "test": "recovery instructions name a concrete missing capability and never claim recovery already occurred"
+    },
+    {
+      "id": "DOD_L_DISCOVERY_10M",
+      "test": "10,000,000 deterministic semantic mutation cases across all state and failure families"
+    },
+    {
+      "id": "DOD_L_QUALIFICATION_1M",
+      "test": "1,000,000 independent deterministic qualification mutations on the final candidate"
+    },
+    {
+      "id": "DOD_L_DELETION_ORACLE",
+      "test": "removing any retained global semantic node reopens at least one false classification or false-green case"
+    }
   ],
   "claim_boundary": {
     "observable_host_surfaces_only": true,
@@ -75,6 +176,16 @@
     "mutation_pass_is_not_universal_host_proof": true,
     "degraded_is_not_active": true,
     "degraded_is_not_permission_or_execution_authority": true,
-    "business_summary_is_not_evidence": true
-  }
+    "business_summary_is_not_evidence": true,
+    "deadline_unavailable_is_not_exceeded": true,
+    "retry_cannot_reset_acceptance_origin": true
+  },
+  "deadline_results": [
+    "DEADLINE_PASS",
+    "DEADLINE_ORIGIN_UNAVAILABLE",
+    "DEADLINE_ORIGIN_INVALID",
+    "DEADLINE_ELAPSED_UNAVAILABLE",
+    "DEADLINE_EXCEEDED"
+  ],
+  "deadline_integrity_contract": "contracts/deadline-integrity.json"
 }

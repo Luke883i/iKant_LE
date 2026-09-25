@@ -5,3 +5,5 @@ export { readLifeConsciousnessKernel,gateDesignSatisfied,profileDesignSatisfied,
 
 export { CHAT_BOOTSTRAP_DEADLINE_MS,validateSourceBoundTransfer,validateLocalMaterializationReceipt,readLocalMaterializationReceipt,validateChatBootstrapEvidence,totalDeadlineOk } from './bootstrap-semantic.mjs';
 export { classifyRuntimeAvailability,validateRuntimeAvailabilityDecision,availabilityFromBootstrapFailure,classifyTurnRelease } from './runtime-availability.mjs';
+export { DEADLINE_RESULT,isDeadlineTerminal,classifyDeadlineEvidence,admissionEpochRecoverable,canUseManualRecovery } from './deadline-integrity.mjs';
+export { validateAcceptanceOriginReceipt } from './bootstrap-semantic.mjs';
