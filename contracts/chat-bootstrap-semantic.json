@@ -1,0 +1,56 @@
+{
+  "schema": "ikant-le-chat-bootstrap-semantic/v1",
+  "slice": "C14.CHAT_BOOTSTRAP_SEMANTIC_RUNTIME",
+  "authority": 0,
+  "intent": "Make SESSION_CHAT activation causally depend on source-bound transfer, verified local materialization, live host capability and an end-to-end deadline, while preserving exact admission and end-user pending intent.",
+  "nodes": [
+    {"id":"TARGET_INTENT_ROOT","owns":["canonical target recognition","verbatim pending intent","pure-vs-substantive bootstrap intent distinction"],"boundary":"recognition and intent binding precede repository acquisition"},
+    {"id":"SOURCE_ORIENTATION_ROOT","owns":["GitHub API-only source channel","immutable source head","bounded orientation capsule","single source-root binding"],"boundary":"orientation bytes are not accepted without one immutable source root"},
+    {"id":"CONSENT_ROOT","owns":["Terms digest and presentation","freeze","later exact standalone I ACCEPT","fresh authority-zero preaccept handoff"],"boundary":"runtime acquisition remains forbidden before exact human acceptance"},
+    {"id":"SOURCE_BOUND_TRANSFER","owns":["observed API-to-local bridge","exact source ref","complete exact bytes","bounded reads/rounds","no model-mediated reconstruction","no fallback"],"boundary":"remote readability is not local delivery"},
+    {"id":"VERIFIED_LOCAL_ROOT","owns":["transfer-bound materialization receipt","Git blob identity","safe paths","private staging","atomic publish","reopen/readback"],"boundary":"delivered bytes are not an executable runtime root until locally verified"},
+    {"id":"LIVE_HOST_PROBE","owns":["Node.js 20+","filesystem CRUD/append/readback/delete","SHA-256","clock","artifact sink","SESSION_CHAT capability closure"],"boundary":"source integrity is not local capability evidence"},
+    {"id":"RECEIPT_GATED_ACTIVE_COMMIT","owns":["bootstrap evidence digest","source/root/transfer/materialization binding","single-writer persisted ACTIVE commit","exactly-once pending-intent terminal effect"],"boundary":"probe success cannot promote ACTIVE without verified materialization evidence"},
+    {"id":"E2E_DEADLINE","owns":["monotonic origin at I ACCEPT","host elapsed before Node entry","local runtime elapsed","120000 ms fail-closed ceiling"],"boundary":"deadline dominates transfer, local root, probe and ACTIVE commit"}
+  ],
+  "folded_semantics": {
+    "PREACCEPT_HANDOFF": "CONSENT_ROOT",
+    "SESSION_CHAT_CLOSURE": "LIVE_HOST_PROBE",
+    "INIT_INTENT_FOLD": "RECEIPT_GATED_ACTIVE_COMMIT",
+    "RESUME_PENDING_INTENT": "RECEIPT_GATED_ACTIVE_COMMIT",
+    "SOURCE_HEAD_PIN": "SOURCE_ORIENTATION_ROOT + SOURCE_BOUND_TRANSFER",
+    "WARM_CACHE_EXACT": "SOURCE_BOUND_TRANSFER + VERIFIED_LOCAL_ROOT + RECEIPT_GATED_ACTIVE_COMMIT",
+    "RETRY_BUDGET": "SOURCE_BOUND_TRANSFER + E2E_DEADLINE",
+    "FIXED_SHARD_COUNT": "transport parameter, not semantic node"
+  },
+  "receipts": {
+    "transfer": "ikant-le-source-bound-transfer/v1",
+    "materialization": "ikant-le-runtime-root-materialization/v1",
+    "bootstrap_evidence": "ikant-le-chat-bootstrap-evidence/v1",
+    "bootstrap": "ikant-le-bootstrap-receipt/v2"
+  },
+  "deadline_ms": 120000,
+  "active_predicate": [
+    "accepted current Terms",
+    "source-bound transfer receipt valid",
+    "local materialization receipt valid and transfer-bound",
+    "live host probe passed",
+    "bootstrap evidence source/root/receipt bindings valid",
+    "elapsed from I ACCEPT within deadline",
+    "single-writer ACTIVE commit persisted/read back"
+  ],
+  "qualification": {
+    "enduser_cases": 1000000,
+    "strata": {"typical":500000,"edge":300000,"stress":200000},
+    "single_node_deletion_oracle_required": true,
+    "blocking_survivors_required": 0,
+    "every_retained_node_must_be_necessary": true
+  },
+  "claim_boundary": {
+    "corpus_and_contract_relative_irreducibility": true,
+    "global_formal_minimality": false,
+    "semantic_mutation_is_physical_connector_proof": false,
+    "semantic_mutation_is_wall_clock_measurement": false,
+    "runtime_receipt_validation_does_not_create_host_capability": true
+  }
+}

@@ -9,6 +9,7 @@ import {runtimeRootDescriptor,validateRuntimeRootDescriptor,materializeRuntimeRo
 import {readTerms,readOrientationCapsule,sha256} from '../src/contract.mjs';
 import {runtimePaths,readLedger} from '../src/state.mjs';
 import {runCommand} from '../src/runtime.mjs';
+import {bootstrapEvidence} from './bootstrap-fixture.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const terms=readTerms();
@@ -25,9 +26,9 @@ test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime 
   assert.equal(b.session_chat_profile.id,'SESSION_CHAT');
   assert.equal(b.session_chat_profile.managed_local_model_required,false);
   const d=runtimeRootDescriptor(ROOT);
-  assert.equal(d.member_count,31);
+  assert.equal(d.member_count,33);
   assert.equal(d.shards.length,7);
-  assert.equal(d.runtime_root_sha256,'c0c71afa9c6c50d9d87136136bdb9d3f62de218a57cf6689e017135255c42013');
+  assert.equal(d.runtime_root_sha256,'6194587224ef0dda5fd83e63442b362bf20d355cbf24f19a04cb1bdb03503fcc');
   assert.deepEqual(validateRuntimeRootDescriptor(d),{ok:true,errors:[]});
 });
 
@@ -45,24 +46,25 @@ test('C13 shard and member identities are mechanically bound to exact Git blob b
 });
 
 test('C13 materializes atomically and reopens the exact runtime root',()=>{
+  const d=runtimeRootDescriptor(ROOT);
   const base=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-le-c13-'));
   const sink=path.join(base,'runtime');
   try{
-    const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40)});
-    assert.equal(receipt.runtime_root_sha256,'c0c71afa9c6c50d9d87136136bdb9d3f62de218a57cf6689e017135255c42013');
-    assert.equal(receipt.member_count,31);
+    const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),transferReceiptSha256:'f'.repeat(64)});
+    assert.equal(receipt.runtime_root_sha256,'6194587224ef0dda5fd83e63442b362bf20d355cbf24f19a04cb1bdb03503fcc');
+    assert.equal(receipt.member_count,33);
     assert.equal(receipt.shard_count,7);
     assert.equal(receipt.atomic_publish,true);
     assert.equal(receipt.reopen_verified,true);
     assert.ok(fs.existsSync(path.join(sink,'.ikant','materialization.json')));
-    assert.equal(gitBlobSha1(fs.readFileSync(path.join(sink,'src','runtime-command.mjs'))),'acdde7f8c9b7a9e3c3e2876dc68263f4bc5b62ce');
+    assert.equal(gitBlobSha1(fs.readFileSync(path.join(sink,'src','runtime-command.mjs'))),d.members.find(x=>x.path==='src/runtime-command.mjs').blob_sha1);
   }finally{fs.rmSync(base,{recursive:true,force:true});}
 });
 
 test('C13 pure initialization pending intent folds into ACTIVE without a synthetic turn',{concurrency:false},()=>{
   reset();
   try{
-    const out=runCommand('I ACCEPT',{preacceptHandoff:handoff('inizializza'),hostEngine:'GPT-TEST'});
+    const out=runCommand('I ACCEPT',{preacceptHandoff:handoff('inizializza'),postAcceptBootstrapEvidence:bootstrapEvidence(),hostEngine:'GPT-TEST'});
     assert.equal(out.code,0);
     assert.match(out.stdout,/intento di inizializzazione/i);
     const events=readLedger();
@@ -78,7 +80,7 @@ test('C13 mixed initialization plus substantive intent still resumes exactly onc
   reset();
   try{
     const pending='inizializza e spiegami il reticolo minimo';
-    const out=runCommand('I ACCEPT',{preacceptHandoff:handoff(pending),hostEngine:'GPT-TEST'});
+    const out=runCommand('I ACCEPT',{preacceptHandoff:handoff(pending),postAcceptBootstrapEvidence:bootstrapEvidence(),hostEngine:'GPT-TEST'});
     assert.equal(out.code,0);
     const events=readLedger();
     const kinds=events.map(x=>x.kind);
