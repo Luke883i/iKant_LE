@@ -1,6 +1,6 @@
 {
   "schema": "ikant-le-chat-bootstrap-semantic/v1",
-  "slice": "C14.CHAT_BOOTSTRAP_SEMANTIC_RUNTIME",
+  "slice": "C16.CHAT_BOOTSTRAP_SEMANTIC_RUNTIME",
   "authority": 0,
   "intent": "Make SESSION_CHAT activation causally depend on immutable source binding, content-addressed post-accept delivery, verified local materialization, live host capability and an end-to-end deadline, while preserving exact admission and end-user pending intent.",
   "nodes": [
@@ -132,7 +132,10 @@
     "flex_transport_cases": 1000000,
     "flex_transport_modes": 6,
     "max_flex_remote_reads": 40,
-    "max_flex_remote_rounds": 1
+    "max_flex_remote_rounds": 1,
+    "runtime_availability_discovery_cases": 10000000,
+    "runtime_availability_qualification_cases": 1000000,
+    "runtime_availability_failure_families": 76
   },
   "claim_boundary": {
     "corpus_and_contract_relative_irreducibility": true,
@@ -141,6 +144,9 @@
     "semantic_mutation_is_wall_clock_measurement": false,
     "runtime_receipt_validation_does_not_create_host_capability": true,
     "transport_locator_is_authority": false,
-    "flex_transport_does_not_weaken_active_predicate": true
-  }
+    "flex_transport_does_not_weaken_active_predicate": true,
+    "degraded_is_active": false
+  },
+  "availability_state_contract": "contracts/runtime-availability-dod.json",
+  "availability_classifier": "src/runtime-availability.mjs"
 }

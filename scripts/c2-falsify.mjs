@@ -22,7 +22,7 @@ const ORDINARY=[
 ];
 const EDGE=[
 ['near_accept_not_command',r=>ok(classifyInput('I ACCEPT ')==='TURN','near')],
-['probe_fail_no_active',r=>{const d=bootstrapDecisionPure(accepted(),terms.digest,FP,{ok:false,reason:'fs'});return ok(d.terminal==='HOST_INCOMPATIBLE'&&d.state.status!=='ACTIVE'&&!d.state.initialized,'HOST_INCOMPATIBLE');}],
+['probe_fail_no_active',r=>{const d=bootstrapDecisionPure(accepted(),terms.digest,FP,{ok:false,reason:'fs'});return ok(d.terminal==='DEGRADED'&&d.state.status==='DEGRADED'&&!d.state.initialized,'DEGRADED');}],
 ['init_before_probe_denied',r=>ok(transitionPure(accepted(),'INITIALIZE',terms.digest).terminal==='DENY','DENY')],
 ['exit_only_active',r=>ok(transitionPure(initialState(),'EXIT',terms.digest).terminal==='DENY'&&transitionPure(active,'EXIT',terms.digest).terminal==='EXITED','EXIT')],
 ['terms_drift_resets',r=>ok(transitionPure(active,'TURN','different').terminal==='RESET_REQUIRED','RESET')],

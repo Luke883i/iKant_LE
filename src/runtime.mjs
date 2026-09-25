@@ -4,3 +4,4 @@ export { referencesCanonicalRepository,compileFirstContactPlan,FIRST_CONTACT_CAP
 export { readLifeConsciousnessKernel,gateDesignSatisfied,profileDesignSatisfied,assessDesign,validateGateReceipt,profileEvidenceSatisfied,safetySatisfied,qualifyRuntime,ALL_GATES as LIFE_CONSCIOUSNESS_GATES } from './life-consciousness.mjs';
 
 export { CHAT_BOOTSTRAP_DEADLINE_MS,validateSourceBoundTransfer,validateLocalMaterializationReceipt,readLocalMaterializationReceipt,validateChatBootstrapEvidence,totalDeadlineOk } from './bootstrap-semantic.mjs';
+export { classifyRuntimeAvailability,validateRuntimeAvailabilityDecision,availabilityFromBootstrapFailure,classifyTurnRelease } from './runtime-availability.mjs';
