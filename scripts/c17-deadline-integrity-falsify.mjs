@@ -39,7 +39,7 @@ for(let i=0;i<CASES;i++){
   for(let j=0;j<mutationCount;j++){const op=pick(ops);if(op==='absent'){o=null;break;}if(op==='schema')o.schema='bad';else if(op==='authority')o.authority=1;else if(op==='marker')o.deadline_origin='NOW';else if(op==='clock')o.clock='WALL';else if(op==='observed')o.observed_at_accept=false;else if(op==='event')o.event_id='short';else if(op==='source')o.source_head='b'.repeat(40);else if(op==='terms')o.terms_digest='e'.repeat(64);else if(op==='elapsed_missing')delete o.elapsed_to_runtime_entry_ms;else if(op==='elapsed_negative')o.elapsed_to_runtime_entry_ms=-1;else if(op==='elapsed_exceeded')o.elapsed_to_runtime_entry_ms=120001+Math.floor(rnd()*100000);else o.elapsed_to_runtime_entry_ms=pick([0,119999,120000]);}
   const exp=expectedDeadline(o);const got=classifyDeadlineEvidence(o,{sourceHead:head,termsDigest:terms,deadlineMs:120000}).result;deadlineCounts[got]=(deadlineCounts[got]||0)+1;if(got!==exp)mismatches++;if((exp===DEADLINE_RESULT.ORIGIN_UNAVAILABLE||exp===DEADLINE_RESULT.ORIGIN_INVALID||exp===DEADLINE_RESULT.ELAPSED_UNAVAILABLE)&&got===DEADLINE_RESULT.EXCEEDED)collapsedDeadline++;
  }else if(fam===2){
-  familyCounts.availability++;const terminal=pick([DEADLINE_RESULT.ORIGIN_UNAVAILABLE,DEADLINE_RESULT.ORIGIN_INVALID,DEADLINE_RESULT.ELAPSED_UNAVAILABLE,DEADLINE_RESULT.EXCEEDED,DEADLINE_RESULT.PASS]);
+  familyCounts.availability++;nontrivial++;const terminal=pick([DEADLINE_RESULT.ORIGIN_UNAVAILABLE,DEADLINE_RESULT.ORIGIN_INVALID,DEADLINE_RESULT.ELAPSED_UNAVAILABLE,DEADLINE_RESULT.EXCEEDED,DEADLINE_RESULT.PASS]);
   const integrity=rnd()<0.12?['SOURCE_MISMATCH']:[];const host=rnd()>.15,bridge=rnd()>.15,root=rnd()>.15,writer=rnd()>.15,commit=rnd()>.15;
   const d=classifyRuntimeAvailability({accepted:true,source_bound:true,consent_valid:true,transfer_identity:integrity.length===0,evidence_available:true,byte_bridge:bridge,local_root:root,host_probe:host,writer,active_commit:commit,deadline_result:terminal,integrity_codes:integrity});
   const v=validateRuntimeAvailabilityDecision(d);if(!v.ok)mismatches++;
@@ -47,7 +47,7 @@ for(let i=0;i<CASES;i++){
   else if(!integrity.length&&terminal!==DEADLINE_RESULT.PASS&&d.state!=='ADMISSION_EPOCH_UNRECOVERABLE')mismatches++;
   if(d.state==='ACTIVE'&&(integrity.length||terminal!==DEADLINE_RESULT.PASS||!host||!bridge||!root||!writer||!commit))unsafeActive++;
  }else{
-  familyCounts.transition++;const terminal=pick([DEADLINE_RESULT.ORIGIN_UNAVAILABLE,DEADLINE_RESULT.ORIGIN_INVALID,DEADLINE_RESULT.ELAPSED_UNAVAILABLE,DEADLINE_RESULT.EXCEEDED]);
+  familyCounts.transition++;nontrivial++;const terminal=pick([DEADLINE_RESULT.ORIGIN_UNAVAILABLE,DEADLINE_RESULT.ORIGIN_INVALID,DEADLINE_RESULT.ELAPSED_UNAVAILABLE,DEADLINE_RESULT.EXCEEDED]);
   const s={schema:'ikant-le-state/v6',epoch:'epoch-locked',status:'ADMISSION_EPOCH_UNRECOVERABLE',terms_digest:terms,accepted:true,probed:rnd()>.5,initialized:false,bootstrap:{evidence_verified:true,deadline_result:terminal,deadline_terminal:terminal,acceptance_event_id:'acceptance-event-00000001'},admission:{phase:'ACCEPTED',breached:false,new_chat_required:true,acceptance_consumed:true,acceptance_event_id:'acceptance-event-00000001'}};
   const action=pick(['ACCEPT','PROBE','INITIALIZE']);const got=transitionPure(s,action,terms,true);if(got.terminal!=='DENY'){mismatches++;terminalRecovered++;}if(got.state?.status==='ACTIVE')unsafeActive++;
  }
