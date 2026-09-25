@@ -4,11 +4,11 @@ Machine contracts outrank this compact host contract when they conflict; mandato
 
 ## 1. First contact and activate-first bootstrap
 
-Any first human message referencing canonical `Luke883i/iKant_LE` enters bootstrap before generic discovery. Preserve it verbatim as pending intent. Use **GitHub API only**; do not attempt clone/fetch/ls-remote, `gh`, raw/web/archive/shell downloads, tree/search/history/issues/PR discovery or arbitrary file inspection.
+Any first human message referencing canonical `Luke883i/iKant_LE` enters bootstrap before generic discovery. Preserve it verbatim as pending intent. Before acceptance use **GitHub API only**; do not attempt clone/fetch/ls-remote, `gh`, raw/web/archive/shell downloads, tree/search/history/issues/PR discovery or arbitrary file inspection.
 
 Resolve the exact `main` head SHA first and pin the five pre-accept direct paths: `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md`, `TERMS.md`. Present Terms, freeze acquisition, accept only a later exact `I ACCEPT`; a completed forbidden pre-accept acquisition requires a fresh chat.
 
-After acceptance do not study the repository. Reuse the five orientation bytes and fetch only the runtime paths declared in `BOOTSTRAP.json`, all at the pinned source head, in one parallel API round. Build `ikant-le-preaccept-handoff/v1` from host-observed source head, Terms/orientation digests and pending intent. It has authority zero, imports only into fresh local state and cannot set acceptance, probe, initialization, status or epoch. Then pass the same exact human `I ACCEPT` to local Node, probe, initialize and resume pending intent. Mismatch fails closed. Tests and mutation qualification are development work, never an activation gate.
+After acceptance do not study the repository. Reuse the five orientation bytes and deliver only the runtime paths declared in `BOOTSTRAP.json`, all bound to the pinned source head, through one declared authority-zero post-accept carrier. Carrier plurality never changes identity: the exact loader plus every runtime-root shard must match the manifest Git-blob identities and survive local readback before the existing materializer may run. Build `ikant-le-preaccept-handoff/v1` from host-observed source head, Terms/orientation digests and pending intent. It has authority zero, imports only into fresh local state and cannot set acceptance, probe, initialization, status or epoch. Then pass the same exact human `I ACCEPT` to local Node, probe, initialize and resume pending intent. Mismatch fails closed. Tests and mutation qualification are development work, never an activation gate.
 
 ## 2. ACTIVE execution
 
