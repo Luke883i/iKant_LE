@@ -28,7 +28,8 @@ test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime 
   const d=runtimeRootDescriptor(ROOT);
   assert.equal(d.member_count,34);
   assert.equal(d.shards.length,7);
-  assert.equal(d.runtime_root_sha256,'75eefc44faa673b7c3f7409782c74786f2e0a9efc62cb0035a2421cc4800f10a');\n  assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));
+  assert.equal(d.runtime_root_sha256,'75eefc44faa673b7c3f7409782c74786f2e0a9efc62cb0035a2421cc4800f10a');
+  assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));
   assert.deepEqual(validateRuntimeRootDescriptor(d),{ok:true,errors:[]});
 });
 
