@@ -46,6 +46,7 @@ test('C13 shard and member identities are mechanically bound to exact Git blob b
 });
 
 test('C13 materializes atomically and reopens the exact runtime root',()=>{
+  const d=runtimeRootDescriptor(ROOT);
   const base=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-le-c13-'));
   const sink=path.join(base,'runtime');
   try{
