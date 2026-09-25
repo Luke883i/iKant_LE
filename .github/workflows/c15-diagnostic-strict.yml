@@ -1,0 +1,42 @@
+name: C15 diagnostic matrix strict
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  test-file:
+    name: file ${{ matrix.node }} ${{ matrix.test }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+        test:
+          - c5
+          - chat-bootstrap-semantic
+          - embedded-library
+          - emergence
+          - fastboot
+          - first-contact
+          - life-consciousness
+          - runtime
+          - session-chat-fastboot
+          - surface-b
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test --test-concurrency=1 tests/${{ matrix.test }}.test.mjs
+  full:
+    name: full npm test node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm test
