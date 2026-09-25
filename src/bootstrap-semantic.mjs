@@ -16,7 +16,8 @@ function validateFlexibleTransfer(receipt,{sourceHead,runtimeRootSha256,descript
 function digestWithout(value,field='receipt_sha256'){const copy=structuredClone(value||{});delete copy[field];return sha256(Buffer.from(JSON.stringify(copy)));}
 function bad(errors,code='HOST_INCOMPATIBLE'){return{ok:false,errors:[...new Set(errors)],terminal:code};}
 
-export function validateSourceBoundTransfer(receipt,{sourceHead,runtimeRootSha256,runtimeRootDescriptor=null,maxReads=8,maxRounds=1,flexMaxReads=40,flexMaxRounds=1,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS}={}){\n if(receipt?.schema===FLEX_TRANSFER_SCHEMA)return validateFlexibleTransfer(receipt,{sourceHead,runtimeRootSha256,descriptor:runtimeRootDescriptor,maxReads:flexMaxReads,maxRounds:flexMaxRounds,deadlineMs});
+export function validateSourceBoundTransfer(receipt,{sourceHead,runtimeRootSha256,runtimeRootDescriptor=null,maxReads=8,maxRounds=1,flexMaxReads=40,flexMaxRounds=1,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS}={}){
+ if(receipt?.schema===FLEX_TRANSFER_SCHEMA)return validateFlexibleTransfer(receipt,{sourceHead,runtimeRootSha256,descriptor:runtimeRootDescriptor,maxReads:flexMaxReads,maxRounds:flexMaxRounds,deadlineMs});
  const e=[];if(!receipt||receipt.schema!=='ikant-le-source-bound-transfer/v1')e.push('schema');
  if(receipt?.authority!==0)e.push('authority');if(receipt?.source_head!==sourceHead||!HEX40.test(String(sourceHead||'')))e.push('source_head');
  if(receipt?.runtime_root_sha256!==runtimeRootSha256||!HEX64.test(String(runtimeRootSha256||'')))e.push('runtime_root');
