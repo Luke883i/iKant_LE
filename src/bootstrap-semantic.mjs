@@ -47,8 +47,7 @@ export function validateChatBootstrapEvidence(evidence,{sourceHead,runtimeRootSh
  const e=[];if(!evidence||evidence.schema!=='ikant-le-chat-bootstrap-evidence/v1')e.push('schema');if(evidence?.authority!==0)e.push('authority');if(evidence?.source_head!==sourceHead)e.push('source_head');if(evidence?.runtime_root_sha256!==runtimeRootSha256)e.push('runtime_root');
  const a=validateAcceptanceOriginReceipt(evidence?.acceptance_origin,{sourceHead,termsDigest,deadlineMs});
  if(!a.ok)e.push('deadline:'+a.result);
- if(evidence?.acceptance_event_id!==evidence?.acceptance_origin?.event_id)e.push('acceptance_event_binding');
- if(evidence?.acceptance_origin_receipt_sha256!==evidence?.acceptance_origin?.receipt_sha256)e.push('acceptance_origin_receipt_binding');
+ if(evidence?.acceptance_origin){if(evidence?.acceptance_event_id!==evidence.acceptance_origin.event_id)e.push('acceptance_event_binding');if(evidence?.acceptance_origin_receipt_sha256!==evidence.acceptance_origin.receipt_sha256)e.push('acceptance_origin_receipt_binding');}
  const t=validateSourceBoundTransfer(evidence?.transfer,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,maxReads,maxRounds,flexMaxReads,flexMaxRounds,deadlineMs});if(!t.ok)e.push(...t.errors.map(x=>'transfer:'+x));
  const m=validateLocalMaterializationReceipt(localMaterializationReceipt,{sourceHead,runtimeRootSha256,loaderBlobSha1,transferReceiptSha256:evidence?.transfer?.receipt_sha256});if(!m.ok)e.push(...m.errors.map(x=>'materialization:'+x));
  if(a.ok&&t.ok&&t.elapsed_ms>a.elapsed_ms)e.push('transfer_elapsed_order');if(evidence?.transfer_receipt_sha256!==evidence?.transfer?.receipt_sha256)e.push('transfer_receipt_binding');if(evidence?.materialization_receipt_sha256!==localMaterializationReceipt?.receipt_sha256)e.push('materialization_receipt_binding');if(!HEX64.test(String(evidence?.receipt_sha256||''))||digestWithout(evidence)!==evidence?.receipt_sha256)e.push('receipt_digest');

@@ -28,7 +28,7 @@ test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime 
   const d=runtimeRootDescriptor(ROOT);
   assert.equal(d.member_count,38);
   assert.equal(d.shards.length,7);
-  assert.equal(d.runtime_root_sha256,'a3b382bd103e12d4ff856def351db856f37a7a6fe5cb120b26a28b6947836391');
+  assert.equal(d.runtime_root_sha256,'4a8b2f4d059782454627bcf4bd80cdd3d05368fb5a667cf5f63ac3d623e91e31');
   assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));assert.ok(d.members.some(x=>x.path==='src/runtime-availability.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/runtime-availability-dod.json'));assert.ok(d.members.some(x=>x.path==='src/deadline-integrity.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/deadline-integrity.json'));
   assert.deepEqual(validateRuntimeRootDescriptor(d),{ok:true,errors:[]});
 });
@@ -52,7 +52,7 @@ test('C13 materializes atomically and reopens the exact runtime root',()=>{
   const sink=path.join(base,'runtime');
   try{
     const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),transferReceiptSha256:'f'.repeat(64)});
-    assert.equal(receipt.runtime_root_sha256,'a3b382bd103e12d4ff856def351db856f37a7a6fe5cb120b26a28b6947836391');
+    assert.equal(receipt.runtime_root_sha256,'4a8b2f4d059782454627bcf4bd80cdd3d05368fb5a667cf5f63ac3d623e91e31');
     assert.equal(receipt.member_count,38);
     assert.equal(receipt.shard_count,7);
     assert.equal(receipt.atomic_publish,true);
