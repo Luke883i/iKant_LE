@@ -32,8 +32,16 @@ jobs:
         run: npm run falsify:c14
       - name: Fastboot regression tests
         run: node --test --test-concurrency=1 tests/fastboot.test.mjs
-      - name: Session-chat runtime-root tests
-        run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
+      - name: C13 descriptor shape
+        run: node --test --test-concurrency=1 --test-name-pattern="exposes exactly eight" tests/session-chat-fastboot.test.mjs
+      - name: C13 shard and member identities
+        run: node --test --test-concurrency=1 --test-name-pattern="mechanically bound" tests/session-chat-fastboot.test.mjs
+      - name: C13 atomic materialization
+        run: node --test --test-concurrency=1 --test-name-pattern="materializes atomically" tests/session-chat-fastboot.test.mjs
+      - name: C13 pure init fold
+        run: node --test --test-concurrency=1 --test-name-pattern="pure initialization" tests/session-chat-fastboot.test.mjs
+      - name: C13 mixed intent resume
+        run: node --test --test-concurrency=1 --test-name-pattern="mixed initialization" tests/session-chat-fastboot.test.mjs
       - name: C14 semantic evidence tests
         run: node --test --test-concurrency=1 tests/chat-bootstrap-semantic.test.mjs
       - name: Contract and lifecycle check
