@@ -259,5 +259,35 @@
       "RELEASED"
     ],
     "authority": 0
+  },
+  "post_accept_recovery": {
+    "schema": "ikant-le-same-epoch-activation-continuation/v1",
+    "operation": "RESUME_ACTIVATION",
+    "human_acceptance_required": false,
+    "preserve": [
+      "acceptance_event_id",
+      "epoch",
+      "source_head",
+      "terms_digest",
+      "acceptance_origin_receipt",
+      "remote_history_sha256"
+    ],
+    "may_create": [
+      "byte_bridge_observation",
+      "materialization_receipt",
+      "probe_receipt",
+      "active_commit"
+    ],
+    "forbid": [
+      "new_acceptance",
+      "new_epoch",
+      "new_deadline_origin",
+      "source_rebase",
+      "second_remote_round",
+      "model_mediated_bytes"
+    ],
+    "continuation_receipt": "ikant-le-activation-continuation/v1",
+    "final_deadline_scope": "ORIGINAL_I_ACCEPT_TO_ACTIVE_COMMIT",
+    "authority": 0
   }
 }

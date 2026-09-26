@@ -1,0 +1,24 @@
+name: c18-activation-continuation
+on:
+  push:
+    branches: ['agent/c18-same-epoch-continuation']
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'contracts/**'
+      - 'runtime-root/**'
+      - 'BOOTSTRAP.json'
+      - 'package.json'
+      - 'scripts/c18-activation-continuation-falsify.mjs'
+      - 'tests/c18-activation-continuation.test.mjs'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm test
+      - run: npm run check
+      - run: npm run falsify:c18
