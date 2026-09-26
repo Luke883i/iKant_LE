@@ -1,7 +1,4 @@
 name: c18-activation-continuation
-permissions:
-  contents: read
-  pull-requests: write
 on:
   push:
     branches: ['agent/c18-same-epoch-continuation']
@@ -22,17 +19,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - name: Run npm test
-        id: tests
-        continue-on-error: true
-        run: npm test > /tmp/c18-test.log 2>&1
-      - name: Report test failure
-        if: steps.tests.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          { echo '### C18 diagnostic npm test failure'; echo '```'; tail -c 45000 /tmp/c18-test.log; echo '```'; } > /tmp/c18-comment.md
-          gh pr comment 21 --body-file /tmp/c18-comment.md
-          exit 1
+      - run: npm test
       - run: npm run check
       - run: npm run falsify:c18
