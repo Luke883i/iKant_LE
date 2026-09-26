@@ -1,4 +1,7 @@
 name: c18-activation-continuation
+permissions:
+  contents: read
+  pull-requests: write
 on:
   push:
     branches: ['agent/c18-same-epoch-continuation']
@@ -21,4 +24,15 @@ jobs:
         with: {node-version: '22'}
       - run: npm test
       - run: npm run check
-      - run: npm run falsify:c18
+      - name: Run C18 falsifier
+        id: falsify
+        continue-on-error: true
+        run: npm run falsify:c18 > /tmp/c18-falsify.log 2>&1
+      - name: Report falsifier failure
+        if: steps.falsify.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo '### C18 diagnostic falsifier failure'; echo '```'; tail -c 45000 /tmp/c18-falsify.log; echo '```'; } > /tmp/c18-comment.md
+          gh pr comment 21 --body-file /tmp/c18-comment.md
+          exit 1
