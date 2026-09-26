@@ -100,7 +100,8 @@
     "WARM_CACHE_EXACT": "SOURCE_BOUND_TRANSFER + VERIFIED_LOCAL_ROOT + RECEIPT_GATED_ACTIVE_COMMIT",
     "RETRY_BUDGET": "SOURCE_BOUND_TRANSFER + E2E_DEADLINE",
     "FIXED_SHARD_COUNT": "transport parameter, not semantic node",
-    "FLEXIBLE_TRANSPORT_FAN_IN": "SOURCE_BOUND_TRANSFER; transport plurality is folded beneath one content-addressed identity gate"
+    "FLEXIBLE_TRANSPORT_FAN_IN": "SOURCE_BOUND_TRANSFER; transport plurality is folded beneath one content-addressed identity gate",
+    "SAME_EPOCH_ACTIVATION_CONTINUATION": "SOURCE_BOUND_TRANSFER + VERIFIED_LOCAL_ROOT + E2E_DEADLINE + RECEIPT_GATED_ACTIVE_COMMIT; preserves original CONSENT_ROOT"
   },
   "receipts": {
     "transfer": "ikant-le-source-bound-transfer/v1",
@@ -140,7 +141,9 @@
     "runtime_availability_failure_families": 76,
     "deadline_integrity_cases": 1000000,
     "deadline_integrity_independent_oracle": true,
-    "deadline_integrity_multi_mutation_min": 500000
+    "deadline_integrity_multi_mutation_min": 500000,
+    "activation_continuation_cases": 1000000,
+    "activation_continuation_independent_oracle": true
   },
   "claim_boundary": {
     "corpus_and_contract_relative_irreducibility": true,
@@ -153,7 +156,9 @@
     "degraded_is_active": false,
     "deadline_unavailable_is_deadline_exceeded": false,
     "retry_may_reset_deadline_origin": false,
-    "current_main_may_replace_session_source_head": false
+    "current_main_may_replace_session_source_head": false,
+    "same_epoch_recovery_may_complete_new_downstream_facts": true,
+    "same_epoch_recovery_may_reset_acceptance_or_remote_history": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
   "availability_classifier": "src/runtime-availability.mjs",
