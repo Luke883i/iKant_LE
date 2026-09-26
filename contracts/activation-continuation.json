@@ -9,20 +9,15 @@
       "owns": [
         "single consumed I ACCEPT",
         "acceptance_event_id",
-        "immutable acceptance-origin receipt"
-      ]
-    },
-    {
-      "id": "IMMUTABLE_SOURCE",
-      "owns": [
-        "SESSION_SOURCE_HEAD",
-        "Terms digest",
-        "runtime_root identity"
+        "immutable acceptance-origin receipt",
+        "Terms/consent binding"
       ]
     },
     {
       "id": "REMOTE_HISTORY",
       "owns": [
+        "immutable SESSION_SOURCE_HEAD",
+        "runtime_root identity",
         "content-addressed remote object history",
         "remote reads/rounds",
         "no second remote round"
@@ -78,7 +73,8 @@
     "second_acceptance_required": 0,
     "remote_history_drift_accepted_required": 0,
     "deadline_reset_required": 0,
-    "deletion_false_green_each_node_min": 1
+    "deletion_false_green_each_node_min": 1,
+    "irreducible_nodes": 4
   },
   "dod": {
     "local": [
@@ -105,6 +101,7 @@
     "semantic_mutation_is_not_physical_bridge_proof": true,
     "recovery_does_not_imply_host_portability": true,
     "current_host_capability_is_not_historical_evidence": true,
-    "demo_may_fail_closed_when_bridge_never_becomes_available": true
+    "demo_may_fail_closed_when_bridge_never_becomes_available": true,
+    "source_identity_is_folded_into_remote_history": true
   }
 }
