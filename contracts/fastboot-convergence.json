@@ -1,0 +1,90 @@
+{
+  "schema": "ikant-le-fastboot-convergence-contract/v1",
+  "slice": "C19.HOST_OBSERVED_FASTBOOT_CONVERGENCE",
+  "authority": 0,
+  "intent": "Make post-accept fastboot converge across physically observed host carriers without turning failed or partial carrier attempts into authoritative REMOTE_HISTORY.",
+  "gold_source": {
+    "repository": "Luke883i/iKant",
+    "pr": 153,
+    "head": "4113698864a66a53b214d41105f16b9d95d3eb7e",
+    "distilled_not_copied": true
+  },
+  "critical_path": [
+    "FIRST_ACCEPT",
+    "HOST_EXECUTION_PLANE_PLAN",
+    "QUARANTINED_TRANSFER_ATTEMPT",
+    "REMOTE_HISTORY_COMMIT",
+    "PHYSICAL_RUNTIME_INGRESS",
+    "VERIFIED_LOCAL_ROOT",
+    "SAME_EPOCH_CONTINUATION",
+    "LIVE_ACTIVE_COMMIT"
+  ],
+  "global_dod": [
+    "C19_G1 observed-capability planning never assumes a physical edge",
+    "C19_G2 failed/partial attempts never become authoritative remote history",
+    "C19_G3 exactly one complete transfer may bind the single REMOTE_HISTORY commit",
+    "C19_G4 same acceptance/source/deadline origin survive carrier planning and retry",
+    "C19_G5 successful runtime ingress converges through canonical C15 materialization and C18 continuation without second human acceptance",
+    "C19_G6 ACTIVE remains binary and fail-closed when no physical runtime sink exists",
+    "C19_G7 qualification score >=0.99 with zero unsafe ACTIVE and zero integrity laundering"
+  ],
+  "intermediate_dod": [
+    "C19_I1 tri-state capability survey",
+    "C19_I2 bounded materially-distinct carrier planning",
+    "C19_I3 quarantined attempt identity and digest validation",
+    "C19_I4 single REMOTE_HISTORY commit binding",
+    "C19_I5 source-object to runtime-sink physical ingress binding",
+    "C19_I6 canonical materializer reuse",
+    "C19_I7 same-epoch downstream continuation",
+    "C19_I8 10M seeded real-code semantic qualification"
+  ],
+  "local_dod": [
+    "C19_L1 UNKNOWN produces PROBE_REQUIRED before fallback",
+    "C19_L2 FALSE excludes a carrier",
+    "C19_L3 PROVEN carrier is executable only with runtime execution-plane fields observed",
+    "C19_L4 zero-object failure is non-authoritative",
+    "C19_L5 partial object set is non-authoritative",
+    "C19_L6 duplicate carrier retry is rejected",
+    "C19_L7 complete attempt must be last",
+    "C19_L8 complete attempt requires exact source/root/object identities and byte sink evidence",
+    "C19_L9 model-mediated bytes are rejected",
+    "C19_L10 source object identity and runtime sink identity are both required",
+    "C19_L11 transfer receipt binds the single history commit",
+    "C19_L12 acceptance/source/deadline preservation flags are mandatory",
+    "C19_L13 canonical local materialization/readback remains C15-owned",
+    "C19_L14 second acquisition after history commit remains C18-forbidden"
+  ],
+  "checklist": [
+    "freeze exact iKant_LE main and iKant PR153 head",
+    "add pure host-observed carrier planner",
+    "add quarantine attempt receipt validator",
+    "bind one complete attempt to existing source-bound transfer receipt",
+    "require C19 convergence receipt inside chat bootstrap evidence",
+    "preserve C15 transfer and runtime-root materializer",
+    "preserve C17 original deadline",
+    "preserve C18 same-epoch continuation and no second remote round",
+    "add deterministic unit tests for zero/partial/complete/retry boundaries",
+    "run full npm test and npm run check",
+    "run 10,000,000 seeded realistic real-code semantic mutations",
+    "regenerate runtime-root descriptor and shards",
+    "open PR without merging"
+  ],
+  "metrics": {
+    "qualification_cases": 10000000,
+    "qualification_score_min": 0.99,
+    "semantic_mismatches_required": 0,
+    "unsafe_active_required": 0,
+    "model_bytes_accepted_required": 0,
+    "duplicate_carrier_retry_accepted_required": 0,
+    "history_double_commit_required": 0,
+    "source_or_acceptance_reset_required": 0,
+    "deletion_false_green_each_retained_node_min": 1,
+    "existing_c15_c17_c18_regressions_required": 0
+  },
+  "claim_boundary": {
+    "semantic_qualification_is_not_physical_host_bridge_proof": true,
+    "bridge_provisioning_is_not_claimed": true,
+    "runtime_execution_plane_is_not_user_device": true,
+    "unavailable_host_capability_must_remain_fail_closed": true
+  }
+}

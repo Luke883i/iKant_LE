@@ -30,16 +30,22 @@
     "warm cache requires exact source_head, exact runtime_root and reopen verification",
     "remote read and round budgets remain bounded",
     "the existing runtime-root-verified materializer remains authoritative for member verification, atomic publish and reopen",
-    "live host probe, receipt-gated ACTIVE commit and end-to-end deadline remain unchanged"
+    "live host probe, receipt-gated ACTIVE commit and end-to-end deadline remain unchanged",
+    "carrier attempt is not REMOTE_HISTORY: failed or partial attempts remain quarantined and commit zero authoritative remote rounds",
+    "the single remote-round budget applies to REMOTE_HISTORY commit, not to bounded materially-distinct pre-commit carrier attempts",
+    "an executable carrier requires a physically observed source-to-runtime-execution-plane byte sink before COMPLETE"
   ],
   "budgets": {
     "max_remote_reads_v2": 40,
     "max_remote_rounds_v2": 1,
-    "deadline_ms": 120000
+    "deadline_ms": 120000,
+    "max_carrier_attempts": 6,
+    "max_remote_history_commits": 1
   },
   "receipt": "ikant-le-source-bound-transfer/v2",
   "compatibility": {
     "accept_v1_during_migration": true,
     "v1_materialization_receipt_unchanged": true
-  }
+  },
+  "convergence_contract": "contracts/fastboot-convergence.json"
 }
