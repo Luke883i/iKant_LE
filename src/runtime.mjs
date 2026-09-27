@@ -7,3 +7,5 @@ export { CHAT_BOOTSTRAP_DEADLINE_MS,validateSourceBoundTransfer,validateLocalMat
 export { classifyRuntimeAvailability,validateRuntimeAvailabilityDecision,availabilityFromBootstrapFailure,classifyTurnRelease } from './runtime-availability.mjs';
 export { DEADLINE_RESULT,isDeadlineTerminal,classifyDeadlineEvidence,admissionEpochRecoverable,canUseManualRecovery,canResumeActivation } from './deadline-integrity.mjs';
 
+
+export { FASTBOOT_CONVERGENCE_SCHEMA,FASTBOOT_ATTEMPT_SCHEMA,FASTBOOT_CARRIERS,FASTBOOT_CAPABILITY_FIELDS,fastbootReceiptDigest,selectFastbootCarrier,validateFastbootAttempt,validateFastbootConvergence } from './fastboot-convergence.mjs';

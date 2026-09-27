@@ -61,7 +61,10 @@
       "ikant-le-source-bound-transfer/v1",
       "ikant-le-source-bound-transfer/v2"
     ],
-    "post_accept_transport_authority": 0
+    "post_accept_transport_authority": 0,
+    "carrier_attempts_max": 6,
+    "remote_history_commits_max": 1,
+    "fastboot_convergence_contract": "contracts/fastboot-convergence.json"
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -232,7 +235,10 @@
     "materializer": "src/runtime-root-verified.mjs",
     "max_remote_reads": 40,
     "max_remote_rounds": 1,
-    "contract": "contracts/bootstrap-transfer-flex.json"
+    "contract": "contracts/bootstrap-transfer-flex.json",
+    "max_remote_history_commits": 1,
+    "max_carrier_attempts": 6,
+    "failed_or_partial_attempt_is_authoritative": false
   },
   "runtime_availability": {
     "contract": "contracts/runtime-availability-dod.json",
@@ -289,5 +295,28 @@
     "continuation_receipt": "ikant-le-activation-continuation/v1",
     "final_deadline_scope": "ORIGINAL_I_ACCEPT_TO_ACTIVE_COMMIT",
     "authority": 0
+  },
+  "post_accept_convergence": {
+    "schema": "ikant-le-host-observed-fastboot-convergence/v1",
+    "contract": "contracts/fastboot-convergence.json",
+    "authority": 0,
+    "capability_states": [
+      "PROVEN",
+      "UNKNOWN",
+      "UNAVAILABLE"
+    ],
+    "unknown_requires_probe": true,
+    "declared_capability_is_not_physical_proof": true,
+    "runtime_execution_plane_binding_required": true,
+    "carrier_attempts_quarantined_until_complete": true,
+    "materially_distinct_retry_required": true,
+    "remote_history_commits_max": 1,
+    "second_human_acceptance_required": false,
+    "preserve": [
+      "acceptance_event_id",
+      "source_head",
+      "deadline_origin"
+    ],
+    "downstream_owner": "C15+C18"
   }
 }
