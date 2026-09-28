@@ -318,5 +318,33 @@
       "deadline_origin"
     ],
     "downstream_owner": "C15+C18"
+  },
+  "session_chat_activation": {
+    "schema": "ikant-le-session-chat-activation-host/v1",
+    "contract": "contracts/session-chat-activation.json",
+    "profiles": [
+      "SESSION_CHAT_DEPLOYED",
+      "SESSION_CHAT_ONESHOT"
+    ],
+    "priority": [
+      "SESSION_CHAT_DEPLOYED",
+      "SESSION_CHAT_ONESHOT"
+    ],
+    "deployed": {
+      "repository_transfer_per_chat": false,
+      "first_authoritative_accept_observer": "LOCAL_NODE_RUNTIME",
+      "monotonic_origin_required": true,
+      "deployment_attestation_required": true,
+      "session_binding_required": true,
+      "runtime_execution_plane_binding_required": true
+    },
+    "oneshot": {
+      "repository_transfer_per_chat": true,
+      "external_acceptance_origin_required": true,
+      "origin_preflight_before_remote_history": true,
+      "physical_byte_ingress_required": true
+    },
+    "active_commit_readback_required": true,
+    "authority": 0
   }
 }

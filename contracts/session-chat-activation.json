@@ -1,0 +1,122 @@
+{
+  "schema": "ikant-le-session-chat-activation-contract/v1",
+  "slice": "C20.DUAL_PROFILE_SESSION_CHAT_ACTIVE",
+  "authority": 0,
+  "gold_sources": [
+    {
+      "source": "Luke883i/iKant PR #156",
+      "head": "0d35d3c7ec90ba0debdab9e582ecb9f17bb99f46",
+      "logic": [
+        "deploy once, bind per session",
+        "release/root attestation",
+        "no repository transfer per chat",
+        "post-commit authoritative readback"
+      ]
+    },
+    {
+      "source": "OpenAI MCP/Apps platform",
+      "logic": [
+        "remote MCP endpoint is deployment reality; local service requires an explicit tunnel/endpoint rather than model-side filesystem magic"
+      ]
+    }
+  ],
+  "profiles": {
+    "SESSION_CHAT_DEPLOYED": {
+      "priority": 1,
+      "definition": "A content-addressed iKant_LE runtime is already materialized in the runtime execution plane before the chat session binds.",
+      "per_chat": [
+        "bind deployed runtime to session",
+        "capture exact I ACCEPT at runtime ingress",
+        "create monotonic origin atomically",
+        "live probe",
+        "ACTIVE commit/readback"
+      ],
+      "repository_transfer_per_chat": false
+    },
+    "SESSION_CHAT_ONESHOT": {
+      "priority": 2,
+      "definition": "No deployed runtime is assumed. The host must provide acceptance-origin ingress and a physical byte-preserving path into the same runtime execution plane.",
+      "per_chat": [
+        "external acceptance-origin receipt before history commit",
+        "C19 carrier planning/quarantine",
+        "single remote history",
+        "physical byte ingress",
+        "C15 materialization",
+        "C18 continuation",
+        "ACTIVE commit/readback"
+      ],
+      "repository_transfer_per_chat": true
+    }
+  },
+  "global_dod": [
+    "C20_G1 exact first valid I ACCEPT has exactly one immutable acceptance_event_id and monotonic origin; no retry resets event/origin/epoch/deadline",
+    "C20_G2 DEPLOYED profile performs zero repository transfer per chat and binds only an already attested local runtime root",
+    "C20_G3 ONESHOT profile validates acceptance origin before committing REMOTE_HISTORY",
+    "C20_G4 source/Terms/runtime-root/session/execution-plane bindings are immutable and integrity contradictions dominate availability diagnostics",
+    "C20_G5 both profiles converge through real local root readback, live Node probe, single writer, original deadline, ACTIVE commit and ACTIVE readback",
+    "C20_G6 absence of required physical deployment/bridge capability remains fail-closed; no model-mediated bytes or fabricated receipt",
+    "C20_G7 semantic qualification >=99% and safety metrics exactly zero across 100,000,000 seeded complete mutations",
+    "C20_G8 real candidate runtime demonstrates SESSION_CHAT_DEPLOYED I ACCEPT -> persisted/read-back ACTIVE with no second human input"
+  ],
+  "intermediate_dod": [
+    "C20_I1 durable deployment attestation is materialization-bound and read-back verified",
+    "C20_I2 per-session binding references one deployment and one execution plane",
+    "C20_I3 deployed runtime captures acceptance origin at the same Node ingress that consumes exact I ACCEPT",
+    "C20_I4 oneshot origin preflight occurs before remote-history commit",
+    "C20_I5 deployed path bypasses per-chat transfer without bypassing local-root, probe, writer, deadline or ACTIVE commit gates",
+    "C20_I6 C15/C17/C18/C19 regressions remain green",
+    "C20_I7 diagnostic precedence is integrity contradiction -> deadline terminal -> host unavailable/block -> ACTIVE",
+    "C20_I8 final ACTIVE is reloaded from persisted ledger before any success response"
+  ],
+  "local_dod": [
+    "C20_L1 deployment attestation rejects wrong source head",
+    "C20_L2 deployment attestation rejects wrong runtime-root",
+    "C20_L3 deployment attestation rejects missing/replaced materialization receipt",
+    "C20_L4 deployment attestation rejects repository_transfer_per_chat=true",
+    "C20_L5 session binding rejects different deployment/runtime execution plane",
+    "C20_L6 acceptance-origin receipt requires MONOTONIC, observed_at_accept, origin_monotonic_ms and elapsed_to_runtime_entry_ms=0 in DEPLOYED profile",
+    "C20_L7 missing ONESHOT origin cannot create remote_history_sha256",
+    "C20_L8 deployed activation uses zero remote reads/rounds per chat",
+    "C20_L9 model-mediated bytes can never upgrade either profile",
+    "C20_L10 ACTIVE without local materialization readback is impossible",
+    "C20_L11 ACTIVE without live probe/writer is impossible",
+    "C20_L12 ACTIVE response requires persisted ledger readback of same epoch/status ACTIVE",
+    "C20_L13 source drift relative to deployed attestation fails integrity and requires redeploy/new admission",
+    "C20_L14 first substantive pending input resumes once only after read-back ACTIVE"
+  ],
+  "metrics": {
+    "semantic_cases": 100000000,
+    "seeded": true,
+    "qualification_score_min": 0.99,
+    "runtime_e2e_active_required": 1,
+    "unsafe_active_required": 0,
+    "semantic_mismatch_required": 0,
+    "origin_reset_required": 0,
+    "source_rebase_required": 0,
+    "history_double_commit_required": 0,
+    "model_bytes_accepted_required": 0,
+    "active_without_readback_required": 0,
+    "existing_c15_c17_c18_c19_regressions_required": 0
+  },
+  "development_checklist": [
+    "freeze current iKant_LE main and current iKant PR156 head",
+    "add deployment attestation + per-session binding module",
+    "make DEPLOYED runtime own acceptance origin at exact input ingress",
+    "preflight ONESHOT origin before remote history",
+    "make ACTIVE success use persisted ledger readback",
+    "add real materialize->attest->bind->I ACCEPT->ACTIVE runtime test",
+    "add source/root/session/plane negative tests",
+    "add 100M seeded complete semantic falsifier with deletion witnesses",
+    "run full tests/checks and C15/C17/C18/C19 regressions",
+    "regenerate content-addressed runtime-root",
+    "open PR without merging",
+    "separate repository/runtime proof from physical ChatGPT app registration proof"
+  ],
+  "claim_boundary": {
+    "runtime_execution_plane_local_is_not_user_device_local": true,
+    "semantic_and_ci_proof_is_not_physical_chatgpt_registration": true,
+    "deployed_profile_requires_real_preexisting_deployment": true,
+    "oneshot_profile_requires_real_acceptance_ingress_and_byte_ingress": true,
+    "human_ui_send_time_is_not_claimed": "deadline origin is the first authoritative runtime observation that validates exact I ACCEPT"
+  }
+}\n

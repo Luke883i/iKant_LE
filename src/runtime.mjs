@@ -9,3 +9,5 @@ export { DEADLINE_RESULT,isDeadlineTerminal,classifyDeadlineEvidence,admissionEp
 
 
 export { FASTBOOT_CONVERGENCE_SCHEMA,FASTBOOT_ATTEMPT_SCHEMA,FASTBOOT_CARRIERS,FASTBOOT_CAPABILITY_FIELDS,fastbootReceiptDigest,selectFastbootCarrier,validateFastbootAttempt,validateFastbootConvergence } from './fastboot-convergence.mjs';
+
+export { SESSION_CHAT_PROFILE,DEPLOYMENT_ATTESTATION_SCHEMA,DEPLOYED_SESSION_BINDING_SCHEMA,sessionChatReceiptDigest,buildAcceptanceOriginReceipt,validateAcceptanceOriginAtIngress,attestDeployedRuntime,readDeploymentAttestation,validateDeploymentAttestation,buildDeployedSessionBinding,validateDeployedSessionBinding,validateDeployedActivationEvidence,classifySessionChatActivation } from './session-chat-activation.mjs';

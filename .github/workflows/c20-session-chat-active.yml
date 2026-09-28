@@ -1,0 +1,39 @@
+name: c20-session-chat-active
+on:
+  push:
+    branches: ['agent/c20-dual-profile-session-chat-active']
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'contracts/session-chat-activation.json'
+      - 'contracts/host-shell.json'
+      - 'src/session-chat-activation.mjs'
+      - 'src/runtime-command.mjs'
+      - 'src/runtime-core.mjs'
+      - 'src/runtime.mjs'
+      - 'src/state.mjs'
+      - 'runtime-root/**'
+      - 'tests/c20-session-chat-activation.test.mjs'
+      - 'scripts/c20-session-chat-activation-falsify.c'
+      - 'scripts/check.mjs'
+      - 'package.json'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm test
+      - run: npm run check
+      - run: npm run falsify:c15
+      - run: npm run falsify:c17
+      - run: npm run falsify:c18
+      - run: npm run falsify:c19
+      - name: C20 100M seeded complete semantic falsification
+        run: |
+          cc -O3 scripts/c20-session-chat-activation-falsify.c -o /tmp/c20-falsify
+          /tmp/c20-falsify 100000000 154902020260928 | tee /tmp/c20-100m.json
+      - name: C20 real deployed runtime ACTIVE proof
+        run: node --test --test-concurrency=1 tests/c20-session-chat-activation.test.mjs

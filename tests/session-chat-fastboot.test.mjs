@@ -26,10 +26,10 @@ test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime 
   assert.equal(b.session_chat_profile.id,'SESSION_CHAT');
   assert.equal(b.session_chat_profile.managed_local_model_required,false);
   const d=runtimeRootDescriptor(ROOT);
-  assert.equal(d.member_count,41);
+  assert.equal(d.member_count,43);
   assert.equal(d.shards.length,7);
-  assert.equal(d.runtime_root_sha256,'5b6010c2f7a0d93937e0778e58da17907aeee7f3d35b3acb133dd1db63331895');
-  assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));assert.ok(d.members.some(x=>x.path==='contracts/fastboot-convergence.json'));assert.ok(d.members.some(x=>x.path==='src/fastboot-convergence.mjs'));assert.ok(d.members.some(x=>x.path==='src/runtime-availability.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/runtime-availability-dod.json'));assert.ok(d.members.some(x=>x.path==='src/deadline-integrity.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/deadline-integrity.json'));assert.ok(d.members.some(x=>x.path==='contracts/activation-continuation.json'));
+  assert.equal(d.runtime_root_sha256,'cf2a71fdac486f1817a0634d6d403e565963a9071f25395e690e6ac2d6142113');
+  assert.ok(d.members.some(x=>x.path==='contracts/session-chat-activation.json'));assert.ok(d.members.some(x=>x.path==='src/session-chat-activation.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));assert.ok(d.members.some(x=>x.path==='contracts/fastboot-convergence.json'));assert.ok(d.members.some(x=>x.path==='src/fastboot-convergence.mjs'));assert.ok(d.members.some(x=>x.path==='src/runtime-availability.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/runtime-availability-dod.json'));assert.ok(d.members.some(x=>x.path==='src/deadline-integrity.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/deadline-integrity.json'));assert.ok(d.members.some(x=>x.path==='contracts/activation-continuation.json'));
   assert.deepEqual(validateRuntimeRootDescriptor(d),{ok:true,errors:[]});
 });
 
@@ -52,12 +52,12 @@ test('C13 materializes atomically and reopens the exact runtime root',()=>{
   const sink=path.join(base,'runtime');
   try{
     const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),transferReceiptSha256:'f'.repeat(64)});
-    assert.equal(receipt.runtime_root_sha256,'5b6010c2f7a0d93937e0778e58da17907aeee7f3d35b3acb133dd1db63331895');
-    assert.equal(receipt.member_count,41);
+    assert.equal(receipt.runtime_root_sha256,'cf2a71fdac486f1817a0634d6d403e565963a9071f25395e690e6ac2d6142113');
+    assert.equal(receipt.member_count,43);
     assert.equal(receipt.shard_count,7);
     assert.equal(receipt.atomic_publish,true);
     assert.equal(receipt.reopen_verified,true);
-    assert.ok(fs.existsSync(path.join(sink,'.ikant','materialization.json')));
+    assert.ok(fs.existsSync(path.join(sink,'.ikant','materialization.json')));assert.equal(gitBlobSha1(fs.readFileSync(path.join(sink,'src','runtime-root-verified.mjs'))),d.loader.blob_sha1);
     assert.equal(gitBlobSha1(fs.readFileSync(path.join(sink,'src','runtime-command.mjs'))),d.members.find(x=>x.path==='src/runtime-command.mjs').blob_sha1);
   }finally{fs.rmSync(base,{recursive:true,force:true});}
 });
