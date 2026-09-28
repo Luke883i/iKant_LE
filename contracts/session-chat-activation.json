@@ -7,7 +7,8 @@
     "iKant PR #156 deploy-once hosted SESSION_CHAT reference runtime",
     "OpenAI Apps SDK / MCP Apps remote-server deployment model",
     "Secure MCP Tunnel for private/local MCP runtimes",
-    "existing iKant_LE C15/C17/C18/C19 safety gates"
+    "existing iKant_LE C15/C17/C18/C19 safety gates",
+    "iKant_LE PR #24 hardening mined selectively: deployment/profile integrity classification, persisted bootstrap metadata, core ACTIVE readback"
   ],
   "profiles": {
     "SESSION_CHAT_DEPLOYED": {
@@ -90,7 +91,9 @@
     "C20_I9 post-ACTIVE real runtime turn readback",
     "C20_I10 MCP reference package and deployment instructions",
     "C20_I11 full C15/C17/C18/C19 regression",
-    "C20_I12 100M dual-profile mutation/deletion oracle"
+    "C20_I12 100M dual-profile mutation/deletion oracle",
+    "C20_I13 deployment/profile binding contradictions classify BLOCKED_INTEGRITY before host availability",
+    "C20_I14 canonical runCommand/resumeActivation verify persisted same-epoch ACTIVE readback before success"
   ],
   "local_dod": [
     "C20_L1 deployment HEAD must equal requested source pin",
@@ -109,7 +112,9 @@
     "C20_L14 second acceptance for the same session is rejected",
     "C20_L15 deployment tamper or reference-root drift fails closed",
     "C20_L16 MCP app exposes open to model/app and accept/turn as app-only",
-    "C20_L17 no repository fetch is required per deployed session"
+    "C20_L17 no repository fetch is required per deployed session",
+    "C20_L18 repository_transfer_per_chat/deployed_session_binding/deployment_model/profile corruption is integrity, not DEGRADED availability",
+    "C20_L19 every core ACTIVE success path requires same-epoch loadState readback with bootstrap terminal ACTIVE"
   ],
   "checklist": [
     "freeze exact iKant_LE main and iKant PR156 head",
@@ -140,13 +145,15 @@
     "deadline_origin_reconstruction_required": 0,
     "existing_c15_c17_c18_c19_regressions_required": 0,
     "repository_dod_target": "REFERENCE_SESSION_CHAT_ACTIVE_RUNTIME",
-    "physical_dod_target": "REGISTERED_CHATGPT_SESSION_ACTIVE_ROUNDTRIP"
+    "physical_dod_target": "REGISTERED_CHATGPT_SESSION_ACTIVE_ROUNDTRIP",
+    "active_without_core_readback_required": 0
   },
   "claim_boundary": {
     "repository_tests_are_not_chatgpt_registration": true,
     "semantic_mutation_is_not_physical_bridge_proof": true,
     "local_to_deployment_runtime_is_not_user_device_locality": true,
     "secure_mcp_tunnel_or_remote_https_is_external_deployment": true,
-    "one_shot_host_unavailable_must_remain_non_active": true
+    "one_shot_host_unavailable_must_remain_non_active": true,
+    "pr24_mined_not_merged_as_parallel_engine": true
   }
 }

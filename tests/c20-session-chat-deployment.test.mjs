@@ -7,6 +7,7 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {deploySessionChatRuntime,readSessionChatDeployment,openDeployedSession,acceptDeployedSession,runDeployedSessionTurn} from '../src/session-chat-deployment.mjs';
 import {validateAcceptanceOriginReceipt} from '../src/bootstrap-semantic.mjs';
+import {availabilityFromBootstrapFailure} from '../src/runtime-availability.mjs';
 
 const root=path.resolve(new URL('..',import.meta.url).pathname);
 const temp=()=>fs.mkdtempSync(path.join(os.tmpdir(),'ikant-le-c20-'));
@@ -38,4 +39,12 @@ test('C20 deployment tamper fails closed before session binding',{concurrency:fa
 
 test('C20 reference MCP package keeps acceptance and turns app-only',()=>{
  const server=fs.readFileSync(path.join(root,'plugins/ikant-le-session-chat/server/server.mjs'),'utf8'),manifest=JSON.parse(fs.readFileSync(path.join(root,'plugins/ikant-le-session-chat/plugin.json'),'utf8'));assert.equal(manifest.name,'ikant-le-session-chat');assert.match(server,/ikant_le_open/);assert.match(server,/ikant_le_accept/);assert.match(server,/ikant_le_turn/);assert.match(server,/visibility:\['model','app'\]/);assert.ok((server.match(/visibility:\['app'\]/g)||[]).length>=2);
+});
+
+
+test('C20 mined PR24 hardening: deployment binding contradiction dominates availability',()=>{
+ const d=availabilityFromBootstrapFailure({accepted:true,sourceBound:true,consentValid:true,evidenceValidation:{ok:false,deadline_result:'DEADLINE_PASS',errors:['deployed_session_binding','bridge_observed']},probe:null,writer:true});
+ assert.equal(d.state,'BLOCKED_INTEGRITY');
+ assert.ok(d.integrity_codes.includes('TRANSFER_IDENTITY_MISMATCH'));
+ assert.equal(d.fresh_chat_required,true);
 });
