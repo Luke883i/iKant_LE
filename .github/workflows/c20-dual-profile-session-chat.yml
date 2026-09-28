@@ -1,0 +1,52 @@
+name: c20-dual-profile-session-chat
+on:
+  push:
+    branches: ['agent/c20-dual-profile-session-chat']
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'ADMISSION.json'
+      - 'contracts/session-chat-activation.json'
+      - 'contracts/host-shell.json'
+      - 'src/deadline-integrity.mjs'
+      - 'src/bootstrap-semantic.mjs'
+      - 'src/session-chat-deployment.mjs'
+      - 'src/runtime.mjs'
+      - 'runtime-root/**'
+      - 'plugins/ikant-le-session-chat/**'
+      - 'scripts/session-chat-runtime-cli.mjs'
+      - 'scripts/c20-dual-profile-falsify.c'
+      - 'tests/c20-session-chat-deployment.test.mjs'
+      - 'package.json'
+      - 'scripts/check.mjs'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: npm run check
+      - run: npm run check:mcp
+      - run: npm run falsify:c15
+      - run: npm run falsify:c17
+      - run: npm run falsify:c18
+      - run: npm run falsify:c19
+      - run: npm run falsify:c20
+      - name: Install pinned MCP reference dependencies
+        run: npm --prefix plugins/ikant-le-session-chat/server install --ignore-scripts --no-audit --no-fund
+      - name: Deploy reference runtime and smoke MCP server
+        run: |
+          export IKANT_LE_DEPLOYMENT_ROOT="$RUNNER_TEMP/ikant-le-deployment"
+          printf '{"deployment_id":"CI-C20"}' | node scripts/session-chat-runtime-cli.mjs deploy > "$RUNNER_TEMP/deploy.json"
+          PORT=8788 IKANT_LE_DEPLOYMENT_ROOT="$IKANT_LE_DEPLOYMENT_ROOT" npm --prefix plugins/ikant-le-session-chat/server start > "$RUNNER_TEMP/mcp.log" 2>&1 &
+          pid=$!
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8788/ > "$RUNNER_TEMP/mcp-health.json"; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8788/
+          kill "$pid"

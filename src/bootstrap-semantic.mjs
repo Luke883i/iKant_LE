@@ -26,6 +26,10 @@ export function validateActivationContinuationReceipt(receipt,{sourceHead,termsD
 export function validateAcceptanceOriginReceipt(receipt,{sourceHead,termsDigest,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS}={}){
   const classified=classifyDeadlineEvidence(receipt,{sourceHead,termsDigest,deadlineMs});
   if(classified.result!==DEADLINE_RESULT.PASS)return{ok:false,...classified,receipt_sha256:receipt?.receipt_sha256||null};
+  if(receipt?.schema==='ikant-le-acceptance-origin/v2'){
+    const t=receipt?.origin_ticket,x=structuredClone(t||{});delete x.ticket_sha256;
+    if(!HEX64.test(String(t?.ticket_sha256||''))||sha256(Buffer.from(JSON.stringify(x)))!==t.ticket_sha256)return{ok:false,result:DEADLINE_RESULT.ORIGIN_INVALID,terminal:true,reason:'origin_ticket_digest',receipt_sha256:receipt?.receipt_sha256||null};
+  }
   if(!HEX64.test(String(receipt?.receipt_sha256||''))||digestWithout(receipt)!==receipt.receipt_sha256)return{ok:false,result:DEADLINE_RESULT.ORIGIN_INVALID,terminal:true,reason:'receipt_digest',receipt_sha256:receipt?.receipt_sha256||null};
   return{ok:true,result:DEADLINE_RESULT.PASS,terminal:false,elapsed_ms:classified.elapsed_ms,event_id:receipt.event_id,receipt_sha256:receipt.receipt_sha256};
 }

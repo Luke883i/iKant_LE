@@ -1,0 +1,159 @@
+{
+  "schema": "ikant-le-session-chat-activation-contract/v1",
+  "slice": "C20.DUAL_PROFILE_SESSION_CHAT_ACTIVE",
+  "authority": 0,
+  "objective": "Reach a persisted/read-back iKant_LE ACTIVE state inside a session-chat runtime without fabricating host capabilities.",
+  "frontier_inputs": [
+    "iKant PR #156 deploy-once hosted SESSION_CHAT reference runtime",
+    "OpenAI Apps SDK / MCP Apps remote-server deployment model",
+    "Secure MCP Tunnel for private/local MCP runtimes",
+    "existing iKant_LE C15/C17/C18/C19 safety gates",
+    "iKant_LE PR #24 hardening mined selectively: deployment/profile integrity classification, persisted bootstrap metadata, core ACTIVE readback"
+  ],
+  "profiles": {
+    "SESSION_CHAT_DEPLOYED": {
+      "priority": 1,
+      "deployment_model": "DEPLOY_ONCE_ATTEST_AND_BIND_PER_SESSION",
+      "repository_transfer_per_chat": false,
+      "acceptance_origin_owner": "DEPLOYED_SESSION_INGRESS",
+      "per_session_root": "LOCAL_RUNTIME_ROOT_FROM_DEPLOYED_CONTENT_ADDRESSED_STORE",
+      "required": [
+        "DEPLOYMENT_PIN_ATTESTED",
+        "DEPLOYMENT_STORE_REOPEN",
+        "SESSION_BINDING",
+        "EXACT_ACCEPT",
+        "MONOTONIC_ORIGIN_TICKET",
+        "SESSION_WORKSPACE_REVALIDATED",
+        "LIVE_PROBE",
+        "WRITER_PERSISTENCE",
+        "ACTIVE_COMMIT_READBACK"
+      ],
+      "external_physical_requirement": "REMOTE_MCP_APP_OR_SECURE_MCP_TUNNEL_REGISTERED_WITH_CHATGPT"
+    },
+    "SESSION_CHAT_ONESHOT": {
+      "priority": 2,
+      "deployment_model": "PER_SESSION_FASTBOOT",
+      "repository_transfer_per_chat": true,
+      "acceptance_origin_owner": "HOST_ACCEPTANCE_INGRESS",
+      "required": [
+        "EXACT_ACCEPT",
+        "MONOTONIC_ORIGIN_AT_INGEST",
+        "C19_CAPABILITY_PLAN",
+        "QUARANTINED_ATTEMPT",
+        "SINGLE_REMOTE_HISTORY",
+        "PHYSICAL_BYTE_INGRESS",
+        "C15_LOCAL_ROOT_READBACK",
+        "C18_SAME_EPOCH_CONTINUATION",
+        "LIVE_PROBE",
+        "ACTIVE_COMMIT_READBACK"
+      ],
+      "fail_closed_when": [
+        "ACCEPTANCE_INGRESS_UNAVAILABLE",
+        "BYTE_INGRESS_UNAVAILABLE"
+      ]
+    }
+  },
+  "irreducible_lattice": [
+    "CONSENT_ORIGIN",
+    "SOURCE_IDENTITY",
+    "EXECUTION_PLANE_LOCALITY",
+    "LOCAL_ROOT_OR_DEPLOYED_WORKSPACE_READBACK",
+    "ORIGINAL_DEADLINE_CONTINUITY",
+    "LIVE_RUNTIME_PERSISTENCE",
+    "ACTIVE_COMMIT_READBACK"
+  ],
+  "diagnostic_precedence": [
+    "INTEGRITY_CONTRADICTION",
+    "HOST_UNAVAILABLE",
+    "BLOCKED_REQUIREMENT",
+    "ACTIVE"
+  ],
+  "global_dod": [
+    "C20_G1 deployed profile reaches real runtime ACTIVE with zero per-chat repository acquisition",
+    "C20_G2 exact I ACCEPT is observed and a monotonic origin ticket is persisted before per-session materialization",
+    "C20_G3 acceptance origin receipt v2 cryptographically binds the persisted origin ticket and measured runtime-entry elapsed",
+    "C20_G4 deployed source pin, runtime-root identity and reference materialization reopen are revalidated before each session",
+    "C20_G5 one-shot profile remains C19+C15+C18 and never launders hosted attestation into local materialization",
+    "C20_G6 no second acceptance, origin reset, source rebase, deadline reset, model-mediated bytes, double history or false ACTIVE",
+    "C20_G7 ACTIVE requires live Node probe, single writer/persistence and persisted/read-back ACTIVE commit",
+    "C20_G8 physical ChatGPT ACTIVE is claimed only after registered MCP app or Secure MCP Tunnel roundtrip is observed",
+    "C20_G9 100,000,000 seeded semantic mutation cases pass with zero mismatches and zero unsafe ACTIVE"
+  ],
+  "intermediate_dod": [
+    "C20_I1 deployment store exact-object attestation",
+    "C20_I2 reference runtime materialization and reopen",
+    "C20_I3 per-session binding and exact Terms presentation",
+    "C20_I4 acceptance-origin ticket persisted at ingress",
+    "C20_I5 warm-cache source-bound transfer and C19 convergence binding",
+    "C20_I6 per-session content-addressed materialization",
+    "C20_I7 v2 deadline-origin validation",
+    "C20_I8 real runCommand I ACCEPT to ACTIVE",
+    "C20_I9 post-ACTIVE real runtime turn readback",
+    "C20_I10 MCP reference package and deployment instructions",
+    "C20_I11 full C15/C17/C18/C19 regression",
+    "C20_I12 100M dual-profile mutation/deletion oracle",
+    "C20_I13 deployment/profile binding contradictions classify BLOCKED_INTEGRITY before host availability",
+    "C20_I14 canonical runCommand/resumeActivation verify persisted same-epoch ACTIVE readback before success"
+  ],
+  "local_dod": [
+    "C20_L1 deployment HEAD must equal requested source pin",
+    "C20_L2 all 8 transport objects must match descriptor Git blob identities",
+    "C20_L3 deployment transfer and deployment attestation must read back with valid digests",
+    "C20_L4 reference runtime must reopen every member at exact blob identity",
+    "C20_L5 non-exact acceptance is rejected before any acceptance state is persisted",
+    "C20_L6 acceptance-origin ticket is fsynced before session runtime materialization",
+    "C20_L7 origin v2 rejects ticket digest drift, event/source/Terms drift, elapsed regression or reconstructed clock",
+    "C20_L8 deployed session transfer mode is WARM_CACHE_EXACT with zero remote rounds",
+    "C20_L9 C19 convergence commits exactly one history and forbids model-mediated bytes",
+    "C20_L10 session materialization receipt binds the exact warm transfer",
+    "C20_L11 runCommand consumes exactly one acceptance event",
+    "C20_L12 final ledger readback status is ACTIVE and deadline result is PASS",
+    "C20_L13 a real post-ACTIVE runtime turn executes from the session-local materialized root",
+    "C20_L14 second acceptance for the same session is rejected",
+    "C20_L15 deployment tamper or reference-root drift fails closed",
+    "C20_L16 MCP app exposes open to model/app and accept/turn as app-only",
+    "C20_L17 no repository fetch is required per deployed session",
+    "C20_L18 repository_transfer_per_chat/deployed_session_binding/deployment_model/profile corruption is integrity, not DEGRADED availability",
+    "C20_L19 every core ACTIVE success path requires same-epoch loadState readback with bootstrap terminal ACTIVE"
+  ],
+  "checklist": [
+    "freeze exact iKant_LE main and iKant PR156 head",
+    "mine current OpenAI Apps SDK/MCP deployment constraints",
+    "implement deployment store attestation",
+    "implement per-session local-root materialization from deployed store",
+    "implement monotonic acceptance-origin ticket and v2 receipt",
+    "extend deadline validator without weakening v1",
+    "bind deployed path through existing C19/C15/C17/C18 gates",
+    "add post-ACTIVE turn proof",
+    "add MCP reference package and CLI bridge",
+    "run full npm test and check",
+    "run C15/C17/C18/C19 regressions",
+    "compile and execute C20 100M seeded oracle",
+    "regenerate runtime-root shards and descriptor",
+    "open PR without merge",
+    "perform external registered ChatGPT app or Secure MCP Tunnel roundtrip before claiming physical session-chat ACTIVE"
+  ],
+  "metrics": {
+    "semantic_cases": 100000000,
+    "semantic_seed": "0xC20D15EA20260928",
+    "semantic_mismatches_required": 0,
+    "unsafe_active_required": 0,
+    "invalid_controls_killed_required": "all",
+    "deletion_witness_each_retained_node_min": 1,
+    "deployed_per_chat_remote_rounds_required": 0,
+    "deployed_second_acceptance_required": 0,
+    "deadline_origin_reconstruction_required": 0,
+    "existing_c15_c17_c18_c19_regressions_required": 0,
+    "repository_dod_target": "REFERENCE_SESSION_CHAT_ACTIVE_RUNTIME",
+    "physical_dod_target": "REGISTERED_CHATGPT_SESSION_ACTIVE_ROUNDTRIP",
+    "active_without_core_readback_required": 0
+  },
+  "claim_boundary": {
+    "repository_tests_are_not_chatgpt_registration": true,
+    "semantic_mutation_is_not_physical_bridge_proof": true,
+    "local_to_deployment_runtime_is_not_user_device_locality": true,
+    "secure_mcp_tunnel_or_remote_https_is_external_deployment": true,
+    "one_shot_host_unavailable_must_remain_non_active": true,
+    "pr24_mined_not_merged_as_parallel_engine": true
+  }
+}

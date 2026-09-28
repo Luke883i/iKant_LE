@@ -318,5 +318,27 @@
       "deadline_origin"
     ],
     "downstream_owner": "C15+C18"
+  },
+  "session_chat_activation": {
+    "contract": "contracts/session-chat-activation.json",
+    "primary_profile": "SESSION_CHAT_DEPLOYED",
+    "fallback_profile": "SESSION_CHAT_ONESHOT",
+    "deployed_runtime": {
+      "authority": 0,
+      "repository_transfer_per_chat": false,
+      "acceptance_origin_at_ingest": true,
+      "deployment_pin_attestation_required": true,
+      "session_local_root_readback_required": true,
+      "live_probe_required": true,
+      "active_commit_readback_required": true
+    },
+    "oneshot": {
+      "authority": 0,
+      "owner": "C19+C15+C18",
+      "host_acceptance_ingress_required": true,
+      "host_byte_ingress_required": true,
+      "unavailable_must_fail_closed": true
+    },
+    "physical_chatgpt_registration_is_repository_fact": false
   }
 }

@@ -1,0 +1,24 @@
+import {createServer} from 'node:http';
+import {spawn} from 'node:child_process';
+import {dirname,resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {readFileSync} from 'node:fs';
+import {registerAppResource,registerAppTool,RESOURCE_MIME_TYPE} from '@modelcontextprotocol/ext-apps/server';
+import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
+import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import {z} from 'zod';
+const here=dirname(fileURLToPath(import.meta.url)),repoRoot=resolve(process.env.IKANT_LE_REPO_ROOT||resolve(here,'../../..')),cli=resolve(repoRoot,'scripts/session-chat-runtime-cli.mjs'),widget=readFileSync(resolve(here,'public/ikant-le-app.html'),'utf8'),URI='ui://ikant-le/session-chat/v1.html';
+function session(ctx={}){const id=String(ctx?._meta?.['openai/session']||'');if(!id)throw new Error('ChatGPT session metadata unavailable');return id;}
+function runtime(op,payload){return new Promise((ok,bad)=>{const child=spawn(process.execPath,[cli,op],{cwd:repoRoot,env:{...process.env,IKANT_LE_REPO_ROOT:repoRoot},stdio:['pipe','pipe','pipe']});let out='',err='';child.stdout.setEncoding('utf8');child.stderr.setEncoding('utf8');child.stdout.on('data',x=>{out+=x;if(out.length>8*1024*1024)child.kill();});child.stderr.on('data',x=>err+=x);child.on('error',bad);child.on('close',code=>{if(code!==0)return bad(new Error(err.slice(-4000)||'runtime bridge failed'));try{ok(JSON.parse(out));}catch(e){bad(e);}});child.stdin.end(JSON.stringify(payload));});}
+function result(x){return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:x}};}
+function appMeta(resource=false){return resource?{ui:{resourceUri:URI,visibility:['app']},'openai/widgetAccessible':true}:{ui:{visibility:['app']},'openai/widgetAccessible':true};}
+function createMcp(){const s=new McpServer({name:'ikant-le-session-chat',version:'0.1.0'});
+ registerAppResource(s,'ikant-le',URI,{},async()=>({contents:[{uri:URI,mimeType:RESOURCE_MIME_TYPE,text:widget,_meta:{ui:{prefersBorder:true},'openai/widgetDescription':'Canonical deployed iKant_LE session surface'}}]}));
+ registerAppTool(s,'ikant_le_open',{title:'Open iKant_LE',description:'Open deployed iKant_LE session surface without accepting Terms.',inputSchema:{},outputSchema:{state:z.string()},annotations:{readOnlyHint:true,destructiveHint:false,openWorldHint:false},_meta:{ui:{resourceUri:URI,visibility:['model','app']}}},async(_a,ctx)=>result(await runtime('open',{session_id:session(ctx)})));
+ registerAppTool(s,'ikant_le_accept',{title:'Accept iKant_LE Terms',description:'App-only exact human acceptance.',inputSchema:{human_input:z.string()},outputSchema:{state:z.string()},annotations:{readOnlyHint:false,destructiveHint:false,openWorldHint:false,idempotentHint:false},_meta:appMeta(true)},async(a,ctx)=>result(await runtime('accept',{session_id:session(ctx),human_input:a.human_input})));
+ registerAppTool(s,'ikant_le_turn',{title:'Run iKant_LE turn',description:'App-only canonical ACTIVE turn.',inputSchema:{input:z.string().min(1)},outputSchema:{state:z.string()},annotations:{readOnlyHint:false,destructiveHint:false,openWorldHint:false,idempotentHint:false},_meta:appMeta(true)},async(a,ctx)=>result(await runtime('turn',{session_id:session(ctx),input:a.input})));
+ return s;
+}
+const port=Number(process.env.PORT||8788),MCP='/mcp';
+const http=createServer(async(req,res)=>{const u=new URL(req.url||'/','http://'+(req.headers.host||'localhost'));if(req.method==='OPTIONS'&&u.pathname===MCP){res.writeHead(204,{'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, DELETE, OPTIONS','Access-Control-Allow-Headers':'content-type, mcp-session-id','Access-Control-Expose-Headers':'Mcp-Session-Id'});res.end();return;}if(req.method==='GET'&&u.pathname==='/'){res.writeHead(200,{'content-type':'application/json'}).end(JSON.stringify({service:'ikant-le-session-chat',mcp:MCP}));return;}if(u.pathname===MCP&&['POST','GET','DELETE'].includes(req.method||'')){res.setHeader('Access-Control-Allow-Origin','*');res.setHeader('Access-Control-Expose-Headers','Mcp-Session-Id');const s=createMcp(),t=new StreamableHTTPServerTransport({sessionIdGenerator:undefined,enableJsonResponse:true});res.on('close',()=>{t.close();s.close();});try{await s.connect(t);await t.handleRequest(req,res);}catch(e){if(!res.headersSent)res.writeHead(500).end(String(e));}return;}res.writeHead(404).end('Not Found');});
+http.listen(port,()=>console.log('iKant_LE MCP server listening on http://localhost:'+port+MCP));
