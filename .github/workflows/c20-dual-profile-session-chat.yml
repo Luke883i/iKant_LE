@@ -1,4 +1,7 @@
 name: c20-dual-profile-session-chat
+permissions:
+  contents: read
+  pull-requests: write
 on:
   push:
     branches: ['agent/c20-dual-profile-session-chat']
@@ -28,7 +31,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm test
+      - name: Run npm test
+        id: tests
+        continue-on-error: true
+        run: npm test > /tmp/c20-test.log 2>&1
+      - name: Report test failure
+        if: steps.tests.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo '<!-- ikant-le-c20-test-diagnostic -->'; echo '## C20 npm test diagnostic'; echo; tail -c 45000 /tmp/c20-test.log; } > /tmp/c20-comment.md
+          gh pr comment 23 --body-file /tmp/c20-comment.md
+          exit 1
       - run: npm run check
       - run: npm run check:mcp
       - run: npm run falsify:c15
