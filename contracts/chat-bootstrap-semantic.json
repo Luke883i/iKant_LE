@@ -116,7 +116,7 @@
   "deadline_ms": 120000,
   "active_predicate": [
     "C21 host-adapter ledger/step transcript validated",
-    "every loader/shard bridge receipt reopened from actual local bytes and samehash validated",
+    "host-attested bridge transcript bound to transport identities; materializer verifies loader/shards and runtime reopens published loader plus every runtime member",
     "accepted current Terms",
     "source-bound transfer receipt valid",
     "local materialization receipt valid and transfer-bound",

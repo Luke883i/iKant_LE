@@ -75,8 +75,9 @@
     "unchanged_failed_decision_retry_forbidden": true,
     "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
     "channel_receipt_is_physical_proof": false,
-    "runtime_reopen_transport_objects_required": true,
-    "production_probe_injection_forbidden": true
+    "production_probe_injection_forbidden": true,
+    "materializer_verifies_transport_loader_and_shards": true,
+    "runtime_reopens_published_loader_and_members_required": true
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -356,8 +357,9 @@
     "authority": 0,
     "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
     "channel_receipt_is_physical_proof": false,
-    "runtime_reopen_required": true,
     "production_probe_owner": "LOCAL_RUNTIME",
-    "production_probe_injection_forbidden": true
+    "production_probe_injection_forbidden": true,
+    "materializer_verifies_transport_loader_and_shards": true,
+    "runtime_root_readback_required": true
   }
 }

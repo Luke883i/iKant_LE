@@ -272,9 +272,10 @@
     "executed_code_provenance_required_for_active_probe",
     "no_side_infrastructure_during_user_bootstrap",
     "host_channel_receipt_is_attestation_not_physical_proof",
-    "runtime_reopens_exact_transport_objects_before_bridge_truth",
     "executed_provenance_matches_exact_descriptor_member_identities",
     "production_live_probe_cannot_be_caller_injected",
-    "pre_runtime_host_adapter_is_authority_zero_and_not_runtime_identity"
+    "pre_runtime_host_adapter_is_authority_zero_and_not_runtime_identity",
+    "materializer_verifies_transport_loader_and_shards_before_publish",
+    "runtime_reopens_published_loader_and_members_before_active"
   ]
 }

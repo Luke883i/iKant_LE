@@ -40,8 +40,8 @@ test('C21 one NEXT executes once; unchanged evidence cannot retry; changed evide
 test('C22 byte bridge receipt is insufficient until runtime reopens the actual local bytes',()=>{
  const bytes=fs.readFileSync(new URL('../src/runtime-root-verified.mjs',import.meta.url)),blob=crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\0')).update(bytes).digest('hex');
  const r=issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',sourceBlobSha1:blob,sourceObjectIdentity:'source:1',sourceBytes:bytes,localBytes:bytes,localObjectId:'workspace:src/runtime-root-verified.mjs'});
- const unobserved=validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',blobSha1:blob});assert.equal(unobserved.ok,false);assert.ok(unobserved.errors.includes('runtime_reopen_required'));
- assert.equal(validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',blobSha1:blob,localBytes:bytes}).ok,true);
+ const attested=validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',blobSha1:blob});assert.equal(attested.ok,true);assert.equal(attested.physical_reopen_verified,false);assert.equal(r.physical_verification,false);
+ const reopened=validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',blobSha1:blob,localBytes:bytes});assert.equal(reopened.ok,true);assert.equal(reopened.physical_reopen_verified,true);
  assert.throws(()=>issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',sourceBlobSha1:blob,sourceObjectIdentity:'source:1',sourceBytes:bytes,localBytes:Buffer.from('forged'),localObjectId:'x'}),/mismatch/);
 });
 

@@ -39,7 +39,7 @@
     "failed or partial attempts never become authoritative REMOTE_HISTORY",
     "no side infrastructure is invented during user bootstrap",
     "the pre-runtime host adapter owns carrier selection because the runtime cannot select the carrier required to materialize itself",
-    "the local runtime must reopen every loader/shard object before accepting byte-bridge evidence",
+    "the authoritative materializer must verify transport loader/shard identities, and the local runtime must reopen the published loader plus every materialized runtime member before ACTIVE",
     "the production live probe is runtime-owned and cannot be substituted by a caller callback",
     "executed provenance must match exact descriptor blob identities and byte counts"
   ],
@@ -66,7 +66,7 @@
     "C22_G2 channel planning is host-attested and explicitly non-physical; runtime physical truth starts at local reopen",
     "C21_G3 one canonical NEXT executes or probes once",
     "C21_G4 unchanged failed decision cannot replay until evidence changes",
-    "C22_G5 every source object has a bridge receipt and runtime-owned local reopen/samehash before materialization evidence is accepted",
+    "C22_G5 every source transport object has a host-attested bridge receipt; the materializer verifies loader/shards and the runtime reopens the published loader plus every runtime member before ACTIVE",
     "C22_G6 executed-code provenance matches exact descriptor blob identities and the live probe is not caller-injectable",
     "C21_G7 no second acceptance, source reset, deadline reset, model-mediated bytes, false ACTIVE or hosted-profile laundering",
     "C21_G8 ACTIVE requires live Node probe, writer persistence and persisted/read-back ACTIVE commit",
@@ -82,7 +82,7 @@
     "model_generated_capability_is_mechanical_evidence": false,
     "legacy_deployment_code_is_canonical_activation": false,
     "host_channel_receipt_is_physical_proof": false,
-    "runtime_reopen_is_physical_local_evidence": true,
+    "materializer_and_runtime_root_reopen_are_physical_local_evidence": true,
     "pre_runtime_host_adapter_is_iKant_runtime": false
   }
 }

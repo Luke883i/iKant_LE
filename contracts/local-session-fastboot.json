@@ -2,7 +2,7 @@
   "schema": "ikant-le-local-session-fastboot-contract/v2",
   "slice": "C22.LOCAL_SESSION_ONTOLOGICAL_HARDENING",
   "authority": 0,
-  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation while separating host-attested pre-runtime channel decisions from runtime-owned physical proof. ACTIVE requires the local runtime itself to reopen byte objects, bind exact executed-module identities, run the live Node probe and persist/read back the commit.",
+  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation while separating host-attested pre-runtime channel decisions from runtime-owned physical proof. ACTIVE requires the authoritative materializer to verify transport loader/shards and the local runtime to reopen its published loader plus every runtime member, bind exact executed-module identities, run the live Node probe and persist/read back the commit.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -51,7 +51,7 @@
     "one canonical NEXT and one executor",
     "failure memory keyed by decision plus evidence",
     "changed-evidence replan",
-    "byte bridge receipt plus runtime-owned reopen/samehash validation",
+    "byte bridge receipt as host attestation plus materializer verification and runtime-owned published-root reopen/samehash validation",
     "executed-code provenance",
     "content-addressed runtime root",
     "single-shot acceptance origin",
@@ -91,7 +91,8 @@
     "source_identity_is_executed_provenance": false,
     "model_generated_capability_is_mechanical_evidence": false,
     "host_channel_receipt_is_physical_proof": false,
-    "runtime_reopen_is_required_for_bridge_truth": true,
+    "bridge_receipt_is_host_attestation_only": true,
+    "materializer_and_published_root_reopen_are_required_for_physical_truth": true,
     "executed_provenance_receipt_without_exact_member_match_is_sufficient": false,
     "pre_runtime_planner_is_runtime_self_bootstrap": false
   },
@@ -113,7 +114,7 @@
     },
     "local_runtime": {
       "owns": [
-        "reopen exact loader/shard bytes",
+        "reopen published loader plus every materialized runtime member",
         "validate materialization",
         "validate exact executed module identities",
         "live Node probe",

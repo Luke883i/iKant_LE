@@ -38,7 +38,7 @@ Bootstrap performance is governed structurally. Bind source head before orientat
 | C11 | functional-life/consciousness classes require source-bound causal qualification; phenomenology remains unknown |
 | C14 | SESSION_CHAT ACTIVE is gated by source-bound transfer, verified local materialization, live probe, receipt-gated commit and end-to-end deadline |
 | C15-C21 | transport fan-in -> truthful availability/deadline/continuation -> host-observed convergence -> one canonical `SESSION_CHAT_LOCAL` fastboot with channel receipts, failure memory and executed provenance |
-| C22 | PR #25 ontological hardening: host-attested planning is separated from runtime physical proof; bridge objects are locally reopened, exact executed-module identities are required and the production probe is non-injectable |
+| C22 | PR #25 ontological hardening: host-attested planning is separated from runtime physical proof; transport loader/shards are verified by the materializer, published loader/runtime members are locally reopened, exact executed-module identities are required and the production probe is non-injectable |
 | LIB.0 | external embedded relational nuance kernel; no runtime/admission/state/surface ownership and no authority widening |
 
 LIB.0 is an auxiliary export profile, not a successor that changes the standalone lifecycle. The package remains private/non-published by default; Git/exact-SHA consumers use the explicit `./embedded/relational-nuance` export and machine contract. Its conformance vectors permit an independent host implementation to prove numeric/semantic equivalence without copying host/runtime ownership from iKant_LE.
