@@ -50,8 +50,8 @@
   },
   "runtime_root": {
     "member_count": 42,
-    "source_bytes": 273485,
-    "runtime_root_sha256": "48cc5544866398bd915542dec400ac0a6bf64efc5aae3781ddeda783c6d1a598"
+    "source_bytes": 273486,
+    "runtime_root_sha256": "a63e22922a83c74d94bd67a314e661ff0af73a1ed9088c3752bb48be57fdc64b"
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
