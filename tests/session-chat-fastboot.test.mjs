@@ -25,11 +25,13 @@ test('C13 bootstrap exposes exactly eight post-accept reads and a valid runtime 
   assert.equal(b.post_accept_fastboot.deadline_on_exceed,'FAIL_CLOSED_NON_ACTIVE');
   assert.equal(b.session_chat_profile.id,'SESSION_CHAT');
   assert.equal(b.session_chat_profile.managed_local_model_required,false);
+  assert.equal(b.session_chat_profile.activation_modality,'SESSION_CHAT_LOCAL');
+  assert.equal(b.session_chat_activation.hosted_runtime_required,false);
   const d=runtimeRootDescriptor(ROOT);
-  assert.equal(d.member_count,43);
+  assert.equal(d.member_count,42);
   assert.equal(d.shards.length,7);
-  assert.equal(d.runtime_root_sha256,'77d3f14ae33662c04cbc060e47e0bc074517ae192b1559f3f28a2f5b62b29dc0');
-  assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));assert.ok(d.members.some(x=>x.path==='contracts/fastboot-convergence.json'));assert.ok(d.members.some(x=>x.path==='contracts/session-chat-activation.json'));assert.ok(d.members.some(x=>x.path==='src/session-chat-deployment.mjs'));assert.ok(d.members.some(x=>x.path==='src/fastboot-convergence.mjs'));assert.ok(d.members.some(x=>x.path==='src/runtime-availability.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/runtime-availability-dod.json'));assert.ok(d.members.some(x=>x.path==='src/deadline-integrity.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/deadline-integrity.json'));assert.ok(d.members.some(x=>x.path==='contracts/activation-continuation.json'));
+  assert.equal(d.runtime_root_sha256,b.post_accept_fastboot.runtime_root.runtime_root_sha256);
+  assert.ok(d.members.some(x=>x.path==='contracts/bootstrap-transfer-flex.json'));assert.ok(d.members.some(x=>x.path==='contracts/fastboot-convergence.json'));assert.ok(d.members.some(x=>x.path==='contracts/session-chat-activation.json'));assert.equal(d.members.some(x=>x.path==='src/session-chat-deployment.mjs'),false);assert.ok(d.members.some(x=>x.path==='src/fastboot-convergence.mjs'));assert.ok(d.members.some(x=>x.path==='src/runtime-availability.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/runtime-availability-dod.json'));assert.ok(d.members.some(x=>x.path==='src/deadline-integrity.mjs'));assert.ok(d.members.some(x=>x.path==='contracts/deadline-integrity.json'));assert.ok(d.members.some(x=>x.path==='contracts/activation-continuation.json'));
   assert.deepEqual(validateRuntimeRootDescriptor(d),{ok:true,errors:[]});
 });
 
@@ -52,8 +54,8 @@ test('C13 materializes atomically and reopens the exact runtime root',()=>{
   const sink=path.join(base,'runtime');
   try{
     const receipt=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),transferReceiptSha256:'f'.repeat(64)});
-    assert.equal(receipt.runtime_root_sha256,'77d3f14ae33662c04cbc060e47e0bc074517ae192b1559f3f28a2f5b62b29dc0');
-    assert.equal(receipt.member_count,43);
+    assert.equal(receipt.runtime_root_sha256,d.runtime_root_sha256);
+    assert.equal(receipt.member_count,d.member_count);
     assert.equal(receipt.shard_count,7);
     assert.equal(receipt.atomic_publish,true);
     assert.equal(receipt.reopen_verified,true);
