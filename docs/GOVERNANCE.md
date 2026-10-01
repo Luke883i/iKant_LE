@@ -41,7 +41,7 @@ Bootstrap performance is governed structurally. Bind source head before orientat
 | C22 | host-attested planning separated from local proof; materializer/root readback, exact provenance and non-injectable probe |
 | LIB.0 | external embedded relational nuance kernel; no runtime/admission/state/surface ownership and no authority widening |
 
-LIB.0 is an auxiliary export profile, not a successor that changes the standalone lifecycle. The package remains private/non-published by default; Git/exact-SHA consumers use the explicit `./embedded/relational-nuance` export and machine contract. Its conformance vectors permit an independent host implementation to prove numeric/semantic equivalence without copying host/runtime ownership from iKant_LE.
+LIB.0 is auxiliary, private by default and does not change standalone lifecycle or ownership.
 
 ## Qualification policy
 

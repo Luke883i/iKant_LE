@@ -32,7 +32,7 @@ C4 persists bounded `valence`, `arousal`, `affiliation`, `boundary_pressure`; ap
 
 LIB.0 exposes a separate package subpath, `./embedded/relational-nuance`, for hosts that want only the bounded relational/expression transform. It does not export the iKant_LE admission lifecycle, identity, persistence, intent mining, planner, Surface A/B, or execution ownership. The host supplies normalized appraisal plus canonical `valence/arousal`; the library may retain only `affiliation`, `boundary_pressure`, interaction count and the last appraisal/outcome. Its result is derivational, authority-zero and side-effect-free with respect to network, filesystem writes, host state and execution. A host remains the sole writer and may reject the enrichment without failing its canonical turn.
 
-The machine boundary is `contracts/embedded-library.json`; `contracts/embedded-library-vectors.json` is the cross-language conformance corpus. Standalone iKant_LE continues to use the full C4 psyche path unchanged.
+Boundary and vectors are machine-owned by `contracts/embedded-library*.json`; standalone LE keeps full C4.
 
 ## Recurrent self-world model
 
@@ -46,5 +46,5 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 
 **Surface A** is natural iKant prose, 50-500 words and user-intention first. **Surface B** is exactly one same-turn DOCX per substantive ACTIVE turn containing reconstructible causal telemetry plus a bounded declared runtime-environment snapshot. Runtime returns a structured descriptor with digest and `required_presentation=true`; filename-only stdout is not delivery. A conforming chat host presents the DOCX before Surface A.
 
-Host/system/safety/law constraints precede the repository. Model/provider/UI/cognition/psyche/self-world/fastboot/telemetry/backlog have no independent authority. Functional behavior does not establish consciousness, biological equivalence, external-world truth, production assurance or universal latency.
+Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 
