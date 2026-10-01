@@ -41,7 +41,9 @@
     "the pre-runtime host adapter owns carrier selection because the runtime cannot select the carrier required to materialize itself",
     "the authoritative materializer must verify transport loader/shard identities, and the local runtime must reopen the published loader plus every materialized runtime member before ACTIVE",
     "the production live probe is runtime-owned and cannot be substituted by a caller callback",
-    "executed provenance must match exact descriptor blob identities and byte counts"
+    "executed provenance must match exact descriptor blob identities and byte counts",
+    "failed decisions are persisted inside the channel ledger and do not change channel_evidence_sha256",
+    "the runtime validator recomputes the fastboot step from the bound ledger before accepting bootstrap evidence"
   ],
   "irreducible_lattice": [
     "CONSENT_ORIGIN",
@@ -72,7 +74,9 @@
     "C21_G8 ACTIVE requires live Node probe, writer persistence and persisted/read-back ACTIVE commit",
     "C21_G9 10,000,000 preseeded semantic mutations pass with zero candidate/oracle mismatches and every retained mutant witnessed",
     "C22_G10 bootstrap evidence missing ledger/step/bridge transcript is non-ACTIVE",
-    "C22_G11 legacy C20 deployment code remains non-canonical, non-exported and outside the runtime root"
+    "C22_G11 legacy C20 deployment code remains non-canonical, non-exported and outside the runtime root",
+    "C22_G11 re-signed step receipts are non-authoritative unless every decision field recomputes exactly from the bound ledger",
+    "C22_G12 unchanged channel evidence plus a recorded failed decision yields WAIT_CHANGED_EVIDENCE without retry"
   ],
   "claim_boundary": {
     "semantic_mutation_is_physical_bridge_proof": false,
@@ -83,6 +87,7 @@
     "legacy_deployment_code_is_canonical_activation": false,
     "host_channel_receipt_is_physical_proof": false,
     "materializer_and_runtime_root_reopen_are_physical_local_evidence": true,
-    "pre_runtime_host_adapter_is_iKant_runtime": false
+    "pre_runtime_host_adapter_is_iKant_runtime": false,
+    "step_receipt_digest_alone_proves_canonical_next": false
   }
 }

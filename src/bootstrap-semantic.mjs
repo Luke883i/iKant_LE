@@ -60,9 +60,9 @@ function canonicalC21Carrier(mode){return mode==='COLD_API'?'GITHUB_API_BASE64':
 function validateLocalSessionFastbootEvidence(evidence,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,workspace=WORKSPACE}={}){
  const e=[],ledger=evidence?.fastboot_channel_ledger,step=evidence?.fastboot_step,carrier=canonicalC21Carrier(evidence?.transfer?.mode);
  const lv=validateFastbootChannelLedger(ledger,{sourceHead});if(!lv.ok)e.push(...lv.errors.map(x=>'ledger:'+x));
- const sv=validateFastbootStep(step,{sourceHead,runtimeRootSha256});if(!sv.ok)e.push(...sv.errors.map(x=>'step:'+x));
+ const sv=validateFastbootStep(step,{sourceHead,runtimeRootSha256,ledger});if(!sv.ok)e.push(...sv.errors.map(x=>'step:'+x));
  if(ledger?.channels?.[carrier]?.status!=='AVAILABLE')e.push('selected_carrier_not_available');
- if(step?.action!=='EXECUTE_CANONICAL_CARRIER'||step?.canonical_carrier!==carrier||step?.evidence_sha256!==ledger?.receipt_sha256)e.push('canonical_step_binding');
+ if(step?.action!=='EXECUTE_CANONICAL_CARRIER'||step?.canonical_carrier!==carrier||step?.evidence_sha256!==ledger?.channel_evidence_sha256)e.push('canonical_step_binding');
  const expected=expectedFlexObjects(runtimeRootDescriptor),receipts=Array.isArray(evidence?.byte_bridge_receipts)?evidence.byte_bridge_receipts:[];
  if(receipts.length!==expected.length)e.push('bridge_cardinality');
  const byPath=new Map();for(const x of receipts){if(byPath.has(x?.object_path))e.push('bridge_duplicate');else byPath.set(x?.object_path,x);}

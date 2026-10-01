@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {
   FASTBOOT_CAPABILITY_FIELDS,issueFastbootCapabilityReceipt,validateFastbootCapabilityReceipt,
-  buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootStep,validateFastbootStep,
+  buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootStep,validateFastbootStep,recordFastbootFailure,
   issueFastbootByteBridgeReceipt,validateFastbootByteBridgeReceipt,LOCAL_SESSION_ACTIVATION_MODALITY
 } from '../src/fastboot-convergence.mjs';
 import {runtimeRootDescriptor} from '../src/runtime-root-verified.mjs';
@@ -31,12 +31,17 @@ test('C22 host-attested receipt owns planner input but does not claim physical o
 test('C21 one NEXT executes once; unchanged evidence cannot retry; changed evidence replans',()=>{
  const root=runtimeRootDescriptor(),a=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'available',probeOwner:'test',operationId:'op-a',sourceHead:HEAD});
  let l=buildFastbootChannelLedger({receipts:[a],sourceHead:HEAD}),first=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});
- assert.equal(first.action,'EXECUTE_CANONICAL_CARRIER');assert.equal(first.one_next,true);assert.equal(first.one_executor,true);assert.equal(validateFastbootStep(first,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256}).ok,true);
- const retry=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256,previousSteps:[{decision_key:first.decision_key,evidence_sha256:first.evidence_sha256,progressed:false}]});assert.equal(retry.action,'WAIT_CHANGED_EVIDENCE');assert.equal(retry.retry_allowed,false);
+ assert.equal(first.action,'EXECUTE_CANONICAL_CARRIER');assert.equal(first.one_next,true);assert.equal(first.one_executor,true);assert.equal(validateFastbootStep(first,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256,ledger:l}).ok,true);
+ const failed=recordFastbootFailure(l,first),retry=deriveFastbootStep({ledger:failed,runtimeRootSha256:root.runtime_root_sha256});assert.equal(retry.action,'WAIT_CHANGED_EVIDENCE');assert.equal(retry.retry_allowed,false);assert.equal(failed.failed_decisions.length,1);
  const u=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'UNAVAILABLE',capabilities:{...proven(),byte_preserving_runtime_sink:false},evidence:'sink unavailable',probeOwner:'test',operationId:'op-b',sourceHead:HEAD});
- l=buildFastbootChannelLedger({previous:l,receipts:[u],sourceHead:HEAD});const changed=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256,previousSteps:[first]});assert.notEqual(changed.action,'WAIT_CHANGED_EVIDENCE');
+ l=buildFastbootChannelLedger({previous:failed,receipts:[u],sourceHead:HEAD});const changed=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});assert.notEqual(changed.action,'WAIT_CHANGED_EVIDENCE');
 });
 
+
+test('C22 re-signed fastboot step is rejected unless it recomputes exactly from the ledger',()=>{
+ const root=runtimeRootDescriptor(),a=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'available',probeOwner:'test',operationId:'op-recompute',sourceHead:HEAD}),l=buildFastbootChannelLedger({receipts:[a],sourceHead:HEAD}),step=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});
+ const forged={...step,decision_key:'f'.repeat(64)};delete forged.receipt_sha256;forged.receipt_sha256=crypto.createHash('sha256').update(JSON.stringify(forged)).digest('hex');const v=validateFastbootStep(forged,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256,ledger:l});assert.equal(v.ok,false);assert.ok(v.errors.includes('recomputed_decision_key'));
+});
 test('C22 byte bridge receipt is insufficient until runtime reopens the actual local bytes',()=>{
  const bytes=fs.readFileSync(new URL('../src/runtime-root-verified.mjs',import.meta.url)),blob=crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\0')).update(bytes).digest('hex');
  const r=issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',sourceBlobSha1:blob,sourceObjectIdentity:'source:1',sourceBytes:bytes,localBytes:bytes,localObjectId:'workspace:src/runtime-root-verified.mjs'});

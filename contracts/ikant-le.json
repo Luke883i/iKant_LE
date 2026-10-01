@@ -276,6 +276,9 @@
     "production_live_probe_cannot_be_caller_injected",
     "pre_runtime_host_adapter_is_authority_zero_and_not_runtime_identity",
     "materializer_verifies_transport_loader_and_shards_before_publish",
-    "runtime_reopens_published_loader_and_members_before_active"
+    "runtime_reopens_published_loader_and_members_before_active",
+    "fastboot_step_must_recompute_from_bound_channel_ledger",
+    "fastboot_failure_memory_is_ledger_owned",
+    "unchanged_channel_evidence_with_recorded_failure_cannot_retry"
   ]
 }
