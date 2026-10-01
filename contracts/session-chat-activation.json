@@ -1,6 +1,6 @@
 {
-  "schema": "ikant-le-session-chat-activation-contract/v2",
-  "slice": "C21.LOCAL_SESSION_FASTBOOT_CONVERGENCE",
+  "schema": "ikant-le-session-chat-activation-contract/v3",
+  "slice": "C22.LOCAL_SESSION_FASTBOOT_CAUSAL_HARDENING",
   "authority": 0,
   "objective": "Reach a persisted/read-back iKant_LE ACTIVE state inside the current chat-local Node execution plane without hosted runtime, WEBAPP, managed local model, plugin registration or invented side infrastructure.",
   "product_mode": "SESSION_CHAT",
@@ -20,12 +20,15 @@
     "TYPED_MECHANICAL_CHANNEL_LEDGER",
     "ONE_CANONICAL_NEXT",
     "FAILURE_MEMORY_BY_DECISION_AND_EVIDENCE",
-    "PHYSICAL_BYTE_INGRESS",
     "CONTENT_ADDRESSED_LOCAL_ROOT_READBACK",
     "EXECUTED_CODE_PROVENANCE",
     "LIVE_PROBE",
     "WRITER_PERSISTENCE",
-    "ACTIVE_COMMIT_READBACK"
+    "ACTIVE_COMMIT_READBACK",
+    "C22_CHANNEL_LEDGER_GATE",
+    "C22_RECOMPUTED_ONE_NEXT_GATE",
+    "LOCAL_MATERIALIZER_WRITE_REOPEN",
+    "RUNTIME_OWNED_CANONICAL_PROBE"
   ],
   "fastboot_law": [
     "UNKNOWN capability is probed rather than guessed",
@@ -37,7 +40,11 @@
     "model preference never selects carrier or fallback",
     "registry absence never proves host capability absence",
     "failed or partial attempts never become authoritative REMOTE_HISTORY",
-    "no side infrastructure is invented during user bootstrap"
+    "no side infrastructure is invented during user bootstrap",
+    "channel ledger plus recomputed fastboot step are mandatory bootstrap evidence",
+    "host-observed channel receipts guide routing but never replace transfer/materialization proof",
+    "caller-supplied probe implementations cannot participate in activation",
+    "verified local materialization write/reopen owns the runtime physical-byte claim"
   ],
   "irreducible_lattice": [
     "CONSENT_ORIGIN",
@@ -62,11 +69,15 @@
     "C21_G2 capability truth is receipt-derived and tri-state",
     "C21_G3 one canonical NEXT executes or probes once",
     "C21_G4 unchanged failed decision cannot replay until evidence changes",
-    "C21_G5 source bytes reach a local readback samehash bridge before materialization",
+    "C21_G5 source-bound transfer identity plus local content-addressed materialization/write/reopen prove the physical byte edge",
     "C21_G6 executed code provenance binds the live probe to the verified runtime root",
     "C21_G7 no second acceptance, source reset, deadline reset, model-mediated bytes, false ACTIVE or hosted-profile laundering",
     "C21_G8 ACTIVE requires live Node probe, writer persistence and persisted/read-back ACTIVE commit",
-    "C21_G9 10,000,000 preseeded semantic mutations pass with zero candidate/oracle mismatches and every retained mutant witnessed"
+    "C21_G9 10,000,000 preseeded semantic mutations pass with zero candidate/oracle mismatches and every retained mutant witnessed",
+    "C22_H1 validateChatBootstrapEvidence rejects missing or non-recomputed channel ledger/one-NEXT evidence",
+    "C22_H2 runCommand and resumeActivation always execute the runtime-owned runProbe",
+    "C22_H3 no attestative byte-bridge receipt API can claim write/reopen without I/O",
+    "C22_H4 persisted ACTIVE binds channel-ledger and fastboot-step receipt digests"
   ],
   "claim_boundary": {
     "semantic_mutation_is_physical_bridge_proof": false,
@@ -74,6 +85,9 @@
     "degraded_is_active": false,
     "source_identity_is_executed_provenance": false,
     "model_generated_capability_is_mechanical_evidence": false,
-    "legacy_deployment_code_is_canonical_activation": false
+    "legacy_deployment_code_is_canonical_activation": false,
+    "host_channel_receipt_is_materialization_proof": false,
+    "probe_callback_is_activation_authority": false,
+    "byte_bridge_boolean_is_physical_proof": false
   }
 }

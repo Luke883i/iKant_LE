@@ -72,7 +72,13 @@
       "decision_key",
       "evidence_sha256"
     ],
-    "unchanged_failed_decision_retry_forbidden": true
+    "unchanged_failed_decision_retry_forbidden": true,
+    "causal_activation_gate_required": true,
+    "channel_ledger_required_in_bootstrap_evidence": true,
+    "recomputed_one_next_required_in_bootstrap_evidence": true,
+    "attestative_byte_bridge_receipt_forbidden": true,
+    "runtime_owned_probe_required": true,
+    "caller_probe_injection_allowed": false
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -206,7 +212,9 @@
     "materialization_receipt_bound": true,
     "deadline_elapsed_bound": true,
     "activation_modality_bound": true,
-    "executed_provenance_bound": true
+    "executed_provenance_bound": true,
+    "fastboot_channel_ledger_bound": true,
+    "fastboot_step_bound": true
   },
   "preaccept_handoff": {
     "runtime_observed_presentation": false,
@@ -349,6 +357,9 @@
     "hosted_runtime_required": false,
     "plugin_or_mcp_registration_required": false,
     "unavailable_must_fail_closed": true,
-    "authority": 0
+    "authority": 0,
+    "causal_fastboot_evidence_required": true,
+    "runtime_owned_probe_required": true,
+    "materializer_owns_physical_byte_proof": true
   }
 }

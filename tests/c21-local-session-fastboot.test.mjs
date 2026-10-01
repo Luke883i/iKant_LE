@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
   FASTBOOT_CAPABILITY_FIELDS,issueFastbootCapabilityReceipt,validateFastbootCapabilityReceipt,
-  buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootStep,validateFastbootStep,
-  issueFastbootByteBridgeReceipt,validateFastbootByteBridgeReceipt,LOCAL_SESSION_ACTIVATION_MODALITY
+  buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootStep,validateFastbootStep,recordFastbootFailure,
+  LOCAL_SESSION_ACTIVATION_MODALITY
 } from '../src/fastboot-convergence.mjs';
 import {runtimeRootDescriptor} from '../src/runtime-root-verified.mjs';
 import {runProbe} from '../src/probe.mjs';
@@ -36,10 +36,10 @@ test('C21 one NEXT executes once; unchanged evidence cannot retry; changed evide
  l=buildFastbootChannelLedger({previous:l,receipts:[u],sourceHead:HEAD});const changed=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256,previousSteps:[first]});assert.notEqual(changed.action,'WAIT_CHANGED_EVIDENCE');
 });
 
-test('C21 byte bridge requires source/local readback samehash',()=>{
- const r=issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,sourceObjectIdentity:'source:1',sourceBytes:Buffer.from('abc'),localBytes:Buffer.from('abc'),localObjectId:'local:1'});
- assert.equal(validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD}).ok,true);
- assert.throws(()=>issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,sourceObjectIdentity:'source:1',sourceBytes:Buffer.from('abc'),localBytes:Buffer.from('abd'),localObjectId:'local:1'}),/mismatch/);
+test('C22 failure memory is ledger-owned and unchanged evidence cannot replay',()=>{
+ const root=runtimeRootDescriptor(),a=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'available',probeOwner:'test',operationId:'op-fail',sourceHead:HEAD});
+ const l=buildFastbootChannelLedger({receipts:[a],sourceHead:HEAD}),step=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256}),failed=recordFastbootFailure(l,step),again=deriveFastbootStep({ledger:failed,runtimeRootSha256:root.runtime_root_sha256});
+ assert.equal(again.action,'WAIT_CHANGED_EVIDENCE');assert.equal(again.retry_allowed,false);assert.equal(failed.failed_decisions.length,1);
 });
 
 test('C21 real local Node probe binds executed code to current verified runtime root',{concurrency:false},()=>{

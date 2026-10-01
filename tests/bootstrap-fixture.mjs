@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {ROOT,readTerms,readOrientationCapsule,sha256} from '../src/contract.mjs';
 import {runtimePaths} from '../src/state.mjs';
+import {FASTBOOT_CAPABILITY_FIELDS,issueFastbootCapabilityReceipt,buildFastbootChannelLedger,deriveFastbootStep} from '../src/fastboot-convergence.mjs';
 
 const digest=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const withReceipt=x=>({...x,receipt_sha256:digest(x)});
@@ -19,6 +20,7 @@ export function bindConvergenceToTransfer(e,{failedAttempts=[]}={}){
  const complete=withReceipt({schema:'ikant-le-fastboot-carrier-attempt/v1',attempt_id:'attempt-complete-'+carrier,carrier,acceptance_event_id:e.acceptance_event_id,source_head:e.source_head,runtime_root_sha256:e.runtime_root_sha256,result:'COMPLETE',source_object_identity:'fixture-source:'+carrier,runtime_sink_object_id:'fixture-sink:'+carrier,remote_objects:objects,remote_reads:e.transfer.remote_reads??objects.length,bytes_observed:objects.reduce((n,x)=>n+x.bytes,0),source_fetch_observed:true,byte_preserving_runtime_sink_observed:true,runtime_materializer_bound:true,runtime_executor_bound:true,model_mediated_bytes:false,authoritative_remote_history:false,committed_remote_rounds:0,transfer_receipt_sha256:e.transfer.receipt_sha256,authority:0});
  const attempts=[...failedAttempts,complete];
  e.fastboot_convergence=withReceipt({schema:'ikant-le-fastboot-convergence/v1',acceptance_event_id:e.acceptance_event_id,source_head:e.source_head,runtime_root_sha256:e.runtime_root_sha256,attempts,selected_carrier:carrier,committed_transfer_receipt_sha256:e.transfer.receipt_sha256,remote_history_commits:1,materially_distinct_retry:attempts.length>1,acceptance_preserved:true,source_preserved:true,deadline_origin_preserved:true,model_mediated_bytes:false,authority:0});
+ const capabilities=Object.fromEntries(FASTBOOT_CAPABILITY_FIELDS.map(k=>[k,true]));const cap=issueFastbootCapabilityReceipt({carrier,status:'AVAILABLE',capabilities,evidence:JSON.stringify({transfer_receipt_sha256:e.transfer.receipt_sha256,carrier}),probeOwner:'bootstrap-fixture',operationId:'fixture-'+carrier,sourceHead:e.source_head});const ledger=buildFastbootChannelLedger({receipts:[cap],sourceHead:e.source_head});e.fastboot_channel_ledger=ledger;e.fastboot_step=deriveFastbootStep({ledger,runtimeRootSha256:e.runtime_root_sha256});
  return e;
 }
 export function failedFastbootAttempt({sourceHead='a'.repeat(40),acceptanceEventId,carrier='PINNED_PERMALINK',partial=0}={}){

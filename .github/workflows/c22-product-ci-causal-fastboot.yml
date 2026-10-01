@@ -1,0 +1,43 @@
+name: c22-product-ci-causal-fastboot
+permissions:
+  contents: read
+  pull-requests: write
+on:
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'AGENTS.md'
+      - 'contracts/local-session-fastboot.json'
+      - 'contracts/session-chat-activation.json'
+      - 'contracts/host-shell.json'
+      - 'contracts/ikant-le.json'
+      - 'contracts/chat-bootstrap-semantic.json'
+      - 'src/fastboot-convergence.mjs'
+      - 'src/bootstrap-semantic.mjs'
+      - 'src/runtime-command.mjs'
+      - 'src/runtime-core.mjs'
+      - 'src/runtime.mjs'
+      - 'src/state.mjs'
+      - 'runtime-root/**'
+      - 'tests/bootstrap-fixture.mjs'
+      - 'tests/c21-local-session-fastboot.test.mjs'
+      - 'tests/c22-product-ci-causal-fastboot.test.mjs'
+      - 'scripts/c22-causal-fastboot-hardening.c'
+      - 'scripts/check.mjs'
+      - 'package.json'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm test
+      - run: npm run check
+      - run: npm run falsify:c15
+      - run: npm run falsify:c17
+      - run: npm run falsify:c18
+      - run: npm run falsify:c19
+      - run: npm run falsify:c21
+      - run: npm run falsify:c22

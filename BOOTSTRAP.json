@@ -141,7 +141,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 42,
-      "source_bytes": 273487,
+      "source_bytes": 277659,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "8a2a1002bd8c66602f6d692a39d25d02e6db73bd"
@@ -151,15 +151,15 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 76175,
-          "blob_sha1": "661d894c5eb83684c9f3e36c5a522c3dd19fc7d5"
+          "source_bytes": 77147,
+          "blob_sha1": "4ac2a6ce3381ceb7bdc0a776f938445ba78371de"
         },
         {
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 39115,
-          "blob_sha1": "3200a8af37d4ab3d5312a07d8eedf85c83fb734d"
+          "source_bytes": 39490,
+          "blob_sha1": "0153ada72d4f6804ee818b368b8718a555d72c58"
         },
         {
           "index": 2,
@@ -172,29 +172,29 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 5,
-          "source_bytes": 26706,
-          "blob_sha1": "315c7b23a32a7d2e824020f140006a58529845d1"
+          "source_bytes": 27003,
+          "blob_sha1": "2de781353110e9372ab62e4a3c2fde276a5cfe88"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 11,
-          "source_bytes": 53398,
-          "blob_sha1": "8e7d5df2b9617d1fc71fd26ce4b9c5fb0c7f8482"
+          "source_bytes": 54976,
+          "blob_sha1": "17501bfe634e2557ac47f96bda8d5a1e9e18657d"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 26790,
-          "blob_sha1": "9dd21b9882d000c741b8a290ea62f604b8f25f68"
+          "source_bytes": 27132,
+          "blob_sha1": "7579b159403b5184c5985fc31b24df662f9f0902"
         },
         {
           "index": 6,
           "path": "runtime-root/shard-006.json",
           "member_count": 6,
-          "source_bytes": 29417,
-          "blob_sha1": "56a4ddb06820f8b5457928a52b19128f52806b88"
+          "source_bytes": 30025,
+          "blob_sha1": "0fb742fcf465b16eafc33844b6ca9430f517a50d"
         }
       ],
       "members": [
@@ -218,8 +218,8 @@
         },
         {
           "path": "src/runtime-command.mjs",
-          "blob_sha1": "4825c6479b087e1923cf4d04ccbc64c67bd87869",
-          "bytes": 27926,
+          "blob_sha1": "44a83f49e5ee5661342c5ba3d8b71e4a0f94cd11",
+          "bytes": 28301,
           "shard": 1
         },
         {
@@ -278,8 +278,8 @@
         },
         {
           "path": "src/runtime-core.mjs",
-          "blob_sha1": "4fda45639341c6958fe066d9aacde74879a27550",
-          "bytes": 8047,
+          "blob_sha1": "4570c89c5ff40ff24d6ca0a46c30d56bf0d2da22",
+          "bytes": 8415,
           "shard": 3
         },
         {
@@ -290,8 +290,8 @@
         },
         {
           "path": "src/runtime.mjs",
-          "blob_sha1": "fd425500a8190b1b1e16921fc970d1d719cc1ab8",
-          "bytes": 1894,
+          "blob_sha1": "b6cf5c58e0a4cb3005cc88d4ecb0a720e6641e77",
+          "bytes": 1823,
           "shard": 3
         },
         {
@@ -308,8 +308,8 @@
         },
         {
           "path": "contracts/host-shell.json",
-          "blob_sha1": "288c49da1344343b2ffb91798c2def056a1a9cbc",
-          "bytes": 11344,
+          "blob_sha1": "a859c56a7022f2758070f622fbe7859fc51ba86a",
+          "bytes": 11870,
           "shard": 4
         },
         {
@@ -332,8 +332,8 @@
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "899777851c26179d9fbd1dda067a92da18ef4906",
-          "bytes": 10321,
+          "blob_sha1": "884dc73197b5a6028c4b25e227dca7943aa73565",
+          "bytes": 10663,
           "shard": 5
         },
         {
@@ -368,8 +368,8 @@
         },
         {
           "path": "src/state.mjs",
-          "blob_sha1": "2943e212ac59365aea60a99a1b412923156ebf2d",
-          "bytes": 5087,
+          "blob_sha1": "42c1d499e280c3797bbb9d8ad4f1e8fc5652158f",
+          "bytes": 5165,
           "shard": 6
         },
         {
@@ -386,14 +386,14 @@
         },
         {
           "path": "src/bootstrap-semantic.mjs",
-          "blob_sha1": "2b4f5d96492e07cf2ecf52f30f411f7e1a0d43c6",
-          "bytes": 19359,
+          "blob_sha1": "c38ea78f305da6b4827d7087e99b7f88977df7d3",
+          "bytes": 20182,
           "shard": 0
         },
         {
           "path": "contracts/chat-bootstrap-semantic.json",
-          "blob_sha1": "c6e4d84922cac1256903cbe1297c42155965a55b",
-          "bytes": 7181,
+          "blob_sha1": "06785e7bcda34c44a3d19a4733d59549ca129d01",
+          "bytes": 7711,
           "shard": 6
         },
         {
@@ -434,8 +434,8 @@
         },
         {
           "path": "src/fastboot-convergence.mjs",
-          "blob_sha1": "0ff2bf448b9d957e61fc8ca2e5e6bf2d7a145b6e",
-          "bytes": 19915,
+          "blob_sha1": "2927160f9fa349db41ffc80bc025610e105dabfd",
+          "bytes": 20064,
           "shard": 0
         },
         {
@@ -446,12 +446,12 @@
         },
         {
           "path": "contracts/session-chat-activation.json",
-          "blob_sha1": "8ef0005e5481a2219cae1ebd8db13a42372f29df",
-          "bytes": 3435,
+          "blob_sha1": "60e69140f18dbd67a315b23faafaa59e4289ab3f",
+          "bytes": 4487,
           "shard": 4
         }
       ],
-      "runtime_root_sha256": "f65ee2841578ca31ce1be504e62307296122916ffe86c4f2fa549ff0e54e3dca"
+      "runtime_root_sha256": "9e3ad971987e97784cabb5aed2c5eb639834ca60feff7c4aad1d2d264b237243"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -542,7 +542,14 @@
       "decision_key",
       "evidence_sha256"
     ],
-    "unchanged_failed_decision_retry_forbidden": true
+    "unchanged_failed_decision_retry_forbidden": true,
+    "causal_activation_gate_required": true,
+    "channel_ledger_required_in_bootstrap_evidence": true,
+    "recomputed_one_next_required_in_bootstrap_evidence": true,
+    "runtime_owned_probe_required": true,
+    "caller_probe_injection_allowed": false,
+    "attestative_byte_bridge_receipt_forbidden": true,
+    "physical_byte_proof_owner": "CONTENT_ADDRESSED_MATERIALIZER_WRITE_REOPEN"
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
@@ -588,6 +595,9 @@
       "HOST_UNAVAILABLE",
       "BLOCKED_REQUIREMENT",
       "ACTIVE"
-    ]
+    ],
+    "causal_fastboot_evidence_required": true,
+    "runtime_owned_probe_required": true,
+    "materializer_owns_physical_byte_proof": true
   }
 }

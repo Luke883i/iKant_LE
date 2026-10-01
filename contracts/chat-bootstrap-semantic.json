@@ -122,7 +122,10 @@
     "single-writer ACTIVE commit persisted/read back",
     "single-shot acceptance_event_id consumed exactly once",
     "acceptance-origin receipt validates current Terms + immutable source head + MONOTONIC I_ACCEPT observation",
-    "deadline_result is DEADLINE_PASS and no sticky deadline terminal exists"
+    "deadline_result is DEADLINE_PASS and no sticky deadline terminal exists",
+    "valid channel ledger is bound to source head",
+    "fastboot step is recomputed from the bound channel ledger and matches transfer carrier",
+    "live host probe is invoked by runtime-owned runProbe rather than a caller callback"
   ],
   "qualification": {
     "enduser_cases": 1000000,
@@ -147,7 +150,9 @@
     "activation_continuation_cases": 1000000,
     "activation_continuation_independent_oracle": true,
     "local_session_fastboot_cases": 10000000,
-    "local_session_fastboot_campaigns": 10
+    "local_session_fastboot_campaigns": 10,
+    "local_session_fastboot_hardening_cases": 10000000,
+    "local_session_fastboot_hardening_campaigns": 10
   },
   "claim_boundary": {
     "corpus_and_contract_relative_irreducibility": true,
@@ -164,7 +169,10 @@
     "same_epoch_recovery_may_complete_new_downstream_facts": true,
     "same_epoch_recovery_may_reset_acceptance_or_remote_history": false,
     "model_generated_capability_is_mechanical_evidence": false,
-    "source_identity_is_executed_provenance": false
+    "source_identity_is_executed_provenance": false,
+    "host_observed_channel_receipt_is_runtime_physical_proof": false,
+    "attestative_byte_bridge_receipt_is_physical_proof": false,
+    "caller_supplied_probe_is_live_probe": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
   "availability_classifier": "src/runtime-availability.mjs",

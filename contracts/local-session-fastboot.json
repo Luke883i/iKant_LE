@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v1",
-  "slice": "C21.LOCAL_SESSION_FASTBOOT_CONVERGENCE",
+  "schema": "ikant-le-local-session-fastboot-contract/v2",
+  "slice": "C22.LOCAL_SESSION_FASTBOOT_CAUSAL_HARDENING",
   "authority": 0,
-  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation modality that discovers physical host channels mechanically, executes exactly one canonical fastboot frontier, remembers failed decisions until evidence changes, materializes one content-addressed local runtime root, proves executed-code provenance and reaches ACTIVE only after persisted readback.",
+  "objective": "Make the single local SESSION_CHAT fastboot causally operative: channel ledger and recomputed one-NEXT must gate bootstrap evidence, failed decisions persist until evidence changes, only the runtime-owned live probe can activate, and physical byte proof belongs to verified local materialization/readback rather than attestative bridge booleans.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -18,7 +18,21 @@
   },
   "forensic_method": {
     "name": "CAUSAL_FORENSIC_CLOSURE",
-    "chain": ["INTENT_OR_CLAIM","OWNER","PRECONDITIONS","INVARIANT","STATE_AND_TIME","OBSERVABLE_EFFECT","RECEIPT_OR_PROVENANCE","READBACK_OR_REOPEN","INDEPENDENT_ORACLE","COUNTERFACTUAL_OR_MUTATION","FAILURE_MEMORY","DISPOSITION","COMPRESSION_OR_DELETION_ORACLE"],
+    "chain": [
+      "INTENT_OR_CLAIM",
+      "OWNER",
+      "PRECONDITIONS",
+      "INVARIANT",
+      "STATE_AND_TIME",
+      "OBSERVABLE_EFFECT",
+      "RECEIPT_OR_PROVENANCE",
+      "READBACK_OR_REOPEN",
+      "INDEPENDENT_ORACLE",
+      "COUNTERFACTUAL_OR_MUTATION",
+      "FAILURE_MEMORY",
+      "DISPOSITION",
+      "COMPRESSION_OR_DELETION_ORACLE"
+    ],
     "debt_definition": "any missing, ambiguous, contradictory or unwitnessed required edge in the chain",
     "reverse_derivation_required": true,
     "forward_replay_required": true
@@ -31,7 +45,26 @@
     "minimum_cardinality": 15,
     "receipt_sha256": "5029e8d3b589880a7620b92f788232a2245c0692f68e85ea2593ff39bfdeaef0"
   },
-  "required_mechanisms": ["single local activation modality","typed mechanical channel ledger","one canonical NEXT and one executor","failure memory keyed by decision plus evidence","changed-evidence replan","byte bridge samehash receipt","executed-code provenance","content-addressed runtime root","single-shot acceptance origin","deadline continuity","persisted ACTIVE readback","reverse supply-chain audit","claim/readback/oracle forensic closure","truthful DEGRADED state","Surface B write/readback before Surface A release"],
+  "required_mechanisms": [
+    "single local activation modality",
+    "typed mechanical channel ledger",
+    "one canonical NEXT and one executor",
+    "failure memory keyed by decision plus evidence",
+    "changed-evidence replan",
+    "executed-code provenance",
+    "content-addressed runtime root",
+    "single-shot acceptance origin",
+    "deadline continuity",
+    "persisted ACTIVE readback",
+    "reverse supply-chain audit",
+    "claim/readback/oracle forensic closure",
+    "truthful DEGRADED state",
+    "Surface B write/readback before Surface A release",
+    "C22 channel ledger and recomputed fastboot step gate validateChatBootstrapEvidence",
+    "runtime-owned canonical runProbe is the only activation probe",
+    "content-addressed materializer atomic write/reopen is the sole runtime-owned physical byte proof",
+    "persisted channel-ledger and fastboot-step receipt bindings in bootstrap state"
+  ],
   "qualification": {
     "semantic_cases": 10000000,
     "campaigns": 10,
@@ -43,7 +76,18 @@
     "real_code_targeted_tests_required": true,
     "local_activation_probe_required": true,
     "full_repository_tests_required": true,
-    "workflow_green_required": true
+    "workflow_green_required": true,
+    "hardening_semantic_cases": 10000000,
+    "hardening_campaigns": 10,
+    "hardening_candidate_oracle_mismatches_required": 0,
+    "hardening_unsafe_active_required": 0,
+    "adversarial_regressions_required": [
+      "missing C22 ledger/step cannot ACTIVE",
+      "re-signed tampered step cannot bypass recomputation",
+      "caller probe injection cannot execute",
+      "attestative byte bridge API absent",
+      "materialization reopen false blocks activation"
+    ]
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -51,6 +95,10 @@
     "receipt_schema_is_observation": false,
     "degraded_is_active": false,
     "source_identity_is_executed_provenance": false,
-    "model_generated_capability_is_mechanical_evidence": false
+    "model_generated_capability_is_mechanical_evidence": false,
+    "host_observed_channel_receipt_is_runtime_physical_proof": false,
+    "caller_supplied_probe_can_activate": false,
+    "attestative_byte_bridge_receipt_is_physical_proof": false,
+    "local_materialization_readback_is_runtime_physical_owner": true
   }
 }

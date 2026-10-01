@@ -1,0 +1,64 @@
+{
+  "schema": "ikant-le-c22-product-ci-authoring/v1",
+  "base_sha": "103d6bd24e11f213fe07648f0efc1d2d3238f76c",
+  "pr25_audit": {
+    "findings": [
+      "C21 channel ledger/one-NEXT existed only in fastboot-convergence module and did not gate validateChatBootstrapEvidence",
+      "runCommand and resumeActivation accepted caller-supplied probeRunner",
+      "issueFastbootByteBridgeReceipt could claim local write/reopen from caller-supplied equal buffers without filesystem I/O"
+    ],
+    "local_adversarial_witness": {
+      "fake_bridge_validator_ok": true,
+      "fake_bridge_actual_local_file_exists": false,
+      "forged_pure_provenance_validator_ok": true
+    }
+  },
+  "c22_semantic_qualification": {
+    "cases": 10000000,
+    "campaigns": 10,
+    "cases_per_campaign": 1000000,
+    "candidate_oracle_mismatches": 0,
+    "unsafe_active": 0,
+    "all_mutants_witnessed": true,
+    "kills": [
+      191840,
+      194090,
+      456270,
+      192890,
+      193240,
+      190670,
+      292600,
+      267910,
+      122440,
+      121840,
+      119390,
+      97340,
+      95860,
+      95980,
+      48350,
+      49180,
+      458770,
+      481630
+    ],
+    "status": "PASS",
+    "claim_boundary": {
+      "semantic_mutation_is_physical_host_proof": false
+    }
+  },
+  "local_environment": {
+    "git_clone_attempted": true,
+    "git_clone_result": "FAILED_DNS_COULD_NOT_RESOLVE_GITHUB_COM",
+    "interpretation": "container network limitation; not a repository/runtime failure",
+    "targeted_local_c22_falsifier_executed": true
+  },
+  "dod": [
+    "channel ledger plus recomputed step gate bootstrap evidence",
+    "caller probe injection cannot execute in activation path",
+    "attestative byte-bridge API removed",
+    "materializer write/reopen owns physical byte claim",
+    "C22 binding digests persist in bootstrap state",
+    "runtime root descriptor regenerated",
+    "full repository checkout/test/qualification delegated to GitHub Actions on PR branch"
+  ],
+  "authority": 0
+}

@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {classifyDeadlineEvidence,DEADLINE_RESULT} from './deadline-integrity.mjs';
-import {validateFastbootConvergence} from './fastboot-convergence.mjs';
+import {validateFastbootConvergence,validateFastbootChannelLedger,validateFastbootStep} from './fastboot-convergence.mjs';
 
 const WORKSPACE=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEX40=/^[a-f0-9]{40}$/;
@@ -61,6 +61,8 @@ export function validateChatBootstrapEvidence(evidence,{sourceHead,runtimeRootSh
  const before=Number.isFinite(elapsedBeforeRuntimeMsOverride)?elapsedBeforeRuntimeMsOverride:a.elapsed_ms;if(!a.ok)e.push('deadline:'+a.result);if(Number.isFinite(elapsedBeforeRuntimeMsOverride)&&a.ok&&before<a.elapsed_ms)e.push('continuation_elapsed_regression');
  if(evidence?.acceptance_origin){if(evidence?.acceptance_event_id!==evidence.acceptance_origin.event_id)e.push('acceptance_event_binding');if(evidence?.acceptance_origin_receipt_sha256!==evidence.acceptance_origin.receipt_sha256)e.push('acceptance_origin_receipt_binding');}
  const c=validateFastbootConvergence(evidence?.fastboot_convergence,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,acceptanceEventId:evidence?.acceptance_event_id,transferReceiptSha256:evidence?.transfer?.receipt_sha256});if(!c.ok)e.push(...c.errors.map(x=>'convergence:'+x));
+ const l=validateFastbootChannelLedger(evidence?.fastboot_channel_ledger,{sourceHead});if(!l.ok)e.push(...l.errors.map(x=>'channel_ledger:'+x));
+ const s=validateFastbootStep(evidence?.fastboot_step,{sourceHead,runtimeRootSha256,ledger:evidence?.fastboot_channel_ledger});if(!s.ok)e.push(...s.errors.map(x=>'fastboot_step:'+x));const expectedCarrier=evidence?.transfer?.mode==='COLD_API'?'GITHUB_API_BASE64':evidence?.transfer?.mode;if(s.ok&&(evidence?.fastboot_step?.action!=='EXECUTE_CANONICAL_CARRIER'||evidence?.fastboot_step?.canonical_carrier!==expectedCarrier))e.push('fastboot_step:transfer_carrier_binding');
  const t=validateSourceBoundTransfer(evidence?.transfer,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,maxReads,maxRounds,flexMaxReads,flexMaxRounds,deadlineMs});if(!t.ok)e.push(...t.errors.map(x=>'transfer:'+x));
  const m=validateLocalMaterializationReceipt(localMaterializationReceipt,{sourceHead,runtimeRootSha256,loaderBlobSha1,transferReceiptSha256:evidence?.transfer?.receipt_sha256});if(!m.ok)e.push(...m.errors.map(x=>'materialization:'+x));
  if(a.ok&&t.ok&&t.elapsed_ms>before)e.push('transfer_elapsed_order');if(evidence?.transfer_receipt_sha256!==evidence?.transfer?.receipt_sha256)e.push('transfer_receipt_binding');if(evidence?.materialization_receipt_sha256!==localMaterializationReceipt?.receipt_sha256)e.push('materialization_receipt_binding');if(!HEX64.test(String(evidence?.receipt_sha256||''))||digestWithout(evidence)!==evidence?.receipt_sha256)e.push('receipt_digest');
@@ -69,7 +71,7 @@ export function validateChatBootstrapEvidence(evidence,{sourceHead,runtimeRootSh
    const terminal=deadlineResult?('BOOTSTRAP_'+deadlineResult):'HOST_INCOMPATIBLE';
    return bad(e,terminal,{deadline_result:deadlineResult,deadline_origin_receipt_sha256:a.receipt_sha256||null,acceptance_event_id:evidence?.acceptance_event_id||null,elapsed_before_runtime_ms:a.ok&&Number.isFinite(before)?before:null});
  }
- return{ok:true,terminal:'EVIDENCE_VERIFIED',source_head:sourceHead,runtime_root_sha256:runtimeRootSha256,transfer_receipt_sha256:evidence.transfer.receipt_sha256,materialization_receipt_sha256:localMaterializationReceipt.receipt_sha256,evidence_receipt_sha256:evidence.receipt_sha256,fastboot_convergence_receipt_sha256:evidence.fastboot_convergence.receipt_sha256,elapsed_before_runtime_ms:before,mode:evidence.transfer.mode,deadline_result:DEADLINE_RESULT.PASS,deadline_origin_receipt_sha256:a.receipt_sha256,acceptance_event_id:a.event_id};
+ return{ok:true,terminal:'EVIDENCE_VERIFIED',source_head:sourceHead,runtime_root_sha256:runtimeRootSha256,transfer_receipt_sha256:evidence.transfer.receipt_sha256,materialization_receipt_sha256:localMaterializationReceipt.receipt_sha256,evidence_receipt_sha256:evidence.receipt_sha256,fastboot_convergence_receipt_sha256:evidence.fastboot_convergence.receipt_sha256,fastboot_channel_ledger_receipt_sha256:evidence.fastboot_channel_ledger.receipt_sha256,fastboot_step_receipt_sha256:evidence.fastboot_step.receipt_sha256,elapsed_before_runtime_ms:before,mode:evidence.transfer.mode,deadline_result:DEADLINE_RESULT.PASS,deadline_origin_receipt_sha256:a.receipt_sha256,acceptance_event_id:a.event_id};
 }
 
 export function totalDeadlineOk(elapsedBeforeRuntimeMs,localElapsedMs,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS){return Number.isFinite(elapsedBeforeRuntimeMs)&&elapsedBeforeRuntimeMs>=0&&Number.isFinite(localElapsedMs)&&localElapsedMs>=0&&elapsedBeforeRuntimeMs+localElapsedMs<=deadlineMs;}

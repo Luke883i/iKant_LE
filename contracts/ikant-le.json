@@ -63,7 +63,9 @@
     "materialization_binds_transfer_receipt": true,
     "deadline_scope": "I_ACCEPT_TO_ACTIVE_COMMIT",
     "local_session_fastboot_contract": "contracts/local-session-fastboot.json",
-    "activation_modality": "SESSION_CHAT_LOCAL"
+    "activation_modality": "SESSION_CHAT_LOCAL",
+    "causal_fastboot_evidence_required": true,
+    "runtime_owned_probe_required": true
   },
   "documentation": {
     "entry": "README.md",
@@ -123,7 +125,8 @@
     "host_profile": 0,
     "fastboot_channel_ledger": 0,
     "fastboot_step": 0,
-    "executed_provenance": 0
+    "executed_provenance": 0,
+    "fastboot_channel_receipt": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -268,6 +271,10 @@
     "same_failed_decision_and_same_evidence_cannot_retry",
     "changed_mechanical_evidence_reopens_only_the_affected_fastboot_frontier",
     "executed_code_provenance_required_for_active_probe",
-    "no_side_infrastructure_during_user_bootstrap"
+    "no_side_infrastructure_during_user_bootstrap",
+    "fastboot_channel_ledger_and_recomputed_step_gate_active",
+    "caller_probe_injection_cannot_activate",
+    "materializer_reopen_owns_runtime_physical_byte_proof",
+    "attestative_byte_bridge_boolean_forbidden"
   ]
 }
