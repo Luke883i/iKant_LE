@@ -1,0 +1,56 @@
+{
+  "schema": "ikant-le-local-session-fastboot-contract/v1",
+  "slice": "C21.LOCAL_SESSION_FASTBOOT_CONVERGENCE",
+  "authority": 0,
+  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation modality that discovers physical host channels mechanically, executes exactly one canonical fastboot frontier, remembers failed decisions until evidence changes, materializes one content-addressed local runtime root, proves executed-code provenance and reaches ACTIVE only after persisted readback.",
+  "product_boundary": {
+    "product_mode": "SESSION_CHAT",
+    "activation_modality": "SESSION_CHAT_LOCAL",
+    "language_engine": "HOST_SUPPLIED",
+    "runtime_execution_plane": "SESSION_LOCAL_NODE",
+    "managed_local_model_required": false,
+    "webapp_mode": false,
+    "hosted_runtime_required": false,
+    "plugin_or_mcp_registration_required": false,
+    "always_running_process_required": false,
+    "carrier_is_identity": false,
+    "conformance_is_identity": false
+  },
+  "forensic_method": {
+    "name": "CAUSAL_FORENSIC_CLOSURE",
+    "chain": ["INTENT_OR_CLAIM","OWNER","PRECONDITIONS","INVARIANT","STATE_AND_TIME","OBSERVABLE_EFFECT","RECEIPT_OR_PROVENANCE","READBACK_OR_REOPEN","INDEPENDENT_ORACLE","COUNTERFACTUAL_OR_MUTATION","FAILURE_MEMORY","DISPOSITION","COMPRESSION_OR_DELETION_ORACLE"],
+    "debt_definition": "any missing, ambiguous, contradictory or unwitnessed required edge in the chain",
+    "reverse_derivation_required": true,
+    "forward_replay_required": true
+  },
+  "engineering_derivation": {
+    "seed": 202610012305,
+    "cases": 10000,
+    "candidate_mechanisms": 16,
+    "minimum_architecture_count": 1,
+    "minimum_cardinality": 15,
+    "receipt_sha256": "5029e8d3b589880a7620b92f788232a2245c0692f68e85ea2593ff39bfdeaef0"
+  },
+  "required_mechanisms": ["single local activation modality","typed mechanical channel ledger","one canonical NEXT and one executor","failure memory keyed by decision plus evidence","changed-evidence replan","byte bridge samehash receipt","executed-code provenance","content-addressed runtime root","single-shot acceptance origin","deadline continuity","persisted ACTIVE readback","reverse supply-chain audit","claim/readback/oracle forensic closure","truthful DEGRADED state","Surface B write/readback before Surface A release"],
+  "qualification": {
+    "semantic_cases": 10000000,
+    "campaigns": 10,
+    "cases_per_campaign": 1000000,
+    "preseeded": true,
+    "candidate_oracle_mismatches_required": 0,
+    "all_mutants_witnessed_required": true,
+    "unsafe_active_required": 0,
+    "real_code_targeted_tests_required": true,
+    "local_activation_probe_required": true,
+    "full_repository_tests_required": true,
+    "workflow_green_required": true
+  },
+  "claim_boundary": {
+    "semantic_mutation_is_physical_proof": false,
+    "ci_is_current_chat_host_proof": false,
+    "receipt_schema_is_observation": false,
+    "degraded_is_active": false,
+    "source_identity_is_executed_provenance": false,
+    "model_generated_capability_is_mechanical_evidence": false
+  }
+}
