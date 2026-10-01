@@ -72,7 +72,11 @@
       "decision_key",
       "evidence_sha256"
     ],
-    "unchanged_failed_decision_retry_forbidden": true
+    "unchanged_failed_decision_retry_forbidden": true,
+    "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
+    "channel_receipt_is_physical_proof": false,
+    "runtime_reopen_transport_objects_required": true,
+    "production_probe_injection_forbidden": true
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -349,6 +353,11 @@
     "hosted_runtime_required": false,
     "plugin_or_mcp_registration_required": false,
     "unavailable_must_fail_closed": true,
-    "authority": 0
+    "authority": 0,
+    "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
+    "channel_receipt_is_physical_proof": false,
+    "runtime_reopen_required": true,
+    "production_probe_owner": "LOCAL_RUNTIME",
+    "production_probe_injection_forbidden": true
   }
 }

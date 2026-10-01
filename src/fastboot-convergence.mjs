@@ -107,7 +107,7 @@ export function validateFastbootConvergence(receipt,{sourceHead,runtimeRootSha25
 export const FASTBOOT_CAPABILITY_RECEIPT_SCHEMA='ikant-le-fastboot-capability-receipt/v1';
 export const FASTBOOT_CHANNEL_LEDGER_SCHEMA='ikant-le-fastboot-channel-ledger/v1';
 export const FASTBOOT_STEP_SCHEMA='ikant-le-fastboot-step/v1';
-export const FASTBOOT_BYTE_BRIDGE_SCHEMA='ikant-le-fastboot-byte-bridge/v1';
+export const FASTBOOT_BYTE_BRIDGE_SCHEMA='ikant-le-fastboot-byte-bridge/v2';
 export const LOCAL_SESSION_ACTIVATION_MODALITY='SESSION_CHAT_LOCAL';
 export const FASTBOOT_CHANNEL_STATES=Object.freeze(['UNKNOWN','AVAILABLE','UNAVAILABLE']);
 function capabilityVector(value){const out={};for(const k of FASTBOOT_CAPABILITY_FIELDS)out[k]=value?.[k]===true;return out;}
@@ -121,7 +121,7 @@ export function issueFastbootCapabilityReceipt({carrier,status,capabilities={},e
  const vector=capabilityVector(capabilities),derived=capState(vector);
  if(s==='AVAILABLE'&&derived!=='PROVEN')throw new Error('AVAILABLE requires complete proven capability vector');
  if(s==='UNAVAILABLE'&&derived!=='UNAVAILABLE')throw new Error('UNAVAILABLE requires at least one mechanically false capability');
- const material={schema:FASTBOOT_CAPABILITY_RECEIPT_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,carrier:c,status:s,capabilities:vector,source_head:head,probe_owner:owner,operation_id:op,evidence_sha256:crypto.createHash('sha256').update(raw).digest('hex'),evidence_bytes:raw.length,mechanically_observed:true,model_generated:false,authority:0};
+ const material={schema:FASTBOOT_CAPABILITY_RECEIPT_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,carrier:c,status:s,capabilities:vector,source_head:head,probe_owner:owner,operation_id:op,evidence_sha256:crypto.createHash('sha256').update(raw).digest('hex'),evidence_bytes:raw.length,observation_class:'HOST_ATTESTED',host_observed:true,physical_origin_proven:false,model_generated:false,authority:0};
  return{...material,receipt_sha256:sha256(material)};
 }
 export function validateFastbootCapabilityReceipt(receipt,{sourceHead=null}={}){
@@ -134,7 +134,7 @@ export function validateFastbootCapabilityReceipt(receipt,{sourceHead=null}={}){
  if(sourceHead&&r.source_head!==String(sourceHead).toLowerCase())e.push('source_head_binding');
  if(!String(r.probe_owner||'')||!String(r.operation_id||''))e.push('origin');
  if(!HEX64.test(String(r.evidence_sha256||''))||!Number.isInteger(r.evidence_bytes)||r.evidence_bytes<1)e.push('evidence');
- if(r.mechanically_observed!==true||r.model_generated!==false||r.authority!==0)e.push('authority');
+ if(r.observation_class!=='HOST_ATTESTED'||r.host_observed!==true||r.physical_origin_proven!==false||r.model_generated!==false||r.authority!==0)e.push('authority');
  const vector=capabilityVector(r.capabilities),derived=capState(vector);
  if(r.status==='AVAILABLE'&&derived!=='PROVEN')e.push('availability_vector');
  if(r.status==='UNAVAILABLE'&&derived!=='UNAVAILABLE')e.push('unavailability_vector');
@@ -147,7 +147,7 @@ export function buildFastbootChannelLedger({receipts=[],previous=null,sourceHead
  if(previous){const pv=validateFastbootChannelLedger(previous,{sourceHead:head});if(!pv.ok)throw new Error('previous channel ledger invalid:'+pv.errors.join(','));for(const c of FASTBOOT_CARRIERS)channels[c]=structuredClone(previous.channels[c]);}
  const batch=new Set(),accepted=[];
  for(const r of receipts||[]){const v=validateFastbootCapabilityReceipt(r,{sourceHead:head});if(!v.ok)continue;if(batch.has(r.carrier))throw new Error('duplicate carrier evidence in one ledger batch');batch.add(r.carrier);channels[r.carrier]={status:r.status,capabilities:structuredClone(r.capabilities),evidence_receipt_sha256:r.receipt_sha256};accepted.push(r.receipt_sha256);}
- const material={schema:FASTBOOT_CHANNEL_LEDGER_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:head,channels,accepted_receipts:accepted,raw_host_booleans_authoritative:false,registry_absence_implies_unavailable:false,unavailable_persists_until_changed_mechanical_evidence:true,model_selects_carrier:false,authority:0};
+ const material={schema:FASTBOOT_CHANNEL_LEDGER_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:head,channels,accepted_receipts:accepted,capability_truth_owner:'HOST_ATTESTED_RECEIPTS',physical_origin_proven:false,raw_host_booleans_authoritative:false,registry_absence_implies_unavailable:false,unavailable_persists_until_changed_mechanical_evidence:true,model_selects_carrier:false,authority:0};
  return{...material,receipt_sha256:sha256(material)};
 }
 export function validateFastbootChannelLedger(ledger,{sourceHead=null}={}){
@@ -158,7 +158,7 @@ export function validateFastbootChannelLedger(ledger,{sourceHead=null}={}){
  if(sourceHead&&r.source_head!==String(sourceHead).toLowerCase())e.push('source_head_binding');
  if(!r.channels||Object.keys(r.channels).length!==FASTBOOT_CARRIERS.length)e.push('channels');
  for(const c of FASTBOOT_CARRIERS){const row=r.channels?.[c];if(!row||!FASTBOOT_CHANNEL_STATES.includes(row.status))e.push('channel:'+c);if(row?.status==='AVAILABLE'&&capState(row.capabilities)!=='PROVEN')e.push('channel_available:'+c);if(row?.status==='UNAVAILABLE'&&capState(row.capabilities)!=='UNAVAILABLE')e.push('channel_unavailable:'+c);if(row?.status==='UNKNOWN'&&row?.evidence_receipt_sha256!=null)e.push('channel_unknown_evidence:'+c);if(row?.evidence_receipt_sha256!=null&&!HEX64.test(String(row.evidence_receipt_sha256)))e.push('channel_evidence:'+c);}
- if(r.raw_host_booleans_authoritative!==false||r.registry_absence_implies_unavailable!==false||r.unavailable_persists_until_changed_mechanical_evidence!==true||r.model_selects_carrier!==false||r.authority!==0)e.push('authority');
+ if(r.capability_truth_owner!=='HOST_ATTESTED_RECEIPTS'||r.physical_origin_proven!==false||r.raw_host_booleans_authoritative!==false||r.registry_absence_implies_unavailable!==false||r.unavailable_persists_until_changed_mechanical_evidence!==true||r.model_selects_carrier!==false||r.authority!==0)e.push('authority');
  if(!HEX64.test(String(r.receipt_sha256||''))||sha256(withoutDigest(r))!==r.receipt_sha256)e.push('receipt_digest');
  return{ok:e.length===0,errors:uniq(e)};
 }
@@ -175,7 +175,7 @@ export function deriveFastbootStep({ledger,attemptedClasses=[],previousSteps=[],
  else if(plan.state==='EXECUTABLE'){action='EXECUTE_CANONICAL_CARRIER';next='EXECUTE:'+plan.carrier;}
  else if(plan.state==='PROBE_REQUIRED'){action='PROBE_CANONICAL_CARRIER';next='PROBE:'+plan.carrier;}
  else{action='HOST_UNAVAILABLE';next='HOST_UNAVAILABLE';blocker='ALL_CANONICAL_CARRIERS_EXHAUSTED';retry=false;}
- const material={schema:FASTBOOT_STEP_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:ledger.source_head,runtime_root_sha256:runtimeRootSha256,state:plan.state,action,canonical_next:next,canonical_carrier:plan.carrier,decision_key:decisionKey,evidence_sha256:evidenceSha,retry_allowed:retry,blocker,one_next:true,one_executor:true,model_selects_carrier:false,model_selects_fallback:false,side_infrastructure_forbidden:true,authority:0};
+ const material={schema:FASTBOOT_STEP_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,execution_owner:'PRE_RUNTIME_HOST_ADAPTER',runtime_self_bootstrap:false,source_head:ledger.source_head,runtime_root_sha256:runtimeRootSha256,state:plan.state,action,canonical_next:next,canonical_carrier:plan.carrier,decision_key:decisionKey,evidence_sha256:evidenceSha,retry_allowed:retry,blocker,one_next:true,one_executor:true,model_selects_carrier:false,model_selects_fallback:false,side_infrastructure_forbidden:true,authority:0};
  return{...material,receipt_sha256:sha256(material)};
 }
 export function validateFastbootStep(step,{sourceHead=null,runtimeRootSha256=null}={}){
@@ -186,20 +186,22 @@ export function validateFastbootStep(step,{sourceHead=null,runtimeRootSha256=nul
  if(sourceHead&&r.source_head!==String(sourceHead).toLowerCase())e.push('source_head_binding');
  if(!HEX64.test(String(r.runtime_root_sha256||'')))e.push('runtime_root');
  if(runtimeRootSha256&&r.runtime_root_sha256!==runtimeRootSha256)e.push('runtime_root_binding');
- if(r.one_next!==true||r.one_executor!==true)e.push('one_next');
+ if(r.execution_owner!=='PRE_RUNTIME_HOST_ADAPTER'||r.runtime_self_bootstrap!==false)e.push('execution_owner');if(r.one_next!==true||r.one_executor!==true)e.push('one_next');
  if(r.model_selects_carrier!==false||r.model_selects_fallback!==false||r.side_infrastructure_forbidden!==true||r.authority!==0)e.push('authority');
  if(!HEX64.test(String(r.decision_key||''))||!HEX64.test(String(r.evidence_sha256||'')))e.push('binding');
  if(!HEX64.test(String(r.receipt_sha256||''))||sha256(withoutDigest(r))!==r.receipt_sha256)e.push('receipt_digest');
  return{ok:e.length===0,errors:uniq(e)};
 }
-export function issueFastbootByteBridgeReceipt({carrier,sourceHead,sourceObjectIdentity,sourceBytes,localBytes,localObjectId}={}){
+export function issueFastbootByteBridgeReceipt({carrier,sourceHead,objectPath,sourceBlobSha1,sourceObjectIdentity,sourceBytes,localBytes,localObjectId}={}){
  if(!FASTBOOT_CARRIERS.includes(carrier))throw new Error('carrier invalid');
- const head=String(sourceHead||'').toLowerCase();if(!HEX40.test(head))throw new Error('source head invalid');
+ const head=String(sourceHead||'').toLowerCase(),rel=String(objectPath||'');if(!HEX40.test(head))throw new Error('source head invalid');if(!rel||rel.startsWith('/')||rel.includes('..'))throw new Error('object path invalid');if(!HEX40.test(String(sourceBlobSha1||'')))throw new Error('source blob invalid');
  const src=Buffer.isBuffer(sourceBytes)?sourceBytes:Buffer.from(sourceBytes??''),loc=Buffer.isBuffer(localBytes)?localBytes:Buffer.from(localBytes??'');if(!src.length||!loc.length)throw new Error('bridge bytes required');
- const sourceSha=crypto.createHash('sha256').update(src).digest('hex'),localSha=crypto.createHash('sha256').update(loc).digest('hex');if(sourceSha!==localSha||src.length!==loc.length)throw new Error('bridge readback mismatch');
- const material={schema:FASTBOOT_BYTE_BRIDGE_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,carrier,source_head:head,source_object_identity:String(sourceObjectIdentity||''),local_object_id:String(localObjectId||''),bytes:src.length,source_sha256:sourceSha,local_readback_sha256:localSha,local_write_observed:true,reopen_observed:true,samehash:true,model_mediated_bytes:false,authority:0};if(!material.source_object_identity||!material.local_object_id)throw new Error('bridge identities required');return{...material,receipt_sha256:sha256(material)};
+ const sourceSha=crypto.createHash('sha256').update(src).digest('hex'),localSha=crypto.createHash('sha256').update(loc).digest('hex'),localBlob=crypto.createHash('sha1').update(Buffer.from('blob '+loc.length+'\0')).update(loc).digest('hex');if(sourceSha!==localSha||src.length!==loc.length||localBlob!==sourceBlobSha1)throw new Error('bridge readback mismatch');
+ const material={schema:FASTBOOT_BYTE_BRIDGE_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,carrier,source_head:head,object_path:rel,source_blob_sha1:sourceBlobSha1,source_object_identity:String(sourceObjectIdentity||''),local_object_id:String(localObjectId||''),bytes:src.length,source_sha256:sourceSha,local_readback_sha256:localSha,local_blob_sha1:localBlob,receipt_scope:'HOST_ATTESTED_CANDIDATE_REQUIRES_RUNTIME_REOPEN',physical_verification:false,model_mediated_bytes:false,authority:0};if(!material.source_object_identity||!material.local_object_id)throw new Error('bridge identities required');return{...material,receipt_sha256:sha256(material)};
 }
-export function validateFastbootByteBridgeReceipt(r,{sourceHead=null}={}){
- const e=[];if(r?.schema!==FASTBOOT_BYTE_BRIDGE_SCHEMA)e.push('schema');if(r?.activation_modality!==LOCAL_SESSION_ACTIVATION_MODALITY)e.push('activation_modality');if(!FASTBOOT_CARRIERS.includes(r?.carrier))e.push('carrier');if(!HEX40.test(String(r?.source_head||'')))e.push('source_head');if(sourceHead&&r?.source_head!==String(sourceHead).toLowerCase())e.push('source_head_binding');if(!String(r?.source_object_identity||'')||!String(r?.local_object_id||''))e.push('identity');if(!Number.isInteger(r?.bytes)||r.bytes<1||!HEX64.test(String(r?.source_sha256||''))||r?.source_sha256!==r?.local_readback_sha256||r?.local_write_observed!==true||r?.reopen_observed!==true||r?.samehash!==true||r?.model_mediated_bytes!==false||r?.authority!==0)e.push('bridge');if(!HEX64.test(String(r?.receipt_sha256||''))||sha256(withoutDigest(r))!==r.receipt_sha256)e.push('receipt_digest');return{ok:e.length===0,errors:uniq(e)};
+export function validateFastbootByteBridgeReceipt(r,{sourceHead=null,objectPath=null,blobSha1=null,localBytes=null}={}){
+ const e=[];if(r?.schema!==FASTBOOT_BYTE_BRIDGE_SCHEMA)e.push('schema');if(r?.activation_modality!==LOCAL_SESSION_ACTIVATION_MODALITY)e.push('activation_modality');if(!FASTBOOT_CARRIERS.includes(r?.carrier))e.push('carrier');if(!HEX40.test(String(r?.source_head||'')))e.push('source_head');if(sourceHead&&r?.source_head!==String(sourceHead).toLowerCase())e.push('source_head_binding');if(!String(r?.object_path||'')||r.object_path.startsWith('/')||r.object_path.includes('..'))e.push('object_path');if(objectPath&&r?.object_path!==objectPath)e.push('object_path_binding');if(!HEX40.test(String(r?.source_blob_sha1||'')))e.push('source_blob');if(blobSha1&&r?.source_blob_sha1!==blobSha1)e.push('source_blob_binding');if(!String(r?.source_object_identity||'')||!String(r?.local_object_id||''))e.push('identity');if(!Number.isInteger(r?.bytes)||r.bytes<1||!HEX64.test(String(r?.source_sha256||''))||r?.source_sha256!==r?.local_readback_sha256||r?.receipt_scope!=='HOST_ATTESTED_CANDIDATE_REQUIRES_RUNTIME_REOPEN'||r?.physical_verification!==false||r?.model_mediated_bytes!==false||r?.authority!==0)e.push('bridge');
+ if(localBytes==null)e.push('runtime_reopen_required');else{const b=Buffer.isBuffer(localBytes)?localBytes:Buffer.from(localBytes),h=crypto.createHash('sha256').update(b).digest('hex'),g=crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');if(b.length!==r?.bytes||h!==r?.local_readback_sha256||g!==r?.local_blob_sha1||g!==r?.source_blob_sha1)e.push('runtime_reopen_mismatch');}
+ if(!HEX64.test(String(r?.receipt_sha256||''))||sha256(withoutDigest(r))!==r.receipt_sha256)e.push('receipt_digest');return{ok:e.length===0,errors:uniq(e),physical_reopen_verified:e.length===0&&localBytes!=null};
 }
 

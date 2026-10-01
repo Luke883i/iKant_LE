@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {classifyDeadlineEvidence,DEADLINE_RESULT} from './deadline-integrity.mjs';
-import {validateFastbootConvergence} from './fastboot-convergence.mjs';
+import {validateFastbootConvergence,validateFastbootChannelLedger,validateFastbootStep,validateFastbootByteBridgeReceipt} from './fastboot-convergence.mjs';
 
 const WORKSPACE=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEX40=/^[a-f0-9]{40}$/;
@@ -55,12 +55,28 @@ export function validateLocalMaterializationReceipt(receipt,{sourceHead,runtimeR
 
 export function readLocalMaterializationReceipt(workspace=WORKSPACE){try{return JSON.parse(fs.readFileSync(path.join(workspace,'.ikant','materialization.json'),'utf8'));}catch{return null;}}
 
+function gitBlobSha1(b){const x=Buffer.isBuffer(b)?b:Buffer.from(b);return crypto.createHash('sha1').update(Buffer.from('blob '+x.length+'\0')).update(x).digest('hex');}
+function canonicalC21Carrier(mode){return mode==='COLD_API'?'GITHUB_API_BASE64':mode;}
+function validateLocalSessionFastbootEvidence(evidence,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,workspace=WORKSPACE}={}){
+ const e=[],ledger=evidence?.fastboot_channel_ledger,step=evidence?.fastboot_step,carrier=canonicalC21Carrier(evidence?.transfer?.mode);
+ const lv=validateFastbootChannelLedger(ledger,{sourceHead});if(!lv.ok)e.push(...lv.errors.map(x=>'ledger:'+x));
+ const sv=validateFastbootStep(step,{sourceHead,runtimeRootSha256});if(!sv.ok)e.push(...sv.errors.map(x=>'step:'+x));
+ if(ledger?.channels?.[carrier]?.status!=='AVAILABLE')e.push('selected_carrier_not_available');
+ if(step?.action!=='EXECUTE_CANONICAL_CARRIER'||step?.canonical_carrier!==carrier||step?.evidence_sha256!==ledger?.receipt_sha256)e.push('canonical_step_binding');
+ const expected=expectedFlexObjects(runtimeRootDescriptor),receipts=Array.isArray(evidence?.byte_bridge_receipts)?evidence.byte_bridge_receipts:[];
+ if(receipts.length!==expected.length)e.push('bridge_cardinality');
+ const byPath=new Map();for(const x of receipts){if(byPath.has(x?.object_path))e.push('bridge_duplicate');else byPath.set(x?.object_path,x);}
+ const transferRows=new Map((Array.isArray(evidence?.transfer?.remote_objects)?evidence.transfer.remote_objects:[]).map(x=>[x.path,x]));
+ for(const x of expected){const br=byPath.get(x.path);let local=null;try{local=fs.readFileSync(path.join(workspace,x.path));}catch{e.push('bridge_local_missing:'+x.path);continue;}const bv=validateFastbootByteBridgeReceipt(br,{sourceHead,objectPath:x.path,blobSha1:x.blob_sha1,localBytes:local});if(!bv.ok)e.push(...bv.errors.map(y=>'bridge:'+x.path+':'+y));const tr=transferRows.get(x.path);if(tr&&(br?.source_sha256!==tr.sha256||br?.bytes!==tr.bytes||br?.source_blob_sha1!==tr.blob_sha1))e.push('bridge_transfer_binding:'+x.path);if(gitBlobSha1(local)!==x.blob_sha1)e.push('bridge_descriptor_readback:'+x.path);}
+ return{ok:e.length===0,errors:[...new Set(e)],channel_ledger_receipt_sha256:ledger?.receipt_sha256||null,fastboot_step_receipt_sha256:step?.receipt_sha256||null,bridge_receipts_sha256:receipts.length?sha256(Buffer.from(JSON.stringify(receipts.map(x=>x.receipt_sha256)))):null};
+}
 export function validateChatBootstrapEvidence(evidence,{sourceHead,runtimeRootSha256,loaderBlobSha1,localMaterializationReceipt,runtimeRootDescriptor=null,termsDigest=null,maxReads=8,maxRounds=1,flexMaxReads=40,flexMaxRounds=1,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS,elapsedBeforeRuntimeMsOverride=null}={}){
  const e=[];if(!evidence||evidence.schema!=='ikant-le-chat-bootstrap-evidence/v1')e.push('schema');if(evidence?.authority!==0)e.push('authority');if(evidence?.source_head!==sourceHead)e.push('source_head');if(evidence?.runtime_root_sha256!==runtimeRootSha256)e.push('runtime_root');
  const a=validateAcceptanceOriginReceipt(evidence?.acceptance_origin,{sourceHead,termsDigest,deadlineMs});
  const before=Number.isFinite(elapsedBeforeRuntimeMsOverride)?elapsedBeforeRuntimeMsOverride:a.elapsed_ms;if(!a.ok)e.push('deadline:'+a.result);if(Number.isFinite(elapsedBeforeRuntimeMsOverride)&&a.ok&&before<a.elapsed_ms)e.push('continuation_elapsed_regression');
  if(evidence?.acceptance_origin){if(evidence?.acceptance_event_id!==evidence.acceptance_origin.event_id)e.push('acceptance_event_binding');if(evidence?.acceptance_origin_receipt_sha256!==evidence.acceptance_origin.receipt_sha256)e.push('acceptance_origin_receipt_binding');}
  const c=validateFastbootConvergence(evidence?.fastboot_convergence,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,acceptanceEventId:evidence?.acceptance_event_id,transferReceiptSha256:evidence?.transfer?.receipt_sha256});if(!c.ok)e.push(...c.errors.map(x=>'convergence:'+x));
+ const c21=validateLocalSessionFastbootEvidence(evidence,{sourceHead,runtimeRootSha256,runtimeRootDescriptor});if(!c21.ok)e.push(...c21.errors.map(x=>'c21:'+x));
  const t=validateSourceBoundTransfer(evidence?.transfer,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,maxReads,maxRounds,flexMaxReads,flexMaxRounds,deadlineMs});if(!t.ok)e.push(...t.errors.map(x=>'transfer:'+x));
  const m=validateLocalMaterializationReceipt(localMaterializationReceipt,{sourceHead,runtimeRootSha256,loaderBlobSha1,transferReceiptSha256:evidence?.transfer?.receipt_sha256});if(!m.ok)e.push(...m.errors.map(x=>'materialization:'+x));
  if(a.ok&&t.ok&&t.elapsed_ms>before)e.push('transfer_elapsed_order');if(evidence?.transfer_receipt_sha256!==evidence?.transfer?.receipt_sha256)e.push('transfer_receipt_binding');if(evidence?.materialization_receipt_sha256!==localMaterializationReceipt?.receipt_sha256)e.push('materialization_receipt_binding');if(!HEX64.test(String(evidence?.receipt_sha256||''))||digestWithout(evidence)!==evidence?.receipt_sha256)e.push('receipt_digest');
@@ -69,7 +85,8 @@ export function validateChatBootstrapEvidence(evidence,{sourceHead,runtimeRootSh
    const terminal=deadlineResult?('BOOTSTRAP_'+deadlineResult):'HOST_INCOMPATIBLE';
    return bad(e,terminal,{deadline_result:deadlineResult,deadline_origin_receipt_sha256:a.receipt_sha256||null,acceptance_event_id:evidence?.acceptance_event_id||null,elapsed_before_runtime_ms:a.ok&&Number.isFinite(before)?before:null});
  }
- return{ok:true,terminal:'EVIDENCE_VERIFIED',source_head:sourceHead,runtime_root_sha256:runtimeRootSha256,transfer_receipt_sha256:evidence.transfer.receipt_sha256,materialization_receipt_sha256:localMaterializationReceipt.receipt_sha256,evidence_receipt_sha256:evidence.receipt_sha256,fastboot_convergence_receipt_sha256:evidence.fastboot_convergence.receipt_sha256,elapsed_before_runtime_ms:before,mode:evidence.transfer.mode,deadline_result:DEADLINE_RESULT.PASS,deadline_origin_receipt_sha256:a.receipt_sha256,acceptance_event_id:a.event_id};
+ const expectedModules=['src/probe.mjs','src/runtime-command.mjs'].map(p=>{const m=runtimeRootDescriptor?.members?.find(x=>x.path===p);return m?{path:p,blob_sha1:m.blob_sha1,bytes:m.bytes}:null;}).filter(Boolean);
+ return{ok:true,terminal:'EVIDENCE_VERIFIED',source_head:sourceHead,runtime_root_sha256:runtimeRootSha256,transfer_receipt_sha256:evidence.transfer.receipt_sha256,materialization_receipt_sha256:localMaterializationReceipt.receipt_sha256,evidence_receipt_sha256:evidence.receipt_sha256,fastboot_convergence_receipt_sha256:evidence.fastboot_convergence.receipt_sha256,fastboot_channel_ledger_receipt_sha256:c21.channel_ledger_receipt_sha256,fastboot_step_receipt_sha256:c21.fastboot_step_receipt_sha256,byte_bridge_receipts_sha256:c21.bridge_receipts_sha256,executed_provenance_expected_modules:expectedModules,elapsed_before_runtime_ms:before,mode:evidence.transfer.mode,deadline_result:DEADLINE_RESULT.PASS,deadline_origin_receipt_sha256:a.receipt_sha256,acceptance_event_id:a.event_id};
 }
 
 export function totalDeadlineOk(elapsedBeforeRuntimeMs,localElapsedMs,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS){return Number.isFinite(elapsedBeforeRuntimeMs)&&elapsedBeforeRuntimeMs>=0&&Number.isFinite(localElapsedMs)&&localElapsedMs>=0&&elapsedBeforeRuntimeMs+localElapsedMs<=deadlineMs;}

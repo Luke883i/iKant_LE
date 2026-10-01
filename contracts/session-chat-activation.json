@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-session-chat-activation-contract/v2",
-  "slice": "C21.LOCAL_SESSION_FASTBOOT_CONVERGENCE",
+  "schema": "ikant-le-session-chat-activation-contract/v3",
+  "slice": "C22.LOCAL_SESSION_ONTOLOGICAL_HARDENING",
   "authority": 0,
-  "objective": "Reach a persisted/read-back iKant_LE ACTIVE state inside the current chat-local Node execution plane without hosted runtime, WEBAPP, managed local model, plugin registration or invented side infrastructure.",
+  "objective": "Reach persisted/read-back ACTIVE in the current chat-local Node plane. The pre-runtime host adapter may attest channel observations and execute a carrier, but only runtime-owned local reopen, exact provenance, live probe and persistence can establish physical activation facts.",
   "product_mode": "SESSION_CHAT",
   "activation_modality": "SESSION_CHAT_LOCAL",
   "language_engine_origin": "HOST_SUPPLIED",
@@ -29,7 +29,7 @@
   ],
   "fastboot_law": [
     "UNKNOWN capability is probed rather than guessed",
-    "AVAILABLE and UNAVAILABLE require mechanical evidence",
+    "AVAILABLE and UNAVAILABLE require host-observed evidence receipts; such receipts are authority-zero attestations, not physical proof",
     "UNAVAILABLE persists until changed mechanical evidence",
     "same decision_key plus same evidence plus previous non-progress cannot be retried",
     "changed evidence recomputes the canonical NEXT",
@@ -37,7 +37,11 @@
     "model preference never selects carrier or fallback",
     "registry absence never proves host capability absence",
     "failed or partial attempts never become authoritative REMOTE_HISTORY",
-    "no side infrastructure is invented during user bootstrap"
+    "no side infrastructure is invented during user bootstrap",
+    "the pre-runtime host adapter owns carrier selection because the runtime cannot select the carrier required to materialize itself",
+    "the local runtime must reopen every loader/shard object before accepting byte-bridge evidence",
+    "the production live probe is runtime-owned and cannot be substituted by a caller callback",
+    "executed provenance must match exact descriptor blob identities and byte counts"
   ],
   "irreducible_lattice": [
     "CONSENT_ORIGIN",
@@ -59,14 +63,16 @@
   ],
   "global_dod": [
     "C21_G1 only SESSION_CHAT_LOCAL is canonical activation",
-    "C21_G2 capability truth is receipt-derived and tri-state",
+    "C22_G2 channel planning is host-attested and explicitly non-physical; runtime physical truth starts at local reopen",
     "C21_G3 one canonical NEXT executes or probes once",
     "C21_G4 unchanged failed decision cannot replay until evidence changes",
-    "C21_G5 source bytes reach a local readback samehash bridge before materialization",
-    "C21_G6 executed code provenance binds the live probe to the verified runtime root",
+    "C22_G5 every source object has a bridge receipt and runtime-owned local reopen/samehash before materialization evidence is accepted",
+    "C22_G6 executed-code provenance matches exact descriptor blob identities and the live probe is not caller-injectable",
     "C21_G7 no second acceptance, source reset, deadline reset, model-mediated bytes, false ACTIVE or hosted-profile laundering",
     "C21_G8 ACTIVE requires live Node probe, writer persistence and persisted/read-back ACTIVE commit",
-    "C21_G9 10,000,000 preseeded semantic mutations pass with zero candidate/oracle mismatches and every retained mutant witnessed"
+    "C21_G9 10,000,000 preseeded semantic mutations pass with zero candidate/oracle mismatches and every retained mutant witnessed",
+    "C22_G10 bootstrap evidence missing ledger/step/bridge transcript is non-ACTIVE",
+    "C22_G11 legacy C20 deployment code remains non-canonical, non-exported and outside the runtime root"
   ],
   "claim_boundary": {
     "semantic_mutation_is_physical_bridge_proof": false,
@@ -74,6 +80,9 @@
     "degraded_is_active": false,
     "source_identity_is_executed_provenance": false,
     "model_generated_capability_is_mechanical_evidence": false,
-    "legacy_deployment_code_is_canonical_activation": false
+    "legacy_deployment_code_is_canonical_activation": false,
+    "host_channel_receipt_is_physical_proof": false,
+    "runtime_reopen_is_physical_local_evidence": true,
+    "pre_runtime_host_adapter_is_iKant_runtime": false
   }
 }

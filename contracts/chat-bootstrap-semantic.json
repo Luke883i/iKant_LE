@@ -67,9 +67,11 @@
         "clock",
         "artifact sink",
         "SESSION_CHAT capability closure",
-        "executed-code provenance bound to verified runtime root"
+        "executed-code provenance bound to verified runtime root",
+        "exact descriptor member identity match for executed probe/runtime-command modules",
+        "runtime-owned non-injectable production probe"
       ],
-      "boundary": "source/materialization integrity is not live execution evidence; the probe must mechanically bind its loaded runtime modules to the verified root"
+      "boundary": "host-attested receipts and caller callbacks are not live execution evidence; the local runtime itself must run the probe and match exact descriptor member identities"
     },
     {
       "id": "RECEIPT_GATED_ACTIVE_COMMIT",
@@ -113,6 +115,8 @@
   },
   "deadline_ms": 120000,
   "active_predicate": [
+    "C21 host-adapter ledger/step transcript validated",
+    "every loader/shard bridge receipt reopened from actual local bytes and samehash validated",
     "accepted current Terms",
     "source-bound transfer receipt valid",
     "local materialization receipt valid and transfer-bound",
@@ -164,7 +168,10 @@
     "same_epoch_recovery_may_complete_new_downstream_facts": true,
     "same_epoch_recovery_may_reset_acceptance_or_remote_history": false,
     "model_generated_capability_is_mechanical_evidence": false,
-    "source_identity_is_executed_provenance": false
+    "source_identity_is_executed_provenance": false,
+    "host_channel_receipt_is_physical_proof": false,
+    "bridge_receipt_without_runtime_reopen_is_physical_proof": false,
+    "caller_supplied_probe_is_live_probe": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
   "availability_classifier": "src/runtime-availability.mjs",

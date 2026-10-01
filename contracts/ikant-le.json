@@ -123,7 +123,9 @@
     "host_profile": 0,
     "fastboot_channel_ledger": 0,
     "fastboot_step": 0,
-    "executed_provenance": 0
+    "executed_provenance": 0,
+    "host_channel_receipt": 0,
+    "pre_runtime_host_adapter": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -268,6 +270,11 @@
     "same_failed_decision_and_same_evidence_cannot_retry",
     "changed_mechanical_evidence_reopens_only_the_affected_fastboot_frontier",
     "executed_code_provenance_required_for_active_probe",
-    "no_side_infrastructure_during_user_bootstrap"
+    "no_side_infrastructure_during_user_bootstrap",
+    "host_channel_receipt_is_attestation_not_physical_proof",
+    "runtime_reopens_exact_transport_objects_before_bridge_truth",
+    "executed_provenance_matches_exact_descriptor_member_identities",
+    "production_live_probe_cannot_be_caller_injected",
+    "pre_runtime_host_adapter_is_authority_zero_and_not_runtime_identity"
   ]
 }
