@@ -64,7 +64,15 @@
     "post_accept_transport_authority": 0,
     "carrier_attempts_max": 6,
     "remote_history_commits_max": 1,
-    "fastboot_convergence_contract": "contracts/fastboot-convergence.json"
+    "fastboot_convergence_contract": "contracts/fastboot-convergence.json",
+    "local_session_fastboot_contract": "contracts/local-session-fastboot.json",
+    "channel_ledger_schema": "ikant-le-fastboot-channel-ledger/v1",
+    "fastboot_step_schema": "ikant-le-fastboot-step/v1",
+    "failure_memory_key": [
+      "decision_key",
+      "evidence_sha256"
+    ],
+    "unchanged_failed_decision_retry_forbidden": true
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -196,7 +204,9 @@
     "runtime_root_bound": true,
     "transfer_receipt_bound": true,
     "materialization_receipt_bound": true,
-    "deadline_elapsed_bound": true
+    "deadline_elapsed_bound": true,
+    "activation_modality_bound": true,
+    "executed_provenance_bound": true
   },
   "preaccept_handoff": {
     "runtime_observed_presentation": false,
@@ -317,28 +327,28 @@
       "source_head",
       "deadline_origin"
     ],
-    "downstream_owner": "C15+C18"
+    "downstream_owner": "C15+C18",
+    "activation_modality": "SESSION_CHAT_LOCAL",
+    "channel_ledger_schema": "ikant-le-fastboot-channel-ledger/v1",
+    "one_next": true,
+    "failure_memory_key": [
+      "decision_key",
+      "evidence_sha256"
+    ],
+    "unavailable_persists_until_changed_mechanical_evidence": true
   },
   "session_chat_activation": {
     "contract": "contracts/session-chat-activation.json",
-    "primary_profile": "SESSION_CHAT_DEPLOYED",
-    "fallback_profile": "SESSION_CHAT_ONESHOT",
-    "deployed_runtime": {
-      "authority": 0,
-      "repository_transfer_per_chat": false,
-      "acceptance_origin_at_ingest": true,
-      "deployment_pin_attestation_required": true,
-      "session_local_root_readback_required": true,
-      "live_probe_required": true,
-      "active_commit_readback_required": true
-    },
-    "oneshot": {
-      "authority": 0,
-      "owner": "C19+C15+C18",
-      "host_acceptance_ingress_required": true,
-      "host_byte_ingress_required": true,
-      "unavailable_must_fail_closed": true
-    },
-    "physical_chatgpt_registration_is_repository_fact": false
+    "activation_modality": "SESSION_CHAT_LOCAL",
+    "runtime_execution_plane": "SESSION_LOCAL_NODE",
+    "repository_transfer_per_chat": true,
+    "host_acceptance_ingress_required": true,
+    "host_byte_ingress_required": true,
+    "mechanical_channel_ledger_required": true,
+    "executed_code_provenance_required": true,
+    "hosted_runtime_required": false,
+    "plugin_or_mcp_registration_required": false,
+    "unavailable_must_fail_closed": true,
+    "authority": 0
   }
 }
