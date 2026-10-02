@@ -1,7 +1,8 @@
 import {DEADLINE_RESULT,isDeadlineTerminal} from './deadline-integrity.mjs';
 const SESSION_STATES=new Set(['DISCOVERED','ORIENTING','AWAITING_ACCEPTANCE','ACTIVATING','DEGRADED','ADMISSION_EPOCH_UNRECOVERABLE','BLOCKED_INTEGRITY','ACTIVE','SESSION_NONCONFORMING','EXITED']);
 const INTEGRITY_CODES=new Set(['SOURCE_MISMATCH','CONSENT_INVALID','TRANSFER_IDENTITY_MISMATCH','MATERIALIZATION_MISMATCH','RECEIPT_TAMPER','MODEL_MEDIATED_BYTES','UNSAFE_ARCHIVE','TRANSFER_BINDING_MISMATCH','ACCEPTANCE_BINDING_MISMATCH']);
-const DEGRADED_ORDER=['EVIDENCE_UNAVAILABLE','BYTE_BRIDGE_UNAVAILABLE','LOCAL_ROOT_UNAVAILABLE','HOST_CAPABILITY_UNAVAILABLE','WRITER_UNAVAILABLE','ACTIVE_COMMIT_UNAVAILABLE'];\nconst LEGACY_C20_INTEGRITY_ALIASES=new Set(['repository_transfer_per_chat','deployed_session_binding','deployment_model','activation_profile','profile','deployment_attestation']);
+const DEGRADED_ORDER=['EVIDENCE_UNAVAILABLE','BYTE_BRIDGE_UNAVAILABLE','LOCAL_ROOT_UNAVAILABLE','HOST_CAPABILITY_UNAVAILABLE','WRITER_UNAVAILABLE','ACTIVE_COMMIT_UNAVAILABLE'];
+const LEGACY_C20_INTEGRITY_ALIASES=new Set(['repository_transfer_per_chat','deployed_session_binding','deployment_model','activation_profile','profile','deployment_attestation']);
 const CAUSE={
  EVIDENCE_UNAVAILABLE:{what:'manca evidenza non temporale sufficiente per completare il bootstrap',lost:['attivazione iKant','garanzie runtime'],next:'fornire evidenza source-bound completa'},
  BYTE_BRIDGE_UNAVAILABLE:{what:'manca un percorso byte-esatto tra il carrier verificato e il filesystem locale',lost:['materializzazione runtime','attivazione iKant'],next:'esporre un bridge con readback locale o una warm cache esatta'},
