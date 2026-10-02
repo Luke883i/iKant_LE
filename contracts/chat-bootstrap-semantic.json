@@ -167,11 +167,11 @@
     "current_main_may_replace_session_source_head": false,
     "same_epoch_recovery_may_complete_new_downstream_facts": true,
     "same_epoch_recovery_may_reset_acceptance_or_remote_history": false,
-    "model_generated_capability_is_mechanical_evidence": false,
     "source_identity_is_executed_provenance": false,
     "host_channel_receipt_is_physical_proof": false,
     "bridge_receipt_without_runtime_reopen_is_physical_proof": false,
-    "caller_supplied_probe_is_live_probe": false
+    "caller_supplied_probe_is_live_probe": false,
+    "model_generated_capability_is_host_attested_evidence": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
   "availability_classifier": "src/runtime-availability.mjs",

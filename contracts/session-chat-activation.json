@@ -1,6 +1,6 @@
 {
-  "schema": "ikant-le-session-chat-activation-contract/v3",
-  "slice": "C22.LOCAL_SESSION_ONTOLOGICAL_HARDENING",
+  "schema": "ikant-le-session-chat-activation-contract/v4",
+  "slice": "C23.ONTOLOGY_COLLAPSE",
   "authority": 0,
   "objective": "Reach persisted/read-back ACTIVE in the current chat-local Node plane. The pre-runtime host adapter may attest channel observations and execute a carrier, but only runtime-owned local reopen, exact provenance, live probe and persistence can establish physical activation facts.",
   "product_mode": "SESSION_CHAT",
@@ -12,12 +12,12 @@
   "plugin_or_mcp_registration_required": false,
   "webapp_mode": false,
   "always_running_process_required": false,
-  "fastboot_owner": "C19+C15+C18+C21",
+  "fastboot_owner": "C19+C15+C18+C21+C22+C23",
   "required": [
     "EXACT_ACCEPT",
     "MONOTONIC_ORIGIN_AT_INGEST",
     "SOURCE_HEAD_PIN",
-    "TYPED_MECHANICAL_CHANNEL_LEDGER",
+    "TYPED_HOST_ATTESTED_CHANNEL_LEDGER",
     "ONE_CANONICAL_NEXT",
     "FAILURE_MEMORY_BY_DECISION_AND_EVIDENCE",
     "PHYSICAL_BYTE_INGRESS",
@@ -30,7 +30,7 @@
   "fastboot_law": [
     "UNKNOWN capability is probed rather than guessed",
     "AVAILABLE and UNAVAILABLE require host-observed evidence receipts; such receipts are authority-zero attestations, not physical proof",
-    "UNAVAILABLE persists until changed mechanical evidence",
+    "UNAVAILABLE persists until changed channel evidence",
     "same decision_key plus same evidence plus previous non-progress cannot be retried",
     "changed evidence recomputes the canonical NEXT",
     "exactly one NEXT and one executor are exposed",
@@ -48,7 +48,7 @@
   "irreducible_lattice": [
     "CONSENT_ORIGIN",
     "SOURCE_IDENTITY",
-    "MECHANICAL_CHANNEL_EVIDENCE",
+    "HOST_ATTESTED_CHANNEL_EVIDENCE",
     "ONE_NEXT_FAILURE_MEMORY",
     "PHYSICAL_BYTE_BRIDGE",
     "VERIFIED_LOCAL_ROOT",
@@ -76,18 +76,23 @@
     "C22_G10 bootstrap evidence missing ledger/step/bridge transcript is non-ACTIVE",
     "C22_G11 legacy C20 deployment code remains non-canonical, non-exported and outside the runtime root",
     "C22_G11 re-signed step receipts are non-authoritative unless every decision field recomputes exactly from the bound ledger",
-    "C22_G12 unchanged channel evidence plus a recorded failed decision yields WAIT_CHANGED_EVIDENCE without retry"
+    "C22_G12 unchanged channel evidence plus a recorded failed decision yields WAIT_CHANGED_EVIDENCE without retry",
+    "C23_G13 canonical pre-runtime capability terminology is HOST_ATTESTED; mechanical terminology is reserved for local runtime observation",
+    "C23_G14 legacy C20 deployment ontology is compatibility-only, non-exported and outside bootstrap/runtime-root/state",
+    "C23_G15 acceptance-origin ticket naming is activation-modality-neutral"
   ],
   "claim_boundary": {
     "semantic_mutation_is_physical_bridge_proof": false,
     "ci_is_current_chat_host_proof": false,
     "degraded_is_active": false,
     "source_identity_is_executed_provenance": false,
-    "model_generated_capability_is_mechanical_evidence": false,
     "legacy_deployment_code_is_canonical_activation": false,
     "host_channel_receipt_is_physical_proof": false,
     "materializer_and_runtime_root_reopen_are_physical_local_evidence": true,
     "pre_runtime_host_adapter_is_iKant_runtime": false,
-    "step_receipt_digest_alone_proves_canonical_next": false
+    "step_receipt_digest_alone_proves_canonical_next": false,
+    "model_generated_capability_is_host_attested_evidence": false,
+    "host_attested_evidence_is_mechanical_runtime_proof": false,
+    "legacy_c20_compatibility_may_define_product_mode": false
   }
 }

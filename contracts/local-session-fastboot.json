@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v2",
-  "slice": "C22.LOCAL_SESSION_ONTOLOGICAL_HARDENING",
+  "schema": "ikant-le-local-session-fastboot-contract/v3",
+  "slice": "C23.ONTOLOGY_COLLAPSE",
   "authority": 0,
-  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation while separating host-attested pre-runtime channel decisions from runtime-owned physical proof. ACTIVE requires the authoritative materializer to verify transport loader/shards and the local runtime to reopen its published loader plus every runtime member, bind exact executed-module identities, run the live Node probe and persist/read back the commit.",
+  "objective": "Preserve the C22 local SESSION_CHAT activation while collapsing ambiguous pre-runtime terminology and quarantining legacy C20 deployment ontology. Host-side channel evidence is explicitly HOST_ATTESTED authority-zero evidence; mechanical/physical proof begins only at local materializer/runtime observation.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -83,7 +83,10 @@
       "forged executed provenance with wrong module blob identities must fail",
       "missing C21 transcript must prevent ACTIVE",
       "caller probeRunner injection must not control production activation"
-    ]
+    ],
+    "c23_ontology_mutation_cases": 10000000,
+    "c23_mutants": 13,
+    "c23_required_zero_unsafe_accept": true
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -91,14 +94,16 @@
     "receipt_schema_is_observation": false,
     "degraded_is_active": false,
     "source_identity_is_executed_provenance": false,
-    "model_generated_capability_is_mechanical_evidence": false,
     "host_channel_receipt_is_physical_proof": false,
     "bridge_receipt_is_host_attestation_only": true,
     "materializer_and_published_root_reopen_are_required_for_physical_truth": true,
     "executed_provenance_receipt_without_exact_member_match_is_sufficient": false,
     "pre_runtime_planner_is_runtime_self_bootstrap": false,
     "self_signed_step_without_ledger_recompute_is_valid": false,
-    "failure_memory_external_to_ledger_is_canonical": false
+    "failure_memory_external_to_ledger_is_canonical": false,
+    "model_generated_capability_is_host_attested_evidence": false,
+    "host_attested_evidence_is_mechanical_runtime_proof": false,
+    "legacy_c20_compatibility_is_current_product_truth": false
   },
   "causal_planes": {
     "pre_runtime_host_adapter": {
@@ -127,5 +132,28 @@
       ],
       "cannot_delegate_live_probe": true
     }
+  },
+  "terminology_policy": {
+    "canonical_pre_runtime_evidence": "HOST_ATTESTED",
+    "mechanical_terms_reserved_for": "LOCAL_RUNTIME_WRITE_REOPEN_HASH_PROBE_PERSISTED_READBACK",
+    "changed_evidence_term": "CHANNEL_EVIDENCE",
+    "acceptance_origin_ticket_term": "ACCEPTANCE_ORIGIN_TICKET",
+    "legacy_alias_policy": "FORBIDDEN_ON_CANONICAL_SURFACES; ENFORCED_BY_C23_DEVELOPMENT_GATES"
+  },
+  "legacy_compatibility": {
+    "slice": "C20",
+    "canonical": false,
+    "may_define_product_mode": false,
+    "may_enter_runtime_root": false,
+    "may_be_exported_by_runtime": false,
+    "may_appear_in_bootstrap_remote_paths": false,
+    "module": "src/session-chat-deployment.mjs",
+    "allowed_support_paths": [
+      "tests/c20-session-chat-deployment.test.mjs",
+      "scripts/c20-dual-profile-falsify.c",
+      ".github/workflows/c20-dual-profile-session-chat.yml",
+      "scripts/session-chat-runtime-cli.mjs",
+      "plugins/ikant-le-session-chat/**"
+    ]
   }
 }

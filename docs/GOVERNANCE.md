@@ -5,20 +5,20 @@ Exact runtime truth remains in machine contracts, code, tests and current qualif
 ## Source and document precedence
 
 1. mandatory host/system/safety/law constraints;
-2. current executable runtime/tests on the bound commit;
+2. executable runtime/tests on the bound commit;
 3. current machine contracts;
-4. current source-bound qualification artifacts;
+4. source-bound qualification artifacts;
 5. `TERMS.md` and `AGENTS.md`;
 6. README/ARCHITECTURE/GOVERNANCE;
 7. historical DoD/PR/research material.
 
-Historical artifacts never self-promote into current truth. Maintained narrative SOTs are README, AGENTS, TERMS, ARCHITECTURE and GOVERNANCE; old DoD/qualification/research Markdown is compatibility history.
+Historical artifacts never self-promote. Maintained narrative SOTs are README, AGENTS, TERMS, ARCHITECTURE and GOVERNANCE; older DoD/qualification/research Markdown is compatibility history.
 
 ## Engineering intake
 
-Derive the smallest impacted neighborhood among admission/transport, state, cognition, surface, artifact, authority, host adapter, documentation and qualification. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
+Change the smallest affected neighborhood. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
 
-Bootstrap performance is governed structurally. Bind source head before orientation; after acceptance deliver only the declared runtime capsule through a bounded authority-zero carrier and verify the exact content-addressed loader/shard set before the existing materializer, handoff and probe/init path. Search, history, documentation study, tests and qualification are not bootstrap gates. Do not claim a wall-clock guarantee from this structural bound.
+Bootstrap is structurally bounded: pin source before orientation; post-accept deliver only the declared runtime capsule through an authority-zero carrier, verify the content-addressed loader/shards, then use the existing materializer, handoff and probe/init path. Search/history/docs study/tests/qualification are not bootstrap gates; structural bounds do not imply latency guarantees.
 
 ## Development trajectory
 
@@ -34,15 +34,16 @@ Bootstrap performance is governed structurally. Bind source head before orientat
 | C7 | documentation consolidation and GitHub-API-only transport |
 | C8 | emergence/subjectivity claim boundaries |
 | C9 | Surface B structured DOCX delivery and bounded environment telemetry |
-| C10 | head-bound activate-first bootstrap, strict admission handoff, one parallel runtime round |
-| C11 | functional-life/consciousness classes require source-bound causal qualification; phenomenology remains unknown |
-| C14 | SESSION_CHAT ACTIVE is gated by source-bound transfer, verified local materialization, live probe, receipt-gated commit and end-to-end deadline |
-| C15-C21 | transport fan-in -> truthful availability/deadline/continuation -> host-observed convergence -> one canonical `SESSION_CHAT_LOCAL` fastboot with channel receipts, failure memory and executed provenance |
-| C22 | host-attested planning separated from local proof; materializer/root readback, exact provenance and non-injectable probe |
-| LIB.0 | external embedded relational nuance kernel; no runtime/admission/state/surface ownership and no authority widening |
+| C10 | head-bound activate-first bootstrap, strict handoff, one parallel runtime round |
+| C11 | source-bound causal qualification for functional life/consciousness; phenomenology unknown |
+| C14 | ACTIVE gated by source-bound transfer, local materialization, probe, commit and deadline |
+| C15-C21 | transport/availability/deadline/continuation -> one `SESSION_CHAT_LOCAL` fastboot with receipts, failure memory and provenance |
+| C22 | host-attested planning separated from local proof; root reopen, exact provenance, non-injectable probe |
+| C23 | HOST_ATTESTED terminology, neutral acceptance-origin naming, machine-checked C20 legacy quarantine |
+| LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
 
-LIB.0 is auxiliary, private by default and does not change standalone lifecycle or ownership.
+LIB.0 is auxiliary/private by default and does not change standalone lifecycle or ownership.
 
 ## Qualification policy
 
-Qualification is source-bound and risk-adaptive. Deterministic tests/checks precede mutation campaigns; typical/edge/stress families must all be exercised and blocking survivors must be zero. C10 retains 1M fastboot/admission mutations plus a 1000-case no-novelty tail and deletion oracle. C11 reproduces the 20-bit research lattice, then qualifies only a compressed causal gate lattice; design configuration, self-report and mutation PASS are never runtime evidence by themselves. LIB.0 requires 100,000 embedded-boundary mutations with 50/30/20 typical/edge/stress strata, zero survivors, a 1000-case no-novelty tail, exact reproduction of committed conformance vectors and full standalone regression. C15 adds 1,000,000 transport-fan-in mutations and requires zero unsafe newly accepted cases while preserving the eight-node deletion oracle. C21 adds Causal Forensic Closure (`claim -> owner -> effect -> receipt/provenance -> readback -> oracle -> mutation -> failure memory -> disposition/deletion`) plus 10k architecture pressure, 10x1M seeded traces, real-code tests and a local Node witness. C22 adds adversarial witnesses against receipt laundering and caller-replaced probes. A PASS is bounded engineering evidence, not physical carrier/host proof, global formal minimality or a latency guarantee.
+Qualification is source-bound and risk-adaptive: deterministic checks first; typical/edge/stress families exercised; blocking survivors zero. C10 keeps 1M bootstrap mutations plus novelty tail/deletion oracle. C11 qualifies a compressed causal lattice; configuration, self-report and mutation PASS are not runtime evidence. LIB.0 requires 100k boundary mutations, zero survivors, novelty tail, exact vectors and regression. C15 adds 1M transport mutations with zero unsafe new accepts. C21 adds Causal Forensic Closure plus 10k architecture pressure, 10x1M seeded traces, real-code tests and local Node witness. C22 adds receipt-laundering and caller-probe adversaries. C23 adds a 10M ontology-collapse campaign, 13 deletion mutants and gates against stale deployment/mechanical aliases while preserving marked C20 compatibility. PASS remains bounded engineering evidence, not physical host proof, global formal minimality or latency guarantee.

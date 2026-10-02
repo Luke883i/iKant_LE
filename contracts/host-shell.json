@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-host-shell/v8",
+  "schema": "ikant-le-host-shell/v9",
   "human_bootstrap_gates": 1,
   "human_acceptance": "I ACCEPT",
   "first_contact": {
@@ -77,7 +77,12 @@
     "channel_receipt_is_physical_proof": false,
     "production_probe_injection_forbidden": true,
     "materializer_verifies_transport_loader_and_shards": true,
-    "runtime_reopens_published_loader_and_members_required": true
+    "runtime_reopens_published_loader_and_members_required": true,
+    "terminology_boundary": {
+      "host_attested_evidence_is_physical_proof": false,
+      "mechanical_terms_reserved_for_local_runtime_observation": true,
+      "legacy_c20_ontology_is_canonical": false
+    }
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -340,10 +345,10 @@
       "decision_key",
       "evidence_sha256"
     ],
-    "unavailable_persists_until_changed_mechanical_evidence": true,
     "failure_memory_owner": "CHANNEL_LEDGER",
     "fastboot_step_recompute_required": true,
-    "channel_evidence_digest_excludes_failure_memory": true
+    "channel_evidence_digest_excludes_failure_memory": true,
+    "unavailable_persists_until_changed_channel_evidence": true
   },
   "session_chat_activation": {
     "contract": "contracts/session-chat-activation.json",
@@ -352,7 +357,6 @@
     "repository_transfer_per_chat": true,
     "host_acceptance_ingress_required": true,
     "host_byte_ingress_required": true,
-    "mechanical_channel_ledger_required": true,
     "executed_code_provenance_required": true,
     "hosted_runtime_required": false,
     "plugin_or_mcp_registration_required": false,
@@ -363,6 +367,7 @@
     "production_probe_owner": "LOCAL_RUNTIME",
     "production_probe_injection_forbidden": true,
     "materializer_verifies_transport_loader_and_shards": true,
-    "runtime_root_readback_required": true
+    "runtime_root_readback_required": true,
+    "host_attested_channel_ledger_required": true
   }
 }
