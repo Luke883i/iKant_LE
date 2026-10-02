@@ -115,9 +115,9 @@ export function issueFastbootCapabilityReceipt({carrier,status,capabilities={},e
  const c=String(carrier||''),s=String(status||'').toUpperCase(),owner=String(probeOwner||'').trim(),op=String(operationId||'').trim(),head=String(sourceHead||'').toLowerCase();
  if(!FASTBOOT_CARRIERS.includes(c))throw new Error('fastboot carrier invalid');
  if(!['AVAILABLE','UNAVAILABLE'].includes(s))throw new Error('fastboot capability status invalid');
- if(!owner||!op)throw new Error('mechanical probe owner/operation required');
+ if(!owner||!op)throw new Error('host-attested probe owner/operation required');
  if(!HEX40.test(head))throw new Error('source head invalid');
- const raw=Buffer.isBuffer(evidence)?evidence:Buffer.from(String(evidence??''));if(!raw.length)throw new Error('mechanical evidence required');
+ const raw=Buffer.isBuffer(evidence)?evidence:Buffer.from(String(evidence??''));if(!raw.length)throw new Error('host-attested evidence required');
  const vector=capabilityVector(capabilities),derived=capState(vector);
  if(s==='AVAILABLE'&&derived!=='PROVEN')throw new Error('AVAILABLE requires complete proven capability vector');
  if(s==='UNAVAILABLE'&&derived!=='UNAVAILABLE')throw new Error('UNAVAILABLE requires at least one mechanically false capability');
@@ -149,7 +149,7 @@ export function buildFastbootChannelLedger({receipts=[],previous=null,sourceHead
  const batch=new Set();
  for(const r of receipts||[]){const v=validateFastbootCapabilityReceipt(r,{sourceHead:head});if(!v.ok)throw new Error('invalid capability receipt:'+v.errors.join(','));if(batch.has(r.carrier))throw new Error('duplicate carrier evidence in one ledger batch');batch.add(r.carrier);const prev=channels[r.carrier],nextVector=capabilityVector(r.capabilities);if(prev.status!=='UNKNOWN'&&prev.evidence_sha256===r.evidence_sha256&&(prev.status!==r.status||JSON.stringify(prev.capabilities)!==JSON.stringify(nextVector)))throw new Error('unchanged evidence cannot change channel state');channels[r.carrier]={status:r.status,capabilities:nextVector,evidence_receipt_sha256:r.receipt_sha256,evidence_sha256:r.evidence_sha256};accepted.push(r.receipt_sha256);}
  accepted=[...new Set(accepted)];const channelEvidence=sha256({activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:head,channels});
- const material={schema:FASTBOOT_CHANNEL_LEDGER_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:head,channels,channel_evidence_sha256:channelEvidence,failed_decisions:failures,accepted_receipts:accepted,capability_truth_owner:'HOST_ATTESTED_RECEIPTS',physical_origin_proven:false,raw_host_booleans_authoritative:false,registry_absence_implies_unavailable:false,unavailable_persists_until_changed_mechanical_evidence:true,model_selects_carrier:false,authority:0};
+ const material={schema:FASTBOOT_CHANNEL_LEDGER_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:head,channels,channel_evidence_sha256:channelEvidence,failed_decisions:failures,accepted_receipts:accepted,capability_truth_owner:'HOST_ATTESTED_RECEIPTS',physical_origin_proven:false,raw_host_booleans_authoritative:false,registry_absence_implies_unavailable:false,unavailable_persists_until_changed_channel_evidence:true,model_selects_carrier:false,authority:0};
  return{...material,receipt_sha256:sha256(material)};
 }
 export function validateFastbootChannelLedger(ledger,{sourceHead=null}={}){
@@ -162,7 +162,7 @@ export function validateFastbootChannelLedger(ledger,{sourceHead=null}={}){
  for(const c of FASTBOOT_CARRIERS){const row=r.channels?.[c];if(!row||!FASTBOOT_CHANNEL_STATES.includes(row.status))e.push('channel:'+c);if(row?.status==='AVAILABLE'&&capState(row.capabilities)!=='PROVEN')e.push('channel_available:'+c);if(row?.status==='UNAVAILABLE'&&capState(row.capabilities)!=='UNAVAILABLE')e.push('channel_unavailable:'+c);if(row?.status==='UNKNOWN'&&(row?.evidence_receipt_sha256!=null||row?.evidence_sha256!=null))e.push('channel_unknown_evidence:'+c);if(row?.status!=='UNKNOWN'&&(!HEX64.test(String(row?.evidence_receipt_sha256||''))||!HEX64.test(String(row?.evidence_sha256||''))))e.push('channel_evidence:'+c);}
  const expectedEvidence=sha256({activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:r.source_head,channels:r.channels});if(r.channel_evidence_sha256!==expectedEvidence)e.push('channel_evidence_digest');
  const failures=Array.isArray(r.failed_decisions)?r.failed_decisions:[];const seen=new Set();for(const f of failures){const key=String(f?.decision_key||'')+'|'+String(f?.evidence_sha256||'');if(!HEX64.test(String(f?.decision_key||''))||!HEX64.test(String(f?.evidence_sha256||''))||!FASTBOOT_CARRIERS.includes(f?.carrier)||seen.has(key))e.push('failure_memory');seen.add(key);}
- if(r.capability_truth_owner!=='HOST_ATTESTED_RECEIPTS'||r.physical_origin_proven!==false||r.raw_host_booleans_authoritative!==false||r.registry_absence_implies_unavailable!==false||r.unavailable_persists_until_changed_mechanical_evidence!==true||r.model_selects_carrier!==false||r.authority!==0)e.push('authority');
+ if(r.capability_truth_owner!=='HOST_ATTESTED_RECEIPTS'||r.physical_origin_proven!==false||r.raw_host_booleans_authoritative!==false||r.registry_absence_implies_unavailable!==false||r.unavailable_persists_until_changed_channel_evidence!==true||r.model_selects_carrier!==false||r.authority!==0)e.push('authority');
  if(!HEX64.test(String(r.receipt_sha256||''))||sha256(withoutDigest(r))!==r.receipt_sha256)e.push('receipt_digest');
  return{ok:e.length===0,errors:uniq(e)};
 }

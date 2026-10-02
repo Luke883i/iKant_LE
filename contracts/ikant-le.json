@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-contract/v8",
+  "schema": "ikant-le-contract/v9",
   "version": "0.8.0",
   "runtime": {
     "node": ">=20",
@@ -266,9 +266,9 @@
     "post_accept_deadline_dominates_active_commit",
     "session_chat_has_one_local_activation_modality",
     "carrier_is_not_activation_identity",
-    "mechanical_channel_receipts_own_capability_truth",
+    "host_attested_channel_receipts_own_capability_truth",
     "same_failed_decision_and_same_evidence_cannot_retry",
-    "changed_mechanical_evidence_reopens_only_the_affected_fastboot_frontier",
+    "changed_channel_evidence_reopens_only_the_affected_fastboot_frontier",
     "executed_code_provenance_required_for_active_probe",
     "no_side_infrastructure_during_user_bootstrap",
     "host_channel_receipt_is_attestation_not_physical_proof",
@@ -279,6 +279,8 @@
     "runtime_reopens_published_loader_and_members_before_active",
     "fastboot_step_must_recompute_from_bound_channel_ledger",
     "fastboot_failure_memory_is_ledger_owned",
-    "unchanged_channel_evidence_with_recorded_failure_cannot_retry"
+    "unchanged_channel_evidence_with_recorded_failure_cannot_retry",
+    "mechanical_terms_reserved_for_local_runtime_observation",
+    "legacy_c20_ontology_is_noncanonical_and_quarantined"
   ]
 }

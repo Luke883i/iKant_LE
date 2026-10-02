@@ -1,4 +1,4 @@
-name: c20-dual-profile-session-chat
+name: legacy-c20-compatibility
 on:
   push:
     branches: ['agent/c20-dual-profile-session-chat']

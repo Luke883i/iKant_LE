@@ -34,16 +34,9 @@ Machine truth is owned by current code/tests and machine contracts. `AGENTS.md` 
 ## Development qualification
 
 ```bash
-npm test
-npm run check
-npm run falsify:c5
-npm run falsify:c6
-npm run falsify:c7
-npm run falsify:c8
-npm run falsify:c9
-npm run falsify:c10
-npm run falsify:c14
-npm run falsify:c15
+npm run qualify:current
 ```
+
+`qualify:current` runs the current regression/check surface plus the C21-C23 local-session fastboot hardening campaigns. Historical slice falsifiers remain available individually but do not define a second product mode.
 
 Mutation PASS is bounded engineering evidence. It is not proof of consciousness, model quality, physical-world truth, production reliability, universal host compliance or a guaranteed bootstrap duration.

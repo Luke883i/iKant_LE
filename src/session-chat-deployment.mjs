@@ -6,6 +6,7 @@ import {performance} from 'node:perf_hooks';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {materializeRuntimeRoot,runtimeRootDescriptor,validateRuntimeRootDescriptor} from './runtime-root-verified.mjs';
 import {FASTBOOT_CAPABILITY_FIELDS,issueFastbootCapabilityReceipt,buildFastbootChannelLedger,deriveFastbootStep,issueFastbootByteBridgeReceipt} from './fastboot-convergence.mjs';
+export const LEGACY_C20_COMPATIBILITY_ONLY=Object.freeze({canonical:false,product_mode_authority:false,runtime_root_member:false,runtime_export:false,bootstrap_remote_path:false,authority:0});
 
 const WORKSPACE=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const ORIENTATION=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md'];
