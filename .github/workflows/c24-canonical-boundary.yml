@@ -81,3 +81,13 @@ jobs:
         run: npm run check
       - name: aggregate repository tests
         run: npm test
+
+  aggregate-clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: clean checkout aggregate
+        run: npm test
