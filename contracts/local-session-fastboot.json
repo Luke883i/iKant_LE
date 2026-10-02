@@ -138,15 +138,7 @@
     "mechanical_terms_reserved_for": "LOCAL_RUNTIME_WRITE_REOPEN_HASH_PROBE_PERSISTED_READBACK",
     "changed_evidence_term": "CHANNEL_EVIDENCE",
     "acceptance_origin_ticket_term": "ACCEPTANCE_ORIGIN_TICKET",
-    "forbidden_canonical_aliases": [
-      "mechanical_channel_ledger_required",
-      "changed_mechanical_evidence",
-      "mechanical_channel_receipts_own_capability_truth",
-      "deployed_origin_ticket",
-      "activation_profile",
-      "deployment_session_receipt_sha256",
-      "deployment_attestation_receipt_sha256"
-    ]
+    "legacy_alias_policy": "FORBIDDEN_ON_CANONICAL_SURFACES; ENFORCED_BY_C23_DEVELOPMENT_GATES"
   },
   "legacy_compatibility": {
     "slice": "C20",
