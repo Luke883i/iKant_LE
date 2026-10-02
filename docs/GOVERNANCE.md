@@ -55,4 +55,3 @@ C24 aligns the repository boundary with current supply-chain practice: source/bu
 
 C25 absorbs the physical-host finding that language-model/tool-output text is not a byte-exact local sink. Canonical v2 therefore moves acquisition/retry into a provider-neutral local activation executor, re-verifies immutable object identities after acceptance, and treats the 120 s target as observability only. Legacy v1 transfer/deadline receipts remain dual-reader compatibility and cannot define current ACTIVE truth.
 
-C26 keeps the local-host meta-prompt outside runtime-root truth. The renderer/document pair is generated and falsified; host-specific inability to provide a byte-exact local executor must surface as non-ACTIVE rather than trigger model-mediated relay or side infrastructure.

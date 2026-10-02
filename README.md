@@ -41,4 +41,4 @@ npm run qualify:canonical
 
 Canonical activation uses a provider-neutral **local activation executor** for content-addressed repository bytes. The language model remains control-plane compute and is never the runtime byte transport; activation latency is reported as an SLO rather than an integrity gate.
 
-The host meta-prompt is a generated, zero-authority projection: `docs/LOCAL_HOST_META_PROMPT.md` must remain byte-equal to `src/local-host-meta-prompt.mjs` and never becomes runtime truth.
+Host adapter projection: `docs/LOCAL_HOST_META_PROMPT.md` is generated and authority-zero.

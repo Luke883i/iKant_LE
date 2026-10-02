@@ -24,4 +24,3 @@ Surface B owns bounded declared runtime-environment and causal telemetry; never 
 
 Change the smallest semantic neighborhood; preserve one writer/lifecycle and consolidate instead of creating parallel truth. Repository writes use exact-head GitHub API `blobs -> tree -> commit -> ref-last`; merge/release/settings are separate human decisions. Narrative roles remain README entrypoint, AGENTS contract, TERMS admission, ARCHITECTURE product model and GOVERNANCE engineering/evidence trajectory.
 
-`docs/LOCAL_HOST_META_PROMPT.md` is generated from `src/local-host-meta-prompt.mjs`; it is a zero-authority host projection, not a second SOT or runtime owner.
