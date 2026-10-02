@@ -1,0 +1,25 @@
+name: c24-canonical-boundary
+on:
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'contracts/session-chat-activation.json'
+      - 'contracts/local-session-fastboot.json'
+      - 'contracts/ikant-le.json'
+      - 'src/runtime-availability.mjs'
+      - 'runtime-root/**'
+      - 'scripts/runtime-root.mjs'
+      - 'scripts/c24-canonical-boundary-falsify.c'
+      - 'tests/c24-canonical-boundary.test.mjs'
+      - 'scripts/check.mjs'
+      - 'package.json'
+      - '.github/workflows/c24-canonical-boundary.yml'
+jobs:
+  canonical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm run qualify:canonical

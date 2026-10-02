@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-contract/v9",
+  "schema": "ikant-le-contract/v10",
   "version": "0.8.0",
   "runtime": {
     "node": ">=20",
@@ -281,6 +281,13 @@
     "fastboot_failure_memory_is_ledger_owned",
     "unchanged_channel_evidence_with_recorded_failure_cannot_retry",
     "mechanical_terms_reserved_for_local_runtime_observation",
-    "legacy_c20_ontology_is_noncanonical_and_quarantined"
+    "legacy_c20_ontology_is_noncanonical_and_quarantined",
+    "human_to_ikant_relation_is_one_six_node_lattice",
+    "legacy_compatibility_translates_before_canonical_runtime",
+    "canonical_runtime_contains_no_legacy_deployment_profile_aliases",
+    "runtime_root_regeneration_is_deterministic_and_repository_owned",
+    "runtime_root_verification_precedes_canonical_qualification",
+    "global_dod_ids_are_unique",
+    "merge_checks_are_repository_governance_not_runtime_proof"
   ]
 }

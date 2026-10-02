@@ -141,7 +141,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 42,
-      "source_bytes": 287077,
+      "source_bytes": 288613,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "8a2a1002bd8c66602f6d692a39d25d02e6db73bd"
@@ -151,8 +151,8 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 85802,
-          "blob_sha1": "576797e24de054b8dc952f0440904cf1dedf327d"
+          "source_bytes": 85582,
+          "blob_sha1": "fd6b7782f2a6cf171429ce57526412ef6c6a645c"
         },
         {
           "index": 1,
@@ -179,15 +179,15 @@
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 11,
-          "source_bytes": 60950,
-          "blob_sha1": "d2041de2045fb7c417a48745deea2c31f71a8fab"
+          "source_bytes": 62473,
+          "blob_sha1": "8b1ddae94d6f90eb92cef0b23eb54dda668657c7"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 28793,
-          "blob_sha1": "c6626743aecb44677ce47af458b34cc44e559af3"
+          "source_bytes": 29239,
+          "blob_sha1": "4f1d3a48c00b0843dd9edd3a3b44fe54b7bfd562"
         },
         {
           "index": 6,
@@ -332,8 +332,8 @@
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "ff679bee35cc41633ae17033384f3b962c60faba",
-          "bytes": 11087,
+          "blob_sha1": "7e9edb74d4eda05d67b1c851da8e45e5ca7fbbcb",
+          "bytes": 11512,
           "shard": 5
         },
         {
@@ -404,8 +404,8 @@
         },
         {
           "path": "src/runtime-availability.mjs",
-          "blob_sha1": "b38a73164d118bd28243364082038c07ab3e981f",
-          "bytes": 11110,
+          "blob_sha1": "aca9f29a268db65689a473f718b949510ae4bfde",
+          "bytes": 10891,
           "shard": 0
         },
         {
@@ -446,12 +446,12 @@
         },
         {
           "path": "contracts/session-chat-activation.json",
-          "blob_sha1": "15d02006b76ebc32adeaec2472609742506219d5",
-          "bytes": 5688,
+          "blob_sha1": "d57af40273ac9550d891b547fa616308740cfe1c",
+          "bytes": 7018,
           "shard": 4
         }
       ],
-      "runtime_root_sha256": "6ba3164c70acfb46c499fb712ce2d6a4fe8afb8b3fc9329f3ea736109ad7110e"
+      "runtime_root_sha256": "f47e91cdcab2ca60b04ab390f7e8f9f2d9b06809447e68fe5a288dbf0cbd2629"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -553,6 +553,13 @@
       "host_attestation_is_physical_proof": false,
       "mechanical_terms_reserved_for_local_runtime_observation": true,
       "legacy_c20_ontology_is_canonical": false
+    },
+    "runtime_root_build": {
+      "generator": "scripts/runtime-root.mjs",
+      "regenerate_command": "npm run runtime-root:regen",
+      "verify_command": "npm run runtime-root:verify",
+      "deterministic": true,
+      "build_receipt_is_live_runtime_proof": false
     }
   },
   "post_acceptance": [
