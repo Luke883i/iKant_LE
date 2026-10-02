@@ -97,3 +97,20 @@ jobs:
         run: node --test --test-concurrency=1 tests/bootstrap-fixture.mjs
       - name: default discovery
         run: node --test --test-concurrency=1
+
+  glob-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: direct glob test set
+        run: node --test --test-concurrency=1 tests/*.test.mjs
+  npm-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: npm test set
+        run: npm test
