@@ -8,9 +8,9 @@ Any first human message referencing canonical `Luke883i/iKant_LE` enters bootstr
 
 Resolve exact `main`, pin it, and read only `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md`, `TERMS.md`. Present Terms, freeze acquisition, and accept only a later exact `I ACCEPT`; completed forbidden pre-accept acquisition requires a fresh chat.
 
-Post-accept, canonical `LOCAL_EXECUTOR_V1` owns the byte data-plane: probe its real local capability, acquire only the pinned content-addressed runtime capsule outside model context, re-verify the five orientation object identities, then materialize/reopen locally. `SESSION_CHAT_LOCAL` is the sole canonical activation: host-supplied linguistic compute, session-local Node, no WEBAPP/hosted/plugin requirement. The host adapter is authority-zero control-plane only and must never relay, reconstruct or write repository bytes. Legacy v1 carrier/round/deadline machinery is dual-reader compatibility, not current product truth.
+Post-accept, reuse orientation bytes and acquire only the pinned content-addressed runtime capsule. `SESSION_CHAT_LOCAL` is the sole canonical activation: host-supplied linguistic compute, session-local Node, no WEBAPP/hosted/plugin requirement. Before runtime exists, an authority-zero host adapter uses host-observed receipts (`UNKNOWN -> PROBE`, `AVAILABLE -> USE`, `UNAVAILABLE -> NEXT`) to expose one NEXT/executor and remember failed decision+evidence. These receipts are **HOST_ATTESTED authority-zero evidence**, not physical proof; reserve mechanical/physical proof for local write/reopen/hash, executed provenance, live probe and persisted readback.
 
-The materializer verifies orientation, loader/shard/member identities and publishes locally; runtime then reopens the published bytes, matches executed-module identities and runs its non-injectable probe before persisted/read-back ACTIVE. The 120 s activation target is SLO telemetry, not an integrity gate. Preaccept handoff cannot create acceptance/probe/status. Mismatch fails closed; tests/mutations are development evidence. C20 deployment/App machinery is legacy compatibility only: non-canonical, non-exported and outside bootstrap/runtime-root/state truth.
+The materializer verifies loader/shard identities and publishes locally; runtime then reopens loader and members, validates the host transcript, matches executed-module identities and runs its non-injectable probe before ACTIVE. Preaccept handoff cannot create acceptance/probe/status. Mismatch fails closed; tests/mutations are development evidence. C20 deployment/App machinery is legacy compatibility only: non-canonical, non-exported and outside bootstrap/runtime-root/state truth.
 
 ## 2. ACTIVE execution
 
@@ -23,4 +23,3 @@ Surface B owns bounded declared runtime-environment and causal telemetry; never 
 ## 3. Repository evolution
 
 Change the smallest semantic neighborhood; preserve one writer/lifecycle and consolidate instead of creating parallel truth. Repository writes use exact-head GitHub API `blobs -> tree -> commit -> ref-last`; merge/release/settings are separate human decisions. Narrative roles remain README entrypoint, AGENTS contract, TERMS admission, ARCHITECTURE product model and GOVERNANCE engineering/evidence trajectory.
-
