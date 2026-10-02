@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import path from 'node:path';
 import {renderLocalHostMetaPrompt} from '../src/local-host-meta-prompt.mjs';
 
 const P=renderLocalHostMetaPrompt();
@@ -46,4 +47,4 @@ const lines=P.split('\n'),deletions=[];
 for(let i=0;i<lines.length;i++){if(!lines[i].trim())continue;const text=[...lines.slice(0,i),...lines.slice(i+1)].join('\n');if(oracle(text))deletions.push({line:i+1,text:lines[i]});}
 const out={schema:'ikant-le-local-host-metaprompt-falsification/v1',prompt_sha256:crypto.createHash('sha256').update(P).digest('hex'),prompt_chars:P.length,prompt_words:P.trim().split(/\s+/).length,families:Object.fromEntries(Object.keys(families).map(k=>[k,10])),mutations:mutations.length,source_oracle_pass:oracle(P),killed:mutations.length-survivors.length,survivors,single_line_deletion_survivors:deletions,claim_boundary:'textual semantic projection falsification; not physical-host or runtime proof'};
 out.status=out.source_oracle_pass&&out.killed===100&&out.single_line_deletion_survivors.length===0?'PASS':'FAIL';
-const raw=JSON.stringify(out,null,2)+'\n';console.log(raw.trim());const i=process.argv.indexOf('--output');if(i>=0&&process.argv[i+1]){fs.mkdirSync(new URL('.',`file://${process.argv[i+1]}`).pathname,{recursive:true});fs.writeFileSync(process.argv[i+1],raw);}if(out.status!=='PASS')process.exitCode=1;
+const raw=JSON.stringify(out,null,2)+'\n';console.log(raw.trim());const i=process.argv.indexOf('--output');if(i>=0&&process.argv[i+1]){const target=process.argv[i+1];fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,raw);}if(out.status!=='PASS')process.exitCode=1;
