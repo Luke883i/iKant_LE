@@ -94,3 +94,14 @@ test('C25 runtime-root remains content-addressed',()=>{
  assert.equal(d.member_count,d.members.length);
  assert.match(d.runtime_root_sha256,/^[a-f0-9]{64}$/);
 });
+
+test('C25 canonical contracts cannot expose unmarked v1 activation truth',()=>{
+ const a=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-activation.json'),'utf8'));
+ const l=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/local-session-fastboot.json'),'utf8'));
+ assert.equal('required' in a,false);assert.equal('fastboot_law' in a,false);
+ assert.ok(Array.isArray(a.canonical_v2_required));assert.ok(Array.isArray(a.legacy_v1_required));
+ assert.equal('required_mechanisms' in l,false);assert.equal('causal_planes' in l,false);
+ assert.ok(Array.isArray(l.canonical_v2_required_mechanisms));assert.ok(l.canonical_v2_causal_planes.local_activation_executor);
+ assert.equal(a.claim_boundary.unmarked_v1_fastboot_fields_may_define_v2,false);
+ assert.equal(l.claim_boundary.unmarked_legacy_mechanisms_are_canonical,false);
+});

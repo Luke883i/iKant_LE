@@ -13,38 +13,6 @@
   "webapp_mode": false,
   "always_running_process_required": false,
   "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24+C25",
-  "required": [
-    "EXACT_ACCEPT",
-    "MONOTONIC_ORIGIN_AT_INGEST",
-    "SOURCE_HEAD_PIN",
-    "TYPED_HOST_ATTESTED_CHANNEL_LEDGER",
-    "ONE_CANONICAL_NEXT",
-    "FAILURE_MEMORY_BY_DECISION_AND_EVIDENCE",
-    "PHYSICAL_BYTE_INGRESS",
-    "CONTENT_ADDRESSED_LOCAL_ROOT_READBACK",
-    "EXECUTED_CODE_PROVENANCE",
-    "LIVE_PROBE",
-    "WRITER_PERSISTENCE",
-    "ACTIVE_COMMIT_READBACK"
-  ],
-  "fastboot_law": [
-    "UNKNOWN capability is probed rather than guessed",
-    "AVAILABLE and UNAVAILABLE require host-observed evidence receipts; such receipts are authority-zero attestations, not physical proof",
-    "UNAVAILABLE persists until changed channel evidence",
-    "same decision_key plus same evidence plus previous non-progress cannot be retried",
-    "changed evidence recomputes the canonical NEXT",
-    "exactly one NEXT and one executor are exposed",
-    "model preference never selects carrier or fallback",
-    "registry absence never proves host capability absence",
-    "failed or partial attempts never become authoritative REMOTE_HISTORY",
-    "no side infrastructure is invented during user bootstrap",
-    "the pre-runtime host adapter owns carrier selection because the runtime cannot select the carrier required to materialize itself",
-    "the authoritative materializer must verify transport loader/shard identities, and the local runtime must reopen the published loader plus every materialized runtime member before ACTIVE",
-    "the production live probe is runtime-owned and cannot be substituted by a caller callback",
-    "executed provenance must match exact descriptor blob identities and byte counts",
-    "failed decisions are persisted inside the channel ledger and do not change channel_evidence_sha256",
-    "the runtime validator recomputes the fastboot step from the bound ledger before accepting bootstrap evidence"
-  ],
   "irreducible_lattice": [
     "HUMAN_GATE",
     "SOURCE_SNAPSHOT",
@@ -151,6 +119,10 @@
     {
       "id": "C25_G22",
       "claim": "same-epoch retry is idempotent by immutable object identity and never requires a second I ACCEPT, source rebase or model-mediated byte path"
+    },
+    {
+      "id": "C25_G23",
+      "claim": "legacy carrier/deadline/channel-ledger requirements exist only under legacy_v1_* namespaces; unmarked legacy activation laws cannot coexist with canonical v2 truth"
     }
   ],
   "claim_boundary": {
@@ -173,7 +145,8 @@
     "model_context_is_runtime_byte_transport": false,
     "activation_slo_breach_is_integrity_failure": false,
     "local_executor_receipt_without_runtime_reopen_is_active_proof": false,
-    "legacy_v1_transfer_receipts_define_current_product_truth": false
+    "legacy_v1_transfer_receipts_define_current_product_truth": false,
+    "unmarked_v1_fastboot_fields_may_define_v2": false
   },
   "edge_invariants": [
     "ONE_HUMAN_GATE",
@@ -183,5 +156,62 @@
     "SLO_NOT_INTEGRITY",
     "COMPATIBILITY_ZERO_AUTHORITY"
   ],
-  "canonical_activation_model": "LOCAL_EXECUTOR_V1"
+  "canonical_activation_model": "LOCAL_EXECUTOR_V1",
+  "legacy_v1_required": [
+    "EXACT_ACCEPT",
+    "MONOTONIC_ORIGIN_AT_INGEST",
+    "SOURCE_HEAD_PIN",
+    "TYPED_HOST_ATTESTED_CHANNEL_LEDGER",
+    "ONE_CANONICAL_NEXT",
+    "FAILURE_MEMORY_BY_DECISION_AND_EVIDENCE",
+    "PHYSICAL_BYTE_INGRESS",
+    "CONTENT_ADDRESSED_LOCAL_ROOT_READBACK",
+    "EXECUTED_CODE_PROVENANCE",
+    "LIVE_PROBE",
+    "WRITER_PERSISTENCE",
+    "ACTIVE_COMMIT_READBACK"
+  ],
+  "legacy_v1_fastboot_law": [
+    "UNKNOWN capability is probed rather than guessed",
+    "AVAILABLE and UNAVAILABLE require host-observed evidence receipts; such receipts are authority-zero attestations, not physical proof",
+    "UNAVAILABLE persists until changed channel evidence",
+    "same decision_key plus same evidence plus previous non-progress cannot be retried",
+    "changed evidence recomputes the canonical NEXT",
+    "exactly one NEXT and one executor are exposed",
+    "model preference never selects carrier or fallback",
+    "registry absence never proves host capability absence",
+    "failed or partial attempts never become authoritative REMOTE_HISTORY",
+    "no side infrastructure is invented during user bootstrap",
+    "the pre-runtime host adapter owns carrier selection because the runtime cannot select the carrier required to materialize itself",
+    "the authoritative materializer must verify transport loader/shard identities, and the local runtime must reopen the published loader plus every materialized runtime member before ACTIVE",
+    "the production live probe is runtime-owned and cannot be substituted by a caller callback",
+    "executed provenance must match exact descriptor blob identities and byte counts",
+    "failed decisions are persisted inside the channel ledger and do not change channel_evidence_sha256",
+    "the runtime validator recomputes the fastboot step from the bound ledger before accepting bootstrap evidence"
+  ],
+  "canonical_v2_required": [
+    "EXACT_STANDALONE_ACCEPT",
+    "SOURCE_HEAD_PIN",
+    "ORIENTATION_OBJECT_IDENTITIES",
+    "LOCAL_EXECUTOR_CAPABILITY_PROBE",
+    "CONTENT_ADDRESSED_ACQUISITION",
+    "MODEL_MEDIATED_BYTES_FALSE",
+    "ORIENTATION_REVERIFICATION",
+    "CONTENT_ADDRESSED_LOCAL_ROOT_READBACK",
+    "EXECUTED_CODE_PROVENANCE",
+    "LIVE_RUNTIME_OWNED_PROBE",
+    "WRITER_PERSISTENCE",
+    "ACTIVE_COMMIT_READBACK"
+  ],
+  "canonical_v2_executor_law": [
+    "the language model owns no runtime byte transport",
+    "the local activation executor probes required capability before acquisition",
+    "source and orientation/runtime object identities are immutable and content-addressed",
+    "same-object retries are idempotent within the same accepted epoch",
+    "model_mediated_bytes=true is an integrity contradiction",
+    "the materializer re-verifies orientation and runtime object identities before atomic publish",
+    "the local runtime reopens published bytes and proves exact executed-code provenance",
+    "activation latency is telemetry only and never changes integrity truth",
+    "only persisted/read-back ACTIVE belongs to iKant"
+  ]
 }

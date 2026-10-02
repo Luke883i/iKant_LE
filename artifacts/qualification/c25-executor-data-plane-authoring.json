@@ -1,7 +1,7 @@
 {
   "schema": "ikant-le-c25-executor-data-plane-authoring/v1",
   "base_head": "e76d61e318a181fb1b5c7da8a21480c73b60ced9",
-  "objective": "Remove the language model from canonical runtime byte transport while preserving one human gate, immutable source identity, local materialization/provenance and persisted ACTIVE truth.",
+  "objective": "Remove the language model from canonical runtime byte transport while preserving one human gate, immutable source identity, local materialization/provenance and persisted ACTIVE truth. Canonical and legacy activation truth are explicitly namespaced; an unmarked legacy law is itself a falsification witness.",
   "input_analysis": {
     "source": "user-attached DOCX analysis",
     "absorbed": [
@@ -35,10 +35,13 @@
   "semantic_falsification": {
     "cases": 1000000,
     "seed": "0xC25DA7A",
+    "schema": "ikant-le-c25-executor-data-plane/v2",
     "candidate_oracle_mismatches": 0,
     "unsafe_active": 0,
-    "mutants": 15,
-    "all_mutants_killed_required": true
+    "mutants": 16,
+    "all_mutants_killed": true,
+    "slo_exceeded_active_witnesses": 66691,
+    "same_identity_retry_active_witnesses": 86374
   },
   "claim_boundary": {
     "semantic_pass_is_physical_host_proof": false,

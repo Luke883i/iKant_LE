@@ -296,6 +296,7 @@
     "preaccept_continuity_reverified_by_object_identity",
     "activation_latency_is_slo_not_integrity",
     "content_addressed_retry_is_idempotent_same_epoch",
-    "legacy_transfer_v1_is_dual_reader_compatibility_only"
+    "legacy_transfer_v1_is_dual_reader_compatibility_only",
+    "canonical_and_legacy_activation_truth_are_explicitly_namespaced"
   ]
 }
