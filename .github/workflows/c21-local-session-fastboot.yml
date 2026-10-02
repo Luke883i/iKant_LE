@@ -39,7 +39,8 @@ jobs:
           npm test > "$RUNNER_TEMP/npm-test.log" 2>&1
           code=$?
           echo "code=$code" >> "$GITHUB_OUTPUT"
-          tail -c 12000 "$RUNNER_TEMP/npm-test.log" > "$RUNNER_TEMP/npm-test-tail.log"
+          grep -n -B 8 -A 24 -E 'not ok|AssertionError|ERR_ASSERTION|failureType|error:' "$RUNNER_TEMP/npm-test.log" > "$RUNNER_TEMP/npm-test-failures.log" || true
+          tail -c 9000 "$RUNNER_TEMP/npm-test.log" > "$RUNNER_TEMP/npm-test-tail.log"
           exit 0
       - name: Report npm test failure
         if: steps.npm_test.outputs.code != '0'
@@ -47,7 +48,9 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const body = 'C21 diagnostic — npm test failed on ' + context.sha + '\n\n```text\n' + fs.readFileSync(process.env.RUNNER_TEMP + '/npm-test-tail.log','utf8') + '\n```';
+            const failures = fs.readFileSync(process.env.RUNNER_TEMP + '/npm-test-failures.log','utf8');
+            const tail = fs.readFileSync(process.env.RUNNER_TEMP + '/npm-test-tail.log','utf8');
+            const body = 'C21 diagnostic — npm test failed on ' + context.sha + '\n\nFailure context:\n```text\n' + failures + '\n```\nTail:\n```text\n' + tail + '\n```';
             await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body});
       - name: Fail after diagnostic
         if: steps.npm_test.outputs.code != '0'
