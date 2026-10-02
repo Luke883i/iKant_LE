@@ -18,7 +18,7 @@ Historical artifacts never self-promote. Maintained narrative SOTs are README, A
 
 Change the smallest affected neighborhood. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
 
-Bootstrap is structurally bounded: pin source before orientation; post-accept deliver only the declared runtime capsule through an authority-zero carrier, verify the content-addressed loader/shards, then use the existing materializer, handoff and probe/init path. Search/history/docs study/tests/qualification are not bootstrap gates; structural bounds do not imply latency guarantees.
+Bootstrap is structurally bounded: pin source before orientation; post-accept invoke the provider-neutral local activation executor, which acquires only the declared content-addressed runtime objects outside model context, re-verifies orientation identities, then uses the existing materializer/reopen and runtime-owned provenance/probe/init path. Search/history/docs study/tests/qualification are not bootstrap gates; the 120 s target is observability/SLO, not an integrity predicate.
 
 ## Development trajectory
 
@@ -42,6 +42,7 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept de
 | C23 | HOST_ATTESTED terminology, neutral acceptance-origin naming, machine-checked C20 legacy quarantine |
 | C24 | six-node canonical boundary, deterministic runtime-root regeneration/verification, compatibility translated before runtime |
 | C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
+| C26 | generated local-host meta-prompt collapses onto C25 control-plane boundary; 100 full-prompt semantic mutations and deletion oracle protect against stale carrier/bridge ontology |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
 
 LIB.0 is auxiliary/private by default and does not change standalone lifecycle or ownership.
@@ -50,6 +51,4 @@ LIB.0 is auxiliary/private by default and does not change standalone lifecycle o
 
 Qualification is source-bound and risk-adaptive: deterministic checks first; typical/edge/stress families exercised; blocking survivors zero. C10 keeps 1M bootstrap mutations plus novelty tail/deletion oracle. C11 qualifies a compressed causal lattice; configuration, self-report and mutation PASS are not runtime evidence. LIB.0 requires 100k boundary mutations, zero survivors, novelty tail, exact vectors and regression. C15 adds 1M transport mutations with zero unsafe new accepts. C21 adds Causal Forensic Closure plus 10k architecture pressure, 10x1M seeded traces, real-code tests and local Node witness. C22 adds receipt-laundering and caller-probe adversaries. C23 adds a 10M ontology-collapse campaign, 13 deletion mutants and gates against stale deployment/mechanical aliases while preserving marked C20 compatibility. PASS remains bounded engineering evidence, not physical host proof, global formal minimality or latency guarantee.
 
-C24 aligns the repository boundary with current supply-chain practice: source/build inputs are explicit, generated runtime-root identity is deterministic, compatibility cannot define canonical product truth, and build/CI evidence is never promoted to live runtime proof.
 
-C25 absorbs the physical-host finding that language-model/tool-output text is not a byte-exact local sink. Canonical v2 therefore moves acquisition/retry into a provider-neutral local activation executor, re-verifies immutable object identities after acceptance, and treats the 120 s target as observability only. Legacy v1 transfer/deadline receipts remain dual-reader compatibility and cannot define current ACTIVE truth.
