@@ -17,7 +17,7 @@ if(contract.surface_b?.exactly_one_per_substantive_active_turn!==true||contract.
 if(contract.first_contact?.convergence_required!==true||contract.first_contact?.generic_repository_discovery_forbidden!==true)errors.push('first-contact contract');
 if(contract.first_contact?.repository_transport!=='GITHUB_API'||contract.first_contact?.transport_fallback!==null||contract.first_contact?.unavailable_tools_must_not_be_attempted!==true)errors.push('contract transport');
 if(contract.documentation?.entry!=='README.md'||contract.documentation?.agent_contract!=='AGENTS.md'||contract.documentation?.architecture!=='docs/ARCHITECTURE.md'||contract.documentation?.governance!=='docs/GOVERNANCE.md'||contract.documentation?.historical_markdown_is_non_normative!==true)errors.push('documentation roles');
-if(bootstrap.schema!=='ikant-le-public-bootstrap/v2'||admission.schema!=='ikant-le-admission/v2')errors.push('first-contact manifests');
+if(bootstrap.schema!=='ikant-le-public-bootstrap/v2'||admission.schema!=='ikant-le-admission/v3')errors.push('first-contact manifests');
 if(bootstrap.orientation_capsule?.generic_repository_discovery_forbidden!==true||admission.embedded_acceptance_invalid!==true)errors.push('first-contact manifest semantics');
 if(bootstrap.repository_transport?.required!=='GITHUB_API'||bootstrap.repository_transport?.fallback!==null||bootstrap.repository_transport?.connector_is_api_adapter!==true)errors.push('bootstrap transport');
 if(admission.repository_transport?.required!=='GITHUB_API'||admission.repository_transport?.fallback!==null||admission.repository_transport?.unavailable_tools_must_not_be_attempted!==true)errors.push('admission transport');
