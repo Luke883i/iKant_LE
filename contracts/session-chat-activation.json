@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-session-chat-activation-contract/v6",
-  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
+  "schema": "ikant-le-session-chat-activation-contract/v7",
+  "slice": "C27.VERIFIED_OPAQUE_RELAY_LATTICE",
   "authority": 0,
-  "objective": "Guarantee one human-to-iKant local activation in which the model never carries runtime bytes: exact human acceptance binds one immutable source snapshot; a local activation executor owns content-addressed acquisition and retries; the materialized runtime proves executed identity and alone may persist/read back ACTIVE.",
+  "objective": "Guarantee one human-to-iKant local activation with a typed, authority-zero byte path: direct local acquisition when physically available, otherwise a verified opaque relay with no rewrite or semantic equivalence; materialization/reopen, executed provenance and runtime-owned ACTIVE remain downstream local truth.",
   "product_mode": "SESSION_CHAT",
   "activation_modality": "SESSION_CHAT_LOCAL",
   "language_engine_origin": "HOST_SUPPLIED",
@@ -12,11 +12,12 @@
   "plugin_or_mcp_registration_required": false,
   "webapp_mode": false,
   "always_running_process_required": false,
-  "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24+C25",
+  "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24+C25+C27",
   "irreducible_lattice": [
     "HUMAN_GATE",
     "SOURCE_SNAPSHOT",
-    "LOCAL_EXECUTOR",
+    "LOCAL_PROCESSOR",
+    "VERIFIED_BYTE_PATH",
     "LOCAL_MATERIALIZATION",
     "EXECUTED_RUNTIME_PROOF",
     "ACTIVE_READBACK"
@@ -123,6 +124,34 @@
     {
       "id": "C25_G23",
       "claim": "legacy carrier/deadline/channel-ledger requirements exist only under legacy_v1_* namespaces; unmarked legacy activation laws cannot coexist with canonical v2 truth"
+    },
+    {
+      "id": "C27_G24",
+      "claim": "local processor, source visibility, byte-path availability, materialization, executed provenance, runtime binding and ACTIVE readback remain distinct evidence edges"
+    },
+    {
+      "id": "C27_G25",
+      "claim": "canonical v2 byte path is exactly LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY; provider/carrier preference never creates a third path"
+    },
+    {
+      "id": "C27_G26",
+      "claim": "VERIFIED_OPAQUE_RELAY permits only opaque authority-zero byte transport; rewrite and semantic equivalence are forbidden; roundtrip plus source/arrival samehash are mandatory"
+    },
+    {
+      "id": "C27_G27",
+      "claim": "N0-N8 activation stages are a derived projection, not lifecycle/product identity; integrity and availability blockers are orthogonal overlays"
+    },
+    {
+      "id": "C27_G28",
+      "claim": "source-visible plus local processor plus connector-text relay candidate is N3_BRIDGE_PROBE_REQUIRED rather than HOST_UNAVAILABLE"
+    },
+    {
+      "id": "C27_G29",
+      "claim": "N8 ACTIVE still requires local materialization/reopen, exact executed provenance, runtime binding, writer persistence and ACTIVE readback"
+    },
+    {
+      "id": "C27_G30",
+      "claim": "1,000,000 preseeded realistic semantic mutations pass with zero candidate/oracle mismatches, zero unsafe ACTIVE and every retained mutant killed"
     }
   ],
   "claim_boundary": {
@@ -142,16 +171,20 @@
     "runtime_root_build_receipt_is_live_runtime_proof": false,
     "merge_check_is_current_chat_active_proof": false,
     "host_attestation_is_canonical_data_plane": false,
-    "model_context_is_runtime_byte_transport": false,
     "activation_slo_breach_is_integrity_failure": false,
     "local_executor_receipt_without_runtime_reopen_is_active_proof": false,
     "legacy_v1_transfer_receipts_define_current_product_truth": false,
-    "unmarked_v1_fastboot_fields_may_define_v2": false
+    "unmarked_v1_fastboot_fields_may_define_v2": false,
+    "verified_opaque_model_transport_allowed": true,
+    "model_transport_has_epistemic_or_execution_authority": false,
+    "model_rewrite_or_semantic_equivalence_is_transfer": false,
+    "unverified_model_mediation_is_integrity_failure": true
   },
   "edge_invariants": [
     "ONE_HUMAN_GATE",
     "SOURCE_OBJECT_IDENTITY",
-    "MODEL_OUTSIDE_DATA_PLANE",
+    "MODEL_TRANSPORT_AUTHORITY_ZERO",
+    "OPAQUE_RELAY_SAMEHASH",
     "IDEMPOTENT_OBJECT_RETRY",
     "SLO_NOT_INTEGRITY",
     "COMPATIBILITY_ZERO_AUTHORITY"
@@ -195,7 +228,8 @@
     "ORIENTATION_OBJECT_IDENTITIES",
     "LOCAL_EXECUTOR_CAPABILITY_PROBE",
     "CONTENT_ADDRESSED_ACQUISITION",
-    "MODEL_MEDIATED_BYTES_FALSE",
+    "TYPED_BYTE_PATH",
+    "VERIFIED_RELAY_POLICY",
     "ORIENTATION_REVERIFICATION",
     "CONTENT_ADDRESSED_LOCAL_ROOT_READBACK",
     "EXECUTED_CODE_PROVENANCE",
@@ -204,14 +238,18 @@
     "ACTIVE_COMMIT_READBACK"
   ],
   "canonical_v2_executor_law": [
-    "the language model owns no runtime byte transport",
-    "the local activation executor probes required capability before acquisition",
+    "the local activation executor owns byte-path validation and content-addressed acquisition",
+    "canonical byte_path is LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY",
+    "LOCAL_DIRECT requires model_mediated_bytes=false",
+    "VERIFIED_OPAQUE_RELAY requires model_mediated_bytes=true only as OPAQUE_TRANSPORT_ONLY with authority zero",
+    "model rewrite and semantic equivalence are forbidden on every byte path",
+    "source/arrival samehash and an opaque relay roundtrip are required before relay acquisition is complete",
     "source and orientation/runtime object identities are immutable and content-addressed",
     "same-object retries are idempotent within the same accepted epoch",
-    "model_mediated_bytes=true is an integrity contradiction",
     "the materializer re-verifies orientation and runtime object identities before atomic publish",
     "the local runtime reopens published bytes and proves exact executed-code provenance",
     "activation latency is telemetry only and never changes integrity truth",
     "only persisted/read-back ACTIVE belongs to iKant"
-  ]
+  ],
+  "capability_lattice_contract": "contracts/session-local-capability-lattice.json"
 }

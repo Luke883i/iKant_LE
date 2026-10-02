@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-chat-bootstrap-semantic/v2",
-  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
+  "schema": "ikant-le-chat-bootstrap-semantic/v3",
+  "slice": "C27.VERIFIED_OPAQUE_RELAY_LATTICE",
   "authority": 0,
-  "intent": "Make canonical SESSION_CHAT activation independent of model-mediated byte transport and pre-runtime clock/digest obligations: exact acceptance + immutable source/object identities + local executor + materialization/reopen + runtime-owned provenance/probe + persisted ACTIVE.",
+  "intent": "Make canonical SESSION_CHAT activation independent of any single physical carrier: exact acceptance + immutable source/object identities + typed LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY byte path + materialization/reopen + runtime-owned provenance/probe + persisted ACTIVE.",
   "nodes": [
     {
       "id": "TARGET_INTENT_ROOT",
@@ -210,9 +210,9 @@
         "capability probe",
         "object acquisition",
         "content-addressed retry",
-        "model-bypass data plane"
+        "typed byte path with verified opaque relay"
       ],
-      "boundary": "language-model context is never a byte transport"
+      "boundary": "language-model transport is allowed only as verified opaque authority-zero relay; rewrite and semantic equivalence are forbidden"
     },
     {
       "id": "LOCAL_MATERIALIZATION",
@@ -246,7 +246,7 @@
   "canonical_active_predicate_v2": [
     "later exact standalone I ACCEPT consumed once",
     "immutable source head and orientation/runtime object identities match",
-    "local executor capability/acquisition receipt valid and model_mediated_bytes=false",
+    "local executor capability/acquisition receipt has a valid typed byte_path; relay requires opaque role, roundtrip and source/arrival samehash",
     "materializer re-verifies orientation plus runtime objects, atomically publishes and reopens",
     "runtime-owned probe matches exact executed provenance",
     "single writer persists and reads back ACTIVE"
