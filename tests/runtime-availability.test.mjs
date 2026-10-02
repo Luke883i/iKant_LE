@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {classifyRuntimeAvailability,classifyTurnRelease,validateRuntimeAvailabilityDecision} from '../src/runtime-availability.mjs';
+import {classifyRuntimeAvailability,classifyTurnRelease,validateRuntimeAvailabilityDecision,availabilityFromBootstrapFailure} from '../src/runtime-availability.mjs';
 const active={terms_presented:true,accepted:true,source_bound:true,consent_valid:true,transfer_identity:true,evidence_available:true,byte_bridge:true,local_root:true,host_probe:true,writer:true,deadline_result:'DEADLINE_PASS',active_commit:true,integrity_codes:[]};
 test('C16 full gate conjunction is ACTIVE',()=>{const d=classifyRuntimeAvailability(active);assert.equal(d.state,'ACTIVE');assert.equal(d.active,true);assert.deepEqual(validateRuntimeAvailabilityDecision(d),{ok:true,errors:[]});});
 test('C16 observed connector to filesystem gap is DEGRADED not ACTIVE',()=>{const d=classifyRuntimeAvailability({...active,byte_bridge:false,local_root:false,active_commit:false});assert.equal(d.state,'DEGRADED');assert.equal(d.active,false);assert.ok(d.degraded_codes.includes('BYTE_BRIDGE_UNAVAILABLE'));assert.match(d.business_summary,/Non garantito:/);assert.match(d.business_summary,/Recupero:/);});
