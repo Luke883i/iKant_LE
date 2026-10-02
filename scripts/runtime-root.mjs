@@ -8,16 +8,16 @@ const gitBlobSha1=b=>{const x=Buffer.isBuffer(b)?b:Buffer.from(b);return crypto.
 const canon=d=>JSON.stringify({schema:d.schema,source_head_binding:d.source_head_binding,member_count:d.member_count,source_bytes:d.source_bytes,loader:d.loader,shards:d.shards,members:d.members});
 function build(){
  const bootPath=path.join(ROOT,'BOOTSTRAP.json'),boot=JSON.parse(fs.readFileSync(bootPath,'utf8')),current=boot.post_accept_fastboot.runtime_root;
- const loaderBytes=fs.readFileSync(path.join(ROOT,current.loader.path)),shards=[],members=[],rendered=[];
+ const loaderBytes=fs.readFileSync(path.join(ROOT,current.loader.path)),shards=[],rendered=[],memberByPath=new Map();
  for(const spec of [...current.shards].sort((a,b)=>a.index-b.index)){
   const shardPath=path.join(ROOT,spec.path),doc=JSON.parse(fs.readFileSync(shardPath,'utf8'));
   if(doc.schema!=='ikant-le-runtime-root-shard/v1'||doc.index!==spec.index||!Array.isArray(doc.members)||doc.members.length<1)throw new Error('invalid shard structure:'+spec.path);
   const seen=new Set(),rows=doc.members.map(row=>{if(seen.has(row.path))throw new Error('duplicate member:'+row.path);seen.add(row.path);const bytes=fs.readFileSync(path.join(ROOT,row.path));return{path:row.path,content:bytes.toString('utf8')}});
   const out=Buffer.from(JSON.stringify({schema:doc.schema,index:doc.index,members:rows})+'\n');rendered.push({path:spec.path,bytes:out});
   shards.push({index:spec.index,path:spec.path,member_count:rows.length,source_bytes:out.length,blob_sha1:gitBlobSha1(out)});
-  for(const row of rows){const bytes=Buffer.from(row.content,'utf8');members.push({path:row.path,blob_sha1:gitBlobSha1(bytes),bytes:bytes.length,shard:spec.index});}
+  for(const row of rows){const bytes=Buffer.from(row.content,'utf8');memberByPath.set(row.path,{path:row.path,blob_sha1:gitBlobSha1(bytes),bytes:bytes.length,shard:spec.index});}
  }
- const descriptor={schema:current.schema,source_head_binding:current.source_head_binding,member_count:members.length,source_bytes:members.reduce((n,x)=>n+x.bytes,0),loader:{path:current.loader.path,blob_sha1:gitBlobSha1(loaderBytes)},shards,members};
+ if(memberByPath.size!==current.members.length)throw new Error('runtime member cardinality drift');const members=current.members.map(m=>{const x=memberByPath.get(m.path);if(!x||x.shard!==m.shard)throw new Error('runtime member ownership drift:'+m.path);return x});const descriptor={schema:current.schema,source_head_binding:current.source_head_binding,member_count:members.length,source_bytes:members.reduce((n,x)=>n+x.bytes,0),loader:{path:current.loader.path,blob_sha1:gitBlobSha1(loaderBytes)},shards,members};
  descriptor.runtime_root_sha256=sha256(Buffer.from(canon(descriptor)));return{boot,descriptor,rendered};
 }
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);

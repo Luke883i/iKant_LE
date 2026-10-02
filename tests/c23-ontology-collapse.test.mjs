@@ -27,8 +27,8 @@ test('C23 canonical surfaces contain no stale host/deployment aliases',()=>{
 
 test('C23 host-attested terminology is machine-owned by existing fastboot contract',()=>{
   const c=json('contracts/local-session-fastboot.json'),h=json('contracts/host-shell.json'),a=json('contracts/session-chat-activation.json');
-  assert.equal(c.schema,'ikant-le-local-session-fastboot-contract/v3');
-  assert.equal(c.slice,'C23.ONTOLOGY_COLLAPSE');
+  assert.equal(c.schema,'ikant-le-local-session-fastboot-contract/v4');
+  assert.equal(c.slice,'C24.CANONICAL_BOUNDARY_CLOSURE');
   assert.equal(c.terminology_policy.canonical_pre_runtime_evidence,'HOST_ATTESTED');
   assert.equal(c.terminology_policy.mechanical_terms_reserved_for,'LOCAL_RUNTIME_WRITE_REOPEN_HASH_PROBE_PERSISTED_READBACK');
   assert.equal(h.session_chat_activation.host_attested_channel_ledger_required,true);
