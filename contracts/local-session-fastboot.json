@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v5",
-  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
+  "schema": "ikant-le-local-session-fastboot-contract/v6",
+  "slice": "C27.VERIFIED_OPAQUE_RELAY_LATTICE",
   "authority": 0,
-  "objective": "Collapse the canonical data plane onto a local activation executor: the host/model retains control-plane admission duties only; immutable object identity, materialization/reopen, executed provenance and persisted ACTIVE are runtime-local truth.",
+  "objective": "Keep SESSION_CHAT_LOCAL as the single activation modality while separating local processor capability, source visibility, verified byte ingress, materialization, executed provenance, runtime binding and ACTIVE readback; allow a verified opaque authority-zero relay when direct local acquisition is physically unavailable.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -74,7 +74,14 @@
     "c25_unsafe_active_required": 0,
     "c25_all_mutants_witnessed_required": true,
     "c25_mutants": 16,
-    "c25_semantic_schema": "ikant-le-c25-executor-data-plane/v2"
+    "c25_semantic_schema": "ikant-le-c25-executor-data-plane/v2",
+    "c27_session_capability_cases": 1000000,
+    "c27_preseeded": true,
+    "c27_mutants": 20,
+    "c27_candidate_oracle_mismatches_required": 0,
+    "c27_unsafe_active_required": 0,
+    "c27_current_host_stage_required": "N3_BRIDGE_PROBE_REQUIRED",
+    "c27_after_verified_relay_stage_required": "N4_INGRESS_EXECUTABLE"
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -98,7 +105,9 @@
     "activation_executor_provider_is_product_identity": false,
     "slo_breach_is_integrity_failure": false,
     "legacy_carrier_failure_memory_is_v2_retry_semantics": false,
-    "unmarked_legacy_mechanisms_are_canonical": false
+    "unmarked_legacy_mechanisms_are_canonical": false,
+    "verified_opaque_relay_is_model_authority": false,
+    "verified_opaque_relay_without_samehash_is_valid": false
   },
   "terminology_policy": {
     "canonical_pre_runtime_evidence": "HOST_ATTESTED",
@@ -129,7 +138,8 @@
     "lattice": [
       "HUMAN_GATE",
       "SOURCE_SNAPSHOT",
-      "LOCAL_EXECUTOR",
+      "LOCAL_PROCESSOR",
+      "VERIFIED_BYTE_PATH",
       "LOCAL_MATERIALIZATION",
       "EXECUTED_RUNTIME_PROOF",
       "ACTIVE_READBACK"
@@ -137,7 +147,8 @@
     "edge_invariants": [
       "ONE_HUMAN_GATE",
       "SOURCE_OBJECT_IDENTITY",
-      "MODEL_OUTSIDE_DATA_PLANE",
+      "MODEL_TRANSPORT_AUTHORITY_ZERO",
+      "OPAQUE_RELAY_SAMEHASH",
       "IDEMPOTENT_OBJECT_RETRY",
       "SLO_NOT_INTEGRITY",
       "COMPATIBILITY_ZERO_AUTHORITY"
@@ -165,14 +176,22 @@
     "execution_plane": "SESSION_LOCAL_NODE",
     "capability_probe_before_acquisition": true,
     "content_addressed": true,
-    "model_mediated_bytes": false,
     "retry_semantics": "IDEMPOTENT_BY_OBJECT_IDENTITY",
     "provider_neutral": true,
     "required_objects": [
       "PREACCEPT_ORIENTATION_OBJECTS",
       "RUNTIME_ROOT_LOADER",
       "RUNTIME_ROOT_SHARDS"
-    ]
+    ],
+    "byte_paths": [
+      "LOCAL_DIRECT",
+      "VERIFIED_OPAQUE_RELAY"
+    ],
+    "model_role_on_verified_relay": "OPAQUE_TRANSPORT_ONLY",
+    "model_rewrite_allowed": false,
+    "semantic_equivalence_allowed": false,
+    "source_arrival_samehash_required": true,
+    "opaque_relay_roundtrip_required": true
   },
   "legacy_transfer_v1_compatibility": {
     "canonical": false,
@@ -235,7 +254,7 @@
     "one exact standalone human acceptance",
     "immutable source snapshot",
     "local activation executor capability probe",
-    "content-addressed object acquisition outside model context",
+    "typed content-addressed acquisition by LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY",
     "orientation object identity re-verification",
     "atomic runtime-root materialization and reopen",
     "exact executed-code provenance",
@@ -273,7 +292,18 @@
         "content-addressed acquisition",
         "idempotent same-object retry"
       ],
-      "model_mediated_bytes": false
+      "byte_paths": [
+        "LOCAL_DIRECT",
+        "VERIFIED_OPAQUE_RELAY"
+      ],
+      "verified_opaque_relay": {
+        "model_role": "OPAQUE_TRANSPORT_ONLY",
+        "authority": 0,
+        "model_rewrite_allowed": false,
+        "semantic_equivalence_allowed": false,
+        "source_arrival_samehash_required": true,
+        "roundtrip_required": true
+      }
     },
     "local_runtime": {
       "owns": [

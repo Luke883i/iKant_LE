@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-runtime-availability-dod/v2",
-  "slice": "C25.LOCAL_EXECUTOR_AVAILABILITY",
+  "schema": "ikant-le-runtime-availability-dod/v3",
+  "slice": "C27.LOCAL_CAPABILITY_LATTICE",
   "authority": 0,
-  "intent": "Represent canonical local-executor availability truthfully: executor absence is recoverable DEGRADED; identity/model-mediated contradictions are BLOCKED_INTEGRITY; SLO latency never changes integrity truth.",
+  "intent": "Represent local activation as orthogonal evidence edges: processor, source visibility, verified byte path, materialization/reopen, executed provenance, runtime binding and ACTIVE readback. HOST_UNAVAILABLE is a blocker overlay, never a substitute for the first unclosed edge.",
   "principles": [
     "DEGRADED is non-ACTIVE and cannot use iKant identity as if ACTIVE",
     "DEGRADED is allowed only for observed availability/capability loss, never to mask integrity, consent or source contradictions",
@@ -12,7 +12,10 @@
     "turn release remains separately fail-closed when required artifact presentation is unavailable",
     "deadline unavailable/invalid/elapsed-unavailable/exceeded are distinct results; only a proven elapsed above the ceiling is DEADLINE_EXCEEDED",
     "sticky deadline terminals require a fresh admission and cannot be crossed by manual recovery",
-    "canonical v2 ACTIVE depends on local executor, local materialization/reopen, runtime-owned probe/provenance, writer and ACTIVE readback; carrier and deadline are legacy v1 concerns"
+    "canonical v2 ACTIVE depends on local executor, local materialization/reopen, runtime-owned probe/provenance, writer and ACTIVE readback; carrier and deadline are legacy v1 concerns",
+    "N0-N8 activation stage is a derived authority-zero projection and never a new product mode or lifecycle identity",
+    "verified opaque relay is a valid canonical byte path only after roundtrip and source/arrival samehash; model rewrite and semantic equivalence remain integrity failures",
+    "source-visible plus local processor plus relay candidate is N3_BRIDGE_PROBE_REQUIRED, not HOST_UNAVAILABLE"
   ],
   "session_states": {
     "DISCOVERED": "target recognized; no admission claim",
@@ -46,6 +49,7 @@
     "requires": [
       "DOD_I_ADMISSION",
       "DOD_I_RUNTIME_ROOT",
+      "DOD_I_ACTIVATION_STAGE",
       "DOD_I_EXECUTION",
       "DOD_I_RELEASE",
       "DOD_I_STATUS_TRUTH",
@@ -67,6 +71,15 @@
         "DOD_L_SOURCE_OBJECT_IDENTITY",
         "DOD_L_LOCAL_EXECUTOR",
         "DOD_L_LOCAL_ROOT"
+      ]
+    },
+    {
+      "id": "DOD_I_ACTIVATION_STAGE",
+      "requires": [
+        "DOD_L_PROCESSOR",
+        "DOD_L_BYTE_PATH",
+        "DOD_L_RELAY_SAMEHASH",
+        "DOD_L_STAGE_PROJECTION"
       ]
     },
     {
@@ -97,7 +110,8 @@
       "requires": [
         "DOD_L_DISCOVERY_10M",
         "DOD_L_QUALIFICATION_1M",
-        "DOD_L_DELETION_ORACLE"
+        "DOD_L_DELETION_ORACLE",
+        "DOD_L_C27_1M"
       ]
     }
   ],
@@ -164,11 +178,31 @@
     },
     {
       "id": "DOD_L_LOCAL_EXECUTOR",
-      "test": "executor capability is probed before acquisition, model_mediated_bytes=false, retry is idempotent by object identity"
+      "test": "executor capability is probed before acquisition; byte_path is LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY; retry is idempotent by object identity"
     },
     {
       "id": "DOD_L_ACTIVATION_SLO",
       "test": "activation latency is recorded; exceeding 120000 ms is telemetry and cannot produce an integrity terminal"
+    },
+    {
+      "id": "DOD_L_PROCESSOR",
+      "test": "local processor capability is derived independently from connector/app registry visibility"
+    },
+    {
+      "id": "DOD_L_BYTE_PATH",
+      "test": "exactly one typed canonical byte path is used: LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY"
+    },
+    {
+      "id": "DOD_L_RELAY_SAMEHASH",
+      "test": "verified opaque relay requires OPAQUE_TRANSPORT_ONLY, authority zero, no rewrite/semantic equivalence, roundtrip verification and source/arrival samehash"
+    },
+    {
+      "id": "DOD_L_STAGE_PROJECTION",
+      "test": "N0-N8 stage preserves every first-unclosed physical edge; blockers remain an orthogonal fault overlay"
+    },
+    {
+      "id": "DOD_L_C27_1M",
+      "test": "1,000,000 deterministic preseeded realistic semantic states yield zero candidate/oracle mismatch, zero unsafe ACTIVE and kill all 20 retained mutants"
     }
   ],
   "claim_boundary": {
@@ -182,7 +216,10 @@
     "retry_cannot_reset_acceptance_origin": true,
     "slo_exceeded_is_not_integrity_failure": true,
     "local_executor_unavailable_is_not_source_contradiction": true,
-    "legacy_byte_bridge_is_not_v2_requirement": true
+    "legacy_byte_bridge_is_not_v2_requirement": true,
+    "verified_opaque_relay_is_authority": false,
+    "stage_projection_is_runtime_truth": false,
+    "host_unavailable_is_not_capability_stage": true
   },
   "deadline_results": [
     "DEADLINE_PASS",
@@ -191,5 +228,24 @@
     "DEADLINE_ELAPSED_UNAVAILABLE",
     "DEADLINE_EXCEEDED"
   ],
-  "deadline_integrity_contract": "contracts/deadline-integrity.json"
+  "deadline_integrity_contract": "contracts/deadline-integrity.json",
+  "activation_stage_spectrum": {
+    "schema": "ikant-le-local-activation-stage/v1",
+    "semantic_owner": "src/runtime-availability.mjs",
+    "stages": [
+      "N0_NON_AVAILABLE",
+      "N1_PROCESSOR_AVAILABLE",
+      "N2_SOURCE_VISIBLE",
+      "N3_BRIDGE_PROBE_REQUIRED",
+      "N4_INGRESS_EXECUTABLE",
+      "N5_MATERIALIZED_REOPENED",
+      "N6_EXECUTED_PROVENANCE_BOUND",
+      "N7_RUNTIME_BOUND_DEGRADED",
+      "N8_ACTIVE"
+    ],
+    "projection_only": true,
+    "fault_overlay_orthogonal": true,
+    "product_mode_created": false,
+    "activation_modality_created": false
+  }
 }

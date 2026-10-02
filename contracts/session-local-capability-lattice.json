@@ -1,0 +1,196 @@
+{
+  "schema": "ikant-le-session-local-capability-lattice/v1",
+  "slice": "C27.VERIFIED_OPAQUE_RELAY_LATTICE",
+  "authority": 0,
+  "projection_only": true,
+  "semantic_owners": [
+    "contracts/session-chat-activation.json",
+    "contracts/local-session-fastboot.json",
+    "src/bootstrap-semantic.mjs",
+    "src/runtime-availability.mjs"
+  ],
+  "objective": "Move SESSION_CHAT_LOCAL from binary executor availability to a first-unclosed-edge evidence lattice while preserving one activation modality and one runtime truth owner.",
+  "irreducible_runtime_lattice": [
+    "HUMAN_GATE",
+    "SOURCE_SNAPSHOT",
+    "LOCAL_PROCESSOR",
+    "VERIFIED_BYTE_PATH",
+    "LOCAL_MATERIALIZATION",
+    "EXECUTED_RUNTIME_PROOF",
+    "ACTIVE_READBACK"
+  ],
+  "byte_paths": {
+    "LOCAL_DIRECT": {
+      "model_mediated_bytes": false,
+      "model_role": "NONE"
+    },
+    "VERIFIED_OPAQUE_RELAY": {
+      "model_mediated_bytes": true,
+      "model_role": "OPAQUE_TRANSPORT_ONLY",
+      "authority": 0,
+      "model_rewrite_allowed": false,
+      "semantic_equivalence_allowed": false,
+      "source_arrival_samehash_required": true,
+      "roundtrip_required": true,
+      "local_write_reopen_required": true
+    }
+  },
+  "derived_spectrum": [
+    "N0_NON_AVAILABLE",
+    "N1_PROCESSOR_AVAILABLE",
+    "N2_SOURCE_VISIBLE",
+    "N3_BRIDGE_PROBE_REQUIRED",
+    "N4_INGRESS_EXECUTABLE",
+    "N5_MATERIALIZED_REOPENED",
+    "N6_EXECUTED_PROVENANCE_BOUND",
+    "N7_RUNTIME_BOUND_DEGRADED",
+    "N8_ACTIVE"
+  ],
+  "fault_overlay": [
+    "NONE",
+    "HOST_UNAVAILABLE",
+    "BLOCKED_REQUIREMENT",
+    "BLOCKED_INTEGRITY",
+    "NON_CONVERGENCE"
+  ],
+  "current_host_reference": {
+    "processor_available": true,
+    "source_visible": true,
+    "local_https": false,
+    "connector_byte_export": false,
+    "connector_text_read": true,
+    "local_text_sink": true,
+    "projection": "N3_BRIDGE_PROBE_REQUIRED",
+    "unique_machine_path": "VERIFIED_OPAQUE_RELAY",
+    "next": "PROBE_OPAQUE_RELAY_ROUNDTRIP"
+  },
+  "global_dod": {
+    "id": "C27_GLOBAL",
+    "requires": [
+      "C27_I_ADMISSION",
+      "C27_I_INGRESS",
+      "C27_I_LOCAL_RUNTIME",
+      "C27_I_STATUS",
+      "C27_I_QUALIFICATION"
+    ],
+    "pass_condition": "all intermediates pass; zero unsafe ACTIVE; zero authority promotion; runtime-root deterministic verification passes"
+  },
+  "intermediate_dods": [
+    {
+      "id": "C27_I_ADMISSION",
+      "requires": [
+        "C27_L_ONE_GATE",
+        "C27_L_SOURCE_PIN"
+      ]
+    },
+    {
+      "id": "C27_I_INGRESS",
+      "requires": [
+        "C27_L_PROCESSOR",
+        "C27_L_BYTE_PATH",
+        "C27_L_RELAY_POLICY",
+        "C27_L_FIRST_UNCLOSED_EDGE"
+      ]
+    },
+    {
+      "id": "C27_I_LOCAL_RUNTIME",
+      "requires": [
+        "C27_L_MATERIALIZATION",
+        "C27_L_PROVENANCE",
+        "C27_L_ACTIVE_READBACK"
+      ]
+    },
+    {
+      "id": "C27_I_STATUS",
+      "requires": [
+        "C27_L_STAGE_OVERLAY",
+        "C27_L_NO_PROMOTION"
+      ]
+    },
+    {
+      "id": "C27_I_QUALIFICATION",
+      "requires": [
+        "C27_L_MUTATION_1M",
+        "C27_L_RUNTIME_ROOT_VERIFY",
+        "C27_L_REPOSITORY_TESTS"
+      ]
+    }
+  ],
+  "local_dods": [
+    {
+      "id": "C27_L_ONE_GATE",
+      "test": "exact standalone I ACCEPT remains the only human gate"
+    },
+    {
+      "id": "C27_L_SOURCE_PIN",
+      "test": "one immutable SOURCE_HEAD and immutable orientation/runtime object identities"
+    },
+    {
+      "id": "C27_L_PROCESSOR",
+      "test": "local processor capability is observed independently from connector/app registry"
+    },
+    {
+      "id": "C27_L_BYTE_PATH",
+      "test": "canonical v2 byte_path is exactly LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY"
+    },
+    {
+      "id": "C27_L_RELAY_POLICY",
+      "test": "opaque relay has authority zero, no rewrite/equivalence, roundtrip and source-arrival samehash before complete acquisition"
+    },
+    {
+      "id": "C27_L_FIRST_UNCLOSED_EDGE",
+      "test": "source-visible local processor with relay candidate projects N3 rather than HOST_UNAVAILABLE"
+    },
+    {
+      "id": "C27_L_MATERIALIZATION",
+      "test": "materializer atomically publishes and reopens exact content-addressed runtime root"
+    },
+    {
+      "id": "C27_L_PROVENANCE",
+      "test": "runtime-owned executed provenance matches descriptor before runtime binding"
+    },
+    {
+      "id": "C27_L_ACTIVE_READBACK",
+      "test": "ACTIVE exists only after writer persistence and readback"
+    },
+    {
+      "id": "C27_L_STAGE_OVERLAY",
+      "test": "N0-N8 progress and blockers are orthogonal; stages are not product/lifecycle modes"
+    },
+    {
+      "id": "C27_L_NO_PROMOTION",
+      "test": "source/relay/materialization/provenance/runtime-bound receipts cannot individually promote ACTIVE"
+    },
+    {
+      "id": "C27_L_MUTATION_1M",
+      "test": "1,000,000 preseeded states, 20 mutants, zero candidate/oracle mismatch, zero unsafe ACTIVE, all mutants killed"
+    },
+    {
+      "id": "C27_L_RUNTIME_ROOT_VERIFY",
+      "test": "checked-in runtime-root is regenerated from exact candidate member bytes and verifies deterministically"
+    },
+    {
+      "id": "C27_L_REPOSITORY_TESTS",
+      "test": "exact-head npm test + check + canonical qualification remain green"
+    }
+  ],
+  "qualification": {
+    "seed": "0xC27A11CE",
+    "semantic_cases": 1000000,
+    "mutants": 20,
+    "preseeded": true,
+    "candidate_oracle_mismatches": 0,
+    "unsafe_active": 0,
+    "all_mutants_killed": true,
+    "current_host_stage": "N3_BRIDGE_PROBE_REQUIRED",
+    "after_verified_relay_stage": "N4_INGRESS_EXECUTABLE"
+  },
+  "claim_boundary": {
+    "semantic_mutation_is_physical_proof": false,
+    "relay_receipt_is_runtime_proof": false,
+    "stage_projection_is_product_mode": false,
+    "host_attestation_is_local_reopen": false,
+    "N7_is_ACTIVE": false,
+    "only_runtime_persisted_readback_is_ACTIVE": true
+  }
+}

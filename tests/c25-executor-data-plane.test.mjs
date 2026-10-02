@@ -55,13 +55,25 @@ test('C25 SLO >120s is telemetry and does not invalidate an otherwise valid ACTI
  reset();
 });
 
-test('C25 model-mediated executor bytes are integrity failure and never ACTIVE',{concurrency:false},()=>{
+test('C25 unverified model-mediated executor bytes are integrity failure and never ACTIVE',{concurrency:false},()=>{
  reset();const source='a'.repeat(40),e=bootstrapEvidenceV2({sourceHead:source,modelMediatedBytes:true});
  const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoffV2('inizializza',source),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST'});
  assert.equal(out.code,1);
  const s=readLedger().at(-1).state_after;
  assert.equal(s.status,'BLOCKED_INTEGRITY');
  reset();
+});
+
+test('C27 verified opaque relay may carry bytes but cannot gain authority',{concurrency:false},()=>{
+ reset();const source='a'.repeat(40),e=bootstrapEvidenceV2({sourceHead:source,bytePath:'VERIFIED_OPAQUE_RELAY'});
+ const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoffV2('inizializza',source),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST',hostSurface:'SESSION_LOCAL_NODE'});
+ assert.equal(out.code,0);const state=readLedger().at(-1).state_after;assert.equal(state.status,'ACTIVE');assert.equal(e.activation_executor.model_mediated_bytes,true);assert.equal(e.activation_executor.model_role,'OPAQUE_TRANSPORT_ONLY');assert.equal(e.activation_executor.authority,0);reset();
+});
+
+test('C27 opaque relay without samehash fails closed before ACTIVE',{concurrency:false},()=>{
+ reset();const source='a'.repeat(40),e=bootstrapEvidenceV2({sourceHead:source,bytePath:'VERIFIED_OPAQUE_RELAY',samehashVerified:false});
+ const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoffV2('inizializza',source),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST'});
+ assert.equal(out.code,1);assert.equal(readLedger().at(-1).state_after.status,'BLOCKED_INTEGRITY');reset();
 });
 
 test('C25 executor unavailability degrades; same-object retry reaches ACTIVE without second acceptance',{concurrency:false},()=>{

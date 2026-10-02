@@ -321,7 +321,7 @@
       "new_deadline_origin",
       "source_rebase",
       "second_remote_round",
-      "model_mediated_bytes"
+      "unverified_model_mediation"
     ],
     "continuation_receipt": "ikant-le-activation-continuation/v1",
     "final_deadline_scope": "ORIGINAL_I_ACCEPT_TO_ACTIVE_COMMIT",
@@ -394,7 +394,10 @@
     "runtime_root_readback_required": true,
     "host_attested_channel_ledger_required": true,
     "activation_executor_required": true,
-    "model_mediated_bytes_forbidden": true,
-    "activation_slo_is_integrity_gate": false
+    "activation_slo_is_integrity_gate": false,
+    "unverified_model_mediation_forbidden": true,
+    "verified_opaque_relay_allowed": true,
+    "model_rewrite_forbidden": true,
+    "semantic_equivalence_forbidden": true
   }
 }

@@ -149,7 +149,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 42,
-      "source_bytes": 323967,
+      "source_bytes": 331936,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "821fabefede8bd2715c6a758cc6ba8374c54d74c"
@@ -159,8 +159,8 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 95715,
-          "blob_sha1": "d4e6ed217af7613470c22bca9b842549a2525346"
+          "source_bytes": 98957,
+          "blob_sha1": "7e77704a31f5b13c21f62bd04adcbe799f6fe54d"
         },
         {
           "index": 1,
@@ -187,22 +187,22 @@
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 11,
-          "source_bytes": 71734,
-          "blob_sha1": "0d98d2842396812212b7cd847ea2c7da69ebbced"
+          "source_bytes": 76606,
+          "blob_sha1": "6d18e033e9334117cfd21d4754fe8b1078689018"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 29800,
-          "blob_sha1": "8294dd3b98d0d98fce76ddacfb4181a491c9002b"
+          "source_bytes": 29834,
+          "blob_sha1": "457eafff683a9c86e3394567d7b039b1ca53d49b"
         },
         {
           "index": 6,
           "path": "runtime-root/shard-006.json",
           "member_count": 6,
-          "source_bytes": 34898,
-          "blob_sha1": "999aa598634d70448d788b1cac5159ea8a85eade"
+          "source_bytes": 35052,
+          "blob_sha1": "c8b51f80c71e9ce3499196ce5957fa7ef673fce3"
         }
       ],
       "members": [
@@ -316,8 +316,8 @@
         },
         {
           "path": "contracts/host-shell.json",
-          "blob_sha1": "bf70f03304638b76b760ddceab7c357599e39b75",
-          "bytes": 13377,
+          "blob_sha1": "d9a99c9a0a011018838f96d9faebbaa906ef226e",
+          "bytes": 13513,
           "shard": 4
         },
         {
@@ -340,8 +340,8 @@
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "bbf6b0ead2f53214edbfc7dab0073eafb9a017ff",
-          "bytes": 12042,
+          "blob_sha1": "1f80ffb24dafc66bd3df001dd68fb6cdfd931a5d",
+          "bytes": 12076,
           "shard": 5
         },
         {
@@ -394,14 +394,14 @@
         },
         {
           "path": "src/bootstrap-semantic.mjs",
-          "blob_sha1": "4b56e71b1d5a775cce0de354b51d0166c927b875",
-          "bytes": 31443,
+          "blob_sha1": "1554edaf4e2e37960b1792dc4d091bb8f366f3e3",
+          "bytes": 32547,
           "shard": 0
         },
         {
           "path": "contracts/chat-bootstrap-semantic.json",
-          "blob_sha1": "50d4eda4feb568abbdd3854657ac0bc38db1e5e8",
-          "bytes": 10641,
+          "blob_sha1": "7bc0e9fc196e9fcacc44fe09cedc34f881e9f6df",
+          "bytes": 10795,
           "shard": 6
         },
         {
@@ -412,14 +412,14 @@
         },
         {
           "path": "src/runtime-availability.mjs",
-          "blob_sha1": "e80fd612ee1c9d320c0fcc461dd17ea45d00bb51",
-          "bytes": 11865,
+          "blob_sha1": "3cd12d074d3bf620a348741fc0ff90004c09a0f3",
+          "bytes": 13959,
           "shard": 0
         },
         {
           "path": "contracts/runtime-availability-dod.json",
-          "blob_sha1": "860e8dc73f35348dd3d377c6e42e04e2c1fda10c",
-          "bytes": 8501,
+          "blob_sha1": "e98d07a96489ab8e14d4dbd53de5bcd360f5f188",
+          "bytes": 10881,
           "shard": 4
         },
         {
@@ -454,12 +454,12 @@
         },
         {
           "path": "contracts/session-chat-activation.json",
-          "blob_sha1": "d2c3738f273dded329c55d08a7309f81b05eb0eb",
-          "bytes": 9743,
+          "blob_sha1": "6f99b92ccd4d8202810f0345e2e2ca1025aa4576",
+          "bytes": 11810,
           "shard": 4
         }
       ],
-      "runtime_root_sha256": "05f4cf5a0a094c6b701ce7ba604d7d23924ebf0a5ab5a7d4f4477f9a7ec61385"
+      "runtime_root_sha256": "a5fdd6f0b71471ac0054685b1c15722f5115c5549a9b661b1d1bf93b148eaa46"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -544,7 +544,7 @@
         "SECOND_I_ACCEPT",
         "NEW_EPOCH",
         "SOURCE_REBASE",
-        "MODEL_MEDIATED_BYTES"
+        "UNVERIFIED_MODEL_MEDIATION"
       ],
       "v2_deadline_integrity_gate": false
     },
@@ -597,9 +597,17 @@
       "capability_probe_before_acquisition": true,
       "data_plane_owner": "LOCAL_ACTIVATION_EXECUTOR",
       "content_addressed": true,
-      "model_mediated_bytes": false,
       "retry_semantics": "IDEMPOTENT_BY_OBJECT_IDENTITY",
-      "provider_neutral": true
+      "provider_neutral": true,
+      "byte_paths": [
+        "LOCAL_DIRECT",
+        "VERIFIED_OPAQUE_RELAY"
+      ],
+      "model_role_on_verified_relay": "OPAQUE_TRANSPORT_ONLY",
+      "model_rewrite_allowed": false,
+      "semantic_equivalence_allowed": false,
+      "source_arrival_samehash_required": true,
+      "opaque_relay_roundtrip_required": true
     },
     "materialization_receipts": [
       "ikant-le-runtime-root-materialization/v2",
@@ -607,7 +615,6 @@
     ],
     "activation_slo_ms": 120000,
     "activation_slo_is_integrity_gate": false,
-    "model_mediated_bytes_forbidden": true,
     "retry_semantics": "IDEMPOTENT_BY_OBJECT_IDENTITY",
     "legacy_v1_transport_compatibility": {
       "canonical": false,
@@ -627,7 +634,11 @@
       "AUTO_PROBE",
       "AUTO_INITIALIZE",
       "RESUME_OR_FOLD_PENDING_INTENT_IF_ANY"
-    ]
+    ],
+    "unverified_model_mediation_forbidden": true,
+    "verified_opaque_relay_allowed": true,
+    "activation_stage_projection": "ikant-le-local-activation-stage/v1",
+    "capability_lattice_contract": "contracts/session-local-capability-lattice.json"
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
@@ -686,9 +697,14 @@
     "canonical_activation_model": "LOCAL_EXECUTOR_V1",
     "activation_executor_required": true,
     "host_byte_ingress_required": false,
-    "model_mediated_bytes_forbidden": true,
     "activation_slo_ms": 120000,
     "activation_slo_is_integrity_gate": false,
-    "preaccept_object_reverification_required": true
+    "preaccept_object_reverification_required": true,
+    "unverified_model_mediation_forbidden": true,
+    "verified_opaque_relay_allowed": true,
+    "model_rewrite_forbidden": true,
+    "semantic_equivalence_forbidden": true,
+    "capability_lattice_contract": "contracts/session-local-capability-lattice.json",
+    "activation_stage_projection": "ikant-le-local-activation-stage/v1"
   }
 }

@@ -18,7 +18,7 @@ Historical artifacts never self-promote. Maintained narrative SOTs are README, A
 
 Change the smallest affected neighborhood. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
 
-Bootstrap is structurally bounded: pin source before orientation; post-accept invoke the provider-neutral local activation executor, which acquires only the declared content-addressed runtime objects outside model context, re-verifies orientation identities, then uses the existing materializer/reopen and runtime-owned provenance/probe/init path. Search/history/docs study/tests/qualification are not bootstrap gates; the 120 s target is observability/SLO, not an integrity predicate.
+Bootstrap is structurally bounded: pin source before orientation; post-accept invoke the provider-neutral local activation executor, which acquires only the declared content-addressed runtime objects through LOCAL_DIRECT or a VERIFIED_OPAQUE_RELAY with no rewrite/semantic-equivalence and source-arrival samehash, re-verifies orientation identities, then uses the existing materializer/reopen and runtime-owned provenance/probe/init path. Search/history/docs study/tests/qualification are not bootstrap gates; the 120 s target is observability/SLO, not an integrity predicate.
 
 ## Development trajectory
 
@@ -40,7 +40,7 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept in
 | C15-C21 | transport/availability/deadline/continuation -> one `SESSION_CHAT_LOCAL` fastboot with receipts, failure memory and provenance |
 | C22 | host-attested planning separated from local proof; root reopen, exact provenance, non-injectable probe |
 | C23 | HOST_ATTESTED terminology, neutral acceptance-origin naming, machine-checked C20 legacy quarantine |
-| C24 | six-node canonical boundary, deterministic runtime-root regeneration/verification, compatibility translated before runtime |
+| C24 | six-node canonical boundary, deterministic runtime-root regeneration/verification, compatibility translated before runtime |\n| C25-C27 | local executor data plane -> typed processor/byte-path lattice; verified opaque relay closes connector-to-local ingress without granting model authority |
 | C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
 | C26 | generated local-host meta-prompt collapses onto C25 control-plane boundary; 100 full-prompt semantic mutations and deletion oracle protect against stale carrier/bridge ontology |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
