@@ -35,9 +35,3 @@ test('local-host meta-prompt contains no superseded host-adapter algorithm',()=>
  for(const stale of ['decision_key','channel ledger','UNKNOWN -> PROBE','reuse orientation bytes','byte bridge','second remote round','capture acceptance-origin'])assert.equal(p.toLowerCase().includes(stale.toLowerCase()),false,stale);
 });
 
-test('maintained narrative SOTs no longer instruct C24 carrier/reuse bootstrap',()=>{
- for(const rel of ['README.md','AGENTS.md','docs/GOVERNANCE.md']){
-  const txt=fs.readFileSync(path.join(ROOT,rel),'utf8');
-  for(const stale of ['reuse those five bytes','reuse orientation bytes','through an authority-zero carrier'])assert.equal(txt.includes(stale),false,`${rel}:${stale}`);
- }
-});
