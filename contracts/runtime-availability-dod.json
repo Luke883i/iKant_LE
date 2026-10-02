@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-runtime-availability-dod/v1",
-  "slice": "C17.RUNTIME_AVAILABILITY_WITH_DEADLINE_INTEGRITY",
+  "schema": "ikant-le-runtime-availability-dod/v2",
+  "slice": "C25.LOCAL_EXECUTOR_AVAILABILITY",
   "authority": 0,
-  "intent": "Represent post-consent runtime availability truthfully across full, degraded and integrity-blocked states without weakening ACTIVE or manufacturing host capability.",
+  "intent": "Represent canonical local-executor availability truthfully: executor absence is recoverable DEGRADED; identity/model-mediated contradictions are BLOCKED_INTEGRITY; SLO latency never changes integrity truth.",
   "principles": [
     "DEGRADED is non-ACTIVE and cannot use iKant identity as if ACTIVE",
     "DEGRADED is allowed only for observed availability/capability loss, never to mask integrity, consent or source contradictions",
@@ -11,7 +11,8 @@
     "ACTIVE remains the conjunction of all source, transfer, materialization, live-host, persistence and commit gates",
     "turn release remains separately fail-closed when required artifact presentation is unavailable",
     "deadline unavailable/invalid/elapsed-unavailable/exceeded are distinct results; only a proven elapsed above the ceiling is DEADLINE_EXCEEDED",
-    "sticky deadline terminals require a fresh admission and cannot be crossed by manual recovery"
+    "sticky deadline terminals require a fresh admission and cannot be crossed by manual recovery",
+    "canonical v2 ACTIVE depends on local executor, local materialization/reopen, runtime-owned probe/provenance, writer and ACTIVE readback; carrier and deadline are legacy v1 concerns"
   ],
   "session_states": {
     "DISCOVERED": "target recognized; no admission claim",
@@ -37,7 +38,8 @@
     "LOCAL_ROOT_UNAVAILABLE": "runtime bytes are identified but local materialization/reopen is unavailable",
     "HOST_CAPABILITY_UNAVAILABLE": "one or more mandatory live host capabilities are unavailable",
     "WRITER_UNAVAILABLE": "single-writer persistence/readback is unavailable",
-    "ACTIVE_COMMIT_UNAVAILABLE": "all prior gates may be satisfied but ACTIVE persistence/readback did not complete"
+    "ACTIVE_COMMIT_UNAVAILABLE": "all prior gates may be satisfied but ACTIVE persistence/readback did not complete",
+    "LOCAL_EXECUTOR_UNAVAILABLE": "the local activation executor cannot currently acquire/verify required immutable objects; same-epoch retry is allowed"
   },
   "global_dod": {
     "id": "DOD_GLOBAL_RUNTIME_TRUTH",
@@ -62,8 +64,8 @@
     {
       "id": "DOD_I_RUNTIME_ROOT",
       "requires": [
-        "DOD_L_TRANSFER_IDENTITY",
-        "DOD_L_BYTE_BRIDGE",
+        "DOD_L_SOURCE_OBJECT_IDENTITY",
+        "DOD_L_LOCAL_EXECUTOR",
         "DOD_L_LOCAL_ROOT"
       ]
     },
@@ -72,8 +74,7 @@
       "requires": [
         "DOD_L_HOST_PROBE",
         "DOD_L_WRITER",
-        "DOD_L_ACTIVE_COMMIT",
-        "DOD_L_DEADLINE"
+        "DOD_L_ACTIVE_COMMIT"
       ]
     },
     {
@@ -110,14 +111,6 @@
       "test": "current Terms plus later exact standalone I ACCEPT; no embedded/prior acceptance"
     },
     {
-      "id": "DOD_L_TRANSFER_IDENTITY",
-      "test": "all delivered objects match exact content-addressed identities; model-mediated reconstruction forbidden"
-    },
-    {
-      "id": "DOD_L_BYTE_BRIDGE",
-      "test": "a carrier-to-local path is observed with byte readback before it can satisfy runtime delivery"
-    },
-    {
       "id": "DOD_L_LOCAL_ROOT",
       "test": "authoritative materializer verifies members, atomic publish and reopen"
     },
@@ -132,10 +125,6 @@
     {
       "id": "DOD_L_ACTIVE_COMMIT",
       "test": "ACTIVE only after all upstream evidence and persisted/readback commit"
-    },
-    {
-      "id": "DOD_L_DEADLINE",
-      "test": "monotonic I ACCEPT to ACTIVE ceiling cannot be reset by retry"
     },
     {
       "id": "DOD_L_ARTIFACT_RELEASE",
@@ -168,6 +157,18 @@
     {
       "id": "DOD_L_DELETION_ORACLE",
       "test": "removing any retained global semantic node reopens at least one false classification or false-green case"
+    },
+    {
+      "id": "DOD_L_SOURCE_OBJECT_IDENTITY",
+      "test": "orientation and runtime objects are bound by immutable Git object identity plus byte count"
+    },
+    {
+      "id": "DOD_L_LOCAL_EXECUTOR",
+      "test": "executor capability is probed before acquisition, model_mediated_bytes=false, retry is idempotent by object identity"
+    },
+    {
+      "id": "DOD_L_ACTIVATION_SLO",
+      "test": "activation latency is recorded; exceeding 120000 ms is telemetry and cannot produce an integrity terminal"
     }
   ],
   "claim_boundary": {
@@ -178,7 +179,10 @@
     "degraded_is_not_permission_or_execution_authority": true,
     "business_summary_is_not_evidence": true,
     "deadline_unavailable_is_not_exceeded": true,
-    "retry_cannot_reset_acceptance_origin": true
+    "retry_cannot_reset_acceptance_origin": true,
+    "slo_exceeded_is_not_integrity_failure": true,
+    "local_executor_unavailable_is_not_source_contradiction": true,
+    "legacy_byte_bridge_is_not_v2_requirement": true
   },
   "deadline_results": [
     "DEADLINE_PASS",

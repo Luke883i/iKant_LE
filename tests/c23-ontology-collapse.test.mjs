@@ -25,16 +25,15 @@ test('C23 canonical surfaces contain no stale host/deployment aliases',()=>{
   for(const rel of canonical){const txt=read(rel);for(const token of forbidden)assert.equal(txt.includes(token),false,`${rel} contains ${token}`);}
 });
 
-test('C23 host-attested terminology is machine-owned by existing fastboot contract',()=>{
+test('C23 host-attested terminology and legacy quarantine survive later canonical slices',()=>{
   const c=json('contracts/local-session-fastboot.json'),h=json('contracts/host-shell.json'),a=json('contracts/session-chat-activation.json');
-  assert.equal(c.schema,'ikant-le-local-session-fastboot-contract/v4');
-  assert.equal(c.slice,'C24.CANONICAL_BOUNDARY_CLOSURE');
   assert.equal(c.terminology_policy.canonical_pre_runtime_evidence,'HOST_ATTESTED');
   assert.equal(c.terminology_policy.mechanical_terms_reserved_for,'LOCAL_RUNTIME_WRITE_REOPEN_HASH_PROBE_PERSISTED_READBACK');
   assert.equal(h.session_chat_activation.host_attested_channel_ledger_required,true);
   assert.equal(h.post_accept_convergence.unavailable_persists_until_changed_channel_evidence,true);
-  assert.ok(a.required.includes('TYPED_HOST_ATTESTED_CHANNEL_LEDGER'));
-  assert.ok(a.irreducible_lattice.includes('HOST_ATTESTATION'));
+  assert.ok(a.legacy_v1_required.includes('TYPED_HOST_ATTESTED_CHANNEL_LEDGER'));
+  assert.equal(a.claim_boundary.host_attested_evidence_is_mechanical_runtime_proof,false);
+  assert.equal(c.legacy_compatibility.canonical,false);
 });
 
 test('C23 fastboot ledger exposes channel-evidence terminology and no old alias',()=>{

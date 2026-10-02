@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-deadline-integrity/v1",
-  "slice": "C17.ACCEPTANCE_DEADLINE_INTEGRITY",
+  "schema": "ikant-le-deadline-integrity/v2",
+  "slice": "C25.SLO_NOT_INTEGRITY",
   "authority": 0,
-  "intent": "Make the first current-session I ACCEPT single-shot, bind its temporal origin to an observed monotonic receipt, keep deadline failure sticky, and distinguish unavailable/invalid elapsed evidence from a proven deadline exceedance.",
+  "intent": "Preserve C17 monotonic-deadline validation for legacy v1 evidence while making canonical C25 activation latency an observability SLO, not an integrity predicate.",
   "invariants": [
     "one current-session admission consumes exactly one I ACCEPT",
     "retry cannot create a new deadline origin or epoch",
@@ -67,6 +67,41 @@
     "semantic_mutation_is_not_physical_host_proof": true,
     "current_clock_capability_is_not_historical_origin_evidence": true,
     "receipt_integrity_is_not_private_model_introspection": true,
-    "fresh_chat_requirement_does_not_claim_deadline_exceeded": true
+    "fresh_chat_requirement_does_not_claim_deadline_exceeded": true,
+    "slo_breach_is_deadline_integrity_failure": false,
+    "v1_deadline_receipt_defines_v2_active": false
+  },
+  "canonical_activation_v2": {
+    "time_integrity_gate_required": false,
+    "acceptance_clock_required": false,
+    "slo_ms": 120000,
+    "slo_exceeded_terminal": false,
+    "slo_exceeded_blocks_active": false,
+    "retry_is_same_epoch": true
+  },
+  "legacy_v1": {
+    "canonical": false,
+    "deadline_results": [
+      "DEADLINE_PASS",
+      "DEADLINE_ORIGIN_UNAVAILABLE",
+      "DEADLINE_ORIGIN_INVALID",
+      "DEADLINE_ELAPSED_UNAVAILABLE",
+      "DEADLINE_EXCEEDED"
+    ],
+    "terminal_session_state": "ADMISSION_EPOCH_UNRECOVERABLE",
+    "fresh_chat_required_for_terminal_deadline": true,
+    "acceptance_origin_receipt": {
+      "schema": "ikant-le-acceptance-origin/v1",
+      "requires": [
+        "event_id",
+        "source_head",
+        "terms_digest",
+        "deadline_origin=I_ACCEPT",
+        "clock=MONOTONIC",
+        "observed_at_accept=true",
+        "elapsed_to_runtime_entry_ms",
+        "receipt_sha256"
+      ]
+    }
   }
 }

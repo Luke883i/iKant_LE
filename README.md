@@ -37,4 +37,6 @@ Machine truth belongs to current code/tests and machine contracts. `AGENTS.md` i
 npm run qualify:canonical
 ```
 
-`qualify:canonical` first verifies that the checked-in runtime-root is the deterministic product of the canonical source bytes, then runs regression/check plus C21-C24 local-session hardening. `qualify:current` is a compatibility alias. Legacy C20 qualification remains non-canonical and does not define a second product mode. Mutation PASS is bounded engineering evidence, not proof of consciousness, physical-world truth, production reliability, universal host compliance or bootstrap duration.
+`qualify:canonical` first verifies that the checked-in runtime-root is the deterministic product of the canonical source bytes, then runs regression/check plus C21-C25 local-session hardening. `qualify:current` is a compatibility alias. Legacy C20 qualification remains non-canonical and does not define a second product mode. Mutation PASS is bounded engineering evidence, not proof of consciousness, physical-world truth, production reliability, universal host compliance or bootstrap duration.
+
+Canonical activation uses a provider-neutral **local activation executor** for content-addressed repository bytes. The language model remains control-plane compute and is never the runtime byte transport; activation latency is reported as an SLO rather than an integrity gate.

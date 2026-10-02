@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-chat-bootstrap-semantic/v1",
-  "slice": "C17.CHAT_BOOTSTRAP_ACCEPTANCE_DEADLINE_INTEGRITY",
+  "schema": "ikant-le-chat-bootstrap-semantic/v2",
+  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
   "authority": 0,
-  "intent": "Make SESSION_CHAT activation causally depend on immutable source binding, content-addressed post-accept delivery, verified local materialization, live host capability and an end-to-end deadline, while preserving exact admission and end-user pending intent.",
+  "intent": "Make canonical SESSION_CHAT activation independent of model-mediated byte transport and pre-runtime clock/digest obligations: exact acceptance + immutable source/object identities + local executor + materialization/reopen + runtime-owned provenance/probe + persisted ACTIVE.",
   "nodes": [
     {
       "id": "TARGET_INTENT_ROOT",
@@ -111,7 +111,11 @@
     "materialization": "ikant-le-runtime-root-materialization/v1",
     "bootstrap_evidence": "ikant-le-chat-bootstrap-evidence/v1",
     "bootstrap": "ikant-le-bootstrap-receipt/v2",
-    "transfer_v2": "ikant-le-source-bound-transfer/v2"
+    "transfer_v2": "ikant-le-source-bound-transfer/v2",
+    "preaccept_handoff_v2": "ikant-le-preaccept-handoff/v2",
+    "activation_executor": "ikant-le-activation-executor/v1",
+    "materialization_v2": "ikant-le-runtime-root-materialization/v2",
+    "bootstrap_evidence_v2": "ikant-le-chat-bootstrap-evidence/v2"
   },
   "deadline_ms": 120000,
   "active_predicate": [
@@ -171,9 +175,89 @@
     "host_channel_receipt_is_physical_proof": false,
     "bridge_receipt_without_runtime_reopen_is_physical_proof": false,
     "caller_supplied_probe_is_live_probe": false,
-    "model_generated_capability_is_host_attested_evidence": false
+    "model_generated_capability_is_host_attested_evidence": false,
+    "model_context_is_data_plane": false,
+    "slo_breach_is_integrity_failure": false,
+    "pre_runtime_sha256_is_required_for_v2": false,
+    "pre_runtime_monotonic_clock_is_required_for_v2": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
   "availability_classifier": "src/runtime-availability.mjs",
-  "deadline_integrity_contract": "contracts/deadline-integrity.json"
+  "deadline_integrity_contract": "contracts/deadline-integrity.json",
+  "canonical_activation_model": "LOCAL_EXECUTOR_V1",
+  "canonical_nodes": [
+    {
+      "id": "HUMAN_GATE",
+      "owns": [
+        "current Terms presentation",
+        "later exact standalone I ACCEPT",
+        "single acceptance event"
+      ],
+      "boundary": "human acceptance is the only authority-bearing gate"
+    },
+    {
+      "id": "SOURCE_SNAPSHOT",
+      "owns": [
+        "immutable source_head",
+        "orientation Git object identities",
+        "runtime-root object identities"
+      ],
+      "boundary": "source identity is content-addressed and never inferred from carrier"
+    },
+    {
+      "id": "LOCAL_EXECUTOR",
+      "owns": [
+        "capability probe",
+        "object acquisition",
+        "content-addressed retry",
+        "model-bypass data plane"
+      ],
+      "boundary": "language-model context is never a byte transport"
+    },
+    {
+      "id": "LOCAL_MATERIALIZATION",
+      "owns": [
+        "orientation re-verification",
+        "loader/shard/member verification",
+        "atomic publish",
+        "reopen"
+      ],
+      "boundary": "receipt alone is not physical proof"
+    },
+    {
+      "id": "EXECUTED_RUNTIME_PROOF",
+      "owns": [
+        "runtime-owned Node probe",
+        "exact executed-code provenance",
+        "writer persistence"
+      ],
+      "boundary": "caller callbacks and CI are not live execution proof"
+    },
+    {
+      "id": "ACTIVE_READBACK",
+      "owns": [
+        "single-writer ACTIVE commit",
+        "persisted readback",
+        "pending-intent exactly-once terminal effect"
+      ],
+      "boundary": "only persisted runtime state owns ACTIVE truth"
+    }
+  ],
+  "canonical_active_predicate_v2": [
+    "later exact standalone I ACCEPT consumed once",
+    "immutable source head and orientation/runtime object identities match",
+    "local executor capability/acquisition receipt valid and model_mediated_bytes=false",
+    "materializer re-verifies orientation plus runtime objects, atomically publishes and reopens",
+    "runtime-owned probe matches exact executed provenance",
+    "single writer persists and reads back ACTIVE"
+  ],
+  "deadline_integrity_applies_to_canonical_v2": false,
+  "activation_slo_ms": 120000,
+  "activation_slo_exceeded_is_terminal": false,
+  "legacy_v1_semantics": {
+    "canonical": false,
+    "nodes_field": "nodes",
+    "active_predicate_field": "active_predicate",
+    "deadline_ms_field": "deadline_ms"
+  }
 }

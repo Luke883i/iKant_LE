@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-host-shell/v9",
+  "schema": "ikant-le-host-shell/v10",
   "human_bootstrap_gates": 1,
   "human_acceptance": "I ACCEPT",
   "first_contact": {
@@ -27,8 +27,8 @@
     "post_accept_remote_rounds_max": 1,
     "parallel_runtime_fetch": true,
     "exact_source_head": true,
-    "reuse_preaccept_bytes": true,
-    "preaccept_handoff": "ikant-le-preaccept-handoff/v1",
+    "reuse_preaccept_bytes": false,
+    "preaccept_handoff": "ikant-le-preaccept-handoff/v2",
     "generic_discovery_before_active": false,
     "tests_before_active": false,
     "qualification_before_active": false,
@@ -51,7 +51,7 @@
     "reopen_required": true,
     "semantic_runtime_contract": "contracts/chat-bootstrap-semantic.json",
     "source_bound_transfer_receipt": "ikant-le-source-bound-transfer/v1",
-    "bootstrap_evidence_receipt": "ikant-le-chat-bootstrap-evidence/v1",
+    "bootstrap_evidence_receipt": "ikant-le-chat-bootstrap-evidence/v2",
     "materialization_binds_transfer_receipt": true,
     "active_requires_bootstrap_evidence": true,
     "deadline_scope": "I_ACCEPT_TO_ACTIVE_COMMIT",
@@ -82,16 +82,25 @@
       "host_attested_evidence_is_physical_proof": false,
       "mechanical_terms_reserved_for_local_runtime_observation": true,
       "legacy_c20_ontology_is_canonical": false
-    }
+    },
+    "canonical_activation_model": "LOCAL_EXECUTOR_V1",
+    "reverify_preaccept_object_identities": true,
+    "activation_executor_receipt": "ikant-le-activation-executor/v1",
+    "materialization_receipt": "ikant-le-runtime-root-materialization/v2",
+    "activation_slo_ms": 120000,
+    "activation_slo_is_integrity_gate": false,
+    "model_mediated_bytes_forbidden": true,
+    "legacy_v1_transport_fields_compatibility_only": true
   },
   "automatic_after_acceptance": [
-    "ACTIVATE_FIRST",
-    "PARALLEL_RUNTIME_ROOT_SHARDS",
-    "SOURCE_BOUND_TRANSFER_RECEIPT",
+    "LOCAL_EXECUTOR_CAPABILITY_PROBE",
+    "CONTENT_ADDRESSED_OBJECT_ACQUISITION",
+    "REVERIFY_PREACCEPT_OBJECT_IDENTITIES",
     "MATERIALIZE_RUNTIME_ROOT",
-    "VALIDATE_CHAT_BOOTSTRAP_EVIDENCE",
-    "AUTO_PROBE",
+    "RUNTIME_ROOT_REOPEN",
+    "AUTO_PROBE_WITH_EXECUTED_PROVENANCE",
     "AUTO_INITIALIZE",
+    "PERSIST_AND_READBACK_ACTIVE",
     "RESUME_OR_FOLD_PENDING_INTENT"
   ],
   "success_terminal": "ACTIVE",
@@ -221,7 +230,9 @@
   "preaccept_handoff": {
     "runtime_observed_presentation": false,
     "host_attested_presentation": true,
-    "orientation_digest_verified": true,
+    "orientation_object_identity_reverified_after_acceptance": true,
+    "pre_runtime_digest_required": false,
+    "pre_runtime_clock_required": false,
     "may_promote_acceptance": false,
     "authority": 0
   },
@@ -314,7 +325,20 @@
     ],
     "continuation_receipt": "ikant-le-activation-continuation/v1",
     "final_deadline_scope": "ORIGINAL_I_ACCEPT_TO_ACTIVE_COMMIT",
-    "authority": 0
+    "authority": 0,
+    "canonical_v2_retry": "IDEMPOTENT_BY_OBJECT_IDENTITY",
+    "v2_preserve": [
+      "acceptance_event_id",
+      "epoch",
+      "source_head",
+      "orientation_object_set"
+    ],
+    "v2_forbid": [
+      "new_acceptance",
+      "new_epoch",
+      "source_rebase",
+      "model_mediated_bytes"
+    ]
   },
   "post_accept_convergence": {
     "schema": "ikant-le-host-observed-fastboot-convergence/v1",
@@ -356,7 +380,7 @@
     "runtime_execution_plane": "SESSION_LOCAL_NODE",
     "repository_transfer_per_chat": true,
     "host_acceptance_ingress_required": true,
-    "host_byte_ingress_required": true,
+    "host_byte_ingress_required": false,
     "executed_code_provenance_required": true,
     "hosted_runtime_required": false,
     "plugin_or_mcp_registration_required": false,
@@ -368,6 +392,9 @@
     "production_probe_injection_forbidden": true,
     "materializer_verifies_transport_loader_and_shards": true,
     "runtime_root_readback_required": true,
-    "host_attested_channel_ledger_required": true
+    "host_attested_channel_ledger_required": true,
+    "activation_executor_required": true,
+    "model_mediated_bytes_forbidden": true,
+    "activation_slo_is_integrity_gate": false
   }
 }

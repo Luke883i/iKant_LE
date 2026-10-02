@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-contract/v10",
+  "schema": "ikant-le-contract/v11",
   "version": "0.8.0",
   "runtime": {
     "node": ">=20",
@@ -44,7 +44,7 @@
     "activate_first": true,
     "post_accept_remote_rounds_max": 1,
     "parallel_runtime_capsule": true,
-    "preaccept_handoff": "ikant-le-preaccept-handoff/v1",
+    "preaccept_handoff": "ikant-le-preaccept-handoff/v2",
     "auto_probe": true,
     "auto_initialize": true,
     "resume_pending_intent": true,
@@ -63,7 +63,9 @@
     "materialization_binds_transfer_receipt": true,
     "deadline_scope": "I_ACCEPT_TO_ACTIVE_COMMIT",
     "local_session_fastboot_contract": "contracts/local-session-fastboot.json",
-    "activation_modality": "SESSION_CHAT_LOCAL"
+    "activation_modality": "SESSION_CHAT_LOCAL",
+    "canonical_activation_model": "LOCAL_EXECUTOR_V1",
+    "bootstrap_evidence": "ikant-le-chat-bootstrap-evidence/v2"
   },
   "documentation": {
     "entry": "README.md",
@@ -288,6 +290,13 @@
     "runtime_root_regeneration_is_deterministic_and_repository_owned",
     "runtime_root_verification_precedes_canonical_qualification",
     "global_dod_ids_are_unique",
-    "merge_checks_are_repository_governance_not_runtime_proof"
+    "merge_checks_are_repository_governance_not_runtime_proof",
+    "human_to_ikant_relation_uses_local_executor_data_plane",
+    "language_model_never_owns_runtime_byte_transport",
+    "preaccept_continuity_reverified_by_object_identity",
+    "activation_latency_is_slo_not_integrity",
+    "content_addressed_retry_is_idempotent_same_epoch",
+    "legacy_transfer_v1_is_dual_reader_compatibility_only",
+    "canonical_and_legacy_activation_truth_are_explicitly_namespaced"
   ]
 }

@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v4",
-  "slice": "C24.CANONICAL_BOUNDARY_CLOSURE",
+  "schema": "ikant-le-local-session-fastboot-contract/v5",
+  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
   "authority": 0,
-  "objective": "Close the canonical human-to-iKant boundary without adding a new runtime subsystem: collapse activation to six causal nodes, translate legacy compatibility before the runtime boundary, and make the content-addressed runtime root deterministically regenerable and verifiable.",
+  "objective": "Collapse the canonical data plane onto a local activation executor: the host/model retains control-plane admission duties only; immutable object identity, materialization/reopen, executed provenance and persisted ACTIVE are runtime-local truth.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -45,27 +45,6 @@
     "minimum_cardinality": 15,
     "receipt_sha256": "5029e8d3b589880a7620b92f788232a2245c0692f68e85ea2593ff39bfdeaef0"
   },
-  "required_mechanisms": [
-    "single local activation modality",
-    "typed host-attested channel ledger with explicit non-physical claim boundary",
-    "one canonical NEXT and one executor",
-    "failure memory keyed by decision plus evidence",
-    "changed-evidence replan",
-    "byte bridge receipt as host attestation plus materializer verification and runtime-owned published-root reopen/samehash validation",
-    "executed-code provenance",
-    "content-addressed runtime root",
-    "single-shot acceptance origin",
-    "deadline continuity",
-    "persisted ACTIVE readback",
-    "reverse supply-chain audit",
-    "claim/readback/oracle forensic closure",
-    "truthful DEGRADED state",
-    "Surface B write/readback before Surface A release",
-    "runtime bootstrap validator requires the C21 ledger/step/bridge transcript",
-    "production runCommand and resumeActivation cannot inject a substitute probe",
-    "ledger-owned failed_decisions keyed by decision_key plus channel_evidence_sha256",
-    "fastboot step validator recomputes action/carrier/decision/evidence from the bound ledger"
-  ],
   "qualification": {
     "semantic_cases": 10000000,
     "campaigns": 10,
@@ -89,7 +68,13 @@
     "c23_required_zero_unsafe_accept": true,
     "c24_canonical_boundary_mutation_cases": 10000000,
     "c24_mutants": 15,
-    "runtime_root_verify_required": true
+    "runtime_root_verify_required": true,
+    "c25_executor_data_plane_cases": 1000000,
+    "c25_preseeded": true,
+    "c25_unsafe_active_required": 0,
+    "c25_all_mutants_witnessed_required": true,
+    "c25_mutants": 16,
+    "c25_semantic_schema": "ikant-le-c25-executor-data-plane/v2"
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -108,35 +93,12 @@
     "host_attested_evidence_is_mechanical_runtime_proof": false,
     "legacy_c20_compatibility_is_current_product_truth": false,
     "compatibility_alias_recognition_inside_runtime_is_allowed": false,
-    "deterministic_build_is_live_activation": false
-  },
-  "causal_planes": {
-    "pre_runtime_host_adapter": {
-      "authority": 0,
-      "owns": [
-        "host-attested channel receipts",
-        "one canonical NEXT",
-        "failure memory keyed by decision plus evidence",
-        "carrier execution"
-      ],
-      "cannot_prove": [
-        "local byte presence",
-        "executed code provenance",
-        "live Node probe",
-        "ACTIVE"
-      ]
-    },
-    "local_runtime": {
-      "owns": [
-        "reopen published loader plus every materialized runtime member",
-        "validate materialization",
-        "validate exact executed module identities",
-        "live Node probe",
-        "writer persistence",
-        "ACTIVE commit/readback"
-      ],
-      "cannot_delegate_live_probe": true
-    }
+    "deterministic_build_is_live_activation": false,
+    "model_context_is_byte_sink": false,
+    "activation_executor_provider_is_product_identity": false,
+    "slo_breach_is_integrity_failure": false,
+    "legacy_carrier_failure_memory_is_v2_retry_semantics": false,
+    "unmarked_legacy_mechanisms_are_canonical": false
   },
   "terminology_policy": {
     "canonical_pre_runtime_evidence": "HOST_ATTESTED",
@@ -167,19 +129,22 @@
     "lattice": [
       "HUMAN_GATE",
       "SOURCE_SNAPSHOT",
-      "HOST_ATTESTATION",
+      "LOCAL_EXECUTOR",
       "LOCAL_MATERIALIZATION",
       "EXECUTED_RUNTIME_PROOF",
       "ACTIVE_READBACK"
     ],
     "edge_invariants": [
-      "ONE_NEXT_AND_FAILURE_MEMORY",
-      "ORIGINAL_DEADLINE_CONTINUITY",
-      "COMPATIBILITY_ZERO_AUTHORITY",
-      "MODEL_CANNOT_PROMOTE_STATE"
+      "ONE_HUMAN_GATE",
+      "SOURCE_OBJECT_IDENTITY",
+      "MODEL_OUTSIDE_DATA_PLANE",
+      "IDEMPOTENT_OBJECT_RETRY",
+      "SLO_NOT_INTEGRITY",
+      "COMPATIBILITY_ZERO_AUTHORITY"
     ],
     "human_decision_owner": "HUMAN",
     "host_adapter_authority": 0,
+    "data_plane_owner": "LOCAL_ACTIVATION_EXECUTOR",
     "runtime_identity_owner": "PINNED_LOCAL_RUNTIME",
     "active_truth_owner": "PERSISTED_RUNTIME_READBACK"
   },
@@ -193,5 +158,133 @@
     "environment_inputs_allowed": [],
     "output_identity": "runtime_root_sha256",
     "build_receipt_is_runtime_proof": false
+  },
+  "canonical_activation_model": "LOCAL_EXECUTOR_V1",
+  "activation_executor": {
+    "schema": "ikant-le-activation-executor/v1",
+    "execution_plane": "SESSION_LOCAL_NODE",
+    "capability_probe_before_acquisition": true,
+    "content_addressed": true,
+    "model_mediated_bytes": false,
+    "retry_semantics": "IDEMPOTENT_BY_OBJECT_IDENTITY",
+    "provider_neutral": true,
+    "required_objects": [
+      "PREACCEPT_ORIENTATION_OBJECTS",
+      "RUNTIME_ROOT_LOADER",
+      "RUNTIME_ROOT_SHARDS"
+    ]
+  },
+  "legacy_transfer_v1_compatibility": {
+    "canonical": false,
+    "dual_reader_only": true,
+    "carrier_ontology_may_define_v2": false,
+    "remote_round_budget_may_define_v2": false,
+    "deadline_integrity_may_define_v2": false
+  },
+  "legacy_v1_required_mechanisms": [
+    "single local activation modality",
+    "typed host-attested channel ledger with explicit non-physical claim boundary",
+    "one canonical NEXT and one executor",
+    "failure memory keyed by decision plus evidence",
+    "changed-evidence replan",
+    "byte bridge receipt as host attestation plus materializer verification and runtime-owned published-root reopen/samehash validation",
+    "executed-code provenance",
+    "content-addressed runtime root",
+    "single-shot acceptance origin",
+    "deadline continuity",
+    "persisted ACTIVE readback",
+    "reverse supply-chain audit",
+    "claim/readback/oracle forensic closure",
+    "truthful DEGRADED state",
+    "Surface B write/readback before Surface A release",
+    "runtime bootstrap validator requires the C21 ledger/step/bridge transcript",
+    "production runCommand and resumeActivation cannot inject a substitute probe",
+    "ledger-owned failed_decisions keyed by decision_key plus channel_evidence_sha256",
+    "fastboot step validator recomputes action/carrier/decision/evidence from the bound ledger"
+  ],
+  "legacy_v1_causal_planes": {
+    "pre_runtime_host_adapter": {
+      "authority": 0,
+      "owns": [
+        "host-attested channel receipts",
+        "one canonical NEXT",
+        "failure memory keyed by decision plus evidence",
+        "carrier execution"
+      ],
+      "cannot_prove": [
+        "local byte presence",
+        "executed code provenance",
+        "live Node probe",
+        "ACTIVE"
+      ]
+    },
+    "local_runtime": {
+      "owns": [
+        "reopen published loader plus every materialized runtime member",
+        "validate materialization",
+        "validate exact executed module identities",
+        "live Node probe",
+        "writer persistence",
+        "ACTIVE commit/readback"
+      ],
+      "cannot_delegate_live_probe": true
+    }
+  },
+  "canonical_v2_required_mechanisms": [
+    "single SESSION_CHAT_LOCAL activation modality",
+    "one exact standalone human acceptance",
+    "immutable source snapshot",
+    "local activation executor capability probe",
+    "content-addressed object acquisition outside model context",
+    "orientation object identity re-verification",
+    "atomic runtime-root materialization and reopen",
+    "exact executed-code provenance",
+    "runtime-owned live Node probe",
+    "writer persistence/readback",
+    "persisted ACTIVE readback",
+    "same-epoch idempotent retry by object identity",
+    "truthful DEGRADED/BLOCKED_INTEGRITY separation",
+    "Surface B write/readback before Surface A release"
+  ],
+  "canonical_v2_causal_planes": {
+    "human_gate": {
+      "authority": "HUMAN",
+      "owns": [
+        "exact standalone I ACCEPT"
+      ],
+      "cannot_delegate": true
+    },
+    "host_control_plane": {
+      "authority": 0,
+      "owns": [
+        "bounded preaccept presentation",
+        "invoke local executor"
+      ],
+      "cannot_prove": [
+        "local byte presence",
+        "executed provenance",
+        "ACTIVE"
+      ]
+    },
+    "local_activation_executor": {
+      "authority": 0,
+      "owns": [
+        "capability probe",
+        "content-addressed acquisition",
+        "idempotent same-object retry"
+      ],
+      "model_mediated_bytes": false
+    },
+    "local_runtime": {
+      "owns": [
+        "materialization validation",
+        "published-byte reopen",
+        "executed provenance",
+        "live probe",
+        "writer persistence",
+        "ACTIVE commit/readback"
+      ],
+      "cannot_delegate_live_probe": true
+    }
   }
 }

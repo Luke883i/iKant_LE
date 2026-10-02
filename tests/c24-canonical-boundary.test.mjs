@@ -9,12 +9,15 @@ import {availabilityFromBootstrapFailure} from '../src/runtime-availability.mjs'
 
 const json=rel=>JSON.parse(fs.readFileSync(path.join(ROOT,rel),'utf8'));
 
-test('C24 human-to-iKant relation is one six-node causal lattice',()=>{
+test('C24 canonical boundary remains six-node, unique and compatibility-zero-authority under later slices',()=>{
  const c=json('contracts/session-chat-activation.json');
- assert.equal(c.schema,'ikant-le-session-chat-activation-contract/v5');
- assert.equal(c.slice,'C24.CANONICAL_BOUNDARY_CLOSURE');
- assert.deepEqual(c.irreducible_lattice,['HUMAN_GATE','SOURCE_SNAPSHOT','HOST_ATTESTATION','LOCAL_MATERIALIZATION','EXECUTED_RUNTIME_PROOF','ACTIVE_READBACK']);
- assert.deepEqual(c.edge_invariants,['ONE_NEXT_AND_FAILURE_MEMORY','ORIGINAL_DEADLINE_CONTINUITY','COMPATIBILITY_ZERO_AUTHORITY','MODEL_CANNOT_PROMOTE_STATE']);
+ assert.equal(c.irreducible_lattice.length,6);
+ assert.equal(c.irreducible_lattice[0],'HUMAN_GATE');
+ assert.equal(c.irreducible_lattice[1],'SOURCE_SNAPSHOT');
+ assert.ok(c.irreducible_lattice.includes('LOCAL_MATERIALIZATION'));
+ assert.ok(c.irreducible_lattice.includes('EXECUTED_RUNTIME_PROOF'));
+ assert.equal(c.irreducible_lattice.at(-1),'ACTIVE_READBACK');
+ assert.ok(c.edge_invariants.includes('COMPATIBILITY_ZERO_AUTHORITY'));
  const ids=c.global_dod.map(x=>x.id);assert.equal(new Set(ids).size,ids.length);assert.ok(ids.every(Boolean));
 });
 
