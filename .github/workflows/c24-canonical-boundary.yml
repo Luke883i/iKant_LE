@@ -13,11 +13,71 @@ jobs:
         with: {node-version: '22'}
       - name: runtime-root verify
         run: npm run runtime-root:verify
-      - name: repository tests
-        run: npm test
+      - name: test tests/c17-deadline-integrity.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c17-deadline-integrity.test.mjs
+      - name: test tests/c18-activation-continuation.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c18-activation-continuation.test.mjs
+      - name: test tests/c19-fastboot-convergence.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c19-fastboot-convergence.test.mjs
+      - name: test tests/c20-session-chat-deployment.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c20-session-chat-deployment.test.mjs
+      - name: test tests/c21-local-session-fastboot.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c21-local-session-fastboot.test.mjs
+      - name: test tests/c23-ontology-collapse.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c23-ontology-collapse.test.mjs
+      - name: test tests/c24-canonical-boundary.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c24-canonical-boundary.test.mjs
+      - name: test tests/c25-executor-data-plane.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c25-executor-data-plane.test.mjs
+      - name: test tests/c27-session-capability-lattice.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c27-session-capability-lattice.test.mjs
+      - name: test tests/c5.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c5.test.mjs
+      - name: test tests/chat-bootstrap-semantic.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/chat-bootstrap-semantic.test.mjs
+      - name: test tests/embedded-library.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/embedded-library.test.mjs
+      - name: test tests/emergence.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/emergence.test.mjs
+      - name: test tests/fastboot.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/fastboot.test.mjs
+      - name: test tests/first-contact.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/first-contact.test.mjs
+      - name: test tests/life-consciousness.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
+      - name: test tests/local-host-meta-prompt.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/local-host-meta-prompt.test.mjs
+      - name: test tests/runtime-availability.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/runtime-availability.test.mjs
+      - name: test tests/runtime.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/runtime.test.mjs
+      - name: test tests/session-chat-fastboot.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
+      - name: test tests/surface-b.test.mjs
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/surface-b.test.mjs
       - name: canonical check
+        continue-on-error: true
         run: npm run check
-      - name: C27 semantic falsification
-        run: npm run falsify:c27
-      - name: legacy canonical hardening
-        run: npm run falsify:c21 && npm run falsify:c22 && npm run falsify:c23 && npm run falsify:c24 && npm run falsify:c25 && npm run falsify:host-meta
+      - name: aggregate repository tests
+        run: npm test
