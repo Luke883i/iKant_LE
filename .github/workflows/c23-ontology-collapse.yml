@@ -41,4 +41,20 @@ jobs:
         run: node --test --test-concurrency=1 tests/chat-bootstrap-semantic.test.mjs
       - name: Diagnose runtime tests
         run: node --test --test-concurrency=1 tests/runtime.test.mjs
+      - name: Diagnose fastboot tests
+        run: node --test --test-concurrency=1 tests/fastboot.test.mjs
+      - name: Diagnose first-contact tests
+        run: node --test --test-concurrency=1 tests/first-contact.test.mjs
+      - name: Diagnose session-chat fastboot tests
+        run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
+      - name: Diagnose surface-b tests
+        run: node --test --test-concurrency=1 tests/surface-b.test.mjs
+      - name: Diagnose C5 tests
+        run: node --test --test-concurrency=1 tests/c5.test.mjs
+      - name: Diagnose emergence tests
+        run: node --test --test-concurrency=1 tests/emergence.test.mjs
+      - name: Diagnose life-consciousness tests
+        run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
+      - name: Diagnose embedded-library tests
+        run: node --test --test-concurrency=1 tests/embedded-library.test.mjs
       - run: npm run qualify:current
