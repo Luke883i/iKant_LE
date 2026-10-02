@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-session-chat-activation-contract/v5",
-  "slice": "C24.CANONICAL_BOUNDARY_CLOSURE",
+  "schema": "ikant-le-session-chat-activation-contract/v6",
+  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
   "authority": 0,
-  "objective": "Guarantee one human-to-iKant local-session relation: human acceptance selects a pinned source snapshot; host evidence remains authority-zero; only deterministic local materialization plus executed runtime proof can reach persisted/read-back ACTIVE.",
+  "objective": "Guarantee one human-to-iKant local activation in which the model never carries runtime bytes: exact human acceptance binds one immutable source snapshot; a local activation executor owns content-addressed acquisition and retries; the materialized runtime proves executed identity and alone may persist/read back ACTIVE.",
   "product_mode": "SESSION_CHAT",
   "activation_modality": "SESSION_CHAT_LOCAL",
   "language_engine_origin": "HOST_SUPPLIED",
@@ -12,7 +12,7 @@
   "plugin_or_mcp_registration_required": false,
   "webapp_mode": false,
   "always_running_process_required": false,
-  "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24",
+  "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24+C25",
   "required": [
     "EXACT_ACCEPT",
     "MONOTONIC_ORIGIN_AT_INGEST",
@@ -48,7 +48,7 @@
   "irreducible_lattice": [
     "HUMAN_GATE",
     "SOURCE_SNAPSHOT",
-    "HOST_ATTESTATION",
+    "LOCAL_EXECUTOR",
     "LOCAL_MATERIALIZATION",
     "EXECUTED_RUNTIME_PROOF",
     "ACTIVE_READBACK"
@@ -135,6 +135,22 @@
     {
       "id": "C24_G18",
       "claim": "global DoD identifiers are unique and machine-validated; compatibility checks cannot redefine product truth"
+    },
+    {
+      "id": "C25_G19",
+      "claim": "canonical activation bytes never traverse the language-model context; the local activation executor owns acquisition and verification"
+    },
+    {
+      "id": "C25_G20",
+      "claim": "preaccept continuity is reverified by immutable object identity after acceptance; pre-runtime SHA-256 and monotonic timestamp production are not integrity prerequisites"
+    },
+    {
+      "id": "C25_G21",
+      "claim": "activation latency is SLO telemetry only; exceeding 120000 ms cannot invalidate otherwise exact source/materialization/execution evidence"
+    },
+    {
+      "id": "C25_G22",
+      "claim": "same-epoch retry is idempotent by immutable object identity and never requires a second I ACCEPT, source rebase or model-mediated byte path"
     }
   ],
   "claim_boundary": {
@@ -152,12 +168,20 @@
     "legacy_c20_compatibility_may_define_product_mode": false,
     "compatibility_translation_is_runtime_product_truth": false,
     "runtime_root_build_receipt_is_live_runtime_proof": false,
-    "merge_check_is_current_chat_active_proof": false
+    "merge_check_is_current_chat_active_proof": false,
+    "host_attestation_is_canonical_data_plane": false,
+    "model_context_is_runtime_byte_transport": false,
+    "activation_slo_breach_is_integrity_failure": false,
+    "local_executor_receipt_without_runtime_reopen_is_active_proof": false,
+    "legacy_v1_transfer_receipts_define_current_product_truth": false
   },
   "edge_invariants": [
-    "ONE_NEXT_AND_FAILURE_MEMORY",
-    "ORIGINAL_DEADLINE_CONTINUITY",
-    "COMPATIBILITY_ZERO_AUTHORITY",
-    "MODEL_CANNOT_PROMOTE_STATE"
-  ]
+    "ONE_HUMAN_GATE",
+    "SOURCE_OBJECT_IDENTITY",
+    "MODEL_OUTSIDE_DATA_PLANE",
+    "IDEMPOTENT_OBJECT_RETRY",
+    "SLO_NOT_INTEGRITY",
+    "COMPATIBILITY_ZERO_AUTHORITY"
+  ],
+  "canonical_activation_model": "LOCAL_EXECUTOR_V1"
 }

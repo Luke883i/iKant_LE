@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-admission/v2",
+  "schema": "ikant-le-admission/v3",
   "repository": "Luke883i/iKant_LE",
   "human_gate_count": 1,
   "acceptance_phrase": "I ACCEPT",
@@ -34,21 +34,29 @@
   "breach_terminal": "SESSION_NONCONFORMING",
   "new_chat_required_for_conforming_runtime": true,
   "preaccept_handoff": {
-    "schema": "ikant-le-preaccept-handoff/v1",
+    "schema": "ikant-le-preaccept-handoff/v2",
+    "canonical_schema": "ikant-le-preaccept-handoff/v2",
+    "accepted_schemas": [
+      "ikant-le-preaccept-handoff/v2",
+      "ikant-le-preaccept-handoff/v1"
+    ],
+    "legacy_v1_compatibility": true,
     "authority": 0,
     "terms_presentation_is_host_attested_not_runtime_observed": true,
-    "required_orientation_digests": true,
+    "immutable_orientation_object_identities_required": true,
+    "pre_runtime_sha256_digest_required": false,
+    "pending_intent_hash_required": false,
+    "terms_digest_required": false,
+    "source_head_required": true,
     "fresh_local_state_only": true,
+    "runtime_reverification_required": true,
     "cannot_set": [
       "accepted",
       "probed",
       "initialized",
       "status",
       "epoch"
-    ],
-    "pending_intent_hash_required": true,
-    "terms_digest_required": true,
-    "source_head_required": true
+    ]
   },
   "automatic_after_acceptance": [
     "ACCEPTANCE_ORIGIN_COMMIT",
@@ -72,6 +80,10 @@
     "exact_acceptance_event_binding": true,
     "retry_may_reset_origin": false,
     "current_wall_or_runtime_clock_may_reconstruct_historical_origin": false,
-    "acceptance_origin_ticket_schema": "ikant-le-acceptance-origin-ticket/v1"
+    "acceptance_origin_ticket_schema": "ikant-le-acceptance-origin-ticket/v1",
+    "canonical_owner": "LOCAL_RUNTIME_ACCEPT_INGEST",
+    "canonical_clock_required": false,
+    "canonical_event_id_required": true,
+    "legacy_host_origin_receipts_compatibility_only": true
   }
 }

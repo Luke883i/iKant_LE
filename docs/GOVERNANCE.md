@@ -40,6 +40,8 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept de
 | C15-C21 | transport/availability/deadline/continuation -> one `SESSION_CHAT_LOCAL` fastboot with receipts, failure memory and provenance |
 | C22 | host-attested planning separated from local proof; root reopen, exact provenance, non-injectable probe |
 | C23 | HOST_ATTESTED terminology, neutral acceptance-origin naming, machine-checked C20 legacy quarantine |
+| C24 | six-node canonical boundary, deterministic runtime-root regeneration/verification, compatibility translated before runtime |
+| C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
 
 LIB.0 is auxiliary/private by default and does not change standalone lifecycle or ownership.
@@ -49,3 +51,5 @@ LIB.0 is auxiliary/private by default and does not change standalone lifecycle o
 Qualification is source-bound and risk-adaptive: deterministic checks first; typical/edge/stress families exercised; blocking survivors zero. C10 keeps 1M bootstrap mutations plus novelty tail/deletion oracle. C11 qualifies a compressed causal lattice; configuration, self-report and mutation PASS are not runtime evidence. LIB.0 requires 100k boundary mutations, zero survivors, novelty tail, exact vectors and regression. C15 adds 1M transport mutations with zero unsafe new accepts. C21 adds Causal Forensic Closure plus 10k architecture pressure, 10x1M seeded traces, real-code tests and local Node witness. C22 adds receipt-laundering and caller-probe adversaries. C23 adds a 10M ontology-collapse campaign, 13 deletion mutants and gates against stale deployment/mechanical aliases while preserving marked C20 compatibility. PASS remains bounded engineering evidence, not physical host proof, global formal minimality or latency guarantee.
 
 C24 aligns the repository boundary with current supply-chain practice: source/build inputs are explicit, generated runtime-root identity is deterministic, compatibility cannot define canonical product truth, and build/CI evidence is never promoted to live runtime proof.
+
+C25 absorbs the physical-host finding that language-model/tool-output text is not a byte-exact local sink. Canonical v2 therefore moves acquisition/retry into a provider-neutral local activation executor, re-verifies immutable object identities after acceptance, and treats the 120 s target as observability only. Legacy v1 transfer/deadline receipts remain dual-reader compatibility and cannot define current ACTIVE truth.

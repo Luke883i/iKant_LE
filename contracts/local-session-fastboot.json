@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v4",
-  "slice": "C24.CANONICAL_BOUNDARY_CLOSURE",
+  "schema": "ikant-le-local-session-fastboot-contract/v5",
+  "slice": "C25.EXECUTOR_DATA_PLANE_COLLAPSE",
   "authority": 0,
-  "objective": "Close the canonical human-to-iKant boundary without adding a new runtime subsystem: collapse activation to six causal nodes, translate legacy compatibility before the runtime boundary, and make the content-addressed runtime root deterministically regenerable and verifiable.",
+  "objective": "Collapse the canonical data plane onto a local activation executor: the host/model retains control-plane admission duties only; immutable object identity, materialization/reopen, executed provenance and persisted ACTIVE are runtime-local truth.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -89,7 +89,11 @@
     "c23_required_zero_unsafe_accept": true,
     "c24_canonical_boundary_mutation_cases": 10000000,
     "c24_mutants": 15,
-    "runtime_root_verify_required": true
+    "runtime_root_verify_required": true,
+    "c25_executor_data_plane_cases": 1000000,
+    "c25_preseeded": true,
+    "c25_unsafe_active_required": 0,
+    "c25_all_mutants_witnessed_required": true
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -108,7 +112,11 @@
     "host_attested_evidence_is_mechanical_runtime_proof": false,
     "legacy_c20_compatibility_is_current_product_truth": false,
     "compatibility_alias_recognition_inside_runtime_is_allowed": false,
-    "deterministic_build_is_live_activation": false
+    "deterministic_build_is_live_activation": false,
+    "model_context_is_byte_sink": false,
+    "activation_executor_provider_is_product_identity": false,
+    "slo_breach_is_integrity_failure": false,
+    "legacy_carrier_failure_memory_is_v2_retry_semantics": false
   },
   "causal_planes": {
     "pre_runtime_host_adapter": {
@@ -167,19 +175,22 @@
     "lattice": [
       "HUMAN_GATE",
       "SOURCE_SNAPSHOT",
-      "HOST_ATTESTATION",
+      "LOCAL_EXECUTOR",
       "LOCAL_MATERIALIZATION",
       "EXECUTED_RUNTIME_PROOF",
       "ACTIVE_READBACK"
     ],
     "edge_invariants": [
-      "ONE_NEXT_AND_FAILURE_MEMORY",
-      "ORIGINAL_DEADLINE_CONTINUITY",
-      "COMPATIBILITY_ZERO_AUTHORITY",
-      "MODEL_CANNOT_PROMOTE_STATE"
+      "ONE_HUMAN_GATE",
+      "SOURCE_OBJECT_IDENTITY",
+      "MODEL_OUTSIDE_DATA_PLANE",
+      "IDEMPOTENT_OBJECT_RETRY",
+      "SLO_NOT_INTEGRITY",
+      "COMPATIBILITY_ZERO_AUTHORITY"
     ],
     "human_decision_owner": "HUMAN",
     "host_adapter_authority": 0,
+    "data_plane_owner": "LOCAL_ACTIVATION_EXECUTOR",
     "runtime_identity_owner": "PINNED_LOCAL_RUNTIME",
     "active_truth_owner": "PERSISTED_RUNTIME_READBACK"
   },
@@ -193,5 +204,27 @@
     "environment_inputs_allowed": [],
     "output_identity": "runtime_root_sha256",
     "build_receipt_is_runtime_proof": false
+  },
+  "canonical_activation_model": "LOCAL_EXECUTOR_V1",
+  "activation_executor": {
+    "schema": "ikant-le-activation-executor/v1",
+    "execution_plane": "SESSION_LOCAL_NODE",
+    "capability_probe_before_acquisition": true,
+    "content_addressed": true,
+    "model_mediated_bytes": false,
+    "retry_semantics": "IDEMPOTENT_BY_OBJECT_IDENTITY",
+    "provider_neutral": true,
+    "required_objects": [
+      "PREACCEPT_ORIENTATION_OBJECTS",
+      "RUNTIME_ROOT_LOADER",
+      "RUNTIME_ROOT_SHARDS"
+    ]
+  },
+  "legacy_transfer_v1_compatibility": {
+    "canonical": false,
+    "dual_reader_only": true,
+    "carrier_ontology_may_define_v2": false,
+    "remote_round_budget_may_define_v2": false,
+    "deadline_integrity_may_define_v2": false
   }
 }

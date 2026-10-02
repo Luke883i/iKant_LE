@@ -38,6 +38,7 @@
     "runtime-root:regen": "node scripts/runtime-root.mjs regen",
     "runtime-root:verify": "node scripts/runtime-root.mjs verify",
     "falsify:c24": "cc -O3 -std=c11 -Wall -Wextra scripts/c24-canonical-boundary-falsify.c -o /tmp/ikant-le-c24 && /tmp/ikant-le-c24 > artifacts/qualification/c24-canonical-boundary-10m.json && cat artifacts/qualification/c24-canonical-boundary-10m.json",
-    "qualify:canonical": "npm run runtime-root:verify && npm test && npm run check && npm run falsify:c21 && npm run falsify:c22 && npm run falsify:c23 && npm run falsify:c24"
+    "qualify:canonical": "npm run runtime-root:verify && npm test && npm run check && npm run falsify:c21 && npm run falsify:c22 && npm run falsify:c23 && npm run falsify:c24 && npm run falsify:c25",
+    "falsify:c25": "cc -O3 -std=c11 -Wall -Wextra scripts/c25-executor-data-plane-falsify.c -o /tmp/ikant-le-c25 && /tmp/ikant-le-c25 > artifacts/qualification/c25-executor-data-plane-1m.json && cat artifacts/qualification/c25-executor-data-plane-1m.json"
   }
 }
