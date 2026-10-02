@@ -34,7 +34,7 @@ test('C23 host-attested terminology is machine-owned by existing fastboot contra
   assert.equal(h.session_chat_activation.host_attested_channel_ledger_required,true);
   assert.equal(h.post_accept_convergence.unavailable_persists_until_changed_channel_evidence,true);
   assert.ok(a.required.includes('TYPED_HOST_ATTESTED_CHANNEL_LEDGER'));
-  assert.ok(a.irreducible_lattice.includes('HOST_ATTESTED_CHANNEL_EVIDENCE'));
+  assert.ok(a.irreducible_lattice.includes('HOST_ATTESTATION'));
 });
 
 test('C23 fastboot ledger exposes channel-evidence terminology and no old alias',()=>{
