@@ -2,7 +2,18 @@ name: c24-canonical-boundary
 on:
   pull_request:
     paths:
-      - '**'
+      - 'BOOTSTRAP.json'
+      - 'contracts/session-chat-activation.json'
+      - 'contracts/local-session-fastboot.json'
+      - 'contracts/ikant-le.json'
+      - 'src/runtime-availability.mjs'
+      - 'runtime-root/**'
+      - 'scripts/runtime-root.mjs'
+      - 'scripts/c24-canonical-boundary-falsify.c'
+      - 'tests/c24-canonical-boundary.test.mjs'
+      - 'scripts/check.mjs'
+      - 'package.json'
+      - '.github/workflows/c24-canonical-boundary.yml'
 jobs:
   canonical:
     runs-on: ubuntu-latest
@@ -11,132 +22,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - name: runtime-root verify
-        run: npm run runtime-root:verify
-      - name: test tests/c17-deadline-integrity.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c17-deadline-integrity.test.mjs
-      - name: test tests/c18-activation-continuation.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c18-activation-continuation.test.mjs
-      - name: test tests/c19-fastboot-convergence.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c19-fastboot-convergence.test.mjs
-      - name: test tests/c20-session-chat-deployment.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c20-session-chat-deployment.test.mjs
-      - name: test tests/c21-local-session-fastboot.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c21-local-session-fastboot.test.mjs
-      - name: test tests/c23-ontology-collapse.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c23-ontology-collapse.test.mjs
-      - name: test tests/c24-canonical-boundary.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c24-canonical-boundary.test.mjs
-      - name: test tests/c25-executor-data-plane.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c25-executor-data-plane.test.mjs
-      - name: test tests/c27-session-capability-lattice.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c27-session-capability-lattice.test.mjs
-      - name: test tests/c5.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c5.test.mjs
-      - name: test tests/chat-bootstrap-semantic.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/chat-bootstrap-semantic.test.mjs
-      - name: test tests/embedded-library.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/embedded-library.test.mjs
-      - name: test tests/emergence.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/emergence.test.mjs
-      - name: test tests/fastboot.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/fastboot.test.mjs
-      - name: test tests/first-contact.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/first-contact.test.mjs
-      - name: test tests/life-consciousness.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
-      - name: test tests/local-host-meta-prompt.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/local-host-meta-prompt.test.mjs
-      - name: test tests/runtime-availability.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/runtime-availability.test.mjs
-      - name: test tests/runtime.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/runtime.test.mjs
-      - name: test tests/session-chat-fastboot.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
-      - name: test tests/surface-b.test.mjs
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/surface-b.test.mjs
-      - name: canonical check
-        continue-on-error: true
-        run: npm run check
-      - name: aggregate repository tests
-        run: npm test
-
-  aggregate-clean:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - name: explicit test set
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/c17-deadline-integrity.test.mjs tests/c18-activation-continuation.test.mjs tests/c19-fastboot-convergence.test.mjs tests/c20-session-chat-deployment.test.mjs tests/c21-local-session-fastboot.test.mjs tests/c23-ontology-collapse.test.mjs tests/c24-canonical-boundary.test.mjs tests/c25-executor-data-plane.test.mjs tests/c27-session-capability-lattice.test.mjs tests/c5.test.mjs tests/chat-bootstrap-semantic.test.mjs tests/embedded-library.test.mjs tests/emergence.test.mjs tests/fastboot.test.mjs tests/first-contact.test.mjs tests/life-consciousness.test.mjs tests/local-host-meta-prompt.test.mjs tests/runtime-availability.test.mjs tests/runtime.test.mjs tests/session-chat-fastboot.test.mjs tests/surface-b.test.mjs
-      - name: bootstrap fixture as discovered candidate
-        continue-on-error: true
-        run: node --test --test-concurrency=1 tests/bootstrap-fixture.mjs
-      - name: default discovery
-        run: node --test --test-concurrency=1
-
-  glob-clean:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - name: direct glob test set
-        run: node --test --test-concurrency=1 tests/*.test.mjs
-  npm-clean:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - name: npm test set
-        run: npm test
-
-  per-file:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        test: ["tests/c17-deadline-integrity.test.mjs","tests/c18-activation-continuation.test.mjs","tests/c19-fastboot-convergence.test.mjs","tests/c20-session-chat-deployment.test.mjs","tests/c21-local-session-fastboot.test.mjs","tests/c23-ontology-collapse.test.mjs","tests/c24-canonical-boundary.test.mjs","tests/c25-executor-data-plane.test.mjs","tests/c27-session-capability-lattice.test.mjs","tests/c5.test.mjs","tests/chat-bootstrap-semantic.test.mjs","tests/embedded-library.test.mjs","tests/emergence.test.mjs","tests/fastboot.test.mjs","tests/first-contact.test.mjs","tests/life-consciousness.test.mjs","tests/local-host-meta-prompt.test.mjs","tests/runtime-availability.test.mjs","tests/runtime.test.mjs","tests/session-chat-fastboot.test.mjs","tests/surface-b.test.mjs"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - name: run matrix test
-        run: node --test --test-concurrency=1 ${{ matrix.test }}
-
-  c25-case:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        pattern: ["C25 preaccept handoff","C25 orientation identity mismatch","C25 local executor materialization","C25 SLO >120s","C25 unverified model-mediated","C27 verified opaque relay","C27 opaque relay without samehash","C25 executor unavailability","C25 canonical executor evidence","C25 runtime-root remains content-addressed","C25 canonical contracts"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - name: run C25 case
-        run: node --test --test-concurrency=1 --test-name-pattern="${{ matrix.pattern }}" tests/c25-executor-data-plane.test.mjs
+      - run: npm run qualify:canonical

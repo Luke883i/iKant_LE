@@ -10,7 +10,7 @@
     "./embedded/relational-nuance": "./src/embedded/relational-nuance.mjs"
   },
   "scripts": {
-    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test": "node --test --test-concurrency=1",
     "check": "node scripts/check.mjs && node scripts/check-c11.mjs",
     "falsify:c5": "node scripts/c5-falsify.mjs --cases 1000000 --output artifacts/qualification/c5-runtime.json",
     "falsify:c6": "node scripts/c6-enduser-falsify.mjs --cases 1000000 --output artifacts/qualification/c6-enduser.json",
