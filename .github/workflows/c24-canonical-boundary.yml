@@ -127,3 +127,16 @@ jobs:
         with: {node-version: '22'}
       - name: run matrix test
         run: node --test --test-concurrency=1 ${{ matrix.test }}
+
+  c25-case:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pattern: ["C25 preaccept handoff","C25 orientation identity mismatch","C25 local executor materialization","C25 SLO >120s","C25 unverified model-mediated","C27 verified opaque relay","C27 opaque relay without samehash","C25 executor unavailability","C25 canonical executor evidence","C25 runtime-root remains content-addressed","C25 canonical contracts"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: run C25 case
+        run: node --test --test-concurrency=1 --test-name-pattern="${{ matrix.pattern }}" tests/c25-executor-data-plane.test.mjs
