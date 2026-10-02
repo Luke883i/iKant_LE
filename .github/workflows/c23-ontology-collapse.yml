@@ -29,4 +29,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
+      - name: Diagnose C23 tests
+        run: node --test --test-concurrency=1 tests/c23-ontology-collapse.test.mjs
+      - name: Diagnose C20 compatibility tests
+        run: node --test --test-concurrency=1 tests/c20-session-chat-deployment.test.mjs
+      - name: Diagnose C21-C22 tests
+        run: node --test --test-concurrency=1 tests/c21-local-session-fastboot.test.mjs
+      - name: Diagnose runtime availability tests
+        run: node --test --test-concurrency=1 tests/runtime-availability.test.mjs
+      - name: Diagnose bootstrap semantic tests
+        run: node --test --test-concurrency=1 tests/chat-bootstrap-semantic.test.mjs
+      - name: Diagnose runtime tests
+        run: node --test --test-concurrency=1 tests/runtime.test.mjs
       - run: npm run qualify:current
