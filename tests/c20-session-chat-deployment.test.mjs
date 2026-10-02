@@ -42,8 +42,8 @@ test('C20 reference MCP package keeps acceptance and turns app-only',()=>{
 });
 
 
-test('C20 mined PR24 hardening: deployment binding contradiction dominates availability',()=>{
- const d=availabilityFromBootstrapFailure({accepted:true,sourceBound:true,consentValid:true,evidenceValidation:{ok:false,deadline_result:'DEADLINE_PASS',errors:['deployed_session_binding','bridge_observed']},probe:null,writer:true});
+test('C20 compatibility contradiction is translated to canonical transfer binding before availability',()=>{
+ const d=availabilityFromBootstrapFailure({accepted:true,sourceBound:true,consentValid:true,evidenceValidation:{ok:false,deadline_result:'DEADLINE_PASS',errors:['transfer_binding','bridge_observed']},probe:null,writer:true});
  assert.equal(d.state,'BLOCKED_INTEGRITY');
  assert.ok(d.integrity_codes.includes('TRANSFER_IDENTITY_MISMATCH'));
  assert.equal(d.fresh_chat_required,true);

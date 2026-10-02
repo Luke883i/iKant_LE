@@ -34,7 +34,7 @@ Machine truth belongs to current code/tests and machine contracts. `AGENTS.md` i
 ## Development qualification
 
 ```bash
-npm run qualify:current
+npm run qualify:canonical
 ```
 
-This runs current regression/check plus C21-C23 local-session hardening. Historical slice falsifiers remain individually available but define no second product mode. Mutation PASS is bounded engineering evidence, not proof of consciousness, physical-world truth, production reliability, universal host compliance or bootstrap duration.
+`qualify:canonical` first verifies that the checked-in runtime-root is the deterministic product of the canonical source bytes, then runs regression/check plus C21-C24 local-session hardening. `qualify:current` is a compatibility alias. Legacy C20 qualification remains non-canonical and does not define a second product mode. Mutation PASS is bounded engineering evidence, not proof of consciousness, physical-world truth, production reliability, universal host compliance or bootstrap duration.

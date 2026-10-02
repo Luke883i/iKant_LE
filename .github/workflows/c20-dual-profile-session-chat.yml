@@ -1,24 +1,14 @@
 name: legacy-c20-compatibility
 on:
-  push:
-    branches: ['agent/c20-dual-profile-session-chat']
+  workflow_dispatch:
   pull_request:
     paths:
-      - 'BOOTSTRAP.json'
-      - 'ADMISSION.json'
-      - 'contracts/session-chat-activation.json'
-      - 'contracts/host-shell.json'
-      - 'src/deadline-integrity.mjs'
-      - 'src/bootstrap-semantic.mjs'
       - 'src/session-chat-deployment.mjs'
-      - 'src/runtime.mjs'
-      - 'runtime-root/**'
       - 'plugins/ikant-le-session-chat/**'
       - 'scripts/session-chat-runtime-cli.mjs'
       - 'scripts/c20-dual-profile-falsify.c'
       - 'tests/c20-session-chat-deployment.test.mjs'
-      - 'package.json'
-      - 'scripts/check.mjs'
+      - '.github/workflows/c20-dual-profile-session-chat.yml'
 jobs:
   qualify:
     runs-on: ubuntu-latest

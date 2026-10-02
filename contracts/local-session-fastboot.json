@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v3",
-  "slice": "C23.ONTOLOGY_COLLAPSE",
+  "schema": "ikant-le-local-session-fastboot-contract/v4",
+  "slice": "C24.CANONICAL_BOUNDARY_CLOSURE",
   "authority": 0,
-  "objective": "Preserve the C22 local SESSION_CHAT activation while collapsing ambiguous pre-runtime terminology and quarantining legacy C20 deployment ontology. Host-side channel evidence is explicitly HOST_ATTESTED authority-zero evidence; mechanical/physical proof begins only at local materializer/runtime observation.",
+  "objective": "Close the canonical human-to-iKant boundary without adding a new runtime subsystem: collapse activation to six causal nodes, translate legacy compatibility before the runtime boundary, and make the content-addressed runtime root deterministically regenerable and verifiable.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -86,7 +86,10 @@
     ],
     "c23_ontology_mutation_cases": 10000000,
     "c23_mutants": 13,
-    "c23_required_zero_unsafe_accept": true
+    "c23_required_zero_unsafe_accept": true,
+    "c24_canonical_boundary_mutation_cases": 10000000,
+    "c24_mutants": 15,
+    "runtime_root_verify_required": true
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -103,7 +106,9 @@
     "failure_memory_external_to_ledger_is_canonical": false,
     "model_generated_capability_is_host_attested_evidence": false,
     "host_attested_evidence_is_mechanical_runtime_proof": false,
-    "legacy_c20_compatibility_is_current_product_truth": false
+    "legacy_c20_compatibility_is_current_product_truth": false,
+    "compatibility_alias_recognition_inside_runtime_is_allowed": false,
+    "deterministic_build_is_live_activation": false
   },
   "causal_planes": {
     "pre_runtime_host_adapter": {
@@ -154,6 +159,39 @@
       ".github/workflows/c20-dual-profile-session-chat.yml",
       "scripts/session-chat-runtime-cli.mjs",
       "plugins/ikant-le-session-chat/**"
-    ]
+    ],
+    "translation_boundary": "BEFORE_CANONICAL_RUNTIME",
+    "canonical_runtime_may_recognize_legacy_aliases": false
+  },
+  "canonical_relation": {
+    "lattice": [
+      "HUMAN_GATE",
+      "SOURCE_SNAPSHOT",
+      "HOST_ATTESTATION",
+      "LOCAL_MATERIALIZATION",
+      "EXECUTED_RUNTIME_PROOF",
+      "ACTIVE_READBACK"
+    ],
+    "edge_invariants": [
+      "ONE_NEXT_AND_FAILURE_MEMORY",
+      "ORIGINAL_DEADLINE_CONTINUITY",
+      "COMPATIBILITY_ZERO_AUTHORITY",
+      "MODEL_CANNOT_PROMOTE_STATE"
+    ],
+    "human_decision_owner": "HUMAN",
+    "host_adapter_authority": 0,
+    "runtime_identity_owner": "PINNED_LOCAL_RUNTIME",
+    "active_truth_owner": "PERSISTED_RUNTIME_READBACK"
+  },
+  "runtime_root_build": {
+    "generator": "scripts/runtime-root.mjs",
+    "regenerate_command": "npm run runtime-root:regen",
+    "verify_command": "npm run runtime-root:verify",
+    "membership_owner": "BOOTSTRAP.json.post_accept_fastboot.runtime_root.members",
+    "shard_assignment_owner": "existing runtime-root shard member paths",
+    "deterministic": true,
+    "environment_inputs_allowed": [],
+    "output_identity": "runtime_root_sha256",
+    "build_receipt_is_runtime_proof": false
   }
 }
