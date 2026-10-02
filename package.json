@@ -31,6 +31,7 @@
     "falsify:c19": "node scripts/c19-fastboot-convergence-falsify.mjs --cases 10000000 --seed 3248435238 --output artifacts/qualification/c19-fastboot-convergence-10m.json",
     "falsify:c20": "cc -O3 -std=c11 -Wall -Wextra scripts/c20-dual-profile-falsify.c -o /tmp/ikant-le-c20 && /tmp/ikant-le-c20 100000000 0xC20D15EA20260928",
     "check:mcp": "node --check plugins/ikant-le-session-chat/server/server.mjs && node --check scripts/session-chat-runtime-cli.mjs",
-    "falsify:c21": "cc -O3 -std=c11 -Wall -Wextra scripts/c21-local-session-fastboot-falsify.c -o /tmp/ikant-le-c21 && /tmp/ikant-le-c21 > artifacts/qualification/c21-local-session-fastboot-10m.json && cat artifacts/qualification/c21-local-session-fastboot-10m.json"
+    "falsify:c21": "cc -O3 -std=c11 -Wall -Wextra scripts/c21-local-session-fastboot-falsify.c -o /tmp/ikant-le-c21 && /tmp/ikant-le-c21 > artifacts/qualification/c21-local-session-fastboot-10m.json && cat artifacts/qualification/c21-local-session-fastboot-10m.json",
+    "falsify:c22": "cc -O3 -std=c11 -Wall -Wextra scripts/c22-pr25-ontological-hardening-falsify.c -o /tmp/ikant-le-c22 && /tmp/ikant-le-c22 > artifacts/qualification/c22-pr25-ontological-hardening-10m.json && cat artifacts/qualification/c22-pr25-ontological-hardening-10m.json"
   }
 }

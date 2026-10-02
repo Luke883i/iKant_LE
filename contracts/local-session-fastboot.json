@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-local-session-fastboot-contract/v1",
-  "slice": "C21.LOCAL_SESSION_FASTBOOT_CONVERGENCE",
+  "schema": "ikant-le-local-session-fastboot-contract/v2",
+  "slice": "C22.LOCAL_SESSION_ONTOLOGICAL_HARDENING",
   "authority": 0,
-  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation modality that discovers physical host channels mechanically, executes exactly one canonical fastboot frontier, remembers failed decisions until evidence changes, materializes one content-addressed local runtime root, proves executed-code provenance and reaches ACTIVE only after persisted readback.",
+  "objective": "Converge iKant_LE onto one local SESSION_CHAT activation while separating host-attested pre-runtime channel decisions from runtime-owned physical proof. ACTIVE requires the authoritative materializer to verify transport loader/shards and the local runtime to reopen its published loader plus every runtime member, bind exact executed-module identities, run the live Node probe and persist/read back the commit.",
   "product_boundary": {
     "product_mode": "SESSION_CHAT",
     "activation_modality": "SESSION_CHAT_LOCAL",
@@ -18,7 +18,21 @@
   },
   "forensic_method": {
     "name": "CAUSAL_FORENSIC_CLOSURE",
-    "chain": ["INTENT_OR_CLAIM","OWNER","PRECONDITIONS","INVARIANT","STATE_AND_TIME","OBSERVABLE_EFFECT","RECEIPT_OR_PROVENANCE","READBACK_OR_REOPEN","INDEPENDENT_ORACLE","COUNTERFACTUAL_OR_MUTATION","FAILURE_MEMORY","DISPOSITION","COMPRESSION_OR_DELETION_ORACLE"],
+    "chain": [
+      "INTENT_OR_CLAIM",
+      "OWNER",
+      "PRECONDITIONS",
+      "INVARIANT",
+      "STATE_AND_TIME",
+      "OBSERVABLE_EFFECT",
+      "RECEIPT_OR_PROVENANCE",
+      "READBACK_OR_REOPEN",
+      "INDEPENDENT_ORACLE",
+      "COUNTERFACTUAL_OR_MUTATION",
+      "FAILURE_MEMORY",
+      "DISPOSITION",
+      "COMPRESSION_OR_DELETION_ORACLE"
+    ],
     "debt_definition": "any missing, ambiguous, contradictory or unwitnessed required edge in the chain",
     "reverse_derivation_required": true,
     "forward_replay_required": true
@@ -31,7 +45,27 @@
     "minimum_cardinality": 15,
     "receipt_sha256": "5029e8d3b589880a7620b92f788232a2245c0692f68e85ea2593ff39bfdeaef0"
   },
-  "required_mechanisms": ["single local activation modality","typed mechanical channel ledger","one canonical NEXT and one executor","failure memory keyed by decision plus evidence","changed-evidence replan","byte bridge samehash receipt","executed-code provenance","content-addressed runtime root","single-shot acceptance origin","deadline continuity","persisted ACTIVE readback","reverse supply-chain audit","claim/readback/oracle forensic closure","truthful DEGRADED state","Surface B write/readback before Surface A release"],
+  "required_mechanisms": [
+    "single local activation modality",
+    "typed host-attested channel ledger with explicit non-physical claim boundary",
+    "one canonical NEXT and one executor",
+    "failure memory keyed by decision plus evidence",
+    "changed-evidence replan",
+    "byte bridge receipt as host attestation plus materializer verification and runtime-owned published-root reopen/samehash validation",
+    "executed-code provenance",
+    "content-addressed runtime root",
+    "single-shot acceptance origin",
+    "deadline continuity",
+    "persisted ACTIVE readback",
+    "reverse supply-chain audit",
+    "claim/readback/oracle forensic closure",
+    "truthful DEGRADED state",
+    "Surface B write/readback before Surface A release",
+    "runtime bootstrap validator requires the C21 ledger/step/bridge transcript",
+    "production runCommand and resumeActivation cannot inject a substitute probe",
+    "ledger-owned failed_decisions keyed by decision_key plus channel_evidence_sha256",
+    "fastboot step validator recomputes action/carrier/decision/evidence from the bound ledger"
+  ],
   "qualification": {
     "semantic_cases": 10000000,
     "campaigns": 10,
@@ -43,7 +77,13 @@
     "real_code_targeted_tests_required": true,
     "local_activation_probe_required": true,
     "full_repository_tests_required": true,
-    "workflow_green_required": true
+    "workflow_green_required": true,
+    "pr25_audit_witnesses": [
+      "receipt-only bridge without local file must fail runtime validation",
+      "forged executed provenance with wrong module blob identities must fail",
+      "missing C21 transcript must prevent ACTIVE",
+      "caller probeRunner injection must not control production activation"
+    ]
   },
   "claim_boundary": {
     "semantic_mutation_is_physical_proof": false,
@@ -51,6 +91,41 @@
     "receipt_schema_is_observation": false,
     "degraded_is_active": false,
     "source_identity_is_executed_provenance": false,
-    "model_generated_capability_is_mechanical_evidence": false
+    "model_generated_capability_is_mechanical_evidence": false,
+    "host_channel_receipt_is_physical_proof": false,
+    "bridge_receipt_is_host_attestation_only": true,
+    "materializer_and_published_root_reopen_are_required_for_physical_truth": true,
+    "executed_provenance_receipt_without_exact_member_match_is_sufficient": false,
+    "pre_runtime_planner_is_runtime_self_bootstrap": false,
+    "self_signed_step_without_ledger_recompute_is_valid": false,
+    "failure_memory_external_to_ledger_is_canonical": false
+  },
+  "causal_planes": {
+    "pre_runtime_host_adapter": {
+      "authority": 0,
+      "owns": [
+        "host-attested channel receipts",
+        "one canonical NEXT",
+        "failure memory keyed by decision plus evidence",
+        "carrier execution"
+      ],
+      "cannot_prove": [
+        "local byte presence",
+        "executed code provenance",
+        "live Node probe",
+        "ACTIVE"
+      ]
+    },
+    "local_runtime": {
+      "owns": [
+        "reopen published loader plus every materialized runtime member",
+        "validate materialization",
+        "validate exact executed module identities",
+        "live Node probe",
+        "writer persistence",
+        "ACTIVE commit/readback"
+      ],
+      "cannot_delegate_live_probe": true
+    }
   }
 }

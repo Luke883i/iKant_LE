@@ -72,7 +72,12 @@
       "decision_key",
       "evidence_sha256"
     ],
-    "unchanged_failed_decision_retry_forbidden": true
+    "unchanged_failed_decision_retry_forbidden": true,
+    "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
+    "channel_receipt_is_physical_proof": false,
+    "production_probe_injection_forbidden": true,
+    "materializer_verifies_transport_loader_and_shards": true,
+    "runtime_reopens_published_loader_and_members_required": true
   },
   "automatic_after_acceptance": [
     "ACTIVATE_FIRST",
@@ -335,7 +340,10 @@
       "decision_key",
       "evidence_sha256"
     ],
-    "unavailable_persists_until_changed_mechanical_evidence": true
+    "unavailable_persists_until_changed_mechanical_evidence": true,
+    "failure_memory_owner": "CHANNEL_LEDGER",
+    "fastboot_step_recompute_required": true,
+    "channel_evidence_digest_excludes_failure_memory": true
   },
   "session_chat_activation": {
     "contract": "contracts/session-chat-activation.json",
@@ -349,6 +357,12 @@
     "hosted_runtime_required": false,
     "plugin_or_mcp_registration_required": false,
     "unavailable_must_fail_closed": true,
-    "authority": 0
+    "authority": 0,
+    "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
+    "channel_receipt_is_physical_proof": false,
+    "production_probe_owner": "LOCAL_RUNTIME",
+    "production_probe_injection_forbidden": true,
+    "materializer_verifies_transport_loader_and_shards": true,
+    "runtime_root_readback_required": true
   }
 }

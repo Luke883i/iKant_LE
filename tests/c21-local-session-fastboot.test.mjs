@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import {
   FASTBOOT_CAPABILITY_FIELDS,issueFastbootCapabilityReceipt,validateFastbootCapabilityReceipt,
-  buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootStep,validateFastbootStep,
+  buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootStep,validateFastbootStep,recordFastbootFailure,
   issueFastbootByteBridgeReceipt,validateFastbootByteBridgeReceipt,LOCAL_SESSION_ACTIVATION_MODALITY
 } from '../src/fastboot-convergence.mjs';
 import {runtimeRootDescriptor} from '../src/runtime-root-verified.mjs';
@@ -21,25 +22,32 @@ test('C21 state and contract expose one local activation modality',()=>{
  assert.equal(initialState().bootstrap.activation_modality,LOCAL_SESSION_ACTIVATION_MODALITY);
 });
 
-test('C21 mechanical receipt owns AVAILABLE truth and raw absence stays UNKNOWN',()=>{
+test('C22 host-attested receipt owns planner input but does not claim physical origin',()=>{
  const r=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'api + local sink observed',probeOwner:'test',operationId:'op-a',sourceHead:HEAD});
- assert.equal(validateFastbootCapabilityReceipt(r,{sourceHead:HEAD}).ok,true);
+ assert.equal(validateFastbootCapabilityReceipt(r,{sourceHead:HEAD}).ok,true);assert.equal(r.observation_class,'HOST_ATTESTED');assert.equal(r.physical_origin_proven,false);
  const l=buildFastbootChannelLedger({receipts:[r],sourceHead:HEAD});assert.equal(validateFastbootChannelLedger(l,{sourceHead:HEAD}).ok,true);assert.equal(l.channels.GITHUB_API_BASE64.status,'AVAILABLE');assert.equal(l.channels.HOST_FILE_BRIDGE.status,'UNKNOWN');
 });
 
 test('C21 one NEXT executes once; unchanged evidence cannot retry; changed evidence replans',()=>{
  const root=runtimeRootDescriptor(),a=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'available',probeOwner:'test',operationId:'op-a',sourceHead:HEAD});
  let l=buildFastbootChannelLedger({receipts:[a],sourceHead:HEAD}),first=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});
- assert.equal(first.action,'EXECUTE_CANONICAL_CARRIER');assert.equal(first.one_next,true);assert.equal(first.one_executor,true);assert.equal(validateFastbootStep(first,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256}).ok,true);
- const retry=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256,previousSteps:[{decision_key:first.decision_key,evidence_sha256:first.evidence_sha256,progressed:false}]});assert.equal(retry.action,'WAIT_CHANGED_EVIDENCE');assert.equal(retry.retry_allowed,false);
+ assert.equal(first.action,'EXECUTE_CANONICAL_CARRIER');assert.equal(first.one_next,true);assert.equal(first.one_executor,true);assert.equal(validateFastbootStep(first,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256,ledger:l}).ok,true);
+ const failed=recordFastbootFailure(l,first),retry=deriveFastbootStep({ledger:failed,runtimeRootSha256:root.runtime_root_sha256});assert.equal(retry.action,'WAIT_CHANGED_EVIDENCE');assert.equal(retry.retry_allowed,false);assert.equal(failed.failed_decisions.length,1);
  const u=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'UNAVAILABLE',capabilities:{...proven(),byte_preserving_runtime_sink:false},evidence:'sink unavailable',probeOwner:'test',operationId:'op-b',sourceHead:HEAD});
- l=buildFastbootChannelLedger({previous:l,receipts:[u],sourceHead:HEAD});const changed=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256,previousSteps:[first]});assert.notEqual(changed.action,'WAIT_CHANGED_EVIDENCE');
+ l=buildFastbootChannelLedger({previous:failed,receipts:[u],sourceHead:HEAD});const changed=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});assert.notEqual(changed.action,'WAIT_CHANGED_EVIDENCE');
 });
 
-test('C21 byte bridge requires source/local readback samehash',()=>{
- const r=issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,sourceObjectIdentity:'source:1',sourceBytes:Buffer.from('abc'),localBytes:Buffer.from('abc'),localObjectId:'local:1'});
- assert.equal(validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD}).ok,true);
- assert.throws(()=>issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,sourceObjectIdentity:'source:1',sourceBytes:Buffer.from('abc'),localBytes:Buffer.from('abd'),localObjectId:'local:1'}),/mismatch/);
+
+test('C22 re-signed fastboot step is rejected unless it recomputes exactly from the ledger',()=>{
+ const root=runtimeRootDescriptor(),a=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'available',probeOwner:'test',operationId:'op-recompute',sourceHead:HEAD}),l=buildFastbootChannelLedger({receipts:[a],sourceHead:HEAD}),step=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});
+ const forged={...step,decision_key:'f'.repeat(64)};delete forged.receipt_sha256;forged.receipt_sha256=crypto.createHash('sha256').update(JSON.stringify(forged)).digest('hex');const v=validateFastbootStep(forged,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256,ledger:l});assert.equal(v.ok,false);assert.ok(v.errors.includes('recomputed_decision_key'));
+});
+test('C22 byte bridge receipt is insufficient until runtime reopens the actual local bytes',()=>{
+ const bytes=fs.readFileSync(new URL('../src/runtime-root-verified.mjs',import.meta.url)),blob=crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\0')).update(bytes).digest('hex');
+ const r=issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',sourceBlobSha1:blob,sourceObjectIdentity:'source:1',sourceBytes:bytes,localBytes:bytes,localObjectId:'workspace:src/runtime-root-verified.mjs'});
+ const attested=validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',blobSha1:blob});assert.equal(attested.ok,true);assert.equal(attested.physical_reopen_verified,false);assert.equal(r.physical_verification,false);
+ const reopened=validateFastbootByteBridgeReceipt(r,{sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',blobSha1:blob,localBytes:bytes});assert.equal(reopened.ok,true);assert.equal(reopened.physical_reopen_verified,true);
+ assert.throws(()=>issueFastbootByteBridgeReceipt({carrier:'HOST_FILE_BRIDGE',sourceHead:HEAD,objectPath:'src/runtime-root-verified.mjs',sourceBlobSha1:blob,sourceObjectIdentity:'source:1',sourceBytes:bytes,localBytes:Buffer.from('forged'),localObjectId:'x'}),/mismatch/);
 });
 
 test('C21 real local Node probe binds executed code to current verified runtime root',{concurrency:false},()=>{
@@ -49,4 +57,13 @@ test('C21 real local Node probe binds executed code to current verified runtime 
 test('C21 canonical local activation reaches persisted/read-back ACTIVE with executed provenance',{concurrency:false},()=>{
  reset();const source=HEAD,e=bootstrapEvidence({sourceHead:source,transferSchema:'v2',flexMode:'GITHUB_API_BASE64'});const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoff('inizializza',source),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST',hostSurface:'SESSION_LOCAL_NODE'});
  assert.equal(out.code,0);const s=readLedger().at(-1).state_after;assert.equal(s.status,'ACTIVE');assert.equal(s.bootstrap.activation_modality,'SESSION_CHAT_LOCAL');assert.equal(s.bootstrap.probe.executed_provenance.readback_verified,true);assert.equal(s.bootstrap.probe.executed_provenance.runtime_root_sha256,runtimeRootDescriptor().runtime_root_sha256);reset();
+});
+
+
+test('C22 activation rejects bootstrap evidence with the C21 transcript removed',{concurrency:false},()=>{
+ reset();const source=HEAD,e=bootstrapEvidence({sourceHead:source,transferSchema:'v2',flexMode:'GITHUB_API_BASE64'});delete e.fastboot_channel_ledger;const x=structuredClone(e);delete x.receipt_sha256;e.receipt_sha256=crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoff('inizializza',source),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST',hostSurface:'SESSION_LOCAL_NODE'});assert.equal(out.code,1);assert.notEqual(readLedger().at(-1).state_after.status,'ACTIVE');reset();
+});
+
+test('C22 production activation ignores caller probeRunner injection and uses the runtime-owned probe',{concurrency:false},()=>{
+ reset();const source=HEAD,e=bootstrapEvidence({sourceHead:source,transferSchema:'v2',flexMode:'GITHUB_API_BASE64'});const out=runCommand('I ACCEPT',{preacceptHandoff:bootstrapHandoff('inizializza',source),postAcceptBootstrapEvidence:e,hostEngine:'GPT-TEST',hostSurface:'SESSION_LOCAL_NODE',probeRunner:()=>{throw new Error('caller probe must never execute')}});assert.equal(out.code,0);const s=readLedger().at(-1).state_after;assert.equal(s.status,'ACTIVE');assert.equal(s.bootstrap.probe.executed_provenance.readback_verified,true);reset();
 });
