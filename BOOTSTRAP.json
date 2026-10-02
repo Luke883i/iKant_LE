@@ -158,7 +158,7 @@
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 39064,
+          "source_bytes": 40083,
           "blob_sha1": "5df7252de3bd659a861466de54734adb83d3ddfb"
         },
         {
@@ -172,7 +172,7 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 5,
-          "source_bytes": 27266,
+          "source_bytes": 27766,
           "blob_sha1": "25051afe4d85c2b09573846975e3c1d3fd4fa464"
         },
         {
@@ -451,7 +451,7 @@
           "shard": 4
         }
       ],
-      "runtime_root_sha256": "c6fb8315edf8a521599c9e5e4c6accc815744f00b9d363ad2790bc83995e7c15"
+      "runtime_root_sha256": "284e1b4fc57aeeae1d966b6c9187fe79d426d20f74576f01101112a0ca0ad73d"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
