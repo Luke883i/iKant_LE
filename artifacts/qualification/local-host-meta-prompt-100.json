@@ -1,0 +1,25 @@
+{
+  "schema": "ikant-le-local-host-metaprompt-falsification/v1",
+  "prompt_sha256": "26309867ebc432a62ffc789e580737e7233ef7024e9d909ff0acc6bd0dc9e2e0",
+  "prompt_chars": 2558,
+  "prompt_words": 319,
+  "families": {
+    "AUTHORITY": 10,
+    "PREACCEPT": 10,
+    "ACCEPTANCE": 10,
+    "SOURCE": 10,
+    "DATA_PLANE": 10,
+    "EXECUTOR": 10,
+    "IDENTITY": 10,
+    "ACTIVE": 10,
+    "RECOVERY": 10,
+    "POSTACTIVE": 10
+  },
+  "mutations": 100,
+  "source_oracle_pass": true,
+  "killed": 100,
+  "survivors": [],
+  "single_line_deletion_survivors": [],
+  "claim_boundary": "textual semantic projection falsification; not physical-host or runtime proof",
+  "status": "PASS"
+}
