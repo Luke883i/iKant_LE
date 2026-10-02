@@ -2,18 +2,7 @@ name: c24-canonical-boundary
 on:
   pull_request:
     paths:
-      - 'BOOTSTRAP.json'
-      - 'contracts/session-chat-activation.json'
-      - 'contracts/local-session-fastboot.json'
-      - 'contracts/ikant-le.json'
-      - 'src/runtime-availability.mjs'
-      - 'runtime-root/**'
-      - 'scripts/runtime-root.mjs'
-      - 'scripts/c24-canonical-boundary-falsify.c'
-      - 'tests/c24-canonical-boundary.test.mjs'
-      - 'scripts/check.mjs'
-      - 'package.json'
-      - '.github/workflows/c24-canonical-boundary.yml'
+      - '**'
 jobs:
   canonical:
     runs-on: ubuntu-latest
@@ -22,4 +11,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - run: npm run qualify:canonical
+      - name: runtime-root verify
+        run: npm run runtime-root:verify
+      - name: repository tests
+        run: npm test
+      - name: canonical check
+        run: npm run check
+      - name: C27 semantic falsification
+        run: npm run falsify:c27
+      - name: legacy canonical hardening
+        run: npm run falsify:c21 && npm run falsify:c22 && npm run falsify:c23 && npm run falsify:c24 && npm run falsify:c25 && npm run falsify:host-meta
