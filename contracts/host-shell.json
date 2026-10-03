@@ -413,7 +413,9 @@
     "first_unclosed_edge_required": true,
     "session_closure_projection": "ikant-le-session-closure-projection/v1",
     "diagnostic_stage_persisted": false,
-    "external_gap_laundering_forbidden": true
+    "external_gap_laundering_forbidden": true,
+    "canonical_local_ingress": "src/session-local-service.mjs",
+    "compatibility_plugin_ingress_is_canonical": false
   },
   "session_shell": {
     "contract": "contracts/session-shell.json",
@@ -436,6 +438,19 @@
     "fault_forces_non_active": true,
     "new_lifecycle": false,
     "new_writer": false,
+    "authority": 0,
+    "intermediate_tier_requires_explicit_projection": true,
+    "strongest_valid_prefix_survives_fault": true
+  },
+  "pre_runtime_kernel": {
+    "contract": "contracts/pre-runtime-kernel.json",
+    "owner": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+    "direct_known_path": "src/runtime-root-verified.mjs",
+    "reuses_runtime_root_loader": true,
+    "stdlib_only_before_handoff": true,
+    "runtime_owner": "src/session-local-service.mjs",
+    "retires_at_runtime_handoff": true,
+    "runtime_member": false,
     "authority": 0
   }
 }

@@ -19,7 +19,9 @@
     "LOCAL_PROCESSOR and VERIFIED_BYTE_PATH are facets of LOCAL_INGRESS, not separate constitutional owners",
     "diagnostic N8 is impossible under an integrity blocker",
     "repository closure and external platform observation remain separate",
-    "current-host topology belongs to receipts or fixtures rather than constitutional contracts"
+    "current-host topology belongs to receipts or fixtures rather than constitutional contracts",
+    "strongest mechanically valid activation prefix survives orthogonal fault overlays while effective service remains fail-closed",
+    "canonical SESSION_CHAT_LOCAL limited ingress is materialized-runtime owned; plugin/deployment ingress is compatibility-only"
   ],
   "session_states": {
     "DISCOVERED": "target recognized; no admission claim",
@@ -60,7 +62,8 @@
       "DOD_I_QUALIFICATION",
       "DOD_I_SERVICE_TIERS",
       "DOD_I_LIMITED_TURN",
-      "DOD_I_LIMITED_SUPPLY_CHAIN"
+      "DOD_I_LIMITED_SUPPLY_CHAIN",
+      "DOD_I_POST_187_CLOSURE"
     ],
     "pass_condition": "all existing runtime truth DoDs plus C30 service-tier and limited-turn DoDs pass; unsafe ACTIVE=0; unsafe limited closure=0"
   },
@@ -151,6 +154,16 @@
         "DOD_L_C31_ATOMIC_ARTIFACT",
         "DOD_L_C31_PRODUCT_INGRESS",
         "DOD_L_C31_FALSIFICATION_1M"
+      ]
+    },
+    {
+      "id": "DOD_I_POST_187_CLOSURE",
+      "requires": [
+        "DOD_L_STRONGEST_PREFIX",
+        "DOD_L_SHELL_EVIDENCE_ONLY",
+        "DOD_L_PRE_RUNTIME_EXEC_OWNER",
+        "DOD_L_CANONICAL_LOCAL_INGRESS",
+        "DOD_L_C33_FALSIFICATION_1M"
       ]
     }
   ],
@@ -310,6 +323,26 @@
     {
       "id": "DOD_L_C31_FALSIFICATION_1M",
       "test": "1m seeded supply-chain mutations yield zero mismatch/unsafe closure and kill every retained requirement mutant"
+    },
+    {
+      "id": "DOD_L_STRONGEST_PREFIX",
+      "test": "fault overlay may block effective service but may not erase strongest mechanically valid activation prefix"
+    },
+    {
+      "id": "DOD_L_SHELL_EVIDENCE_ONLY",
+      "test": "non-ACTIVE intermediate tier in session shell requires explicit validated activation projection; raw persisted booleans cannot create it"
+    },
+    {
+      "id": "DOD_L_PRE_RUNTIME_EXEC_OWNER",
+      "test": "existing direct-known runtime-root loader self-checks exact identity/H0, validates source/object samehash, materializes/reopens, emits exact runtime handoff and retires"
+    },
+    {
+      "id": "DOD_L_CANONICAL_LOCAL_INGRESS",
+      "test": "materialized src/session-local-service.mjs owns limited acceptance/turn; runtime creates acceptance event; no canonical ledger mutation; legacy deployment/plugin ingress is noncanonical compatibility"
+    },
+    {
+      "id": "DOD_L_C33_FALSIFICATION_1M",
+      "test": "1,000,000 deterministic post-186/187 semantic mutations: zero mismatch, zero unsafe promotion, all four action-deletion mutants killed"
     }
   ],
   "claim_boundary": {
@@ -338,7 +371,11 @@
     "limited_capability_is_active": false,
     "limited_capability_is_canonical_state": false,
     "limited_artifact_local_path_is_identity": false,
-    "limited_product_ingress_is_active_ingress": false
+    "limited_product_ingress_is_active_ingress": false,
+    "strongest_valid_prefix_is_effective_service": false,
+    "compatibility_ingress_is_canonical": false,
+    "pre_runtime_kernel_is_runtime": false,
+    "raw_state_projection_is_service_evidence": false
   },
   "deadline_results": [
     "DEADLINE_PASS",
@@ -435,7 +472,10 @@
         "WRITER",
         "ACTIVE_READBACK"
       ]
-    }
+    },
+    "strongest_valid_prefix_preserved_under_fault": true,
+    "effective_tier_null_under_fault": true,
+    "fault_overlay_orthogonal_to_progress": true
   },
   "limited_runtime_turn": {
     "schema": "ikant-le-limited-turn-closure/v1",
@@ -488,6 +528,22 @@
     "caller_dispatch_receipt_forbidden": true,
     "platform_ack_required": false,
     "active_promotion": false,
-    "first_unclosed_edge": "ACTIVE_READBACK"
+    "first_unclosed_edge": "ACTIVE_READBACK",
+    "canonical_local_ingress": {
+      "pre_runtime_owner": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+      "runtime_owner": "src/session-local-service.mjs",
+      "accept": "acceptLocalLimitedSession",
+      "turn": "runLocalLimitedTurn",
+      "contract": "contracts/pre-runtime-kernel.json"
+    },
+    "product_ingress_class": "COMPATIBILITY_ONLY",
+    "compatibility_ingress": [
+      "ikant_le_accept_limited",
+      "ikant_le_limited_turn"
+    ],
+    "compatibility_ingress_is_canonical": false,
+    "pre_runtime_kernel_reuses_existing_loader": true,
+    "acceptance_event_identity_owner": "MATERIALIZED_RUNTIME",
+    "raw_state_intermediate_tier_claim_forbidden": true
   }
 }

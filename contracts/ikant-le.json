@@ -131,7 +131,9 @@
     "activation_service_projection": 0,
     "limited_runtime_turn": 0,
     "limited_runtime_capability": 0,
-    "limited_runtime_dispatch": 0
+    "limited_runtime_dispatch": 0,
+    "pre_runtime_kernel": 0,
+    "session_local_service": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -320,7 +322,13 @@
     "limited_dispatch_is_runtime_owned_and_receipt_validated",
     "limited_artifact_identity_excludes_absolute_local_path",
     "limited_docx_atomic_publish_and_readback_required",
-    "limited_product_ingress_does_not_mutate_canonical_ledger"
+    "limited_product_ingress_does_not_mutate_canonical_ledger",
+    "strongest_valid_prefix_survives_fault_overlay",
+    "effective_service_fails_closed_under_fault",
+    "session_shell_intermediate_tier_requires_explicit_projection",
+    "pre_runtime_loader_is_executable_kernel_and_not_runtime",
+    "acceptance_event_identity_is_materialized_runtime_owned",
+    "canonical_session_local_ingress_is_not_legacy_plugin_ingress"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -460,7 +468,13 @@
     "limited_dispatch_is_runtime_owned_and_receipt_validated",
     "limited_artifact_identity_excludes_absolute_local_path",
     "limited_docx_atomic_publish_and_readback_required",
-    "limited_product_ingress_does_not_mutate_canonical_ledger"
+    "limited_product_ingress_does_not_mutate_canonical_ledger",
+    "strongest_valid_prefix_survives_fault_overlay",
+    "effective_service_fails_closed_under_fault",
+    "session_shell_intermediate_tier_requires_explicit_projection",
+    "pre_runtime_loader_is_executable_kernel_and_not_runtime",
+    "acceptance_event_identity_is_materialized_runtime_owned",
+    "canonical_session_local_ingress_is_not_legacy_plugin_ingress"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -919,10 +933,16 @@
     "limited_capability_schema": "ikant-le-limited-runtime-capability/v1",
     "limited_dispatch_owner": "src/runtime-dispatch.mjs",
     "limited_capability_owner": "src/runtime-limited-capability.mjs",
-    "limited_product_ingress": [
+    "strongest_valid_prefix_preserved_under_fault": true,
+    "effective_tier_fail_closed_under_fault": true,
+    "canonical_local_ingress_owner": "src/session-local-service.mjs",
+    "pre_runtime_kernel_owner": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+    "pre_runtime_kernel_contract": "contracts/pre-runtime-kernel.json",
+    "limited_compatibility_ingress": [
       "ikant_le_accept_limited",
       "ikant_le_limited_turn"
-    ]
+    ],
+    "limited_compatibility_ingress_is_canonical": false
   },
   "session_shell": {
     "contract": "contracts/session-shell.json",
@@ -943,6 +963,10 @@
       "SELF_SUMMARY",
       "BACKLOG_TELEMETRY"
     ],
-    "authority": 0
+    "authority": 0,
+    "intermediate_tier_requires_explicit_projection": true,
+    "raw_state_intermediate_tier_claim_forbidden": true,
+    "strongest_valid_prefix_visible_under_fault": true,
+    "artifact_path_is_identity": false
   }
 }
