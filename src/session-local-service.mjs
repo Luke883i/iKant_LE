@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {ROOT,readTerms,sha256} from './contract.mjs';
-import {runtimeRootDescriptor,validateRuntimeRootDescriptor} from './runtime-root-verified.mjs';
+import {runtimeRootDescriptor,validateRuntimeRootDescriptor,preRuntimeSelfCheck,validatePreacceptKernelInput,validateActivationExecutorReceipt} from './runtime-root-verified.mjs';
 import {issueLimitedRuntimeCapability,validateLimitedRuntimeCapability} from './runtime-limited-capability.mjs';
 import {processLimitedRuntimeTurn} from './runtime-limited-turn.mjs';
 
@@ -17,17 +17,24 @@ function signReceipt(material){return{...material,receipt_sha256:sha256(Buffer.f
 function readMaterialization(){return JSON.parse(fs.readFileSync(path.join(ROOT,'.ikant','materialization.json'),'utf8'));}
 
 export function validatePreRuntimeHandoff(h){
- const e=[],d=runtimeRootDescriptor(ROOT),dv=validateRuntimeRootDescriptor(d);if(!dv.ok)e.push(...dv.errors.map(x=>'runtime_root:'+x));
- if(!h||h.schema!=='ikant-le-pre-runtime-handoff/v1')e.push('schema');if(h?.authority!==0)e.push('authority');if(!HEX40.test(String(h?.source_head||'')))e.push('source_head');if(h?.runtime_root_sha256!==d?.runtime_root_sha256)e.push('runtime_root_digest');if(h?.runtime_owner!=='src/session-local-service.mjs')e.push('runtime_owner');if(h?.first_unclosed_edge!=='ACTIVE_READBACK'||h?.active!==false)e.push('active_boundary');
+ const e=[],d=runtimeRootDescriptor(ROOT),dv=validateRuntimeRootDescriptor(d);if(!dv.ok)e.push(...dv.errors.map(x=>'descriptor:'+x));
+ if(!h||h.schema!=='ikant-le-pre-runtime-handoff/v2')e.push('schema');if(h?.authority!==0)e.push('authority');if(!HEX40.test(String(h?.source_head||'')))e.push('source_head');if(h?.runtime_root_sha256!==d?.runtime_root_sha256)e.push('runtime_root_digest');if(h?.runtime_owner!=='src/session-local-service.mjs')e.push('runtime_owner');if(h?.first_unclosed_edge!=='ACTIVE_READBACK'||h?.active!==false)e.push('active_boundary');
  const ingress=h?.acceptance_ingress;if(!ingress||ingress.human_input!=='I ACCEPT'||ingress.authority!==0||!Number.isFinite(ingress.observed_monotonic_ms))e.push('acceptance_ingress');
- const termsObject=h?.terms_object,termsBytes=fs.readFileSync(path.join(ROOT,'TERMS.md'));if(termsObject?.path!=='TERMS.md'||!HEX40.test(String(termsObject?.blob_sha1||''))||termsObject?.bytes!==termsBytes.length||termsObject?.blob_sha1!==gitBlobSha1(termsBytes))e.push('terms_object');
+ const boot=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8')),ph=h?.preaccept_handoff,pv=validatePreacceptKernelInput(ph,{workspace:ROOT,sourceHead:h?.source_head,boot});
+ if(!pv.ok)e.push(...pv.errors.map(x=>'preaccept:'+x));if(sha256(Buffer.from(JSON.stringify(ph||{})))!==h?.preaccept_handoff_sha256)e.push('preaccept_digest');
+ const ax=h?.activation_executor,av=validateActivationExecutorReceipt(ax,{workspace:ROOT,sourceHead:h?.source_head,descriptor:d,orientation:pv.orientation||[]});
+ if(!av.ok)e.push(...av.errors.map(x=>'executor:'+x));if(ax?.receipt_sha256!==h?.activation_executor_receipt_sha256)e.push('executor_receipt_binding');
+ const self=preRuntimeSelfCheck({workspace:ROOT});if(!self.ok)e.push('kernel_self_check');if(h?.kernel_self_check?.receipt_sha256!==h?.kernel_self_check_receipt_sha256||self.receipt.receipt_sha256!==h?.kernel_self_check_receipt_sha256)e.push('kernel_self_binding');
+ if(JSON.stringify(h?.kernel_self_check)!==JSON.stringify(self.receipt))e.push('kernel_self_object');
+ const termsObject=h?.terms_object,termsBytes=fs.readFileSync(path.join(ROOT,'TERMS.md'));if(termsObject?.path!=='TERMS.md'||!HEX40.test(String(termsObject?.blob_sha1||''))||termsObject?.bytes!==termsBytes.length||termsObject?.blob_sha1!==gitBlobSha1(termsBytes)||JSON.stringify(termsObject)!==JSON.stringify(ph?.terms_object))e.push('terms_object');
  let m=null;try{m=readMaterialization();}catch{e.push('materialization_missing');}
- if(m&&(m.source_head!==h?.source_head||m.runtime_root_sha256!==d?.runtime_root_sha256||m.receipt_sha256!==h?.materialization_receipt_sha256||m.reopen_verified!==true||m.atomic_publish!==true))e.push('materialization_binding');
+ if(m&&(m.schema!=='ikant-le-runtime-root-materialization/v2'||m.source_head!==h?.source_head||m.runtime_root_sha256!==d?.runtime_root_sha256||m.receipt_sha256!==h?.materialization_receipt_sha256||m.reopen_verified!==true||m.atomic_publish!==true))e.push('materialization_binding');
+ if(m&&m.activation_executor_receipt_sha256!==h?.activation_executor_receipt_sha256)e.push('materialization_executor_binding');
+ if(m&&JSON.stringify(m.reverified_orientation_objects||[])!==JSON.stringify(pv.orientation||[]))e.push('materialization_orientation_binding');
  if(!HEX64.test(String(h?.activation_executor_receipt_sha256||''))||!HEX64.test(String(h?.kernel_self_check_receipt_sha256||''))||!HEX64.test(String(h?.preaccept_handoff_sha256||'')))e.push('evidence_digest');
  if(!HEX64.test(String(h?.receipt_sha256||''))||digestWithout(h)!==h.receipt_sha256)e.push('receipt_digest');
  return{ok:e.length===0,errors:[...new Set(e)],descriptor:d};
 }
-
 export async function acceptLocalLimitedSession({handoff,hostSurface='SESSION_CHAT_LOCAL_RUNTIME'}={}){
  if(fs.existsSync(LEDGER))throw new Error('canonical ledger already exists');if(fs.existsSync(CAP))throw new Error('limited acceptance already consumed');
  const v=validatePreRuntimeHandoff(handoff);if(!v.ok)throw new Error('pre-runtime handoff invalid: '+v.errors.join(','));

@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-pre-runtime-kernel-contract/v1",
-  "slice": "C33.POST_187_ONTOLOGICAL_CLOSURE",
+  "schema": "ikant-le-pre-runtime-kernel-contract/v2",
+  "slice": "C34.PRE_RUNTIME_HANDOFF_AUTHENTICITY",
   "authority": 0,
-  "intent": "Close the post-acceptance executable gap by reusing the existing content-addressed runtime-root loader as the sole pre-runtime executable owner, then hand off exact accepted/source-bound evidence to one canonical SESSION_CHAT_LOCAL runtime ingress without creating a new lifecycle, turn engine, carrier authority or runtime identity.",
+  "intent": "Preserve C33 ownership while requiring the materialized runtime owner to independently revalidate the complete preaccept, activation-executor, kernel-self and materialization evidence carried by pre-runtime-handoff/v2.",
   "owner": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
   "runtime_owner": "src/session-local-service.mjs",
   "direct_known_path": "src/runtime-root-verified.mjs",
@@ -28,7 +28,11 @@
     "exact_pre_runtime_handoff_receipt",
     "runtime_owned_acceptance_event_identity",
     "canonical_SESSION_CHAT_LOCAL_ingress_issues_RUNTIME_BOUND_LIMITED_capability",
-    "kernel_retires_after_runtime_owner_receipt"
+    "kernel_retires_after_runtime_owner_receipt",
+    "runtime_owner_revalidates_full_preaccept_handoff",
+    "runtime_owner_revalidates_full_activation_executor_receipt",
+    "runtime_owner_rechecks_local_kernel_identity_and_H0",
+    "materialization_activation_executor_digest_matches_handoff"
   ],
   "forbidden_promotions": [
     "model_prose_to_capability",
@@ -40,7 +44,10 @@
     "compatibility_plugin_to_canonical_ingress",
     "semantic_equivalence_to_samehash",
     "fault_overlay_to_progress_erasure",
-    "raw_state_boolean_to_intermediate_service_tier"
+    "raw_state_boolean_to_intermediate_service_tier",
+    "digest_shape_to_evidence_authenticity",
+    "kernel_handoff_receipt_to_transitive_trust",
+    "materialization_receipt_to_unbound_executor"
   ],
   "absorption": {
     "full_ikant_pr_186": [
@@ -74,7 +81,10 @@
     "new_lifecycle": false,
     "new_turn_engine": false,
     "new_carrier_authority": false,
-    "compatibility_ingress_is_canonical": false
+    "compatibility_ingress_is_canonical": false,
+    "c34_1m_zero_mismatch": true,
+    "c34_1m_zero_unsafe": true,
+    "runtime_owner_independent_revalidation": true
   },
   "local_dods": [
     "strongest_valid_prefix survives orthogonal integrity fault while effective tier is null",
@@ -89,7 +99,14 @@
     "canonical local limited ingress creates no canonical ledger",
     "limited turn returns runtime-sealed output, computed telemetry, atomic DOCX and session shell",
     "legacy C20 deployment/plugin ingress remains compatibility-only",
-    "ACTIVE promotion still requires existing ACTIVE_READBACK path"
+    "ACTIVE promotion still requires existing ACTIVE_READBACK path",
+    "pre-runtime handoff v2 embeds the complete preaccept and activation-executor objects",
+    "materialized runtime owner independently validates preaccept orientation/source binding",
+    "materialized runtime owner independently validates activation-executor source/root/object/samehash receipt",
+    "materialized runtime owner re-runs the local kernel self-check and matches its receipt",
+    "materialization receipt activation-executor digest equals the handoff executor receipt digest",
+    "digest-only v1 handoff is rejected",
+    "C34 1M saturation has zero mismatch, zero unsafe, zero false reject and kills all four deletion mutants"
   ],
   "claim_boundary": {
     "semantic_falsification_is_physical_proof": false,
@@ -97,6 +114,16 @@
     "materialization_is_execution_provenance": false,
     "runtime_bound_limited_is_active": false,
     "compatibility_plugin_is_canonical_ingress": false,
-    "host_ui_delivery_proven": false
+    "host_ui_delivery_proven": false,
+    "handoff_digest_is_evidence_authenticity": false
+  },
+  "handoff": {
+    "schema": "ikant-le-pre-runtime-handoff/v2",
+    "digest_only_evidence_forbidden": true,
+    "full_preaccept_embedded": true,
+    "full_activation_executor_embedded": true,
+    "kernel_self_receipt_embedded": true,
+    "runtime_owner_independent_revalidation": true,
+    "materialization_executor_cross_binding": true
   }
 }
