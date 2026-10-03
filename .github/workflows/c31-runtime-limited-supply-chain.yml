@@ -15,7 +15,25 @@ jobs:
           node-version: '20'
       - name: Falsify runtime-limited supply chain 1m
         run: npm run falsify:c31
-      - name: C31 end-to-end tests
+      - name: Dispatch validation
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="node dispatch validation" tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: Limited acceptance
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="exact limited acceptance" tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: Limited turn
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="deployed limited turn" tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: Replay
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="identical limited replay" tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: Tamper
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="capability tamper" tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: Product ingress
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="product ingress remain distinct" tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: C31 aggregate
         run: node --test --test-concurrency=1 tests/c31-runtime-limited-supply-chain.test.mjs
       - name: C30 regression
         run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs
