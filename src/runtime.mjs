@@ -14,3 +14,6 @@ export { FASTBOOT_CONVERGENCE_SCHEMA,FASTBOOT_ATTEMPT_SCHEMA,FASTBOOT_CARRIERS,F
 export { assessOntologicalPromise, validateOntologicalPromiseAssessment, ONTOLOGICAL_PROMISE_ASSESSMENT_SCHEMA } from './contract.mjs';
 
 export { processLimitedRuntimeTurn } from './runtime-limited-turn.mjs';
+export { issueLimitedRuntimeCapability,validateLimitedRuntimeCapability } from './runtime-limited-capability.mjs';
+export { validateNodeDispatchReceipt } from './runtime-dispatch.mjs';
+export { validateExecutedProvenanceReceipt } from './runtime-evidence.mjs';

@@ -38,3 +38,12 @@ export function writeBacklogDocx(filePath, model) {
   if (!reread.equals(bytes) || reread.readUInt32LE(0) !== 0x04034b50) throw new Error('FAILURE: DOCX readback mismatch');
   return { bytes: bytes.length, sha256: crypto.createHash('sha256').update(reread).digest('hex'), readback_verified: true, media_type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
 }
+
+export function writeBacklogDocxAtomic(filePath, model) {
+  const bytes = buildBacklogDocx(model); fs.mkdirSync(requireDir(filePath),{recursive:true}); const tmp=filePath+'.tmp-'+crypto.randomUUID();
+  let fd=null; try{fd=fs.openSync(tmp,'wx',0o600);fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{if(fd!==null)fs.closeSync(fd);}
+  if(fs.existsSync(filePath)){const prior=fs.readFileSync(filePath);if(!prior.equals(bytes)){try{fs.unlinkSync(tmp);}catch{}throw new Error('FAILURE: DOCX content-address collision');}try{fs.unlinkSync(tmp);}catch{}}else fs.renameSync(tmp,filePath);
+  const reread=fs.readFileSync(filePath);if(!reread.equals(bytes)||reread.readUInt32LE(0)!==0x04034b50)throw new Error('FAILURE: DOCX atomic readback mismatch');
+  return {bytes:bytes.length,sha256:crypto.createHash('sha256').update(reread).digest('hex'),readback_verified:true,atomic_publish:true,media_type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'};
+}
+function requireDir(filePath){const i=Math.max(filePath.lastIndexOf('/'),filePath.lastIndexOf('\\'));return i<0?'.':filePath.slice(0,i)||'.';}
