@@ -47,8 +47,6 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept in
 | C30 | activation service spectrum with useful non-ACTIVE tiers; ACTIVE unchanged |
 | C31 | runtime-limited capability/dispatch/atomic-DOCX product supply chain closure |
 | C32-prePR | deterministic atomic session shell over C31/C30 truth; no new lifecycle/writer/self-memory |
-| C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
-| C26 | generated local-host meta-prompt collapses onto C25 control-plane boundary; 100 full-prompt semantic mutations and deletion oracle protect against stale carrier/bridge ontology |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
 
 LIB.0 is auxiliary/private by default and does not change standalone lifecycle or ownership.
