@@ -16,7 +16,6 @@ on:
       - 'scripts/c31-session-shell-*.mjs'
 permissions:
   contents: read
-  checks: write
 jobs:
   qualify:
     runs-on: ubuntu-latest
@@ -29,62 +28,6 @@ jobs:
       - run: node --test --test-concurrency=1 tests/c31-session-shell.test.mjs tests/c30-activation-service.test.mjs
       - run: npm run select:c31
       - run: npm run falsify:c31
-      - name: Run full regression with capture
-        id: regression
-        continue-on-error: true
-        shell: bash
-        run: |
-          set +e
-          npm test > /tmp/c31-npm-test.log 2>&1
-          code=$?
-          echo "code=$code" >> "$GITHUB_OUTPUT"
-          exit $code
-      - name: Publish regression diagnostic
-        if: steps.regression.outputs.code != '0'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const body = fs.readFileSync('/tmp/c31-npm-test.log','utf8').slice(-50000);
-            await github.rest.checks.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'c31-regression-diagnostic',
-              head_sha: context.sha,
-              status: 'completed',
-              conclusion: 'failure',
-              output: { title: 'C31 npm test regression tail', summary: 'Diagnostic only; remove after convergence.', text: body }
-            });
-      - name: Fail on regression
-        if: steps.regression.outputs.code != '0'
-        run: exit 1
-      - name: Run repository check with capture
-        id: repo_check
-        continue-on-error: true
-        shell: bash
-        run: |
-          set +e
-          npm run check > /tmp/c31-check.log 2>&1
-          code=$?
-          echo "code=$code" >> "$GITHUB_OUTPUT"
-          exit $code
-      - name: Publish repository-check diagnostic
-        if: steps.repo_check.outputs.code != '0'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const body = fs.readFileSync('/tmp/c31-check.log','utf8').slice(-50000);
-            await github.rest.checks.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: 'c31-check-diagnostic',
-              head_sha: context.sha,
-              status: 'completed',
-              conclusion: 'failure',
-              output: { title: 'C31 repository check tail', summary: 'Diagnostic only; remove after convergence.', text: body }
-            });
-      - name: Fail on repository check
-        if: steps.repo_check.outputs.code != '0'
-        run: exit 1
+      - run: npm test
+      - run: npm run check
       - run: npm run check:c29
