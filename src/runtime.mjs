@@ -19,5 +19,3 @@ export { validateNodeDispatchReceipt } from './runtime-dispatch.mjs';
 export { validateExecutedProvenanceReceipt } from './runtime-evidence.mjs';
 
 export { SESSION_SHELL_SCHEMA,SESSION_SHELL_ORDER,projectSessionActivation,buildSessionShell,validateSessionShell,renderSessionShell } from './session-shell.mjs';
-
-export { CONTROL_STATES,COMMON_PRIMITIVES,COMMON_PRIMITIVES_SHA256,WARM_ACTIVATION_BUDGET_MS,repoSelfAntiRiskRecheck,deriveControlPlane } from './control-plane.mjs';
