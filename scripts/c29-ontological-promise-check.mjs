@@ -13,7 +13,7 @@ const numericAuthority=Object.entries(C.authority||{}).filter(([,v])=>typeof v==
 const broadRelayBan=JSON.stringify(ACT).includes('no second acceptance, source reset, deadline reset, model-mediated bytes, false ACTIVE');
 const evidence={
  A1:C.identity?.name==='iKant'&&C.identity?.engine_is_identity===false&&C.authority?.model===0&&C.authority?.provider===0,
- A2:has(arch,'Host/system/safety/law precede the repository')&&has(agents,'host constraints precede the local contract'),
+ A2:has(arch,'Host/system/safety/law precede the repository')&&has(agents,'mandatory host/system/safety/law constraints outrank the repository'),
  A3:numericAuthority&&P.ontology?.authority===0&&SW.ontology?.authority===0&&SB.authority===0,
  A4:C.runtime?.single_writer===true&&has(state,'withWriterLock')&&has(state,'fs.fsyncSync')&&FC.canonical_v2_overlay?.retry_memory_owner==='FASTBOOT_CHANNEL_LEDGER'&&has(gov,'A second writer/SOT is blocked'),
  B1:C.first_contact?.convergence_required===true&&has(agents,'preserved verbatim as pending intent'),
