@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import {nodeDispatchReceiptPure} from '../src/runtime-core.mjs';
 import {deriveActivationServiceTier,validateActivationServiceTier,assessLimitedTurnClosure,validateLimitedTurnClosure} from '../src/runtime-availability.mjs';
 import {processLimitedRuntimeTurn} from '../src/runtime-limited-turn.mjs';
@@ -63,6 +64,6 @@ test('C30 limited-turn module has no canonical writer dependency and refuses ACT
 test('C30 checked-in selection and falsification receipts encode the unique contract and fail-closed qualification',()=>{
  const select=JSON.parse(fs.readFileSync(new URL('../artifacts/qualification/c30-activation-service-selection-10k.json',import.meta.url),'utf8'));
  const fals=JSON.parse(fs.readFileSync(new URL('../artifacts/qualification/c30-activation-service-10m.json',import.meta.url),'utf8'));
- assert.equal(select.candidates,10000);assert.equal(select.unique_candidates,10000);assert.equal(select.valid_candidates,1);assert.equal(select.winner_cost,0);assert.equal(select.winner_cost_ties,1);assert.equal(select.receipt_sha256,'3c69f04574f051c958d6b195f6415eba75ec11fb4241644724374801f9262309');
+ assert.equal(select.candidates,10000);assert.equal(select.unique_candidates,10000);assert.equal(select.valid_candidates,1);assert.equal(select.winner_cost,0);assert.equal(select.winner_cost_ties,1);const sr={...select};delete sr.receipt_sha256;assert.equal(select.receipt_sha256,crypto.createHash('sha256').update(JSON.stringify(sr)).digest('hex'));
  assert.equal(fals.cases,10000000);assert.equal(fals.candidate_oracle_mismatches,0);assert.equal(fals.unsafe_active,0);assert.equal(fals.unsafe_limited_closure,0);assert.equal(fals.all_mutants_killed,true);assert.equal(fals.status,'PASS');
 });

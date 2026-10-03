@@ -17,58 +17,11 @@ jobs:
         run: npm run select:c30
       - name: Falsify activation service 10m
         run: npm run falsify:c30
-      - id: p1
-        name: Test tiers
-        continue-on-error: true
-        run: node --test --test-concurrency=1 --test-name-pattern="service tiers" tests/c30-activation-service.test.mjs
-      - name: FAIL tiers
-        if: steps.p1.outcome == 'failure'
-        run: echo "tiers failed"
-      - id: p2
-        name: Test integrity
-        continue-on-error: true
-        run: node --test --test-concurrency=1 --test-name-pattern="integrity overlay" tests/c30-activation-service.test.mjs
-      - name: FAIL integrity
-        if: steps.p2.outcome == 'failure'
-        run: echo "integrity failed"
-      - id: p3
-        name: Test closure
-        continue-on-error: true
-        run: node --test --test-concurrency=1 --test-name-pattern="limited closure" tests/c30-activation-service.test.mjs
-      - name: FAIL closure
-        if: steps.p3.outcome == 'failure'
-        run: echo "closure failed"
-      - id: p4
-        name: Test DOCX
-        continue-on-error: true
-        run: node --test --test-concurrency=1 --test-name-pattern="mechanically closes" tests/c30-activation-service.test.mjs
-      - name: FAIL DOCX
-        if: steps.p4.outcome == 'failure'
-        run: echo "DOCX failed"
-      - id: p5
-        name: Test noncanonical
-        continue-on-error: true
-        run: node --test --test-concurrency=1 --test-name-pattern="no canonical writer" tests/c30-activation-service.test.mjs
-      - name: FAIL noncanonical
-        if: steps.p5.outcome == 'failure'
-        run: echo "noncanonical failed"
-      - id: p6
-        name: Test receipts
-        continue-on-error: true
-        run: node --test --test-concurrency=1 --test-name-pattern="checked-in selection" tests/c30-activation-service.test.mjs
-      - name: FAIL receipts
-        if: steps.p6.outcome == 'failure'
-        run: echo "receipts failed"
-      - id: full
-        name: Test full C30
-        continue-on-error: true
+      - name: C30 focused tests
         run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs
-      - name: FULL C30 FAILED
-        if: steps.full.outcome == 'failure'
-        run: echo "full C30 failed"
-      - name: Enforce focused C30
-        if: steps.full.outcome == 'failure'
-        run: exit 1
+      - name: C28 regression
+        run: node --test --test-concurrency=1 tests/c28-semantic-closure.test.mjs
+      - name: C29 regression
+        run: node --test --test-concurrency=1 tests/c29-ontological-promise.test.mjs
       - name: Verify runtime root
-        if: steps.full.outcome == 'success'
         run: npm run runtime-root:verify

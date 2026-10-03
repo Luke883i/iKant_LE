@@ -101,7 +101,7 @@ Result:
 - invalid: 9,999;
 - winner cost: 0;
 - winner ties: 1;
-- receipt: `3c69f04574f051c958d6b195f6415eba75ec11fb4241644724374801f9262309`.
+- receipt: `558c8bed9daaaf1862f424156fb74c32cd8c7c7619b2cfb494236ded4046eb7e`.
 
 The unique surviving contract has five service tiers and leaves ACTIVE unchanged.
 
