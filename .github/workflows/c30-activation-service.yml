@@ -17,7 +17,31 @@ jobs:
         run: npm run select:c30
       - name: Falsify activation service 10m
         run: npm run falsify:c30
-      - name: Focused C30 tests
+      - name: Diagnostic tiers
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="service tiers" tests/c30-activation-service.test.mjs
+      - name: Diagnostic integrity
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="integrity overlay" tests/c30-activation-service.test.mjs
+      - name: Diagnostic closure
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="limited closure" tests/c30-activation-service.test.mjs
+      - name: Diagnostic DOCX
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="mechanically closes" tests/c30-activation-service.test.mjs
+      - name: Diagnostic noncanonical
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="no canonical writer" tests/c30-activation-service.test.mjs
+      - name: Diagnostic receipts
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="checked-in selection" tests/c30-activation-service.test.mjs
+      - name: C28 regression
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c28-semantic-closure.test.mjs
+      - name: C29 regression
+        continue-on-error: true
+        run: node --test --test-concurrency=1 tests/c29-ontological-promise.test.mjs
+      - name: Focused C30 aggregate
         run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs tests/c28-semantic-closure.test.mjs tests/c29-ontological-promise.test.mjs
       - name: Verify runtime root
         run: npm run runtime-root:verify
