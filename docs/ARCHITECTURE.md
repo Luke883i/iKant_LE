@@ -16,7 +16,7 @@ First contact pins `main`, performs the five-path API-only orientation, presents
 
 `.ikant/ledger.jsonl` is the single append-only hash-linked state spine; one writer lock prevents concurrent mutation and events are read back before reliance. A substantive ACTIVE turn follows:
 
-`input -> Node dispatch -> cognition/psyche/self-world or limited/control path -> response candidate -> required DOCX write/readback/hash -> session-shell projection -> atomic host frame`
+`input -> Node dispatch -> cognition/psyche/self-world or C31 limited path -> response candidate -> required DOCX readback -> C32 session-shell projection -> atomic host frame`
 
 Receipts, telemetry, fastboot handoff and backlog have authority zero. A local artifact receipt proves the file, not host UI presentation.
 
@@ -44,7 +44,7 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 
 ## Surfaces and authority
 
-**Surface A** is natural iKant prose, 50-500 words, user-intention first. C30 projects non-persisted service tiers through `RUNTIME_BOUND_LIMITED` to unchanged `ACTIVE`; only that tier may close a noncanonical limited turn. C31 wraps each public result as `VOICE_SURFACE -> STATUS -> SELF_SUMMARY -> BACKLOG_TELEMETRY`, reusing C30 status without new lifecycle state; self-summary is public, non-persisted and non-reingested. **Surface B** is exactly one same-turn DOCX per substantive ACTIVE turn; limited mode may emit one noncanonical DOCX. Required artifact readback precedes atomic frame release although documents render last; filename-only stdout is not delivery.
+**Surface A** is natural iKant prose, 50-500 words and user-intention first. C30 defines service tiers; C31 closes the source/provenance/dispatch/atomic-DOCX supply chain for `RUNTIME_BOUND_LIMITED`; C32 deterministically frames every public result as `VOICE_SURFACE -> STATUS -> SELF_SUMMARY -> BACKLOG_TELEMETRY` without a new lifecycle or self-memory. Fault overlays force non-ACTIVE. **Surface B** remains one same-turn DOCX per substantive ACTIVE turn; C31 limited turns emit one explicitly noncanonical DOCX. Required readback precedes atomic frame release although documents render last; filename-only stdout is not delivery.
 
 Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 

@@ -1,6 +1,6 @@
 {
   "schema": "ikant-le-runtime-availability-dod/v5",
-  "slice": "C30.ACTIVATION_SERVICE_SPECTRUM",
+  "slice": "C31.RUNTIME_LIMITED_SUPPLY_CHAIN",
   "authority": 0,
   "intent": "Keep ACTIVE unchanged while exposing five non-persisted service tiers and a stateless runtime-limited DOCX/telemetry turn.",
   "principles": [
@@ -59,7 +59,8 @@
       "DOD_I_STATUS_TRUTH",
       "DOD_I_QUALIFICATION",
       "DOD_I_SERVICE_TIERS",
-      "DOD_I_LIMITED_TURN"
+      "DOD_I_LIMITED_TURN",
+      "DOD_I_LIMITED_SUPPLY_CHAIN"
     ],
     "pass_condition": "all existing runtime truth DoDs plus C30 service-tier and limited-turn DoDs pass; unsafe ACTIVE=0; unsafe limited closure=0"
   },
@@ -140,6 +141,16 @@
         "DOD_L_LIMITED_NO_ACK_CLAIM",
         "DOD_L_C30_SELECTION_10K",
         "DOD_L_C30_FALSIFICATION_10M"
+      ]
+    },
+    {
+      "id": "DOD_I_LIMITED_SUPPLY_CHAIN",
+      "requires": [
+        "DOD_L_C31_CAPABILITY",
+        "DOD_L_C31_RUNTIME_DISPATCH",
+        "DOD_L_C31_ATOMIC_ARTIFACT",
+        "DOD_L_C31_PRODUCT_INGRESS",
+        "DOD_L_C31_FALSIFICATION_1M"
       ]
     }
   ],
@@ -279,6 +290,26 @@
     {
       "id": "DOD_L_C30_FALSIFICATION_10M",
       "test": "10m cases: zero mismatch, zero unsafe ACTIVE/limited closure, all mutants killed"
+    },
+    {
+      "id": "DOD_L_C31_CAPABILITY",
+      "test": "limited capability binds exact acceptance origin, source head, runtime root, local materialization reopen and executed provenance"
+    },
+    {
+      "id": "DOD_L_C31_RUNTIME_DISPATCH",
+      "test": "Node dispatch is generated and digest/epoch/surface validated inside the limited runtime"
+    },
+    {
+      "id": "DOD_L_C31_ATOMIC_ARTIFACT",
+      "test": "limited DOCX uses content-address identity, atomic publish and byte readback; absolute local path is noncanonical"
+    },
+    {
+      "id": "DOD_L_C31_PRODUCT_INGRESS",
+      "test": "session-chat adapter exposes exact accept-limited and limited-turn without changing canonical ACTIVE accept/turn"
+    },
+    {
+      "id": "DOD_L_C31_FALSIFICATION_1M",
+      "test": "1m seeded supply-chain mutations yield zero mismatch/unsafe closure and kill every retained requirement mutant"
     }
   ],
   "claim_boundary": {
@@ -303,7 +334,11 @@
     "runtime_bound_limited_is_active": false,
     "limited_runtime_turn_is_canonical_state": false,
     "limited_docx_is_platform_delivery_ack": false,
-    "limited_output_requires_additional_platform_evidence": false
+    "limited_output_requires_additional_platform_evidence": false,
+    "limited_capability_is_active": false,
+    "limited_capability_is_canonical_state": false,
+    "limited_artifact_local_path_is_identity": false,
+    "limited_product_ingress_is_active_ingress": false
   },
   "deadline_results": [
     "DEADLINE_PASS",
@@ -420,6 +455,39 @@
     "canonical_state_mutation": false,
     "persisted": false,
     "authority": 0,
-    "promotion_to_active_requires": "ACTIVE_READBACK"
+    "promotion_to_active_requires": "ACTIVE_READBACK",
+    "writer_semantics": "LIMITED_ARTIFACT_SINK_WRITE_READBACK",
+    "canonical_state_writer_required": false,
+    "capability_schema": "ikant-le-limited-runtime-capability/v1",
+    "dispatch_schema": "ikant-le-node-dispatch/v1",
+    "telemetry_schema": "ikant-le-limited-runtime-telemetry/v2",
+    "artifact_schema": "ikant-le-limited-artifact/v2",
+    "turn_receipt_schema": "ikant-le-limited-turn-receipt/v2"
+  },
+  "limited_runtime_supply_chain": {
+    "schema": "ikant-le-limited-runtime-supply-chain/v1",
+    "path": [
+      "EXACT_I_ACCEPT",
+      "SOURCE_BOUND_RUNTIME_ROOT",
+      "ATOMIC_MATERIALIZATION_REOPEN",
+      "EXECUTED_PROVENANCE",
+      "LIMITED_CAPABILITY",
+      "RUNTIME_OWNED_NODE_DISPATCH",
+      "RUNTIME_SEAL",
+      "COMPUTED_TELEMETRY",
+      "ATOMIC_DOCX_READBACK",
+      "STRUCTURED_HANDOFF"
+    ],
+    "product_ingress": [
+      "ikant_le_accept_limited",
+      "ikant_le_limited_turn"
+    ],
+    "capability_persisted_outside_canonical_ledger": true,
+    "canonical_ledger_mutation": false,
+    "caller_activation_booleans_forbidden": true,
+    "caller_dispatch_receipt_forbidden": true,
+    "platform_ack_required": false,
+    "active_promotion": false,
+    "first_unclosed_edge": "ACTIVE_READBACK"
   }
 }

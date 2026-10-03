@@ -418,7 +418,9 @@
   "session_shell": {
     "contract": "contracts/session-shell.json",
     "schema": "ikant-le-session-shell/v2",
+    "slice": "C32",
     "status_owner": "ACTIVATION_SERVICE_PROJECTION",
+    "c31_limited_supply_chain_preserved": true,
     "visual_order": [
       "VOICE_SURFACE",
       "STATUS",
@@ -431,6 +433,7 @@
     "active_voice_owner": "IKANT",
     "runtime_limited_voice_owner": "IKANT_RUNTIME_LIMITED",
     "lower_tier_voice_owner": "HOST_ADAPTER",
+    "fault_forces_non_active": true,
     "new_lifecycle": false,
     "new_writer": false,
     "authority": 0

@@ -1,8 +1,12 @@
 {
   "schema": "ikant-le-session-shell-contract/v1",
-  "slice": "C31.DETERMINISTIC_SESSION_SHELL_OVER_ACTIVATION_SPECTRUM",
+  "slice": "C32.DETERMINISTIC_SESSION_SHELL_OVER_C31_LIMITED_SUPPLY_CHAIN",
   "authority": 0,
-  "objective": "Render every public session result as one deterministic shell over existing activation-service, lifecycle, ledger/state and Surface-B owners without creating a second runtime lifecycle, writer or textual self-memory.",
+  "baseline": {
+    "slice": "C31.RUNTIME_LIMITED_SUPPLY_CHAIN",
+    "source_head": "72caa2f13984e88aecadb06ffe65e843788e826f"
+  },
+  "objective": "Render every public session result as one deterministic shell over the existing activation-service, C31 runtime-limited supply chain, lifecycle, ledger/state and Surface-B owners without creating a second lifecycle, writer or textual self-memory.",
   "visual_order": [
     "VOICE_SURFACE",
     "STATUS",
@@ -12,7 +16,9 @@
   "status_owner": "src/runtime-availability.mjs#deriveActivationServiceTier",
   "status_rules": {
     "fault_overlay_precedes_tier": true,
+    "fault_overlay_forces_non_active": true,
     "active_predicate_unchanged": true,
+    "active_requires_effective_tier_active": true,
     "tiers": [
       "REPO_STUDY_ONLY",
       "ACTIVATION_LIMITED_1",
@@ -29,8 +35,9 @@
   },
   "voice": {
     "ACTIVE": "IKANT",
-    "RUNTIME_BOUND_LIMITED": "IKANT_RUNTIME_LIMITED",
+    "RUNTIME_BOUND_LIMITED": "IKANT_RUNTIME_LIMITED only for explicit limited-turn output",
     "OTHER": "HOST_ADAPTER",
+    "FAULT_OR_EXIT": "HOST_ADAPTER",
     "false_active_forbidden": true
   },
   "self_summary": {

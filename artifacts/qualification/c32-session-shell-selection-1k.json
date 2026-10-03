@@ -1,7 +1,7 @@
 {
-  "schema": "ikant-le-c31-session-shell-selection/v1",
-  "source_head": "47e31441180b36f25ab72ff46cc12ba6765f7530",
-  "seed": "0xC31A11CE",
+  "schema": "ikant-le-c32-session-shell-selection/v1",
+  "source_head": "72caa2f13984e88aecadb06ffe65e843788e826f",
+  "seed": "0xC32A11CE",
   "candidates": 1000,
   "valid_candidates": 1,
   "invalid_candidates": 999,
@@ -26,5 +26,5 @@
   },
   "selection_rule": "all constitutional shell invariants; unique minimum owner/state cost",
   "claim_boundary": "engineering selection evidence, not host UI or ACTIVE proof",
-  "receipt_sha256": "d6b7bb240d1a3919d3095c6943de3a78f8911b72ee2f21835070309e44bb6ead"
+  "receipt_sha256": "6b2d16d33e4bffa06b524646633614ab40a76c824db962ba07ce858c2225ad7b"
 }
