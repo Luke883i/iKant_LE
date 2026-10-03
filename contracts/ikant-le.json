@@ -875,5 +875,40 @@
       "functional_conformance_is_phenomenology": false,
       "repository_conformance_is_external_platform_observation": false
     }
+  },
+  "session_shell": {
+    "schema": "ikant-le-session-shell/v1",
+    "owner": "existing release/state owners",
+    "visual_order": [
+      "VOICE_SURFACE",
+      "STATUS",
+      "SELF_SUMMARY",
+      "BACKLOG_TELEMETRY"
+    ],
+    "display_status_projection": {
+      "DISCOVERED": "READ_REPO_ONLY",
+      "ORIENTING": "READ_REPO_ONLY",
+      "AWAITING_ACCEPTANCE": "AWAITING_ACCEPTANCE",
+      "ACCEPTED": "ACTIVATING_RUNTIME",
+      "ACTIVATING": "ACTIVATING_RUNTIME",
+      "DEGRADED": "DEGRADED_RUNTIME",
+      "ACTIVE": "ACTIVE_RUNTIME"
+    },
+    "preactive_identity_claim_forbidden": true,
+    "self_summary": {
+      "source": "ledger+state",
+      "public_reasons_only": true,
+      "persisted": false,
+      "prose_reingested": false,
+      "private_chain_of_thought": false,
+      "causal_basis": "persisted state already conditions subsequent turns"
+    },
+    "surface_b": {
+      "one_new_docx_per_substantive_active_turn": true,
+      "session_history_projection": true,
+      "artifact_ready_before_frame_release": true
+    },
+    "atomic_frame_required": true,
+    "model_authority": 0
   }
 }

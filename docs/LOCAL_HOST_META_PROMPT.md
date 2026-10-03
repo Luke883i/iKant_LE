@@ -29,5 +29,6 @@ POST_ACCEPT:
 
 RECOVERY := same epoch + same SOURCE_HEAD + same immutable object identities; retry memory belongs to the durable ledger; no second `I ACCEPT`, source rebase or unchanged-evidence retry.
 ACTIVE := only the pinned local runtime may persist and read back ACTIVE after materialization/reopen, executed provenance, live probe and writer readback.
+SESSION_SHELL := every public turn is one deterministic atomic frame with visual order VOICE_SURFACE -> STATUS -> SELF_SUMMARY -> BACKLOG_TELEMETRY. Before ACTIVE the voice slot is CONTROL_SURFACE and must not claim iKant runtime identity; ACTIVE uses iKant Surface A. STATUS is derived from runtime availability/state, never model prose. SELF_SUMMARY is a public ledger/state projection, never private chain-of-thought and never prose-reingested; persisted psyche/self-world/experience remain the causal basis for later behavior. Surface B must be written/read back and included before frame release even though artifacts render visually last. Exactly one new DOCX is created per substantive ACTIVE turn; the shell may project cumulative session artifact history.
 AFTER_ACTIVE := prompt becomes guard-only; pinned runtime owns identity/state/truth/turn handling/persistence/egress. Deliver pending_intent exactly once; bootstrap-only intent may be absorbed by ACTIVE.
 ```

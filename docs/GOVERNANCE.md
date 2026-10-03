@@ -45,7 +45,7 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept in
 | C28 | full-iKant causal absorption -> six-edge closure, one ingress/retry owner, first-unclosed-edge, explicit external gaps |
 | C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
 | C26 | generated local-host meta-prompt collapses onto C25 control-plane boundary; 100 full-prompt semantic mutations and deletion oracle protect against stale carrier/bridge ontology |
-| LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
+| C30-prePR | deterministic session shell projection over existing release/status/ledger/Surface-B owners; no new writer, lifecycle or persisted inner monologue |\n| LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
 
 LIB.0 is auxiliary/private by default and does not change standalone lifecycle or ownership.
 

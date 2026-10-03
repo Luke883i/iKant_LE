@@ -414,5 +414,28 @@
     "session_closure_projection": "ikant-le-session-closure-projection/v1",
     "diagnostic_stage_persisted": false,
     "external_gap_laundering_forbidden": true
+  },
+  "session_shell": {
+    "schema": "ikant-le-session-shell/v1",
+    "owner": "EXISTING_HOST_RELEASE_ENVELOPE",
+    "visual_order": [
+      "VOICE_SURFACE",
+      "STATUS",
+      "SELF_SUMMARY",
+      "BACKLOG_TELEMETRY"
+    ],
+    "causal_rule": "Surface B readiness and readback precede atomic frame release; visual order is independent of causal order.",
+    "preactive_voice_kind": "CONTROL_SURFACE",
+    "active_voice_kind": "SURFACE_A",
+    "status_owner": "RUNTIME_AVAILABILITY_AND_PERSISTED_STATE",
+    "display_status_is_projection_not_state": true,
+    "self_summary_source": "LEDGER_STATE_PROJECTION",
+    "self_summary_persisted": false,
+    "self_summary_prose_reingested": false,
+    "next_turn_conditioning_source": "PERSISTED_STATE_ALREADY_CAUSAL",
+    "artifact_history_source": "LEDGER",
+    "one_new_docx_per_substantive_active_turn": true,
+    "atomic_frame_required": true,
+    "authority": 0
   }
 }

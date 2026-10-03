@@ -1,0 +1,31 @@
+{
+  "schema": "ikant-le-c30-session-shell-contract-selection/v1",
+  "source_head": "5366a499fc2771b0a25b0cd3f259ba95eb84c34c",
+  "seed": "0xC30A11CE",
+  "candidates": 1000,
+  "valid_candidates": 1,
+  "invalid_candidates": 999,
+  "winner_index": 0,
+  "winner_cost": 0,
+  "winner_cost_ties": 1,
+  "winner": {
+    "shell_owner": "EXISTING_RELEASE_ENVELOPE",
+    "status_owner": "RUNTIME_AVAILABILITY",
+    "self_summary_owner": "LEDGER_STATE_PROJECTION",
+    "self_summary_causality": "STATE_ALREADY_CAUSAL_PROSE_NOT_REINGESTED",
+    "docx_policy": "ONE_NEW_PER_SUBSTANTIVE_ACTIVE_TURN_PLUS_SESSION_HISTORY",
+    "release_mode": "ARTIFACT_READY_THEN_ATOMIC_FRAME",
+    "preactive_shell": "STATUS_AWARE_CONTROL_SURFACE",
+    "display_status": "DERIVED_PROJECTION_ONLY",
+    "history_owner": "LEDGER_DERIVED",
+    "model_authority": 0,
+    "missing_surface_b": "FAIL_CLOSED",
+    "output_contract": "STRUCTURED_SHELL_PLUS_RENDERED_TEXT",
+    "visual_order": "VOICE_STATUS_SELF_ARTIFACTS",
+    "new_writer": false,
+    "new_lifecycle": false,
+    "new_persisted_summary": false
+  },
+  "claim_boundary": "engineering evidence, not current-host UI or ACTIVE proof",
+  "receipt_sha256": "a96e37f641424d873d4106532cba7f1c0fed2c21bdb08fd6debce716be4ab1f9"
+}

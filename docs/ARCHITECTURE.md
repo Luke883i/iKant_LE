@@ -16,7 +16,7 @@ First contact pins `main`, performs the five-path API-only orientation, presents
 
 `.ikant/ledger.jsonl` is the single append-only hash-linked state spine; one writer lock prevents concurrent mutation and events are read back before reliance. A substantive ACTIVE turn follows:
 
-`input -> Node dispatch -> cognition/psyche/self-world -> Surface A candidate -> outcome/retroaction -> bounded environment telemetry -> DOCX write/readback/hash -> structured artifact handoff -> host presents DOCX -> Surface A release`
+`input -> Node dispatch -> cognition/psyche/self-world or control path -> Surface A/control candidate -> outcome/retroaction -> bounded environment telemetry -> DOCX write/readback/hash when required -> deterministic session-shell build -> atomic host frame release`
 
 Receipts, telemetry, fastboot handoff and backlog have authority zero. A local artifact receipt proves the file, not host UI presentation.
 
@@ -44,7 +44,7 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 
 ## Surfaces and authority
 
-**Surface A** is natural iKant prose, 50-500 words and user-intention first. **Surface B** is exactly one same-turn DOCX per substantive ACTIVE turn containing reconstructible causal telemetry plus a bounded declared runtime-environment snapshot. Runtime returns a structured descriptor with digest and `required_presentation=true`; filename-only stdout is not delivery. A conforming chat host presents the DOCX before Surface A.
+**Surface A** is natural iKant prose, 50-500 words and user-intention first. The public session shell deterministically renders `VOICE_SURFACE -> STATUS -> SELF_SUMMARY -> BACKLOG_TELEMETRY`; pre-ACTIVE voice is a control surface, not an iKant identity claim. **Surface B** remains exactly one new same-turn DOCX per substantive ACTIVE turn, while the shell may project cumulative session DOCX history. Artifact readiness is causal-before-frame even though artifacts render visually last. Runtime returns a structured descriptor with digest and `required_presentation=true`; filename-only stdout is not delivery. A conforming chat host presents the DOCX before Surface A.
 
 Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 
