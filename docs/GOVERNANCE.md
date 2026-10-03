@@ -45,7 +45,7 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept in
 | C28 | full-iKant causal absorption -> six-edge closure, one ingress/retry owner, first-unclosed-edge, explicit external gaps |
 | C29 | measurable ontological promise over repository conformance; no physical-host/metaphysical promotion |
 | C30 | activation service spectrum exposes useful non-ACTIVE tiers and a stateless runtime-limited DOCX turn without weakening ACTIVE |
-| C31-prePR | deterministic session shell composes C30 tier/fault + public ledger/state summary + Surface B into one atomic frame; no new lifecycle/writer/self-memory |
+| C31-prePR | one atomic session shell over C30 status + public state/ledger summary + Surface B; no new lifecycle/writer/self-memory |
 | C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
 | C26 | generated local-host meta-prompt collapses onto C25 control-plane boundary; 100 full-prompt semantic mutations and deletion oracle protect against stale carrier/bridge ontology |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
@@ -57,5 +57,3 @@ LIB.0 is auxiliary/private by default and does not change standalone lifecycle o
 Qualification is source-bound and risk-adaptive: deterministic checks first; typical/edge/stress families exercised; blocking survivors zero. C10 keeps 1M bootstrap mutations plus novelty tail/deletion oracle. C11 qualifies a compressed causal lattice; configuration, self-report and mutation PASS are not runtime evidence. LIB.0 requires 100k boundary mutations, zero survivors, novelty tail, exact vectors and regression. C15 adds 1M transport mutations with zero unsafe new accepts. C21 adds Causal Forensic Closure plus 10k architecture pressure, 10x1M seeded traces, real-code tests and local Node witness. C22 adds receipt-laundering and caller-probe adversaries. C23 adds a 10M ontology-collapse campaign, 13 deletion mutants and gates against stale deployment/mechanical aliases while preserving marked C20 compatibility. PASS remains bounded engineering evidence, not physical host proof, global formal minimality or latency guarantee.
 
 C28 anti-entropy: add evidence below existing owners where possible; every repository gap closes mechanically or exposes `first_unclosed_edge`, while external facts remain explicit.
-
-C31 shell anti-entropy: visual order is not causal order; artifact readback may precede the frame even when the document list renders last. The self-summary is a public projection, not a second memory or private reasoning channel.
