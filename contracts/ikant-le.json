@@ -903,5 +903,23 @@
     "persisted": false,
     "active_semantics_unchanged": true,
     "promotion_to_active_requires": "ACTIVE_READBACK"
+  },
+  "session_shell": {
+    "contract": "contracts/session-shell.json",
+    "schema": "ikant-le-session-shell/v2",
+    "activation_service_owner": "src/runtime-availability.mjs",
+    "active_predicate_unchanged": true,
+    "status_is_projection_not_state": true,
+    "self_summary_is_public_projection": true,
+    "self_summary_persisted": false,
+    "self_summary_prose_reingested": false,
+    "atomic_frame": true,
+    "visual_order": [
+      "VOICE_SURFACE",
+      "STATUS",
+      "SELF_SUMMARY",
+      "BACKLOG_TELEMETRY"
+    ],
+    "authority": 0
   }
 }

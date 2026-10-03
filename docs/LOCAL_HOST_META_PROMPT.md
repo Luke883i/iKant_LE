@@ -26,6 +26,7 @@ POST_ACCEPT:
 - N0-N8 may be rendered for diagnostics only; it is non-persisted and never a second lifecycle/state owner. Integrity blockers can never render diagnostic ACTIVE.
 - Repository closure and external platform observation are separate. List external gaps explicitly; never close them with CI, source identity, model prose, user echo, BIND or mutation evidence.
 - 120000 ms is activation SLO telemetry, never an integrity gate.
+- SESSION_SHELL is a projection-only atomic frame with visual order VOICE_SURFACE -> STATUS -> SELF_SUMMARY -> BACKLOG_TELEMETRY. STATUS reuses the activation-service tier/fault projection and never creates a second lifecycle. ACTIVE voice is IKANT; RUNTIME_BOUND_LIMITED voice is explicitly IKANT_RUNTIME_LIMITED; lower tiers remain HOST_ADAPTER. SELF_SUMMARY is derived from public ledger/state/tier, never private chain-of-thought, never persisted and never prose-reingested. Surface-B bytes/readback must exist before frame release when that tier requires an artifact, even though artifacts render visually last.
 
 RECOVERY := same epoch + same SOURCE_HEAD + same immutable object identities; retry memory belongs to the durable ledger; no second `I ACCEPT`, source rebase or unchanged-evidence retry.
 ACTIVE := only the pinned local runtime may persist and read back ACTIVE after materialization/reopen, executed provenance, live probe and writer readback.

@@ -148,8 +148,8 @@
     "runtime_root": {
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
-      "member_count": 43,
-      "source_bytes": 386526,
+      "member_count": 45,
+      "source_bytes": 400371,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "821fabefede8bd2715c6a758cc6ba8374c54d74c"
@@ -166,8 +166,8 @@
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 51527,
-          "blob_sha1": "d31de810b7540af1e7215759658ade504a775cbf"
+          "source_bytes": 52137,
+          "blob_sha1": "65d34ede1c9211910c0c98768ac4db81e32cfb31"
         },
         {
           "index": 2,
@@ -179,23 +179,23 @@
         {
           "index": 3,
           "path": "runtime-root/shard-003.json",
-          "member_count": 6,
-          "source_bytes": 35478,
-          "blob_sha1": "74b2b6a16da5fb6471f23e59e1c4e25e55b23ec2"
+          "member_count": 7,
+          "source_bytes": 45043,
+          "blob_sha1": "90e17095d293a46aab79eafbc71a4e662b21acea"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
-          "member_count": 11,
-          "source_bytes": 86700,
-          "blob_sha1": "f60372365bab4497434a0ff1e3f9ea973783cd98"
+          "member_count": 12,
+          "source_bytes": 89844,
+          "blob_sha1": "a391e09f44f111f2e74c1287dee947f76221e636"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 60196,
-          "blob_sha1": "4ef4407ff811538e4ae518b89f2df42e84e0748c"
+          "source_bytes": 61166,
+          "blob_sha1": "35e2a402776bb33d0bd646b34ecdd24dbd07ba5a"
         },
         {
           "index": 6,
@@ -226,8 +226,8 @@
         },
         {
           "path": "src/runtime-command.mjs",
-          "blob_sha1": "d8c5dbb6b11b5e79ea209c7e5501f50083f6d596",
-          "bytes": 39316,
+          "blob_sha1": "326653a2e0316717649843d8ee3f4282850bd931",
+          "bytes": 39924,
           "shard": 1
         },
         {
@@ -298,14 +298,14 @@
         },
         {
           "path": "src/runtime.mjs",
-          "blob_sha1": "3572dd6d26ce8edf45052843a3d80caa3fa96d5f",
-          "bytes": 2367,
+          "blob_sha1": "ac90d21383450d9baaf1fe7abf4436c8682259db",
+          "bytes": 2531,
           "shard": 3
         },
         {
           "path": "src/runtime-limited-turn.mjs",
-          "blob_sha1": "f8d552d9934b03ce6c7abf5435768083708fcafd",
-          "bytes": 6119,
+          "blob_sha1": "3177a55043576643a0fd69370f37d19b12ca61b9",
+          "bytes": 6602,
           "shard": 3
         },
         {
@@ -322,14 +322,14 @@
         },
         {
           "path": "contracts/host-shell.json",
-          "blob_sha1": "7e832a187368b0d8a8adf4ba5f5ffcf91a1cfa40",
-          "bytes": 14139,
+          "blob_sha1": "a2b94bc5671354d09238d2875ee272b2cfa25979",
+          "bytes": 14754,
           "shard": 4
         },
         {
           "path": "ikant.mjs",
-          "blob_sha1": "84c5266dedcc7ccf239df637341ccde043833cd9",
-          "bytes": 2072,
+          "blob_sha1": "09c6abd4625ad2acbb690abbafa89bdeb907d9da",
+          "bytes": 2132,
           "shard": 4
         },
         {
@@ -340,14 +340,14 @@
         },
         {
           "path": "src/runtime-turn.mjs",
-          "blob_sha1": "143b29c11fb9fad33210d5980023a40c15b19e6e",
-          "bytes": 7759,
+          "blob_sha1": "dfd13519b9b65a85886ff512c3430b79b51a9778",
+          "bytes": 8118,
           "shard": 5
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "a4a641f2fb1f9028767551499b56d8965e4d89ed",
-          "bytes": 40257,
+          "blob_sha1": "3b4a4af25cdc39ec41afc15bf207c551bf7e49fd",
+          "bytes": 40811,
           "shard": 5
         },
         {
@@ -463,9 +463,21 @@
           "blob_sha1": "b43b9e361f6b3352a3a73b375c96a03c59149315",
           "bytes": 14605,
           "shard": 4
+        },
+        {
+          "path": "src/session-shell.mjs",
+          "blob_sha1": "72a6f8a49b6f11b2b34cf3ff2a718169c756d3b1",
+          "bytes": 8844,
+          "shard": 3
+        },
+        {
+          "path": "contracts/session-shell.json",
+          "blob_sha1": "eeb2b726fc58564ac9bf409f3d54c30f29637623",
+          "bytes": 2158,
+          "shard": 4
         }
       ],
-      "runtime_root_sha256": "f8f33d7c3a41f885e337efa4b6be91b31a6df2b9ed7d5d428b96556091dbe38f"
+      "runtime_root_sha256": "84c270552f83dd72a0582580c25972c8527e3f850da737b174b31a22b18590e7"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -651,7 +663,10 @@
     "external_gap_laundering_forbidden": true,
     "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise",
     "activation_service_contract": "contracts/runtime-availability-dod.json#activation_service_spectrum",
-    "limited_runtime_turn_module": "src/runtime-limited-turn.mjs"
+    "limited_runtime_turn_module": "src/runtime-limited-turn.mjs",
+    "session_shell_contract": "contracts/session-shell.json",
+    "session_shell_schema": "ikant-le-session-shell/v2",
+    "structured_session_shell_required": true
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",

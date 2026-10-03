@@ -1,0 +1,33 @@
+name: c31-session-shell-prepr
+on:
+  push:
+    branches: ['c31/deterministic-session-shell-prepr']
+  pull_request:
+    paths:
+      - 'src/session-shell.mjs'
+      - 'src/runtime-command.mjs'
+      - 'src/runtime-turn.mjs'
+      - 'src/runtime-limited-turn.mjs'
+      - 'src/runtime.mjs'
+      - 'contracts/session-shell.json'
+      - 'runtime-root/**'
+      - 'BOOTSTRAP.json'
+      - 'tests/c31-session-shell.test.mjs'
+      - 'scripts/c31-session-shell-*.mjs'
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm run runtime-root:verify
+      - run: node --test --test-concurrency=1 tests/c31-session-shell.test.mjs tests/c30-activation-service.test.mjs
+      - run: npm run select:c31
+      - run: npm run falsify:c31
+      - run: npm test
+      - run: npm run check
+      - run: npm run check:c29

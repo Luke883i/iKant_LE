@@ -1,0 +1,64 @@
+{
+  "schema": "ikant-le-session-shell-contract/v1",
+  "slice": "C31.DETERMINISTIC_SESSION_SHELL_OVER_ACTIVATION_SPECTRUM",
+  "authority": 0,
+  "objective": "Render every public session result as one deterministic shell over existing activation-service, lifecycle, ledger/state and Surface-B owners without creating a second runtime lifecycle, writer or textual self-memory.",
+  "visual_order": [
+    "VOICE_SURFACE",
+    "STATUS",
+    "SELF_SUMMARY",
+    "BACKLOG_TELEMETRY"
+  ],
+  "status_owner": "src/runtime-availability.mjs#deriveActivationServiceTier",
+  "status_rules": {
+    "fault_overlay_precedes_tier": true,
+    "active_predicate_unchanged": true,
+    "tiers": [
+      "REPO_STUDY_ONLY",
+      "ACTIVATION_LIMITED_1",
+      "ACTIVATION_LIMITED_2",
+      "RUNTIME_BOUND_LIMITED",
+      "ACTIVE"
+    ],
+    "pre_tier_display": [
+      "READ_REPO_ONLY",
+      "AWAITING_ACCEPTANCE",
+      "ACTIVATING"
+    ],
+    "display_is_projection_not_state": true
+  },
+  "voice": {
+    "ACTIVE": "IKANT",
+    "RUNTIME_BOUND_LIMITED": "IKANT_RUNTIME_LIMITED",
+    "OTHER": "HOST_ADAPTER",
+    "false_active_forbidden": true
+  },
+  "self_summary": {
+    "source": "LEDGER_STATE_ACTIVATION_PROJECTION",
+    "public_reasons_only": true,
+    "persisted": false,
+    "prose_reingested": false,
+    "private_chain_of_thought": false,
+    "behavior_is_conditioned_by": "PERSISTED_STATE_AND_RUNTIME_TIER_NOT_SUMMARY_PROSE"
+  },
+  "surface_b": {
+    "active_new_docx_per_substantive_turn": 1,
+    "runtime_bound_limited_docx_noncanonical": true,
+    "session_history_from_ledger": true,
+    "current_artifact_from_structured_handoff": true,
+    "artifact_readback_before_frame_release": true
+  },
+  "release": {
+    "atomic_session_frame": true,
+    "visual_order_is_not_causal_order": true,
+    "structured_session_shell_required": true
+  },
+  "ownership": {
+    "new_lifecycle": false,
+    "new_writer": false,
+    "new_status_state": false,
+    "new_persisted_self_message": false,
+    "model_authority": 0
+  },
+  "claim_boundary": "The shell proves deterministic repository-side composition only; host UI rendering/download and ACTIVE remain separately witnessed."
+}

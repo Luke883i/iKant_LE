@@ -3,6 +3,7 @@ import path from 'node:path';
 import {ROOT,sha256,validateSurfaceA} from './contract.mjs';
 import {writeBacklogDocx} from './docx.mjs';
 import {deriveActivationServiceTier,validateActivationServiceTier,assessLimitedTurnClosure,validateLimitedTurnClosure} from './runtime-availability.mjs';
+import {buildSessionShell,validateSessionShell,renderSessionShell} from './session-shell.mjs';
 
 function telemetryDigest(t){return sha256(Buffer.from(JSON.stringify(t)));}
 function descriptorDigest(d){const x={...d};delete x.descriptor_sha256;return sha256(Buffer.from(JSON.stringify(x)));}
@@ -40,5 +41,7 @@ export function processLimitedRuntimeTurn({input,candidate,activationEvidence,no
  if(!closureValidation.ok||closure.closed!==true)throw new Error('FAILURE: limited runtime turn closure did not validate');
  const receiptMaterial={schema:'ikant-le-limited-turn-receipt/v1',claim_class:'IKANT_RUNTIME_LIMITED',activation_projection_sha256:activationProjectionSha,input_sha256:inputSha,output_sha256:outputSha,node_dispatch_receipt_sha256:nodeDispatch.receipt_sha256,runtime_seal_sha256:runtimeSeal.seal_sha256,telemetry_sha256:telemetry.telemetry_sha256,artifact_descriptor_sha256:artifact.descriptor_sha256,artifact_sha256:artifact.sha256,first_unclosed_edge:tier.first_unclosed_edge,closed:true,active:false,canonical_state_mutation:false,platform_ack_required:false,host_delivery_proven:false,authority:0};
  const receipt={...receiptMaterial,receipt_sha256:sha256(Buffer.from(JSON.stringify(receiptMaterial)))};
- return{stdout:surfaceA,code:0,mode:'IKANT_RUNTIME_LIMITED',active:false,artifacts:[artifact],activation:tier,runtime_seal:runtimeSeal,telemetry,closure,receipt};
+ const shell=buildSessionShell({surfaceText:surfaceA,state:{},events:[],artifacts:[artifact],activation:tier,mode:'IKANT_RUNTIME_LIMITED',environmentTelemetry:telemetry,code:0});
+ const shellValidation=validateSessionShell(shell);if(!shellValidation.ok)throw new Error('FAILURE: limited session shell invalid ('+shellValidation.errors.join(',')+')');
+ return{stdout:renderSessionShell(shell),code:0,mode:'IKANT_RUNTIME_LIMITED',active:false,artifacts:[artifact],activation:tier,runtime_seal:runtimeSeal,telemetry,closure,receipt,session_shell:shell};
 }
