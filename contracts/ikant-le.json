@@ -127,7 +127,9 @@
     "fastboot_step": 0,
     "executed_provenance": 0,
     "host_channel_receipt": 0,
-    "pre_runtime_host_adapter": 0
+    "pre_runtime_host_adapter": 0,
+    "activation_service_projection": 0,
+    "limited_runtime_turn": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -306,7 +308,12 @@
     "ontological_promise_is_explicit_measurable_and_source_bound",
     "ontological_promise_threshold_exceeds_99_percent",
     "ontological_promise_has_no_parallel_hard_gate_layer",
-    "ontological_promise_assessment_is_authority_zero_non_persisted"
+    "ontological_promise_assessment_is_authority_zero_non_persisted",
+    "activation_service_projection_only",
+    "runtime_bound_limited_is_non_active",
+    "limited_turn_is_noncanonical",
+    "limited_turn_artifact_readback_required",
+    "active_readback_gate_unchanged"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -436,7 +443,12 @@
     "ontological_promise_is_explicit_measurable_and_source_bound",
     "ontological_promise_threshold_exceeds_99_percent",
     "ontological_promise_has_no_parallel_hard_gate_layer",
-    "ontological_promise_assessment_is_authority_zero_non_persisted"
+    "ontological_promise_assessment_is_authority_zero_non_persisted",
+    "activation_service_projection_only",
+    "runtime_bound_limited_is_non_active",
+    "limited_turn_is_noncanonical",
+    "limited_turn_artifact_readback_required",
+    "active_readback_gate_unchanged"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -875,5 +887,21 @@
       "functional_conformance_is_phenomenology": false,
       "repository_conformance_is_external_platform_observation": false
     }
+  },
+  "activation_service": {
+    "contract": "contracts/runtime-availability-dod.json",
+    "projection_schema": "ikant-le-activation-service-tier/v1",
+    "limited_turn_schema": "ikant-le-limited-turn-closure/v1",
+    "tiers": [
+      "REPO_STUDY_ONLY",
+      "ACTIVATION_LIMITED_1",
+      "ACTIVATION_LIMITED_2",
+      "RUNTIME_BOUND_LIMITED",
+      "ACTIVE"
+    ],
+    "projection_only": true,
+    "persisted": false,
+    "active_semantics_unchanged": true,
+    "promotion_to_active_requires": "ACTIVE_READBACK"
   }
 }
