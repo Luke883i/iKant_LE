@@ -30,5 +30,6 @@
   "all_mutants_killed": true,
   "status": "PASS",
   "claim_boundary": "bounded engineering evidence; not host UI/download/ACTIVE proof",
-  "receipt_sha256": "0195ea88b0a735ff37c4d40d7a44c8585cc9401ac3598581305058eba8464266"
+  "receipt_sha256": "0195ea88b0a735ff37c4d40d7a44c8585cc9401ac3598581305058eba8464266",
+  "failure_families": 18
 }
