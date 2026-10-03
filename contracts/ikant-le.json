@@ -129,7 +129,9 @@
     "host_channel_receipt": 0,
     "pre_runtime_host_adapter": 0,
     "activation_service_projection": 0,
-    "limited_runtime_turn": 0
+    "limited_runtime_turn": 0,
+    "limited_runtime_capability": 0,
+    "limited_runtime_dispatch": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -313,7 +315,12 @@
     "runtime_bound_limited_is_non_active",
     "limited_turn_is_noncanonical",
     "limited_turn_artifact_readback_required",
-    "active_readback_gate_unchanged"
+    "active_readback_gate_unchanged",
+    "limited_capability_is_source_and_runtime_root_bound",
+    "limited_dispatch_is_runtime_owned_and_receipt_validated",
+    "limited_artifact_identity_excludes_absolute_local_path",
+    "limited_docx_atomic_publish_and_readback_required",
+    "limited_product_ingress_does_not_mutate_canonical_ledger"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -448,7 +455,12 @@
     "runtime_bound_limited_is_non_active",
     "limited_turn_is_noncanonical",
     "limited_turn_artifact_readback_required",
-    "active_readback_gate_unchanged"
+    "active_readback_gate_unchanged",
+    "limited_capability_is_source_and_runtime_root_bound",
+    "limited_dispatch_is_runtime_owned_and_receipt_validated",
+    "limited_artifact_identity_excludes_absolute_local_path",
+    "limited_docx_atomic_publish_and_readback_required",
+    "limited_product_ingress_does_not_mutate_canonical_ledger"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -902,6 +914,14 @@
     "projection_only": true,
     "persisted": false,
     "active_semantics_unchanged": true,
-    "promotion_to_active_requires": "ACTIVE_READBACK"
+    "promotion_to_active_requires": "ACTIVE_READBACK",
+    "limited_supply_chain_schema": "ikant-le-limited-runtime-supply-chain/v1",
+    "limited_capability_schema": "ikant-le-limited-runtime-capability/v1",
+    "limited_dispatch_owner": "src/runtime-dispatch.mjs",
+    "limited_capability_owner": "src/runtime-limited-capability.mjs",
+    "limited_product_ingress": [
+      "ikant_le_accept_limited",
+      "ikant_le_limited_turn"
+    ]
   }
 }
