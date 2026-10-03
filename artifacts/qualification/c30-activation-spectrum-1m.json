@@ -1,0 +1,15 @@
+{
+  "schema": "ikant-le-c30-activation-spectrum-falsification/v1",
+  "seed": "0xC30F411C",
+  "cases": 1000000,
+  "candidate_oracle_mismatches": 0,
+  "unsafe_active": 0,
+  "unsafe_limited_closure": 0,
+  "limited_output_closed_witnesses": 31809,
+  "mutants": 18,
+  "all_mutants_killed": true,
+  "kills": [39873,122120,76763,88374,127132,146021,98101,107868,838007,55558,6612,7223,7337,4509,3331,3686,1047,1008],
+  "tier_counts": [165137,127132,146021,243948,122120,155769,39873],
+  "status": "PASS",
+  "claim_boundary": "semantic qualification only; not current-host physical proof or permission to call a limited tier ACTIVE"
+}

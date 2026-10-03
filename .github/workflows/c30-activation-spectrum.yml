@@ -1,0 +1,21 @@
+name: C30 activation experience spectrum
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  c30:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Select 10k activation spectrum
+        run: npm run select:c30
+      - name: Falsify spectrum 1m
+        run: npm run falsify:c30
+      - name: Focused C30 tests
+        run: node --test --test-concurrency=1 tests/c30-activation-spectrum.test.mjs tests/c28-semantic-closure.test.mjs tests/c27-session-capability-lattice.test.mjs

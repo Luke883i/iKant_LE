@@ -77,3 +77,68 @@ export function classifyTurnRelease(o={}){
  if(o.artifact_written===true&&o.artifact_readback===true&&o.presented===true&&o.surface_a_released===true)return{schema:'ikant-le-turn-availability/v1',state:'RELEASED',conforming_release:true,blocked_codes:[],authority:0};
  return{schema:'ikant-le-turn-availability/v1',state:'PROCESSING',conforming_release:false,blocked_codes:[],authority:0};
 }
+
+export const SESSION_ACTIVATION_EXPERIENCE_TIERS=Object.freeze(['REPO_STUDY_ONLY','ACTIVATION_LIMITED_1','ACTIVATION_LIMITED_2','RUNTIME_BOUND_LIMITED','ACTIVE']);
+const SESSION_ACTIVATION_EXPERIENCE_TIER_SET=new Set(SESSION_ACTIVATION_EXPERIENCE_TIERS);
+export function classifySessionActivationExperience(o={}){
+ const blocked=o.blocked_integrity===true;
+ let tier='NOT_ADMITTED',first='HUMAN_GATE',claim='NONE',runtime=false,next='WAIT_ACCEPTANCE';
+ if(blocked)return{schema:'ikant-le-session-activation-experience/v1',tier:'BLOCKED_INTEGRITY',active:false,runtime:false,claim_class:'NONE',first_unclosed_edge:'BLOCKED_INTEGRITY',next:'RESOLVE_INTEGRITY_OR_NEW_SESSION',limited_interaction_eligible:false,persisted:false,replaces_lifecycle:false,authority:0};
+ if(o.accepted===true){
+  first='SOURCE_SNAPSHOT';next='BIND_SOURCE_SNAPSHOT';
+  if(o.source_snapshot===true){
+   tier='REPO_STUDY_ONLY';claim='REPOSITORY_STUDY';first='LOCAL_INGRESS';next='CLOSE_LOCAL_INGRESS';
+   if(o.local_ingress===true){
+    tier='ACTIVATION_LIMITED_1';claim='ACTIVATION_PROGRESS';first='LOCAL_MATERIALIZATION';next='MATERIALIZE_AND_REOPEN';
+    if(o.materialized_reopened===true){
+     tier='ACTIVATION_LIMITED_2';claim='ACTIVATION_PROGRESS';first='EXECUTED_RUNTIME_PROOF';next='EXECUTE_PROVE_AND_BIND';
+     if(o.executed_provenance===true&&o.runtime_bound===true){
+      tier='RUNTIME_BOUND_LIMITED';claim='IKANT_RUNTIME_LIMITED';runtime=true;first='ACTIVE_READBACK';next='PERSIST_AND_READBACK_ACTIVE';
+      if(o.writer===true&&o.active_readback===true){
+       tier='ACTIVE';claim='IKANT_ACTIVE';runtime=true;first=null;next='RUNTIME_ONLY';
+      }
+     }
+    }
+   }
+  }
+ }
+ const active=tier==='ACTIVE';
+ const limitedInteraction=tier==='RUNTIME_BOUND_LIMITED'&&o.writer===true&&o.node_dispatch_ready===true&&o.runtime_seal_ready===true&&o.artifact_sink_ready===true;
+ return{schema:'ikant-le-session-activation-experience/v1',tier,active,runtime,claim_class:claim,first_unclosed_edge:first,next,limited_interaction_eligible:limitedInteraction,persisted:false,replaces_lifecycle:false,authority:0};
+}
+export function validateSessionActivationExperience(d){
+ const e=[];if(!d||d.schema!=='ikant-le-session-activation-experience/v1')e.push('schema');
+ const allowed=new Set(['NOT_ADMITTED','BLOCKED_INTEGRITY',...SESSION_ACTIVATION_EXPERIENCE_TIERS]);if(!allowed.has(d?.tier))e.push('tier');
+ if(d?.authority!==0||d?.persisted!==false||d?.replaces_lifecycle!==false)e.push('projection_scope');
+ if(d?.active!==(d?.tier==='ACTIVE'))e.push('active_truth');
+ if(d?.tier==='RUNTIME_BOUND_LIMITED'&&d?.claim_class!=='IKANT_RUNTIME_LIMITED')e.push('limited_claim');
+ if(d?.tier==='ACTIVE'&&d?.claim_class!=='IKANT_ACTIVE')e.push('active_claim');
+ if(d?.tier==='REPO_STUDY_ONLY'&&d?.claim_class!=='REPOSITORY_STUDY')e.push('study_claim');
+ if(d?.limited_interaction_eligible===true&&d?.tier!=='RUNTIME_BOUND_LIMITED')e.push('limited_eligibility');
+ if(d?.tier!=='ACTIVE'&&d?.first_unclosed_edge===null)e.push('first_unclosed_edge');
+ return{ok:e.length===0,errors:uniq(e)};
+}
+export function classifyLimitedInteractionClosure(o={}){
+ const missing=[];
+ if(o.blocked_integrity===true)missing.push('BLOCKED_INTEGRITY');
+ if(o.tier!=='RUNTIME_BOUND_LIMITED')missing.push('RUNTIME_BOUND_LIMITED');
+ if(o.writer!==true)missing.push('WRITER');
+ if(o.node_dispatch!==true)missing.push('NODE_DISPATCH');
+ if(o.runtime_seal!==true)missing.push('RUNTIME_SEAL');
+ if(o.docx_written!==true)missing.push('DOCX_WRITE');
+ if(o.docx_readback!==true)missing.push('DOCX_READBACK');
+ if(o.telemetry_complete!==true)missing.push('TELEMETRY');
+ if(o.structured_handoff!==true)missing.push('STRUCTURED_HANDOFF');
+ if(o.exact_delivery_ack_claimed===true)missing.push('FALSE_ACK');
+ if(o.canonical_state_mutation===true)missing.push('PREACTIVE_STATE_MUTATION');
+ const closed=missing.length===0;
+ return{schema:'ikant-le-limited-interaction-closure/v1',state:closed?'LIMITED_OUTPUT_CLOSED':'LIMITED_BLOCKED',closed,first_missing:missing[0]||null,claim_class:'IKANT_RUNTIME_LIMITED',active:false,exact_delivery_ack_claimed:false,host_delivery_proven:false,canonical_state_mutation:false,required_banner:'iKant runtime limitato — non ACTIVE',artifact_requirement:'SAME_TURN_DOCX_READBACK_PLUS_DECLARED_TELEMETRY',persisted:false,authority:0};
+}
+export function validateLimitedInteractionClosure(d){
+ const e=[];if(!d||d.schema!=='ikant-le-limited-interaction-closure/v1')e.push('schema');if(d?.authority!==0||d?.persisted!==false)e.push('scope');
+ if(d?.active!==false||d?.claim_class!=='IKANT_RUNTIME_LIMITED'||d?.exact_delivery_ack_claimed!==false||d?.host_delivery_proven!==false||d?.canonical_state_mutation!==false)e.push('claim_boundary');
+ if(d?.closed!==(d?.state==='LIMITED_OUTPUT_CLOSED'))e.push('closure_truth');
+ if(d?.closed===true&&d?.first_missing!==null)e.push('first_missing');
+ if(d?.state==='LIMITED_BLOCKED'&&typeof d?.first_missing!=='string')e.push('blocked_reason');
+ return{ok:e.length===0,errors:uniq(e)};
+}

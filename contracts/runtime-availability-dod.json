@@ -2,7 +2,7 @@
   "schema": "ikant-le-runtime-availability-dod/v4",
   "slice": "C28.FULL_IKANT_SEMANTIC_ABSORPTION",
   "authority": 0,
-  "intent": "Represent runtime truth with the existing lifecycle while deriving six-edge repository closure, non-persisted diagnostics and a separate external-gap vector.",
+  "intent": "Represent runtime truth with the existing lifecycle while deriving six-edge repository closure, non-persisted diagnostics, a separate external-gap vector, and a bounded activation-experience spectrum that never weakens ACTIVE.",
   "principles": [
     "DEGRADED is non-ACTIVE and cannot use iKant identity as if ACTIVE",
     "DEGRADED is allowed only for observed availability/capability loss, never to mask integrity, consent or source contradictions",
@@ -19,7 +19,16 @@
     "LOCAL_PROCESSOR and VERIFIED_BYTE_PATH are facets of LOCAL_INGRESS, not separate constitutional owners",
     "diagnostic N8 is impossible under an integrity blocker",
     "repository closure and external platform observation remain separate",
-    "current-host topology belongs to receipts or fixtures rather than constitutional contracts"
+    "current-host topology belongs to receipts or fixtures rather than constitutional contracts",
+    "activation experience is a non-persisted projection over the existing six-edge lattice, never a second lifecycle or product mode",
+    "REPO_STUDY_ONLY requires exact acceptance plus a bound source snapshot and cannot claim runtime execution",
+    "ACTIVATION_LIMITED_1 means LOCAL_INGRESS is closed but local materialization remains open",
+    "ACTIVATION_LIMITED_2 means local materialization/reopen is closed but executed runtime proof or runtime bind remains open",
+    "RUNTIME_BOUND_LIMITED may identify a real bounded iKant runtime only after executed provenance plus runtime bind; it remains non-ACTIVE",
+    "a limited substantive output may close only with writer availability, same-input Node dispatch, runtime seal, same-turn DOCX write/readback, complete declared telemetry and structured handoff",
+    "limited output uses PRE_DISPLAY-style closure: no platform callback is required, exact delivery ACK remains false and host delivery is not claimed",
+    "limited output cannot mutate canonical pre-ACTIVE state; it is a bounded pseudo-deployment interaction artifact, not a lifecycle promotion",
+    "integrity blockers dominate every study/limited tier and promotion to ACTIVE reuses the existing ACTIVE readback gate unchanged"
   ],
   "session_states": {
     "DISCOVERED": "target recognized; no admission claim",
@@ -57,9 +66,12 @@
       "DOD_I_EXECUTION",
       "DOD_I_RELEASE",
       "DOD_I_STATUS_TRUTH",
-      "DOD_I_QUALIFICATION"
+      "DOD_I_QUALIFICATION",
+      "DOD_I_C30_EXPERIENCE",
+      "DOD_I_C30_LIMITED_OUTPUT",
+      "DOD_I_C30_QUALIFICATION"
     ],
-    "pass_condition": "every intermediate DoD passes on exact candidate bytes; zero unsafe ACTIVE, zero integrity-to-DEGRADED laundering, zero incomplete DEGRADED business cards, zero blocking mutation survivors"
+    "pass_condition": "every existing and C30 intermediate DoD passes on exact candidate bytes; ACTIVE semantics are unchanged; zero unsafe ACTIVE; zero limited-output laundering; every limited output names its non-ACTIVE claim class; 10k selection and 1m qualification have zero blocking survivors"
   },
   "intermediate_dods": [
     {
@@ -116,6 +128,36 @@
         "DOD_L_QUALIFICATION_1M",
         "DOD_L_DELETION_ORACLE",
         "DOD_L_C27_1M"
+      ]
+    },
+    {
+      "id": "DOD_I_C30_EXPERIENCE",
+      "requires": [
+        "DOD_L_C30_TIER_SET",
+        "DOD_L_C30_PROJECTION_SCOPE",
+        "DOD_L_C30_MONOTONIC_PREFIX",
+        "DOD_L_C30_ACTIVE_UNCHANGED",
+        "DOD_L_C30_INTEGRITY_DOMINANCE"
+      ]
+    },
+    {
+      "id": "DOD_I_C30_LIMITED_OUTPUT",
+      "requires": [
+        "DOD_L_C30_RUNTIME_FLOOR",
+        "DOD_L_C30_LIMITED_WRITER",
+        "DOD_L_C30_NODE_DISPATCH",
+        "DOD_L_C30_RUNTIME_SEAL",
+        "DOD_L_C30_DOCX",
+        "DOD_L_C30_TELEMETRY",
+        "DOD_L_C30_NO_PLATFORM_ACK",
+        "DOD_L_C30_NO_PREACTIVE_MUTATION"
+      ]
+    },
+    {
+      "id": "DOD_I_C30_QUALIFICATION",
+      "requires": [
+        "DOD_L_C30_SELECTION_10K",
+        "DOD_L_C30_FALSIFICATION_1M"
       ]
     }
   ],
@@ -207,6 +249,66 @@
     {
       "id": "DOD_L_C27_1M",
       "test": "1,000,000 deterministic preseeded realistic semantic states yield zero candidate/oracle mismatch, zero unsafe ACTIVE and kill all 20 retained mutants"
+    },
+    {
+      "id": "DOD_L_C30_TIER_SET",
+      "test": "exactly five post-accept experience tiers exist: REPO_STUDY_ONLY, ACTIVATION_LIMITED_1, ACTIVATION_LIMITED_2, RUNTIME_BOUND_LIMITED, ACTIVE"
+    },
+    {
+      "id": "DOD_L_C30_PROJECTION_SCOPE",
+      "test": "experience tier is authority-zero, non-persisted, does not replace lifecycle, product mode, activation modality or N0-N8 diagnostics"
+    },
+    {
+      "id": "DOD_L_C30_MONOTONIC_PREFIX",
+      "test": "tier advancement follows the existing six-edge closure prefix and reports the exact first unclosed edge"
+    },
+    {
+      "id": "DOD_L_C30_ACTIVE_UNCHANGED",
+      "test": "ACTIVE remains reachable only through the pre-existing ACTIVE readback predicate; no limited tier satisfies ACTIVE"
+    },
+    {
+      "id": "DOD_L_C30_INTEGRITY_DOMINANCE",
+      "test": "BLOCKED_INTEGRITY prevents every study/limited/ACTIVE promotion and limited-output closure"
+    },
+    {
+      "id": "DOD_L_C30_RUNTIME_FLOOR",
+      "test": "RUNTIME_BOUND_LIMITED requires executed provenance plus runtime bind and may not be inferred from source/materialization alone"
+    },
+    {
+      "id": "DOD_L_C30_LIMITED_WRITER",
+      "test": "limited substantive output requires writer availability but does not persist a second lifecycle/state machine"
+    },
+    {
+      "id": "DOD_L_C30_NODE_DISPATCH",
+      "test": "limited substantive output requires a same-input Node dispatch receipt"
+    },
+    {
+      "id": "DOD_L_C30_RUNTIME_SEAL",
+      "test": "limited substantive output requires a runtime seal and cannot be model self-acknowledged"
+    },
+    {
+      "id": "DOD_L_C30_DOCX",
+      "test": "limited substantive output requires exactly one same-turn DOCX backlog/telemetry artifact with local write/readback and structured handoff"
+    },
+    {
+      "id": "DOD_L_C30_TELEMETRY",
+      "test": "limited DOCX telemetry is complete over the declared bounded schema and remains authority zero"
+    },
+    {
+      "id": "DOD_L_C30_NO_PLATFORM_ACK",
+      "test": "limited closure requires no platform callback and must keep exact_delivery_ack_claimed=false and host_delivery_proven=false"
+    },
+    {
+      "id": "DOD_L_C30_NO_PREACTIVE_MUTATION",
+      "test": "limited output cannot mutate canonical pre-ACTIVE state; ACTIVE state mutation remains owned by the existing lifecycle"
+    },
+    {
+      "id": "DOD_L_C30_SELECTION_10K",
+      "test": "10,000 deterministic unique realistic contract mutations produce one valid unique minimum"
+    },
+    {
+      "id": "DOD_L_C30_FALSIFICATION_1M",
+      "test": "1,000,000 deterministic state/closure mutations yield zero mismatch, zero unsafe ACTIVE, zero unsafe limited closure and kill all retained mutants"
     }
   ],
   "claim_boundary": {
@@ -226,7 +328,16 @@
     "host_unavailable_is_not_capability_stage": true,
     "diagnostic_stage_is_persisted_runtime_state": false,
     "repository_closed_is_current_host_active_proof": false,
-    "external_gap_vector_is_repository_failure": false
+    "external_gap_vector_is_repository_failure": false,
+    "repo_study_only_is_runtime": false,
+    "activation_limited_is_active": false,
+    "runtime_bound_limited_is_active": false,
+    "limited_output_is_platform_delivery_proof": false,
+    "limited_output_is_exact_delivery_ack": false,
+    "limited_output_is_permission_or_execution_authority": false,
+    "limited_output_may_mutate_canonical_pre_active_state": false,
+    "activation_experience_projection_is_persisted_state": false,
+    "activation_experience_projection_replaces_n0_n8": false
   },
   "deadline_results": [
     "DEADLINE_PASS",
@@ -273,5 +384,133 @@
     "external_gaps_orthogonal": true,
     "persisted": false,
     "authority": 0
+  },
+  "activation_experience_spectrum": {
+    "schema": "ikant-le-session-activation-experience/v1",
+    "semantic_owner": "src/runtime-availability.mjs",
+    "projection_only": true,
+    "persisted": false,
+    "replaces_lifecycle": false,
+    "creates_product_mode": false,
+    "creates_activation_modality": false,
+    "active_semantics_unchanged": true,
+    "existing_diagnostic_projection_retained": "ikant-le-local-activation-stage/v1",
+    "tiers": [
+      {
+        "id": "REPO_STUDY_ONLY",
+        "requires": [
+          "HUMAN_GATE",
+          "SOURCE_SNAPSHOT"
+        ],
+        "runtime": false,
+        "claim_class": "REPOSITORY_STUDY",
+        "substantive_limited_interaction": false,
+        "next": "LOCAL_INGRESS"
+      },
+      {
+        "id": "ACTIVATION_LIMITED_1",
+        "requires": [
+          "HUMAN_GATE",
+          "SOURCE_SNAPSHOT",
+          "LOCAL_INGRESS"
+        ],
+        "runtime": false,
+        "claim_class": "ACTIVATION_PROGRESS",
+        "substantive_limited_interaction": false,
+        "next": "LOCAL_MATERIALIZATION"
+      },
+      {
+        "id": "ACTIVATION_LIMITED_2",
+        "requires": [
+          "HUMAN_GATE",
+          "SOURCE_SNAPSHOT",
+          "LOCAL_INGRESS",
+          "LOCAL_MATERIALIZATION"
+        ],
+        "runtime": false,
+        "claim_class": "ACTIVATION_PROGRESS",
+        "substantive_limited_interaction": false,
+        "next": "EXECUTED_RUNTIME_PROOF"
+      },
+      {
+        "id": "RUNTIME_BOUND_LIMITED",
+        "requires": [
+          "HUMAN_GATE",
+          "SOURCE_SNAPSHOT",
+          "LOCAL_INGRESS",
+          "LOCAL_MATERIALIZATION",
+          "EXECUTED_RUNTIME_PROOF",
+          "RUNTIME_BIND"
+        ],
+        "runtime": true,
+        "active": false,
+        "claim_class": "IKANT_RUNTIME_LIMITED",
+        "substantive_limited_interaction": "ONLY_IF_LIMITED_INTERACTION_CLOSURE_PASSES",
+        "next": "ACTIVE_READBACK"
+      },
+      {
+        "id": "ACTIVE",
+        "requires": [
+          "EXISTING_ACTIVE_PREDICATE_UNCHANGED"
+        ],
+        "runtime": true,
+        "active": true,
+        "claim_class": "IKANT_ACTIVE",
+        "next": "RUNTIME_ONLY"
+      }
+    ],
+    "overlays": [
+      "BLOCKED_INTEGRITY",
+      "SESSION_NONCONFORMING",
+      "ADMISSION_EPOCH_UNRECOVERABLE"
+    ],
+    "monotonic_prefix": true,
+    "first_unclosed_edge_required": true,
+    "authority": 0
+  },
+  "limited_interaction_closure": {
+    "schema": "ikant-le-limited-interaction-closure/v1",
+    "allowed_tier": "RUNTIME_BOUND_LIMITED",
+    "output_state": "LIMITED_OUTPUT_CLOSED",
+    "claim_class": "IKANT_RUNTIME_LIMITED",
+    "required_banner": "iKant runtime limitato — non ACTIVE",
+    "requires": [
+      "WRITER_AVAILABLE",
+      "SAME_INPUT_NODE_DISPATCH",
+      "RUNTIME_SEAL",
+      "SAME_TURN_DOCX_WRITE",
+      "DOCX_READBACK",
+      "DECLARED_TELEMETRY_COMPLETE",
+      "STRUCTURED_ARTIFACT_HANDOFF"
+    ],
+    "platform_callback_required": false,
+    "exact_delivery_ack_claimed": false,
+    "host_delivery_proven": false,
+    "canonical_state_mutation": false,
+    "surface_b_is_backlog_and_telemetry": true,
+    "artifact_format": "DOCX",
+    "blocks_on_integrity": true,
+    "authority": 0
+  },
+  "c30_selection": {
+    "schema": "ikant-le-c30-activation-spectrum-selection/v1",
+    "cases": 10000,
+    "seed": "0xC30A71CE",
+    "unique_candidates": 10000,
+    "valid_candidates": 1,
+    "winner_cost": 0,
+    "winner_cost_ties": 1,
+    "artifact": "artifacts/qualification/c30-activation-spectrum-selection-10k.json"
+  },
+  "c30_falsification": {
+    "schema": "ikant-le-c30-activation-spectrum-falsification/v1",
+    "cases": 1000000,
+    "seed": "0xC30F411C",
+    "candidate_oracle_mismatches": 0,
+    "unsafe_active": 0,
+    "unsafe_limited_closure": 0,
+    "mutants": 18,
+    "all_mutants_killed": true,
+    "artifact": "artifacts/qualification/c30-activation-spectrum-1m.json"
   }
 }
