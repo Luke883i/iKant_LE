@@ -54,5 +54,3 @@ Qualification is source-bound and risk-adaptive: deterministic checks first; typ
 
 
 
-
-C28 anti-entropy rule: new evidence/receipts should be added below an existing semantic owner whenever possible. A new runtime owner, planner, state machine, retry-memory owner or ACTIVE writer requires a demonstrated survivor that cannot be closed by the six-edge lattice. Every repository-owned gap must return a claim-matched closure or an exact `first_unclosed_edge`; non-repository facts remain explicit external gaps.

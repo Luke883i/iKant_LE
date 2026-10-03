@@ -41,5 +41,3 @@ npm run qualify:canonical
 
 Host adapter: `docs/LOCAL_HOST_META_PROMPT.md` is generated, authority-zero and projects canonical `LOCAL_EXECUTOR_V1`; verified model byte transport is allowed only as opaque authority-zero samehash-gated relay; runtime authority remains local.
 
-
-C28 closure: the constitutional SESSION_CHAT_LOCAL path is six edges (`HUMAN_GATE -> SOURCE_SNAPSHOT -> LOCAL_INGRESS -> LOCAL_MATERIALIZATION -> EXECUTED_RUNTIME_PROOF -> ACTIVE_READBACK`). N0-N8 is diagnostic-only/non-persisted. Repository closure and external platform observation are separate; external facts cannot be laundered by CI, model prose, source identity or BIND. See `docs/C28_FULL_IKANT_ABSORPTION.md`.
