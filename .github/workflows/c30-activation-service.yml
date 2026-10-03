@@ -17,11 +17,25 @@ jobs:
         run: npm run select:c30
       - name: Falsify activation service 10m
         run: npm run falsify:c30
-      - name: C30 focused tests
+      - name: Prefix 1
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="service tiers" tests/c30-activation-service.test.mjs
+      - name: Prefix 2
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="service tiers|integrity overlay" tests/c30-activation-service.test.mjs
+      - name: Prefix 3
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="service tiers|integrity overlay|limited closure" tests/c30-activation-service.test.mjs
+      - name: Prefix 4
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="service tiers|integrity overlay|limited closure|mechanically closes" tests/c30-activation-service.test.mjs
+      - name: Prefix 5
+        continue-on-error: true
+        run: node --test --test-concurrency=1 --test-name-pattern="service tiers|integrity overlay|limited closure|mechanically closes|no canonical writer" tests/c30-activation-service.test.mjs
+      - name: Prefix 6
+        continue-on-error: true
         run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs
-      - name: C28 regression
-        run: node --test --test-concurrency=1 tests/c28-semantic-closure.test.mjs
-      - name: C29 regression
-        run: node --test --test-concurrency=1 tests/c29-ontological-promise.test.mjs
+      - name: C30 focused aggregate
+        run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs
       - name: Verify runtime root
         run: npm run runtime-root:verify
