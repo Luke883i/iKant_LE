@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-session-chat-activation-contract/v7",
-  "slice": "C27.VERIFIED_OPAQUE_RELAY_LATTICE",
+  "schema": "ikant-le-session-chat-activation-contract/v8",
+  "slice": "C28.FULL_IKANT_SEMANTIC_ABSORPTION",
   "authority": 0,
-  "objective": "Guarantee one human-to-iKant local activation with a typed, authority-zero byte path: direct local acquisition when physically available, otherwise a verified opaque relay with no rewrite or semantic equivalence; materialization/reopen, executed provenance and runtime-owned ACTIVE remain downstream local truth.",
+  "objective": "Close every repository-owned SESSION_CHAT_LOCAL activation edge under existing owners: one human gate, immutable source, one LOCAL_INGRESS owner, materialization/reopen, executed runtime proof and persisted/read-back ACTIVE; all external facts remain explicit and non-launderable.",
   "product_mode": "SESSION_CHAT",
   "activation_modality": "SESSION_CHAT_LOCAL",
   "language_engine_origin": "HOST_SUPPLIED",
@@ -12,12 +12,11 @@
   "plugin_or_mcp_registration_required": false,
   "webapp_mode": false,
   "always_running_process_required": false,
-  "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24+C25+C27",
+  "fastboot_owner": "C19+C15+C18+C21+C22+C23+C24+C25+C27+C28",
   "irreducible_lattice": [
     "HUMAN_GATE",
     "SOURCE_SNAPSHOT",
-    "LOCAL_PROCESSOR",
-    "VERIFIED_BYTE_PATH",
+    "LOCAL_INGRESS",
     "LOCAL_MATERIALIZATION",
     "EXECUTED_RUNTIME_PROOF",
     "ACTIVE_READBACK"
@@ -152,6 +151,34 @@
     {
       "id": "C27_G30",
       "claim": "1,000,000 preseeded realistic semantic mutations pass with zero candidate/oracle mismatches, zero unsafe ACTIVE and every retained mutant killed"
+    },
+    {
+      "id": "C28_G31",
+      "claim": "LOCAL_PROCESSOR and VERIFIED_BYTE_PATH are absorbed below the single LOCAL_INGRESS constitutional edge; no new runtime owner is created"
+    },
+    {
+      "id": "C28_G32",
+      "claim": "durable Fastboot ledger is the only retry-memory owner; unchanged decision plus unchanged evidence cannot retry"
+    },
+    {
+      "id": "C28_G33",
+      "claim": "first_unclosed_edge is explicit for every repository-owned closure failure and cannot be skipped by carrier/model ingenuity"
+    },
+    {
+      "id": "C28_G34",
+      "claim": "N0-N8 is diagnostic-only, non-persisted and cannot become a second lifecycle state machine"
+    },
+    {
+      "id": "C28_G35",
+      "claim": "current-host facts belong to receipts or fixtures, not constitutional contracts"
+    },
+    {
+      "id": "C28_G36",
+      "claim": "repository closure and external platform observation are separate dimensions; external gaps cannot be closed by CI, model prose, source identity, BIND or semantic mutation"
+    },
+    {
+      "id": "C28_G37",
+      "claim": "1,000 unique contract mutations select one minimum architecture and 1,000,000 closure mutations yield zero unsafe ACTIVE with all retained mutants killed"
     }
   ],
   "claim_boundary": {
@@ -178,7 +205,11 @@
     "verified_opaque_model_transport_allowed": true,
     "model_transport_has_epistemic_or_execution_authority": false,
     "model_rewrite_or_semantic_equivalence_is_transfer": false,
-    "unverified_model_mediation_is_integrity_failure": true
+    "unverified_model_mediation_is_integrity_failure": true,
+    "diagnostic_projection_is_runtime_state": false,
+    "current_host_reference_is_constitutional_truth": false,
+    "repository_closed_is_external_platform_observed": false,
+    "external_gap_may_be_laundered_by_ci_or_model": false
   },
   "edge_invariants": [
     "ONE_HUMAN_GATE",
@@ -187,7 +218,10 @@
     "OPAQUE_RELAY_SAMEHASH",
     "IDEMPOTENT_OBJECT_RETRY",
     "SLO_NOT_INTEGRITY",
-    "COMPATIBILITY_ZERO_AUTHORITY"
+    "COMPATIBILITY_ZERO_AUTHORITY",
+    "FIRST_UNCLOSED_EDGE",
+    "DURABLE_RETRY_LEDGER",
+    "EXTERNAL_GAP_HONESTY"
   ],
   "canonical_activation_model": "LOCAL_EXECUTOR_V1",
   "legacy_v1_required": [
@@ -235,7 +269,11 @@
     "EXECUTED_CODE_PROVENANCE",
     "LIVE_RUNTIME_OWNED_PROBE",
     "WRITER_PERSISTENCE",
-    "ACTIVE_COMMIT_READBACK"
+    "ACTIVE_COMMIT_READBACK",
+    "SIX_EDGE_CANONICAL_BOUNDARY",
+    "LOCAL_INGRESS_SINGLE_OWNER",
+    "FIRST_UNCLOSED_EDGE",
+    "EXPLICIT_EXTERNAL_GAPS"
   ],
   "canonical_v2_executor_law": [
     "the local activation executor owns byte-path validation and content-addressed acquisition",
@@ -249,7 +287,19 @@
     "the materializer re-verifies orientation and runtime object identities before atomic publish",
     "the local runtime reopens published bytes and proves exact executed-code provenance",
     "activation latency is telemetry only and never changes integrity truth",
-    "only persisted/read-back ACTIVE belongs to iKant"
+    "only persisted/read-back ACTIVE belongs to iKant",
+    "LOCAL_PROCESSOR and VERIFIED_BYTE_PATH are evidence/mechanism facets inside LOCAL_INGRESS, not separate lifecycle owners",
+    "retry history is owned only by the durable Fastboot ledger and keyed by decision plus evidence",
+    "N0-N8 is a non-persisted diagnostic projection only",
+    "current-host topology is receipt/fixture evidence and never constitutional truth",
+    "repository closure must list external platform gaps separately"
   ],
-  "capability_lattice_contract": "contracts/session-local-capability-lattice.json"
+  "capability_lattice_contract": "contracts/session-local-capability-lattice.json",
+  "session_closure_projection": "ikant-le-session-closure-projection/v1",
+  "local_ingress_owner": "EXISTING_FASTBOOT_AND_BOOTSTRAP_OWNERS",
+  "diagnostic_stage_projection": {
+    "schema": "ikant-le-local-activation-stage/v1",
+    "persisted": false,
+    "constitutional_boundary": false
+  }
 }

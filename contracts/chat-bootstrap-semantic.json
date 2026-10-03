@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-chat-bootstrap-semantic/v3",
-  "slice": "C27.VERIFIED_OPAQUE_RELAY_LATTICE",
+  "schema": "ikant-le-chat-bootstrap-semantic/v4",
+  "slice": "C28.FULL_IKANT_SEMANTIC_ABSORPTION",
   "authority": 0,
-  "intent": "Make canonical SESSION_CHAT activation independent of any single physical carrier: exact acceptance + immutable source/object identities + typed LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY byte path + materialization/reopen + runtime-owned provenance/probe + persisted ACTIVE.",
+  "intent": "Define canonical SESSION_CHAT activation as six repository-owned closure edges with one LOCAL_INGRESS owner, typed direct/opaque-relay transport, durable retry evidence, materialization/reopen, executed runtime proof and persisted ACTIVE readback; external platform facts remain separate.",
   "nodes": [
     {
       "id": "TARGET_INTENT_ROOT",
@@ -179,7 +179,11 @@
     "model_context_is_data_plane": false,
     "slo_breach_is_integrity_failure": false,
     "pre_runtime_sha256_is_required_for_v2": false,
-    "pre_runtime_monotonic_clock_is_required_for_v2": false
+    "pre_runtime_monotonic_clock_is_required_for_v2": false,
+    "diagnostic_stage_is_persisted_state": false,
+    "repository_closure_is_external_platform_observation": false,
+    "current_host_topology_is_constitutional_truth": false,
+    "first_unclosed_edge_may_be_skipped": false
   },
   "availability_state_contract": "contracts/runtime-availability-dod.json",
   "availability_classifier": "src/runtime-availability.mjs",
@@ -205,14 +209,17 @@
       "boundary": "source identity is content-addressed and never inferred from carrier"
     },
     {
-      "id": "LOCAL_EXECUTOR",
+      "id": "LOCAL_INGRESS",
       "owns": [
-        "capability probe",
-        "object acquisition",
-        "content-addressed retry",
-        "typed byte path with verified opaque relay"
+        "H0 local processor/source observation",
+        "host-attested capability ledger",
+        "one canonical NEXT",
+        "durable failed-decision memory",
+        "first-unclosed-edge",
+        "typed LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY byte path",
+        "source/arrival samehash"
       ],
-      "boundary": "language-model transport is allowed only as verified opaque authority-zero relay; rewrite and semantic equivalence are forbidden"
+      "boundary": "host attestation and transport are authority-zero; physical truth begins at local write/reopen and model relay may only be opaque exact transport"
     },
     {
       "id": "LOCAL_MATERIALIZATION",
@@ -246,9 +253,9 @@
   "canonical_active_predicate_v2": [
     "later exact standalone I ACCEPT consumed once",
     "immutable source head and orientation/runtime object identities match",
-    "local executor capability/acquisition receipt has a valid typed byte_path; relay requires opaque role, roundtrip and source/arrival samehash",
+    "LOCAL_INGRESS closes one typed byte path with durable ledger-owned retry memory and source/arrival samehash",
     "materializer re-verifies orientation plus runtime objects, atomically publishes and reopens",
-    "runtime-owned probe matches exact executed provenance",
+    "runtime-owned probe matches exact executed provenance and binds the runtime",
     "single writer persists and reads back ACTIVE"
   ],
   "deadline_integrity_applies_to_canonical_v2": false,
@@ -259,5 +266,6 @@
     "nodes_field": "nodes",
     "active_predicate_field": "active_predicate",
     "deadline_ms_field": "deadline_ms"
-  }
+  },
+  "session_closure_projection": "ikant-le-session-closure-projection/v1"
 }
