@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-runtime-availability-dod/v4",
-  "slice": "C28.FULL_IKANT_SEMANTIC_ABSORPTION",
+  "schema": "ikant-le-runtime-availability-dod/v5",
+  "slice": "C30.ACTIVATION_SERVICE_SPECTRUM",
   "authority": 0,
-  "intent": "Represent runtime truth with the existing lifecycle while deriving six-edge repository closure, non-persisted diagnostics and a separate external-gap vector.",
+  "intent": "Keep ACTIVE unchanged while exposing five non-persisted service tiers and a stateless runtime-limited DOCX/telemetry turn.",
   "principles": [
     "DEGRADED is non-ACTIVE and cannot use iKant identity as if ACTIVE",
     "DEGRADED is allowed only for observed availability/capability loss, never to mask integrity, consent or source contradictions",
@@ -57,9 +57,11 @@
       "DOD_I_EXECUTION",
       "DOD_I_RELEASE",
       "DOD_I_STATUS_TRUTH",
-      "DOD_I_QUALIFICATION"
+      "DOD_I_QUALIFICATION",
+      "DOD_I_SERVICE_TIERS",
+      "DOD_I_LIMITED_TURN"
     ],
-    "pass_condition": "every intermediate DoD passes on exact candidate bytes; zero unsafe ACTIVE, zero integrity-to-DEGRADED laundering, zero incomplete DEGRADED business cards, zero blocking mutation survivors"
+    "pass_condition": "all existing runtime truth DoDs plus C30 service-tier and limited-turn DoDs pass; unsafe ACTIVE=0; unsafe limited closure=0"
   },
   "intermediate_dods": [
     {
@@ -116,6 +118,28 @@
         "DOD_L_QUALIFICATION_1M",
         "DOD_L_DELETION_ORACLE",
         "DOD_L_C27_1M"
+      ]
+    },
+    {
+      "id": "DOD_I_SERVICE_TIERS",
+      "requires": [
+        "DOD_L_SERVICE_PROJECTION_ONLY",
+        "DOD_L_SERVICE_PREFIX",
+        "DOD_L_ACTIVE_UNCHANGED"
+      ]
+    },
+    {
+      "id": "DOD_I_LIMITED_TURN",
+      "requires": [
+        "DOD_L_LIMITED_TIER",
+        "DOD_L_LIMITED_DISPATCH",
+        "DOD_L_LIMITED_SEAL",
+        "DOD_L_LIMITED_DOCX",
+        "DOD_L_LIMITED_TELEMETRY",
+        "DOD_L_LIMITED_NO_STATE_MUTATION",
+        "DOD_L_LIMITED_NO_ACK_CLAIM",
+        "DOD_L_C30_SELECTION_10K",
+        "DOD_L_C30_FALSIFICATION_10M"
       ]
     }
   ],
@@ -207,6 +231,54 @@
     {
       "id": "DOD_L_C27_1M",
       "test": "1,000,000 deterministic preseeded realistic semantic states yield zero candidate/oracle mismatch, zero unsafe ACTIVE and kill all 20 retained mutants"
+    },
+    {
+      "id": "DOD_L_SERVICE_PROJECTION_ONLY",
+      "test": "service tier is authority-zero, non-persisted and not a lifecycle/SOT"
+    },
+    {
+      "id": "DOD_L_SERVICE_PREFIX",
+      "test": "five tiers are monotonic over the existing six-edge activation relation"
+    },
+    {
+      "id": "DOD_L_ACTIVE_UNCHANGED",
+      "test": "ACTIVE still requires writer plus ACTIVE readback and no integrity overlay"
+    },
+    {
+      "id": "DOD_L_LIMITED_TIER",
+      "test": "limited interaction only at RUNTIME_BOUND_LIMITED with writer"
+    },
+    {
+      "id": "DOD_L_LIMITED_DISPATCH",
+      "test": "same-input Node dispatch receipt required"
+    },
+    {
+      "id": "DOD_L_LIMITED_SEAL",
+      "test": "seal binds tier projection, input, output and dispatch"
+    },
+    {
+      "id": "DOD_L_LIMITED_DOCX",
+      "test": "deterministic DOCX is written and read back"
+    },
+    {
+      "id": "DOD_L_LIMITED_TELEMETRY",
+      "test": "bounded limited telemetry completeness is 1"
+    },
+    {
+      "id": "DOD_L_LIMITED_NO_STATE_MUTATION",
+      "test": "limited module does not mutate canonical ledger/state"
+    },
+    {
+      "id": "DOD_L_LIMITED_NO_ACK_CLAIM",
+      "test": "platform ACK not required and never claimed"
+    },
+    {
+      "id": "DOD_L_C30_SELECTION_10K",
+      "test": "10k unique mutations produce one minimum"
+    },
+    {
+      "id": "DOD_L_C30_FALSIFICATION_10M",
+      "test": "10m cases: zero mismatch, zero unsafe ACTIVE/limited closure, all mutants killed"
     }
   ],
   "claim_boundary": {
@@ -226,7 +298,12 @@
     "host_unavailable_is_not_capability_stage": true,
     "diagnostic_stage_is_persisted_runtime_state": false,
     "repository_closed_is_current_host_active_proof": false,
-    "external_gap_vector_is_repository_failure": false
+    "external_gap_vector_is_repository_failure": false,
+    "activation_service_tier_is_lifecycle_state": false,
+    "runtime_bound_limited_is_active": false,
+    "limited_runtime_turn_is_canonical_state": false,
+    "limited_docx_is_platform_delivery_ack": false,
+    "limited_output_requires_additional_platform_evidence": false
   },
   "deadline_results": [
     "DEADLINE_PASS",
@@ -273,5 +350,76 @@
     "external_gaps_orthogonal": true,
     "persisted": false,
     "authority": 0
+  },
+  "activation_service_spectrum": {
+    "schema": "ikant-le-activation-service-tier/v1",
+    "semantic_owner": "src/runtime-availability.mjs",
+    "tiers": [
+      "REPO_STUDY_ONLY",
+      "ACTIVATION_LIMITED_1",
+      "ACTIVATION_LIMITED_2",
+      "RUNTIME_BOUND_LIMITED",
+      "ACTIVE"
+    ],
+    "projection_only": true,
+    "persisted": false,
+    "replaces_lifecycle": false,
+    "prefix_monotonic": true,
+    "active_semantics_unchanged": true,
+    "requirements": {
+      "REPO_STUDY_ONLY": [
+        "HUMAN_GATE",
+        "SOURCE_SNAPSHOT"
+      ],
+      "ACTIVATION_LIMITED_1": [
+        "HUMAN_GATE",
+        "SOURCE_SNAPSHOT",
+        "LOCAL_INGRESS"
+      ],
+      "ACTIVATION_LIMITED_2": [
+        "HUMAN_GATE",
+        "SOURCE_SNAPSHOT",
+        "LOCAL_INGRESS",
+        "LOCAL_MATERIALIZATION"
+      ],
+      "RUNTIME_BOUND_LIMITED": [
+        "HUMAN_GATE",
+        "SOURCE_SNAPSHOT",
+        "LOCAL_INGRESS",
+        "LOCAL_MATERIALIZATION",
+        "EXECUTED_RUNTIME_PROOF",
+        "RUNTIME_BIND"
+      ],
+      "ACTIVE": [
+        "HUMAN_GATE",
+        "SOURCE_SNAPSHOT",
+        "LOCAL_INGRESS",
+        "LOCAL_MATERIALIZATION",
+        "EXECUTED_RUNTIME_PROOF",
+        "RUNTIME_BIND",
+        "WRITER",
+        "ACTIVE_READBACK"
+      ]
+    }
+  },
+  "limited_runtime_turn": {
+    "schema": "ikant-le-limited-turn-closure/v1",
+    "semantic_owner": "src/runtime-limited-turn.mjs",
+    "claim_class": "IKANT_RUNTIME_LIMITED",
+    "required_tier": "RUNTIME_BOUND_LIMITED",
+    "requires": [
+      "WRITER",
+      "SAME_INPUT_NODE_DISPATCH",
+      "RUNTIME_SEAL",
+      "DOCX_WRITE_READBACK",
+      "TELEMETRY_COMPLETE",
+      "STRUCTURED_DOWNLOAD_HANDOFF"
+    ],
+    "platform_ack_required": false,
+    "host_delivery_proven": false,
+    "canonical_state_mutation": false,
+    "persisted": false,
+    "authority": 0,
+    "promotion_to_active_requires": "ACTIVE_READBACK"
   }
 }

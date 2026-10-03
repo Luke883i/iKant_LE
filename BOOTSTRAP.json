@@ -148,8 +148,8 @@
     "runtime_root": {
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
-      "member_count": 42,
-      "source_bytes": 370263,
+      "member_count": 43,
+      "source_bytes": 386526,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "821fabefede8bd2715c6a758cc6ba8374c54d74c"
@@ -159,8 +159,8 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 101554,
-          "blob_sha1": "35c2ddaf76053ecddd744ea065a52341542d9560"
+          "source_bytes": 106314,
+          "blob_sha1": "abcf036b59246a00a74d1fafa6cdbd66c1d5aae5"
         },
         {
           "index": 1,
@@ -179,23 +179,23 @@
         {
           "index": 3,
           "path": "runtime-root/shard-003.json",
-          "member_count": 5,
-          "source_bytes": 29052,
-          "blob_sha1": "f1b2df2c50d44934217436d4c6cda285fcff7a6f"
+          "member_count": 6,
+          "source_bytes": 35478,
+          "blob_sha1": "74b2b6a16da5fb6471f23e59e1c4e25e55b23ec2"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 11,
-          "source_bytes": 82074,
-          "blob_sha1": "92fc1ebbba8ce2ac5902cb2b6de476af128ee872"
+          "source_bytes": 86700,
+          "blob_sha1": "f60372365bab4497434a0ff1e3f9ea973783cd98"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 59108,
-          "blob_sha1": "918fd93ce61f57fa4dd791253947bcc9cc8de2c8"
+          "source_bytes": 60196,
+          "blob_sha1": "4ef4407ff811538e4ae518b89f2df42e84e0748c"
         },
         {
           "index": 6,
@@ -298,8 +298,14 @@
         },
         {
           "path": "src/runtime.mjs",
-          "blob_sha1": "4f7e17fde9ec182cac43f5591b9954b8379523af",
-          "bytes": 2159,
+          "blob_sha1": "3572dd6d26ce8edf45052843a3d80caa3fa96d5f",
+          "bytes": 2367,
+          "shard": 3
+        },
+        {
+          "path": "src/runtime-limited-turn.mjs",
+          "blob_sha1": "f8d552d9934b03ce6c7abf5435768083708fcafd",
+          "bytes": 6119,
           "shard": 3
         },
         {
@@ -340,8 +346,8 @@
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "8db2a089af0f64d6af95e1ce0952fe1695e4787b",
-          "bytes": 39257,
+          "blob_sha1": "a4a641f2fb1f9028767551499b56d8965e4d89ed",
+          "bytes": 40257,
           "shard": 5
         },
         {
@@ -412,14 +418,14 @@
         },
         {
           "path": "src/runtime-availability.mjs",
-          "blob_sha1": "17136eaf5ce12777e1a263a478b30173aa9e7839",
-          "bytes": 16316,
+          "blob_sha1": "1deae76d96fbf53f6e6a990fbbdc96e1789fd17e",
+          "bytes": 21056,
           "shard": 0
         },
         {
           "path": "contracts/runtime-availability-dod.json",
-          "blob_sha1": "96d3d76de04e2e41d1702f6d2bd108e1878f5013",
-          "bytes": 11848,
+          "blob_sha1": "901d73b905e0e55c6a4b4e5b6cc4c8c2e26bb4c8",
+          "bytes": 16044,
           "shard": 4
         },
         {
@@ -459,7 +465,7 @@
           "shard": 4
         }
       ],
-      "runtime_root_sha256": "f058726f8a8f1861f295ebec97db3d06c713339c66d30ff2654dd06fb6c13b5c"
+      "runtime_root_sha256": "f8f33d7c3a41f885e337efa4b6be91b31a6df2b9ed7d5d428b96556091dbe38f"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -643,7 +649,9 @@
     "first_unclosed_edge_required": true,
     "diagnostic_stage_persisted": false,
     "external_gap_laundering_forbidden": true,
-    "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise"
+    "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise",
+    "activation_service_contract": "contracts/runtime-availability-dod.json#activation_service_spectrum",
+    "limited_runtime_turn_module": "src/runtime-limited-turn.mjs"
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
