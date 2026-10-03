@@ -5,145 +5,19 @@ on:
 permissions:
   contents: read
 jobs:
-  select:
+  c30:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: npm run select:c30
-      - run: npm run falsify:c30
-  tiers:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 --test-name-pattern="service tiers" tests/c30-activation-service.test.mjs
-  integrity:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 --test-name-pattern="integrity overlay" tests/c30-activation-service.test.mjs
-  closure:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 --test-name-pattern="limited closure" tests/c30-activation-service.test.mjs
-  docx:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 --test-name-pattern="mechanically closes" tests/c30-activation-service.test.mjs
-  noncanonical:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 --test-name-pattern="no canonical writer" tests/c30-activation-service.test.mjs
-  receipts:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 --test-name-pattern="checked-in selection" tests/c30-activation-service.test.mjs
-  c28:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/c28-semantic-closure.test.mjs
-  c29:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/c29-ontological-promise.test.mjs
-  reg1:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/c17-deadline-integrity.test.mjs tests/c18-activation-continuation.test.mjs tests/c19-fastboot-convergence.test.mjs tests/c20-session-chat-deployment.test.mjs tests/c21-local-session-fastboot.test.mjs tests/c23-ontology-collapse.test.mjs
-  reg2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/c24-canonical-boundary.test.mjs tests/c25-executor-data-plane.test.mjs tests/c27-session-capability-lattice.test.mjs tests/c28-semantic-closure.test.mjs tests/c29-ontological-promise.test.mjs tests/c30-activation-service.test.mjs
-  reg3:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/c5.test.mjs tests/chat-bootstrap-semantic.test.mjs tests/embedded-library.test.mjs tests/emergence.test.mjs tests/fastboot.test.mjs tests/first-contact.test.mjs
-  reg4:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs tests/local-host-meta-prompt.test.mjs tests/runtime-availability.test.mjs tests/runtime.test.mjs tests/session-chat-fastboot.test.mjs tests/surface-b.test.mjs
-  reg4_life:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
-  reg4_hostmeta:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/local-host-meta-prompt.test.mjs
-  reg4_availability:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/runtime-availability.test.mjs
-  reg4_runtime:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/runtime.test.mjs
-  reg4_session:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
-  reg4_surface:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/surface-b.test.mjs
-  aggregate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs tests/c28-semantic-closure.test.mjs tests/c29-ontological-promise.test.mjs
-      - run: npm run runtime-root:verify
+        with:
+          node-version: '20'
+      - name: Select activation service contract
+        run: npm run select:c30
+      - name: Falsify activation service 10m
+        run: npm run falsify:c30
+      - name: Focused C30 tests
+        run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs tests/c28-semantic-closure.test.mjs tests/c29-ontological-promise.test.mjs
+      - name: Verify runtime root
+        run: npm run runtime-root:verify
