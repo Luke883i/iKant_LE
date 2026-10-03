@@ -328,7 +328,10 @@
     "session_shell_intermediate_tier_requires_explicit_projection",
     "pre_runtime_loader_is_executable_kernel_and_not_runtime",
     "acceptance_event_identity_is_materialized_runtime_owned",
-    "canonical_session_local_ingress_is_not_legacy_plugin_ingress"
+    "canonical_session_local_ingress_is_not_legacy_plugin_ingress",
+    "pre_runtime_handoff_full_evidence_revalidated",
+    "pre_runtime_handoff_digest_only_forbidden",
+    "materialization_executor_handoff_crossbound"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -474,7 +477,10 @@
     "session_shell_intermediate_tier_requires_explicit_projection",
     "pre_runtime_loader_is_executable_kernel_and_not_runtime",
     "acceptance_event_identity_is_materialized_runtime_owned",
-    "canonical_session_local_ingress_is_not_legacy_plugin_ingress"
+    "canonical_session_local_ingress_is_not_legacy_plugin_ingress",
+    "pre_runtime_handoff_full_evidence_revalidated",
+    "pre_runtime_handoff_digest_only_forbidden",
+    "materialization_executor_handoff_crossbound"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -942,7 +948,11 @@
       "ikant_le_accept_limited",
       "ikant_le_limited_turn"
     ],
-    "limited_compatibility_ingress_is_canonical": false
+    "limited_compatibility_ingress_is_canonical": false,
+    "pre_runtime_handoff_schema": "ikant-le-pre-runtime-handoff/v2",
+    "pre_runtime_handoff_digest_only_forbidden": true,
+    "runtime_owner_revalidates_pre_runtime_evidence": true,
+    "materialization_executor_cross_binding": true
   },
   "session_shell": {
     "contract": "contracts/session-shell.json",
