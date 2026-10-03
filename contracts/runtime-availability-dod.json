@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-runtime-availability-dod/v3",
-  "slice": "C27.LOCAL_CAPABILITY_LATTICE",
+  "schema": "ikant-le-runtime-availability-dod/v4",
+  "slice": "C28.FULL_IKANT_SEMANTIC_ABSORPTION",
   "authority": 0,
-  "intent": "Represent local activation as orthogonal evidence edges: processor, source visibility, verified byte path, materialization/reopen, executed provenance, runtime binding and ACTIVE readback. HOST_UNAVAILABLE is a blocker overlay, never a substitute for the first unclosed edge.",
+  "intent": "Represent runtime truth with the existing lifecycle while deriving six-edge repository closure, non-persisted diagnostics and a separate external-gap vector.",
   "principles": [
     "DEGRADED is non-ACTIVE and cannot use iKant identity as if ACTIVE",
     "DEGRADED is allowed only for observed availability/capability loss, never to mask integrity, consent or source contradictions",
@@ -15,7 +15,11 @@
     "canonical v2 ACTIVE depends on local executor, local materialization/reopen, runtime-owned probe/provenance, writer and ACTIVE readback; carrier and deadline are legacy v1 concerns",
     "N0-N8 activation stage is a derived authority-zero projection and never a new product mode or lifecycle identity",
     "verified opaque relay is a valid canonical byte path only after roundtrip and source/arrival samehash; model rewrite and semantic equivalence remain integrity failures",
-    "source-visible plus local processor plus relay candidate is N3_BRIDGE_PROBE_REQUIRED, not HOST_UNAVAILABLE"
+    "source-visible plus local processor plus relay candidate is N3_BRIDGE_PROBE_REQUIRED, not HOST_UNAVAILABLE",
+    "LOCAL_PROCESSOR and VERIFIED_BYTE_PATH are facets of LOCAL_INGRESS, not separate constitutional owners",
+    "diagnostic N8 is impossible under an integrity blocker",
+    "repository closure and external platform observation remain separate",
+    "current-host topology belongs to receipts or fixtures rather than constitutional contracts"
   ],
   "session_states": {
     "DISCOVERED": "target recognized; no admission claim",
@@ -219,7 +223,10 @@
     "legacy_byte_bridge_is_not_v2_requirement": true,
     "verified_opaque_relay_is_authority": false,
     "stage_projection_is_runtime_truth": false,
-    "host_unavailable_is_not_capability_stage": true
+    "host_unavailable_is_not_capability_stage": true,
+    "diagnostic_stage_is_persisted_runtime_state": false,
+    "repository_closed_is_current_host_active_proof": false,
+    "external_gap_vector_is_repository_failure": false
   },
   "deadline_results": [
     "DEADLINE_PASS",
@@ -244,8 +251,27 @@
       "N8_ACTIVE"
     ],
     "projection_only": true,
+    "persisted": false,
+    "constitutional_boundary": false,
     "fault_overlay_orthogonal": true,
+    "active_requires_no_integrity_overlay": true,
     "product_mode_created": false,
     "activation_modality_created": false
+  },
+  "session_closure_projection": {
+    "schema": "ikant-le-session-closure-projection/v1",
+    "semantic_owner": "src/runtime-availability.mjs",
+    "edges": [
+      "HUMAN_GATE",
+      "SOURCE_SNAPSHOT",
+      "LOCAL_INGRESS",
+      "LOCAL_MATERIALIZATION",
+      "EXECUTED_RUNTIME_PROOF",
+      "ACTIVE_READBACK"
+    ],
+    "exact_first_unclosed_edge": true,
+    "external_gaps_orthogonal": true,
+    "persisted": false,
+    "authority": 0
   }
 }

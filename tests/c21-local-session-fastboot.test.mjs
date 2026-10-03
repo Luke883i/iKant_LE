@@ -25,13 +25,13 @@ test('C21 state and contract expose one local activation modality',()=>{
 test('C22 host-attested receipt owns planner input but does not claim physical origin',()=>{
  const r=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'api + local sink observed',probeOwner:'test',operationId:'op-a',sourceHead:HEAD});
  assert.equal(validateFastbootCapabilityReceipt(r,{sourceHead:HEAD}).ok,true);assert.equal(r.observation_class,'HOST_ATTESTED');assert.equal(r.physical_origin_proven,false);
- const l=buildFastbootChannelLedger({receipts:[r],sourceHead:HEAD});assert.equal(validateFastbootChannelLedger(l,{sourceHead:HEAD}).ok,true);assert.equal(l.channels.GITHUB_API_BASE64.status,'AVAILABLE');assert.equal(l.channels.HOST_FILE_BRIDGE.status,'UNKNOWN');
+ const l=buildFastbootChannelLedger({receipts:[r],sourceHead:HEAD});assert.equal(validateFastbootChannelLedger(l,{sourceHead:HEAD}).ok,true);assert.equal(l.retry_memory_owner,'FASTBOOT_CHANNEL_LEDGER');assert.equal(l.channels.GITHUB_API_BASE64.status,'AVAILABLE');assert.equal(l.channels.HOST_FILE_BRIDGE.status,'UNKNOWN');
 });
 
 test('C21 one NEXT executes once; unchanged evidence cannot retry; changed evidence replans',()=>{
  const root=runtimeRootDescriptor(),a=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'AVAILABLE',capabilities:proven(),evidence:'available',probeOwner:'test',operationId:'op-a',sourceHead:HEAD});
  let l=buildFastbootChannelLedger({receipts:[a],sourceHead:HEAD}),first=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});
- assert.equal(first.action,'EXECUTE_CANONICAL_CARRIER');assert.equal(first.one_next,true);assert.equal(first.one_executor,true);assert.equal(validateFastbootStep(first,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256,ledger:l}).ok,true);
+ assert.equal(first.action,'EXECUTE_CANONICAL_CARRIER');assert.equal(first.first_unclosed_edge,'LOCAL_INGRESS');assert.equal(first.one_next,true);assert.equal(first.one_executor,true);assert.equal(validateFastbootStep(first,{sourceHead:HEAD,runtimeRootSha256:root.runtime_root_sha256,ledger:l}).ok,true);
  const failed=recordFastbootFailure(l,first),retry=deriveFastbootStep({ledger:failed,runtimeRootSha256:root.runtime_root_sha256});assert.equal(retry.action,'WAIT_CHANGED_EVIDENCE');assert.equal(retry.retry_allowed,false);assert.equal(failed.failed_decisions.length,1);
  const u=issueFastbootCapabilityReceipt({carrier:'GITHUB_API_BASE64',status:'UNAVAILABLE',capabilities:{...proven(),byte_preserving_runtime_sink:false},evidence:'sink unavailable',probeOwner:'test',operationId:'op-b',sourceHead:HEAD});
  l=buildFastbootChannelLedger({previous:failed,receipts:[u],sourceHead:HEAD});const changed=deriveFastbootStep({ledger:l,runtimeRootSha256:root.runtime_root_sha256});assert.notEqual(changed.action,'WAIT_CHANGED_EVIDENCE');

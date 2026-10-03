@@ -11,11 +11,12 @@ const json=rel=>JSON.parse(fs.readFileSync(path.join(ROOT,rel),'utf8'));
 
 test('C24 canonical boundary remains irreducible, unique and compatibility-zero-authority under later slices',()=>{
  const c=json('contracts/session-chat-activation.json');
- assert.equal(c.irreducible_lattice.length,7);
+ assert.equal(c.irreducible_lattice.length,6);
  assert.equal(c.irreducible_lattice[0],'HUMAN_GATE');
  assert.equal(c.irreducible_lattice[1],'SOURCE_SNAPSHOT');
- assert.ok(c.irreducible_lattice.includes('LOCAL_PROCESSOR'));
- assert.ok(c.irreducible_lattice.includes('VERIFIED_BYTE_PATH'));
+ assert.equal(c.irreducible_lattice[2],'LOCAL_INGRESS');
+ assert.equal(c.irreducible_lattice.includes('LOCAL_PROCESSOR'),false);
+ assert.equal(c.irreducible_lattice.includes('VERIFIED_BYTE_PATH'),false);
  assert.ok(c.irreducible_lattice.includes('LOCAL_MATERIALIZATION'));
  assert.ok(c.irreducible_lattice.includes('EXECUTED_RUNTIME_PROOF'));
  assert.equal(c.irreducible_lattice.at(-1),'ACTIVE_READBACK');

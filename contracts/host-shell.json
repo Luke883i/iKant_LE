@@ -89,8 +89,19 @@
     "materialization_receipt": "ikant-le-runtime-root-materialization/v2",
     "activation_slo_ms": 120000,
     "activation_slo_is_integrity_gate": false,
-    "model_mediated_bytes_forbidden": true,
-    "legacy_v1_transport_fields_compatibility_only": true
+    "legacy_v1_transport_fields_compatibility_only": true,
+    "byte_paths": [
+      "LOCAL_DIRECT",
+      "VERIFIED_OPAQUE_RELAY"
+    ],
+    "unverified_model_mediation_forbidden": true,
+    "verified_opaque_relay_allowed": true,
+    "model_rewrite_forbidden": true,
+    "semantic_equivalence_forbidden": true,
+    "source_arrival_samehash_required": true,
+    "first_unclosed_edge_required": true,
+    "session_closure_projection": "ikant-le-session-closure-projection/v1",
+    "diagnostic_stage_persisted": false
   },
   "automatic_after_acceptance": [
     "LOCAL_EXECUTOR_CAPABILITY_PROBE",
@@ -337,7 +348,7 @@
       "new_acceptance",
       "new_epoch",
       "source_rebase",
-      "model_mediated_bytes"
+      "unverified_model_mediation"
     ]
   },
   "post_accept_convergence": {
@@ -398,6 +409,10 @@
     "unverified_model_mediation_forbidden": true,
     "verified_opaque_relay_allowed": true,
     "model_rewrite_forbidden": true,
-    "semantic_equivalence_forbidden": true
+    "semantic_equivalence_forbidden": true,
+    "first_unclosed_edge_required": true,
+    "session_closure_projection": "ikant-le-session-closure-projection/v1",
+    "diagnostic_stage_persisted": false,
+    "external_gap_laundering_forbidden": true
   }
 }
