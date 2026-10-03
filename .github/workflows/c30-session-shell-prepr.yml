@@ -29,4 +29,14 @@ jobs:
       - run: node --test --test-concurrency=1 tests/c30-session-shell.test.mjs
       - run: npm run select:c30
       - run: npm run falsify:c30
-      - name: Run full regression with summary\n        shell: bash\n        run: |\n          set +e\n          npm test > /tmp/npm-test.log 2>&1\n          code=$?\n          echo '### npm test tail' >> \"$GITHUB_STEP_SUMMARY\"\n          tail -n 220 /tmp/npm-test.log >> \"$GITHUB_STEP_SUMMARY\"\n          exit $code\n
+      - name: Run full regression with summary
+        shell: bash
+        run: |
+          set +e
+          npm test > /tmp/npm-test.log 2>&1
+          code=$?
+          echo '### npm test tail' >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~text' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 220 /tmp/npm-test.log >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~' >> "$GITHUB_STEP_SUMMARY"
+          exit $code
