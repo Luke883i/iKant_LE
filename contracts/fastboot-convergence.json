@@ -47,7 +47,7 @@
     "C19_L6 duplicate carrier retry is rejected",
     "C19_L7 complete attempt must be last",
     "C19_L8 complete attempt requires exact source/root/object identities and byte sink evidence",
-    "C19_L9 model-mediated bytes are rejected",
+    "C19_L9 legacy-v1 carrier attempts reject model-mediated bytes; canonical-v2 VERIFIED_OPAQUE_RELAY is allowed only under C28 authority-zero samehash policy",
     "C19_L10 source object identity and runtime sink identity are both required",
     "C19_L11 transfer receipt binds the single history commit",
     "C19_L12 acceptance/source/deadline preservation flags are mandatory",
@@ -85,6 +85,21 @@
     "semantic_qualification_is_not_physical_host_bridge_proof": true,
     "bridge_provisioning_is_not_claimed": true,
     "runtime_execution_plane_is_not_user_device": true,
-    "unavailable_host_capability_must_remain_fail_closed": true
+    "unavailable_host_capability_must_remain_fail_closed": true,
+    "legacy_v1_model_mediated_false_rule_forbids_verified_v2_relay": false
+  },
+  "canonical_v2_overlay": {
+    "slice": "C28.FULL_IKANT_SEMANTIC_ABSORPTION",
+    "constitutional_edge": "LOCAL_INGRESS",
+    "planner_owner": "EXISTING_FASTBOOT_CONVERGENCE",
+    "retry_memory_owner": "FASTBOOT_CHANNEL_LEDGER",
+    "first_unclosed_edge": "LOCAL_INGRESS_UNTIL_INGRESS_RECEIPT_CLOSES",
+    "unchanged_decision_unchanged_evidence_retry": false,
+    "byte_paths": [
+      "LOCAL_DIRECT",
+      "VERIFIED_OPAQUE_RELAY"
+    ],
+    "model_authority": 0,
+    "legacy_v1_carrier_attempt_schema_remains_compatibility_only": true
   }
 }

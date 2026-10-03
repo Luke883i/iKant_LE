@@ -40,7 +40,9 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept in
 | C15-C21 | transport/availability/deadline/continuation -> one `SESSION_CHAT_LOCAL` fastboot with receipts, failure memory and provenance |
 | C22 | host-attested planning separated from local proof; root reopen, exact provenance, non-injectable probe |
 | C23 | HOST_ATTESTED terminology, neutral acceptance-origin naming, machine-checked C20 legacy quarantine |
-| C24 | six-node canonical boundary, deterministic runtime-root regeneration/verification, compatibility translated before runtime |\n| C25-C27 | local executor data plane -> typed processor/byte-path lattice; verified opaque relay closes connector-to-local ingress without granting model authority |
+| C24 | six-node canonical boundary, deterministic runtime-root regeneration/verification, compatibility translated before runtime |
+| C25-C27 | local executor data plane; verified opaque relay closes local ingress without model authority |
+| C28 | full-iKant causal absorption -> six-edge closure, one ingress/retry owner, first-unclosed-edge, explicit external gaps |
 | C25 | local activation executor owns the data plane; preaccept continuity uses object identity; retry is content-addressed/idempotent; latency is SLO not integrity |
 | C26 | generated local-host meta-prompt collapses onto C25 control-plane boundary; 100 full-prompt semantic mutations and deletion oracle protect against stale carrier/bridge ontology |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
@@ -51,4 +53,4 @@ LIB.0 is auxiliary/private by default and does not change standalone lifecycle o
 
 Qualification is source-bound and risk-adaptive: deterministic checks first; typical/edge/stress families exercised; blocking survivors zero. C10 keeps 1M bootstrap mutations plus novelty tail/deletion oracle. C11 qualifies a compressed causal lattice; configuration, self-report and mutation PASS are not runtime evidence. LIB.0 requires 100k boundary mutations, zero survivors, novelty tail, exact vectors and regression. C15 adds 1M transport mutations with zero unsafe new accepts. C21 adds Causal Forensic Closure plus 10k architecture pressure, 10x1M seeded traces, real-code tests and local Node witness. C22 adds receipt-laundering and caller-probe adversaries. C23 adds a 10M ontology-collapse campaign, 13 deletion mutants and gates against stale deployment/mechanical aliases while preserving marked C20 compatibility. PASS remains bounded engineering evidence, not physical host proof, global formal minimality or latency guarantee.
 
-
+C28 anti-entropy: add evidence below existing owners where possible; every repository gap closes mechanically or exposes `first_unclosed_edge`, while external facts remain explicit.
