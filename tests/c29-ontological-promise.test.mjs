@@ -28,7 +28,7 @@ test('C29 pre-slice baseline C3 plus I2 is exactly 9400 and neither action alone
 
 test('C29 typed relay contract contains no blanket canonical ban on verified opaque relay',()=>{
  const a=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-activation.json'),'utf8')),g=a.global_dod.find(x=>x.id==='C21_G7');
- assert.ok(g);assert.equal(g.claim.includes('model-mediated bytes, false ACTIVE'),false);assert.ok(g.claim.includes('unverified/reconstructed model-mediated bytes'));assert.ok(g.claim.includes('VERIFIED_OPAQUE_RELAY'));
+ assert.ok(g);assert.equal(g.claim.includes('no second acceptance, source reset, deadline reset, model-mediated bytes, false ACTIVE'),false);assert.ok(g.claim.includes('unverified/reconstructed model-mediated bytes'));assert.ok(g.claim.includes('VERIFIED_OPAQUE_RELAY'));
 });
 
 test('C29 checked-in mutation receipts encode unique minimum and 10m fail-closed falsification',()=>{
