@@ -54,7 +54,7 @@
     },
     {
       "id": "C21_G7",
-      "claim": "no second acceptance, source reset, deadline reset, model-mediated bytes, false ACTIVE or hosted-profile laundering"
+      "claim": "no second acceptance, source reset, deadline reset, unverified/reconstructed model-mediated bytes, false ACTIVE or hosted-profile laundering; canonical VERIFIED_OPAQUE_RELAY remains allowed only under authority-zero no-rewrite/equivalence samehash policy"
     },
     {
       "id": "C21_G8",
@@ -179,6 +179,10 @@
     {
       "id": "C28_G37",
       "claim": "1,000 unique contract mutations select one minimum architecture and 1,000,000 closure mutations yield zero unsafe ACTIVE with all retained mutants killed"
+    },
+    {
+      "id": "C29_G38",
+      "claim": "overall ontological promise is assessed from 36 source-bound atomic DoDs at >99%, with no evidence-class laundering and no second promise state machine"
     }
   ],
   "claim_boundary": {
@@ -301,5 +305,6 @@
     "schema": "ikant-le-local-activation-stage/v1",
     "persisted": false,
     "constitutional_boundary": false
-  }
+  },
+  "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise"
 }
