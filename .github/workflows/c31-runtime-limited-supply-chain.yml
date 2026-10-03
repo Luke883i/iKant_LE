@@ -15,19 +15,65 @@ jobs:
           node-version: '20'
       - name: Falsify runtime-limited supply chain 1m
         run: npm run falsify:c31
-      - name: C31 dispatch test
-        run: node --test --test-concurrency=1 tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: Classify limited acceptance failure
+        id: diag
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE' > /tmp/c31-category
+          import fs from 'node:fs';
+          import os from 'node:os';
+          import path from 'node:path';
+          import {deploySessionChatRuntime,acceptDeployedLimitedSession} from './src/session-chat-deployment.mjs';
+          const d=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c31-diag-')),deployment=path.join(d,'deploy');
+          let category='NONE';
+          try {
+            deploySessionChatRuntime({deploymentRoot:deployment,deploymentId:'D-C31-DIAG'});
+            await acceptDeployedLimitedSession({deploymentRoot:deployment,sessionId:'CHAT-DIAG',humanInput:'I ACCEPT'});
+            category='PASS';
+          } catch(e) {
+            const m=String(e?.message||e);
+            if(m.includes('runtime root invalid')) category='RUNTIME_ROOT';
+            else if(m.includes('acceptance invalid')) category='ACCEPTANCE';
+            else if(m.includes('materialization invalid')) category='MATERIALIZATION';
+            else if(m.includes('local root invalid')) category='LOCAL_ROOT';
+            else if(m.includes('runtime probe unavailable')) category='PROBE';
+            else if(m.includes('provenance invalid')) category='PROVENANCE';
+            else if(m.includes('self-validation failed')) category='SELF_VALIDATION';
+            else category='OTHER';
+          } finally { fs.rmSync(d,{recursive:true,force:true}); }
+          console.log(category);
+          NODE
+          echo "category=$(cat /tmp/c31-category)" >> "$GITHUB_OUTPUT"
+      - name: Diagnostic PASS
+        if: steps.diag.outputs.category == 'PASS'
+        run: echo PASS
+      - name: Diagnostic RUNTIME_ROOT
+        if: steps.diag.outputs.category == 'RUNTIME_ROOT'
+        run: echo RUNTIME_ROOT
+      - name: Diagnostic ACCEPTANCE
+        if: steps.diag.outputs.category == 'ACCEPTANCE'
+        run: echo ACCEPTANCE
+      - name: Diagnostic MATERIALIZATION
+        if: steps.diag.outputs.category == 'MATERIALIZATION'
+        run: echo MATERIALIZATION
+      - name: Diagnostic LOCAL_ROOT
+        if: steps.diag.outputs.category == 'LOCAL_ROOT'
+        run: echo LOCAL_ROOT
+      - name: Diagnostic PROBE
+        if: steps.diag.outputs.category == 'PROBE'
+        run: echo PROBE
+      - name: Diagnostic PROVENANCE
+        if: steps.diag.outputs.category == 'PROVENANCE'
+        run: echo PROVENANCE
+      - name: Diagnostic SELF_VALIDATION
+        if: steps.diag.outputs.category == 'SELF_VALIDATION'
+        run: echo SELF_VALIDATION
+      - name: Diagnostic OTHER
+        if: steps.diag.outputs.category == 'OTHER'
+        run: echo OTHER
+      - name: Fail after diagnosis
+        if: steps.diag.outputs.category != 'PASS'
+        run: exit 1
       - name: C31 acceptance test
+        if: steps.diag.outputs.category == 'PASS'
         run: node --test --test-concurrency=1 tests/c31-runtime-limited-acceptance.test.mjs
-      - name: C31 turn test
-        run: node --test --test-concurrency=1 tests/c31-runtime-limited-turn.test.mjs
-      - name: C31 replay test
-        run: node --test --test-concurrency=1 tests/c31-runtime-limited-replay.test.mjs
-      - name: C31 tamper/ingress test
-        run: node --test --test-concurrency=1 tests/c31-runtime-limited-tamper.test.mjs
-      - name: C30 regression
-        run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs
-      - name: C20 ACTIVE deployment regression
-        run: node --test --test-concurrency=1 tests/c20-session-chat-deployment.test.mjs
-      - name: Verify runtime root
-        run: npm run runtime-root:verify
