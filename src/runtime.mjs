@@ -15,5 +15,5 @@ export { assessOntologicalPromise, validateOntologicalPromiseAssessment, ONTOLOG
 
 export { processLimitedRuntimeTurn } from './runtime-limited-turn.mjs';
 export { issueLimitedRuntimeCapability,validateLimitedRuntimeCapability } from './runtime-limited-capability.mjs';
-export { nodeDispatchReceiptPure,validateNodeDispatchReceipt } from './runtime-dispatch.mjs';
+export { validateNodeDispatchReceipt } from './runtime-dispatch.mjs';
 export { validateExecutedProvenanceReceipt } from './runtime-evidence.mjs';
