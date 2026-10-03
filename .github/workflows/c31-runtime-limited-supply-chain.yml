@@ -15,8 +15,12 @@ jobs:
           node-version: '20'
       - name: Falsify runtime-limited supply chain 1m
         run: npm run falsify:c31
-      - name: C31 end-to-end tests
+      - name: C31 supply-chain test
         run: node --test --test-concurrency=1 tests/c31-runtime-limited-supply-chain.test.mjs
+      - name: C31 replay test
+        run: node --test --test-concurrency=1 tests/c31-runtime-limited-replay.test.mjs
+      - name: C31 tamper/ingress test
+        run: node --test --test-concurrency=1 tests/c31-runtime-limited-tamper.test.mjs
       - name: C30 regression
         run: node --test --test-concurrency=1 tests/c30-activation-service.test.mjs
       - name: C20 ACTIVE deployment regression
