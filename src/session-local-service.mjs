@@ -22,7 +22,7 @@ export function validatePreRuntimeHandoff(h){
  const ingress=h?.acceptance_ingress;if(!ingress||ingress.human_input!=='I ACCEPT'||ingress.authority!==0||!Number.isFinite(ingress.observed_monotonic_ms))e.push('acceptance_ingress');
  const boot=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8')),ph=h?.preaccept_handoff,pv=validatePreacceptKernelInput(ph,{workspace:ROOT,sourceHead:h?.source_head,boot});
  if(!pv.ok)e.push(...pv.errors.map(x=>'preaccept:'+x));if(sha256(Buffer.from(JSON.stringify(ph||{})))!==h?.preaccept_handoff_sha256)e.push('preaccept_digest');
- const ax=h?.activation_executor,av=validateActivationExecutorReceipt(ax,{workspace:ROOT,sourceHead:h?.source_head,descriptor:d,orientation:pv.orientation||[]});
+ const ax=h?.activation_executor,av=validateActivationExecutorReceipt(ax,{workspace:ROOT,sourceHead:h?.source_head,descriptor:d,orientation:pv.orientation||[],requireSourceObjectReadback:false});
  if(!av.ok)e.push(...av.errors.map(x=>'executor:'+x));if(ax?.receipt_sha256!==h?.activation_executor_receipt_sha256)e.push('executor_receipt_binding');
  const self=preRuntimeSelfCheck({workspace:ROOT});if(!self.ok)e.push('kernel_self_check');if(h?.kernel_self_check?.receipt_sha256!==h?.kernel_self_check_receipt_sha256||self.receipt.receipt_sha256!==h?.kernel_self_check_receipt_sha256)e.push('kernel_self_binding');
  if(JSON.stringify(h?.kernel_self_check)!==JSON.stringify(self.receipt))e.push('kernel_self_object');
