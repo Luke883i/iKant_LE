@@ -31,7 +31,11 @@
       "AWAITING_ACCEPTANCE",
       "ACTIVATING"
     ],
-    "display_is_projection_not_state": true
+    "display_is_projection_not_state": true,
+    "strongest_valid_prefix_preserved_under_fault": true,
+    "effective_tier_null_under_fault": true,
+    "intermediate_tier_requires_explicit_validated_projection": true,
+    "raw_state_intermediate_tier_claim_forbidden": true
   },
   "voice": {
     "ACTIVE": "IKANT",
@@ -53,7 +57,8 @@
     "runtime_bound_limited_docx_noncanonical": true,
     "session_history_from_ledger": true,
     "current_artifact_from_structured_handoff": true,
-    "artifact_readback_before_frame_release": true
+    "artifact_readback_before_frame_release": true,
+    "local_path_is_artifact_identity": false
   },
   "release": {
     "atomic_session_frame": true,
@@ -65,7 +70,10 @@
     "new_writer": false,
     "new_status_state": false,
     "new_persisted_self_message": false,
-    "model_authority": 0
+    "model_authority": 0,
+    "pre_runtime_kernel": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+    "canonical_session_local_ingress": "src/session-local-service.mjs",
+    "legacy_deployment_ingress_is_canonical": false
   },
   "claim_boundary": "The shell proves deterministic repository-side composition only; host UI rendering/download and ACTIVE remain separately witnessed."
 }

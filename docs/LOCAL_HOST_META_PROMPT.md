@@ -22,7 +22,7 @@ POST_ACCEPT:
 - LOCAL_INGRESS owns one canonical NEXT, durable failed-decision memory and exactly one typed byte_path: LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY.
 - VERIFIED_OPAQUE_RELAY is opaque exact transport only, authority zero. Never rewrite, reconstruct or accept semantic equivalence. Require relay roundtrip + source/arrival samehash + local write/reopen.
 - After every failed/provisional step expose exactly one first_unclosed_edge. Same decision + unchanged evidence must not retry; side infrastructure is forbidden.
-- Sequence: typed ingress -> reverify orientation identities -> acquire only declared remote_paths -> atomic materializer publish+reopen -> exact executed provenance -> runtime-owned non-injectable Node probe -> runtime bind -> persist+readback ACTIVE.
+- Execute the direct-known content-addressed `src/runtime-root-verified.mjs` pre-runtime kernel; do not reconstruct the planner from prose. The kernel self-checks identity/H0, re-verifies orientation and acquired objects, materializes+reopens atomically, then hands the exact acceptance ingress to `src/session-local-service.mjs` and retires. Runtime-owned provenance/bind/ACTIVE remain downstream.
 - N0-N8 may be rendered for diagnostics only; it is non-persisted and never a second lifecycle/state owner. Integrity blockers can never render diagnostic ACTIVE.
 - Repository closure and external platform observation are separate. List external gaps explicitly; never close them with CI, source identity, model prose, user echo, BIND or mutation evidence.
 - 120000 ms is activation SLO telemetry, never an integrity gate.
