@@ -477,7 +477,7 @@
           "shard": 4
         }
       ],
-      "runtime_root_sha256": "84c270552f83dd72a0582580c25972c8527e3f850da737b174b31a22b18590e7"
+      "runtime_root_sha256": "3c2e8b93ac90680fa28e94998bdd7541097e59715eb53565d4ab839ca0e3af70"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
