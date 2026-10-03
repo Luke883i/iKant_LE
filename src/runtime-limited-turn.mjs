@@ -4,6 +4,7 @@ import {writeBacklogDocxAtomic} from './docx.mjs';
 import {nodeDispatchReceiptPure,validateNodeDispatchReceipt} from './runtime-dispatch.mjs';
 import {validateLimitedRuntimeCapability} from './runtime-limited-capability.mjs';
 import {validateActivationServiceTier,assessLimitedTurnClosure,validateLimitedTurnClosure} from './runtime-availability.mjs';
+import {buildSessionShell,validateSessionShell,renderSessionShell} from './session-shell.mjs';
 
 function digestWithout(x,key){const y=structuredClone(x);delete y[key];return sha256(Buffer.from(JSON.stringify(y)));}
 function descriptorDigest(d){return sha256(Buffer.from(JSON.stringify(d)));}
@@ -40,5 +41,6 @@ export function processLimitedRuntimeTurn({input,candidate,capability,hostSurfac
  const closureValidation=validateLimitedTurnClosure(closure);if(!closureValidation.ok||closure.closed!==true)throw new Error('FAILURE: limited runtime turn closure did not validate');
  const receiptMaterial={schema:'ikant-le-limited-turn-receipt/v2',claim_class:'IKANT_RUNTIME_LIMITED',source_head:capability.source_head,runtime_root_sha256:capability.runtime_root_sha256,acceptance_event_id:capability.acceptance_event_id,capability_receipt_sha256:capability.receipt_sha256,turn_identity_sha256:turnIdentitySha,activation_projection_sha256:activationProjectionSha,input_sha256:inputSha,output_sha256:outputSha,node_dispatch_receipt_sha256:nodeDispatch.receipt_sha256,runtime_seal_sha256:runtimeSeal.seal_sha256,telemetry_sha256:telemetry.telemetry_sha256,artifact_descriptor_sha256:artifact.descriptor_sha256,artifact_sha256:artifact.sha256,first_unclosed_edge:'ACTIVE_READBACK',closed:true,active:false,canonical_state_mutation:false,platform_ack_required:false,host_delivery_proven:false,authority:0};
  const receipt={...receiptMaterial,receipt_sha256:sha256(Buffer.from(JSON.stringify(receiptMaterial)))};
- return{stdout:surfaceA,code:0,state:'RUNTIME_BOUND_LIMITED',mode:'IKANT_RUNTIME_LIMITED',active:false,artifacts:[artifact],activation,node_dispatch:nodeDispatch,runtime_seal:runtimeSeal,telemetry,closure,receipt};
+ const shell=buildSessionShell({surfaceText:surfaceA,state:{},events:[],artifacts:[artifact],activation,mode:'IKANT_RUNTIME_LIMITED',environmentTelemetry:telemetry,code:0});const sv=validateSessionShell(shell);if(!sv.ok)throw new Error('FAILURE: limited session shell invalid ('+sv.errors.join(',')+')');
+ return{stdout:renderSessionShell(shell),code:0,state:'RUNTIME_BOUND_LIMITED',mode:'IKANT_RUNTIME_LIMITED',active:false,artifacts:[artifact],activation,node_dispatch:nodeDispatch,runtime_seal:runtimeSeal,telemetry,closure,receipt,session_shell:shell};
 }

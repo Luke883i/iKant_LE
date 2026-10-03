@@ -923,5 +923,26 @@
       "ikant_le_accept_limited",
       "ikant_le_limited_turn"
     ]
+  },
+  "session_shell": {
+    "contract": "contracts/session-shell.json",
+    "schema": "ikant-le-session-shell/v2",
+    "slice": "C32",
+    "baseline_slice": "C31.RUNTIME_LIMITED_SUPPLY_CHAIN",
+    "activation_service_owner": "src/runtime-availability.mjs",
+    "active_predicate_unchanged": true,
+    "fault_overlay_forces_non_active": true,
+    "status_is_projection_not_state": true,
+    "self_summary_is_public_projection": true,
+    "self_summary_persisted": false,
+    "self_summary_prose_reingested": false,
+    "atomic_frame": true,
+    "visual_order": [
+      "VOICE_SURFACE",
+      "STATUS",
+      "SELF_SUMMARY",
+      "BACKLOG_TELEMETRY"
+    ],
+    "authority": 0
   }
 }

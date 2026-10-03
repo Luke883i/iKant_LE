@@ -17,3 +17,5 @@ export { processLimitedRuntimeTurn } from './runtime-limited-turn.mjs';
 export { issueLimitedRuntimeCapability,validateLimitedRuntimeCapability } from './runtime-limited-capability.mjs';
 export { validateNodeDispatchReceipt } from './runtime-dispatch.mjs';
 export { validateExecutedProvenanceReceipt } from './runtime-evidence.mjs';
+
+export { SESSION_SHELL_SCHEMA,SESSION_SHELL_ORDER,projectSessionActivation,buildSessionShell,validateSessionShell,renderSessionShell } from './session-shell.mjs';

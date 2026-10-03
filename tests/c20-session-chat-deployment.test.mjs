@@ -30,7 +30,7 @@ test('C20 non-exact or second acceptance cannot create another epoch',{concurren
 });
 
 test('C20 deployed ACTIVE executes a real subsequent runtime turn from session-local root',{concurrency:false},async()=>{
- const d=temp(),deployment=path.join(d,'deploy');try{deploySessionChatRuntime({deploymentRoot:deployment});await acceptDeployedSession({deploymentRoot:deployment,sessionId:'CHAT-TURN',humanInput:'I ACCEPT'});const turn=await runDeployedSessionTurn({deploymentRoot:deployment,sessionId:'CHAT-TURN',input:'continuiamo con una risposta breve ma rigorosa'});assert.equal(turn.code,0);assert.equal(turn.state,'ACTIVE');assert.equal(turn.runtime_readback,true);assert.ok(turn.stdout.length>0);assert.match(turn.stdout,/Backlog & telemetrie:/);}finally{fs.rmSync(d,{recursive:true,force:true});}
+ const d=temp(),deployment=path.join(d,'deploy');try{deploySessionChatRuntime({deploymentRoot:deployment});await acceptDeployedSession({deploymentRoot:deployment,sessionId:'CHAT-TURN',humanInput:'I ACCEPT'});const turn=await runDeployedSessionTurn({deploymentRoot:deployment,sessionId:'CHAT-TURN',input:'continuiamo con una risposta breve ma rigorosa'});assert.equal(turn.code,0);assert.equal(turn.state,'ACTIVE');assert.equal(turn.runtime_readback,true);assert.ok(turn.stdout.length>0);assert.match(turn.stdout,/Backlog e telemetria:/);assert.equal(turn.session_shell?.status?.display_status,'ACTIVE');assert.equal(turn.artifacts?.length,1);}finally{fs.rmSync(d,{recursive:true,force:true});}
 });
 
 test('C20 deployment tamper fails closed before session binding',{concurrency:false},()=>{
