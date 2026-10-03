@@ -97,6 +97,48 @@ jobs:
       - uses: actions/setup-node@v4
         with: {node-version: '20'}
       - run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs tests/local-host-meta-prompt.test.mjs tests/runtime-availability.test.mjs tests/runtime.test.mjs tests/session-chat-fastboot.test.mjs tests/surface-b.test.mjs
+  reg4_life:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
+  reg4_hostmeta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: node --test --test-concurrency=1 tests/local-host-meta-prompt.test.mjs
+  reg4_availability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: node --test --test-concurrency=1 tests/runtime-availability.test.mjs
+  reg4_runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: node --test --test-concurrency=1 tests/runtime.test.mjs
+  reg4_session:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: node --test --test-concurrency=1 tests/session-chat-fastboot.test.mjs
+  reg4_surface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: node --test --test-concurrency=1 tests/surface-b.test.mjs
   aggregate:
     runs-on: ubuntu-latest
     steps:
