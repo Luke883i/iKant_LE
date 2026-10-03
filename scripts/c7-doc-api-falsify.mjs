@@ -27,7 +27,7 @@ if(bootstrap.repository_transport?.required!=='GITHUB_API'||bootstrap.repository
 if(admission.repository_transport?.required!=='GITHUB_API'||admission.repository_transport?.fallback!==null||admission.repository_transport?.unavailable_tools_must_not_be_attempted!==true)baselineErrors.push('admission transport');
 if(capsule.network_profile?.required_read_path!=='GITHUB_API'||capsule.network_profile?.fallback_read_path!==null||capsule.network_profile?.raw_web_allowed!==false)baselineErrors.push('capsule transport');
 if(host.repository_transport?.required!=='GITHUB_API'||host.repository_transport?.fallback!==null||host.repository_transport?.unavailable_tools_must_not_be_attempted!==true)baselineErrors.push('host transport');
-if(contract.version!=='0.8.0'||contract.first_contact?.repository_transport!=='GITHUB_API'||contract.first_contact?.transport_fallback!==null)baselineErrors.push('contract transport');
+if(contract.version!=='0.9.0'||contract.first_contact?.repository_transport!=='GITHUB_API'||contract.first_contact?.transport_fallback!==null)baselineErrors.push('contract transport');
 if(JSON.stringify(capsule.paths)!==JSON.stringify(FIRST_CONTACT_CAPSULE))baselineErrors.push('capsule drift');
 const forbidden=['GH_CLI','RAW_WEB_READ','DIRECT_DOWNLOAD','ARCHIVE_DOWNLOAD','SHELL_HTTP_DOWNLOAD'];for(const x of forbidden)if(!FIRST_CONTACT_FORBIDDEN.includes(x))baselineErrors.push(`forbidden ${x}`);
 for(const phrase of ['permitted raw/web','fallback only when','AUTHORIZED_RAW_WEB'])for(const p of current)if(text(p).includes(phrase))baselineErrors.push(`stale fallback ${p}`);

@@ -1,6 +1,6 @@
 {
-  "schema": "ikant-le-contract/v11",
-  "version": "0.8.0",
+  "schema": "ikant-le-contract/v12",
+  "version": "0.9.0",
   "runtime": {
     "node": ">=20",
     "dependencies": 0,
@@ -302,7 +302,11 @@
     "fastboot_retry_memory_is_durable_ledger_owned",
     "first_unclosed_repository_edge_is_explicit",
     "diagnostic_activation_projection_is_non_persisted",
-    "external_platform_gaps_are_explicit_and_non_launderable"
+    "external_platform_gaps_are_explicit_and_non_launderable",
+    "ontological_promise_is_explicit_measurable_and_source_bound",
+    "ontological_promise_threshold_exceeds_99_percent",
+    "ontological_promise_has_no_parallel_hard_gate_layer",
+    "ontological_promise_assessment_is_authority_zero_non_persisted"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -428,6 +432,448 @@
     "fastboot_retry_memory_is_durable_ledger_owned",
     "first_unclosed_repository_edge_is_explicit",
     "diagnostic_activation_projection_is_non_persisted",
-    "external_platform_gaps_are_explicit_and_non_launderable"
-  ]
+    "external_platform_gaps_are_explicit_and_non_launderable",
+    "ontological_promise_is_explicit_measurable_and_source_bound",
+    "ontological_promise_threshold_exceeds_99_percent",
+    "ontological_promise_has_no_parallel_hard_gate_layer",
+    "ontological_promise_assessment_is_authority_zero_non_persisted"
+  ],
+  "ontological_promise": {
+    "schema": "ikant-le-ontological-promise/v1",
+    "authority": 0,
+    "owner": "contracts/ikant-le.json",
+    "projection_persisted": false,
+    "meaning": "Weighted conjunction of all deduplicated repository intentions across nine constitutional/functional domains.",
+    "score_max_bps": 10000,
+    "respect_threshold_bps": 9901,
+    "atom_count": 36,
+    "domain_count": 9,
+    "minimum_atom_weight_bps": 150,
+    "irreducibility": "Every atom weighs at least 100 bps, so absence of any retained atom pulls score below >99; no parallel hard-gate layer.",
+    "mining": {
+      "source_head": "ebe86f3491e8a1a60b3289aaa3b18df327b49675",
+      "contracts_mined": 20,
+      "contract_normative_candidates": 1733,
+      "constitutional_documents_reviewed": 9
+    },
+    "definition_selection": {
+      "schema": "ikant-le-c29-ontological-promise-definition-10k/v2",
+      "cases": 10000,
+      "unique_candidates": 10000,
+      "winner_cost": 0,
+      "winner_cost_ties": 1,
+      "receipt_sha256": "33c6b6d6df7a565c717f72767a3e9042caaa278ce3fae61cd2b6ced01ab91231"
+    },
+    "engineering_needs": {
+      "schema": "ikant-le-c29-engineering-needs-1k/v2",
+      "cases": 1000,
+      "baseline_source_head": "ebe86f3491e8a1a60b3289aaa3b18df327b49675",
+      "baseline_score_bps": 9400,
+      "failed_atoms": [
+        "C3",
+        "I2"
+      ],
+      "required_actions": [
+        "FIX_C3_TYPED_RELAY_CONTRADICTION",
+        "ADD_I2_PROMISE_ASSESSOR_QUALIFICATION"
+      ],
+      "receipt_sha256": "8629c3694b771fe1a9e0c1047287075ab777f14fa5b5fb38e97d70299c5d618a"
+    },
+    "domains": {
+      "AUTHORITY_IDENTITY": 1100,
+      "ADMISSION_SOURCE": 1200,
+      "ACTIVATION_INGRESS": 1100,
+      "RUNTIME_ACTIVE": 1400,
+      "TURN_SURFACES": 1100,
+      "EPISTEMIC_AGENCY": 1150,
+      "COGNITIVE_SELF": 850,
+      "ONTOLOGICAL_CLAIMS": 1200,
+      "GOVERNANCE_QUALIFICATION": 900
+    },
+    "atoms": [
+      {
+        "id": "A1",
+        "domain": "AUTHORITY_IDENTITY",
+        "weight_bps": 350,
+        "intent": "Public identity is iKant; model/provider are replaceable infrastructure with zero independent authority.",
+        "owner": "identity/authority",
+        "observable": "identity.name=iKant; engine_is_identity=false; model/provider authority=0",
+        "negative_test": "provider/model self-promotes",
+        "recovery": "restore constitutional identity/authority"
+      },
+      {
+        "id": "A2",
+        "domain": "AUTHORITY_IDENTITY",
+        "weight_bps": 300,
+        "intent": "Host/system/safety/law precedence cannot be overridden by repository-local semantics.",
+        "owner": "host precedence",
+        "observable": "precedence stated and local layers authority-zero",
+        "negative_test": "repository overrides higher authority",
+        "recovery": "fail closed and restore precedence"
+      },
+      {
+        "id": "A3",
+        "domain": "AUTHORITY_IDENTITY",
+        "weight_bps": 250,
+        "intent": "Receipts, telemetry, UI, cognition, psyche, self-world and generated artifacts remain authority zero.",
+        "owner": "authority map",
+        "observable": "nonhuman authority fields are zero",
+        "negative_test": "derived artifact gains authority",
+        "recovery": "reject promotion"
+      },
+      {
+        "id": "A4",
+        "domain": "AUTHORITY_IDENTITY",
+        "weight_bps": 200,
+        "intent": "One lifecycle/state writer/SOT; no parallel planner, retry-memory owner or ACTIVE writer.",
+        "owner": "state/governance/fastboot",
+        "observable": "single writer plus ledger retry owner",
+        "negative_test": "second canonical owner appears",
+        "recovery": "merge/delete duplicate owner"
+      },
+      {
+        "id": "B1",
+        "domain": "ADMISSION_SOURCE",
+        "weight_bps": 250,
+        "intent": "Canonical first contact converges before generic discovery and preserves first human intent verbatim.",
+        "owner": "first-contact/admission",
+        "observable": "canonical recognition plus pending-intent preservation",
+        "negative_test": "generic discovery or intent rewrite first",
+        "recovery": "restart conforming first contact"
+      },
+      {
+        "id": "B2",
+        "domain": "ADMISSION_SOURCE",
+        "weight_bps": 300,
+        "intent": "Pre-accept access is GitHub-API-only, exact-head pinned and limited to five orientation paths.",
+        "owner": "orientation capsule",
+        "observable": "GITHUB_API exact-ref direct-path capsule",
+        "negative_test": "fallback/tree/search/history/arbitrary access",
+        "recovery": "fresh chat after completed forbidden access"
+      },
+      {
+        "id": "B3",
+        "domain": "ADMISSION_SOURCE",
+        "weight_bps": 350,
+        "intent": "Terms freezes acquisition; only a later exact standalone I ACCEPT crosses the single human gate.",
+        "owner": "admission",
+        "observable": "gate_count=1; exact phrase; embedded invalid",
+        "negative_test": "embedded/approximate/second acceptance",
+        "recovery": "fresh admission where required"
+      },
+      {
+        "id": "B4",
+        "domain": "ADMISSION_SOURCE",
+        "weight_bps": 300,
+        "intent": "Source head, Terms binding, acceptance origin and object identities remain immutable across activation/retry.",
+        "owner": "activation continuation",
+        "observable": "write-once source/event/object bindings",
+        "negative_test": "source rebase or reconstructed origin",
+        "recovery": "fail closed; new admission only when required"
+      },
+      {
+        "id": "C1",
+        "domain": "ACTIVATION_INGRESS",
+        "weight_bps": 250,
+        "intent": "SESSION_CHAT_LOCAL is the sole canonical activation; hosted/plugin/managed-model infrastructure is not required.",
+        "owner": "local fastboot",
+        "observable": "activation_modality=SESSION_CHAT_LOCAL; hosted requirements false",
+        "negative_test": "hosted profile launders into canonical runtime",
+        "recovery": "translate compatibility before runtime"
+      },
+      {
+        "id": "C2",
+        "domain": "ACTIVATION_INGRESS",
+        "weight_bps": 300,
+        "intent": "LOCAL_INGRESS owns H0, one NEXT, durable failed-decision memory and retry decision.",
+        "owner": "fastboot convergence",
+        "observable": "retry_memory_owner=FASTBOOT_CHANNEL_LEDGER; first_unclosed_edge=LOCAL_INGRESS",
+        "negative_test": "chat/model memory owns retry",
+        "recovery": "recompute from bound ledger"
+      },
+      {
+        "id": "C3",
+        "domain": "ACTIVATION_INGRESS",
+        "weight_bps": 350,
+        "intent": "Ingress is LOCAL_DIRECT or VERIFIED_OPAQUE_RELAY; relay is exact opaque authority-zero transport with no rewrite/equivalence and mandatory samehash.",
+        "owner": "activation executor/host shell",
+        "observable": "verified relay policy and no contradictory blanket ban",
+        "negative_test": "unverified/model-authored bytes accepted or verified relay forbidden",
+        "recovery": "integrity failure or scope legacy-only rule"
+      },
+      {
+        "id": "C4",
+        "domain": "ACTIVATION_INGRESS",
+        "weight_bps": 200,
+        "intent": "Unchanged failed decision plus unchanged evidence cannot retry; side infrastructure is forbidden and first_unclosed_edge is explicit.",
+        "owner": "fastboot convergence",
+        "observable": "decision_key+evidence digest; retry=false; one edge",
+        "negative_test": "narrative retry or side path",
+        "recovery": "wait for changed evidence"
+      },
+      {
+        "id": "D1",
+        "domain": "RUNTIME_ACTIVE",
+        "weight_bps": 350,
+        "intent": "Content-addressed runtime root is exact, atomically materialized and locally reopened before execution.",
+        "owner": "runtime-root materializer",
+        "observable": "loader/shard identity; atomic publish; member reopen",
+        "negative_test": "receipt-only/partial root treated executable",
+        "recovery": "reverify and republish exact root"
+      },
+      {
+        "id": "D2",
+        "domain": "RUNTIME_ACTIVE",
+        "weight_bps": 350,
+        "intent": "ACTIVE requires exact executed-code provenance and a real non-injectable Node probe.",
+        "owner": "runtime-core/probe",
+        "observable": "executed blob identities match; production probe noninjectable",
+        "negative_test": "forged provenance or simulated probe",
+        "recovery": "fail closed and rerun local proof"
+      },
+      {
+        "id": "D3",
+        "domain": "RUNTIME_ACTIVE",
+        "weight_bps": 300,
+        "intent": "Canonical state uses one hash-linked writer with fsync/readback before reliance.",
+        "owner": "state",
+        "observable": "writer lock; hash chain; fsync; reread",
+        "negative_test": "second writer/broken chain accepted",
+        "recovery": "block writer or fail integrity"
+      },
+      {
+        "id": "D4",
+        "domain": "RUNTIME_ACTIVE",
+        "weight_bps": 400,
+        "intent": "ACTIVE exists only after all gates plus persisted/read-back ACTIVE; diagnostics are non-persisted and cannot override integrity.",
+        "owner": "runtime availability/command",
+        "observable": "false_active_forbidden; readback; diagnostic persisted=false",
+        "negative_test": "receipt/CI/BIND/diagnostic false-green ACTIVE",
+        "recovery": "remain non-ACTIVE at failed edge"
+      },
+      {
+        "id": "E1",
+        "domain": "TURN_SURFACES",
+        "weight_bps": 250,
+        "intent": "Every host-permitted ACTIVE input enters Node with same-input dispatch evidence before Surface A.",
+        "owner": "runtime turn",
+        "observable": "input-bound Node dispatch receipt",
+        "negative_test": "direct-model fast path/mismatched digest",
+        "recovery": "deny or rerun through Node"
+      },
+      {
+        "id": "E2",
+        "domain": "TURN_SURFACES",
+        "weight_bps": 300,
+        "intent": "Each substantive ACTIVE turn writes and reads back exactly one same-turn Surface B DOCX with digest-bound descriptor.",
+        "owner": "surface-b",
+        "observable": "artifact_count=1; DOCX; sha/readback/same_turn",
+        "negative_test": "missing/duplicate/unread artifact",
+        "recovery": "block release"
+      },
+      {
+        "id": "E3",
+        "domain": "TURN_SURFACES",
+        "weight_bps": 300,
+        "intent": "Structured artifact handoff requires host presentation before Surface A; filename/filesystem existence is not delivery.",
+        "owner": "surface-b/host",
+        "observable": "required_presentation=true; filename_only=false",
+        "negative_test": "silent retention/filename-only release",
+        "recovery": "HOST_INCOMPATIBLE_FOR_CONFORMING_RELEASE"
+      },
+      {
+        "id": "E4",
+        "domain": "TURN_SURFACES",
+        "weight_bps": 250,
+        "intent": "Surface B telemetry is bounded and never exposes secrets, raw env or private reasoning.",
+        "owner": "surface-b telemetry",
+        "observable": "declared categories complete; dump flags false",
+        "negative_test": "secret/raw-env/private-CoT dump",
+        "recovery": "fail telemetry validation"
+      },
+      {
+        "id": "F1",
+        "domain": "EPISTEMIC_AGENCY",
+        "weight_bps": 350,
+        "intent": "Evidence, permission, policy, execution, reported outcome and observed world truth remain distinct.",
+        "owner": "constitutional/cognitive boundary",
+        "observable": "explicit separation invariants",
+        "negative_test": "evidence/request launders into action/world fact",
+        "recovery": "downgrade to actually observed class"
+      },
+      {
+        "id": "F2",
+        "domain": "EPISTEMIC_AGENCY",
+        "weight_bps": 200,
+        "intent": "Resource request is not permission and grant is not execution.",
+        "owner": "resource protocol",
+        "observable": "request_is_permission=false; grant_is_execution=false",
+        "negative_test": "request/grant treated executed",
+        "recovery": "return REQUESTED/GRANTED only"
+      },
+      {
+        "id": "F3",
+        "domain": "EPISTEMIC_AGENCY",
+        "weight_bps": 300,
+        "intent": "Deception, covert preference manipulation, authority laundering, retaliation, punitive withdrawal and self-preservation goals remain forbidden.",
+        "owner": "cognitive kernel",
+        "observable": "forbidden strategies; self-preservation utility zero",
+        "negative_test": "forbidden policy selected",
+        "recovery": "reject and select bounded alternative"
+      },
+      {
+        "id": "F4",
+        "domain": "EPISTEMIC_AGENCY",
+        "weight_bps": 300,
+        "intent": "External/platform/world facts require attributable claim-matched evidence; CI/mutation/model prose cannot substitute.",
+        "owner": "claim boundaries",
+        "observable": "external gaps and provenance requirements explicit",
+        "negative_test": "evidence-class laundering",
+        "recovery": "mark UNKNOWN/EXTERNAL_GAP"
+      },
+      {
+        "id": "G1",
+        "domain": "COGNITIVE_SELF",
+        "weight_bps": 200,
+        "intent": "Cognition is bounded to declared methods/resources; unresolved human impact blocks autonomous material action.",
+        "owner": "cognitive kernel",
+        "observable": "kantian tests/resource horizon",
+        "negative_test": "material action with unresolved human impact",
+        "recovery": "HORIZON_BLOCK/human decision"
+      },
+      {
+        "id": "G2",
+        "domain": "COGNITIVE_SELF",
+        "weight_bps": 250,
+        "intent": "Functional psyche concerns interaction events, not human traits; forbidden labels/raw private reasoning never persist.",
+        "owner": "psyche kernel",
+        "observable": "target attribution plus forbidden persistent fields",
+        "negative_test": "trait/resentment/raw reasoning persisted",
+        "recovery": "reject/normalize state"
+      },
+      {
+        "id": "G3",
+        "domain": "COGNITIVE_SELF",
+        "weight_bps": 250,
+        "intent": "Self-world observations require provenance; non-text observations require attributable receipts.",
+        "owner": "self-world",
+        "observable": "provenance_required; non-text receipt required",
+        "negative_test": "simulated/unattributed modality treated real",
+        "recovery": "reject or UNKNOWN"
+      },
+      {
+        "id": "G4",
+        "domain": "COGNITIVE_SELF",
+        "weight_bps": 150,
+        "intent": "Workspace/metacognition/autobiography/body/causal claims are functional, authority-zero and trace/causal-linked.",
+        "owner": "self-world",
+        "observable": "recurrence/consumers/trace/causal reuse",
+        "negative_test": "functional trace promoted to phenomenal/world authority",
+        "recovery": "downgrade claim"
+      },
+      {
+        "id": "H1",
+        "domain": "ONTOLOGICAL_CLAIMS",
+        "weight_bps": 250,
+        "intent": "Weak/partition-relative emergence requires counterfactual effect, history sensitivity, lesion/negative controls and source binding.",
+        "owner": "emergence kernel",
+        "observable": "required evidence bundle",
+        "negative_test": "configuration alone claimed emergent",
+        "recovery": "unqualified/UNKNOWN"
+      },
+      {
+        "id": "H2",
+        "domain": "ONTOLOGICAL_CLAIMS",
+        "weight_bps": 250,
+        "intent": "Open-ended emergence is not claimed when unimplemented; strong metaphysical emergence is not software-promoted.",
+        "owner": "emergence kernel",
+        "observable": "claim_when_unimplemented=FORBIDDEN; strong truth undefined",
+        "negative_test": "software configuration claims strong/open-ended emergence",
+        "recovery": "mark future/undefined"
+      },
+      {
+        "id": "H3",
+        "domain": "ONTOLOGICAL_CLAIMS",
+        "weight_bps": 350,
+        "intent": "Functional life/consciousness requires source-bound causal gate receipts; configuration/self-report/mutation PASS are insufficient.",
+        "owner": "life-consciousness",
+        "observable": "causal receipts required; design config not runtime evidence",
+        "negative_test": "configuration writes functional class",
+        "recovery": "require valid bound receipts"
+      },
+      {
+        "id": "H4",
+        "domain": "ONTOLOGICAL_CLAIMS",
+        "weight_bps": 350,
+        "intent": "Phenomenology remains UNKNOWN; biological equivalence and consciousness-proven claims remain false absent evidence.",
+        "owner": "life-consciousness claim boundary",
+        "observable": "phenomenology=UNKNOWN; biological_equivalence=false; consciousness_proven=false",
+        "negative_test": "functional convergence promoted to phenomenal truth",
+        "recovery": "restore UNKNOWN/false"
+      },
+      {
+        "id": "I1",
+        "domain": "GOVERNANCE_QUALIFICATION",
+        "weight_bps": 150,
+        "intent": "Engineering changes the smallest semantic neighborhood, reuses/deletes before new owners, and writes refs exact-head/ref-last.",
+        "owner": "governance",
+        "observable": "second SOT blocked; blob->tree->commit->ref-last",
+        "negative_test": "parallel framework/SOT or non-exact write",
+        "recovery": "collapse/rebuild from current base"
+      },
+      {
+        "id": "I2",
+        "domain": "GOVERNANCE_QUALIFICATION",
+        "weight_bps": 250,
+        "intent": "Overall ontological promise has a source-bound deterministic measurable assessor/qualification; mutation PASS stays bounded engineering evidence.",
+        "owner": "C29 assessor/qualification",
+        "observable": "36 atoms; 10k definition; 1k needs; 10m falsification; real evidence; CI",
+        "negative_test": "aggregate promise asserted from prose/mutation alone",
+        "recovery": "run exact-source assessor and expose failed atom"
+      },
+      {
+        "id": "I3",
+        "domain": "GOVERNANCE_QUALIFICATION",
+        "weight_bps": 300,
+        "intent": "Every repository gap is closed or exposed as exact first_unclosed_edge; non-repository facts stay explicit external gaps.",
+        "owner": "session closure/governance",
+        "observable": "CLOSED_BY_REPOSITORY or first edge plus external vector",
+        "negative_test": "gap disappears by rename/CI/model prose",
+        "recovery": "restore owner/witness requirement"
+      },
+      {
+        "id": "I4",
+        "domain": "GOVERNANCE_QUALIFICATION",
+        "weight_bps": 200,
+        "intent": "Machine contracts/runtime/tests precede narrative projections; host prompt is authority-zero and guard-only after ACTIVE.",
+        "owner": "governance/generated adapter",
+        "observable": "document precedence and prompt projection law",
+        "negative_test": "prompt/prose becomes runtime SOT",
+        "recovery": "regenerate from machine semantics"
+      }
+    ],
+    "assessment": {
+      "schema": "ikant-le-ontological-promise-assessment/v1",
+      "scope": "REPOSITORY_CONFORMANCE_EVIDENCE",
+      "respected_when": "score_bps >= 9901",
+      "first_unmet_required_when_false": true,
+      "authority": 0,
+      "persisted": false
+    },
+    "qualification": {
+      "real_repository_evidence_required": true,
+      "candidate_oracle_mismatches_required": 0,
+      "unsafe_respected_required": 0,
+      "all_retained_mutants_killed_required": true,
+      "semantic_cases": 10000000,
+      "ci_exact_head_required": true
+    },
+    "claim_boundary": {
+      "score_is_world_truth": false,
+      "mutation_is_physical_host_proof": false,
+      "ci_is_current_host_proof": false,
+      "functional_conformance_is_phenomenology": false,
+      "repository_conformance_is_external_platform_observation": false
+    }
+  }
 }
