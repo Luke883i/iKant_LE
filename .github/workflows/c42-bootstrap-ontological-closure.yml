@@ -17,6 +17,9 @@ on:
     branches: ['c42/bootstrap-ontological-closure']
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   c42:
     runs-on: ubuntu-latest
@@ -25,9 +28,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
+          node-version: '20'
       - name: Focused regression
         run: node --test --test-concurrency=1 tests/local-host-meta-prompt.test.mjs tests/c40-bootstrap-reentry.test.mjs tests/c41-retry-epoch-ux.test.mjs tests/c42-bootstrap-ontological-closure.test.mjs
       - name: Seeded 1M semantic falsification
