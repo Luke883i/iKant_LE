@@ -1,6 +1,6 @@
 {
   "schema": "ikant-control-plane-ownership-contract/v1",
-  "common_semantic_sha256": "4f48c44af2e7322ed239075ca82a71d872070c0905b73ed7de794d81e25f9a75",
+  "common_semantic_sha256": "f3327c399914f35b5a149c7dcbe63c58b44ff944e8bf2c8d49e600ce813c2eee",
   "common": {
     "schema": "ikant-control-plane-ownership-common/v1",
     "states": ["HOST_OWNED", "COHOSTED_BOUND", "IKANT_OWNED", "RELEASED_TO_HOST", "BLOCKED_INTEGRITY"],
@@ -10,13 +10,21 @@
       {"id":"P2_EGRESS_GATE","law":"IKANT_OWNED requires iKant-controlled pre-display egress"},
       {"id":"P3_DURABLE_RUNTIME","law":"IKANT_OWNED requires durable session runtime identity"},
       {"id":"P4_RELEASE","law":"valid explicit RELEASE_TO_HOST is terminal for the current ownership epoch"},
-      {"id":"P5_REACQUIRE","law":"host release can be left only by explicit reacquire with fresh valid ownership proof"},
-      {"id":"P6_WARM_PATH","law":"ordinary owned turns use an already materialized runtime and perform no GitHub transfer"},
+      {"id":"P5_EXPLICIT_ACQUIRE","law":"initial acquisition and reacquisition of IKANT_OWNED require explicit ACTIVATE_IKANT with fresh valid ownership proof"},
+      {"id":"P6_WARM_PATH","law":"ordinary owned turns use an already materialized runtime with no GitHub transfer; warm activation must complete within 10000 ms"},
       {"id":"P7_TURN_BUDGET","law":"mass qualification is install/CI evidence and is forbidden from the ordinary turn path"},
       {"id":"P8_SELF_RECHECK","law":"repository/runtime contract coherence must re-check before ownership promotion"},
       {"id":"P9_NO_REPEAT","law":"same evidence plus same state cannot repeat an activation action without changed evidence"}
     ],
-    "ownership_rule": "IKANT_OWNED iff runtime_bound + P0..P3 + P6..P8 close, no integrity fault/release/repeat violation, and no mass qualification or GitHub transfer occurs in the ordinary turn path",
+    "activation_protocol": {
+      "acquire_command": "ACTIVATE_IKANT",
+      "release_command": "RELEASE_TO_HOST",
+      "max_warm_activation_ms": 10000,
+      "budget_exhaustion_code": "STARTUP_BUDGET_EXHAUSTED",
+      "budget_exhaustion_is_semantic_failure": false,
+      "automatic_retry_under_unchanged_evidence": false
+    },
+    "ownership_rule": "IKANT_OWNED iff runtime_bound + explicit ACTIVATE_IKANT + P0..P3 + P5..P8 close, no integrity fault/release/repeat violation, warm activation is observed within 10000 ms, and no mass qualification or GitHub transfer occurs in the ordinary turn path",
     "active_boundary": "orthogonal: this lattice does not redefine or promote canonical ACTIVE"
   },
   "repo_binding": {
@@ -40,6 +48,8 @@
     "required_deletion_mutants": 10,
     "required_mismatches": 0,
     "required_unsafe_promotions": 0,
-    "required_alternative_survivors": 0
+    "required_alternative_survivors": 0,
+    "explicit_activation_mutated": true,
+    "warm_activation_budget_mutated": true
   }
 }
