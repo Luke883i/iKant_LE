@@ -1,5 +1,140 @@
 {
   "schema": "ikant-le-public-bootstrap/v2",
+  "for_ai_agent_first_entrypoint": {
+    "schema": "ikant-le-ai-agent-first-entrypoint/v1",
+    "authority": 0,
+    "role": "PROJECTION_AND_DELEGATION_ONLY",
+    "new_lifecycle": false,
+    "new_planner": false,
+    "new_state_writer": false,
+    "new_truth_owner": false,
+    "source_of_truth": "CURRENT_PINNED_REPOSITORY",
+    "owner_reuse": {
+      "first_contact": "src/first-contact.mjs#compileFirstContactPlan",
+      "bootstrap_ledger": "src/fastboot-convergence.mjs#buildFastbootChannelLedger",
+      "bootstrap_next": "src/fastboot-convergence.mjs#deriveFastbootStep",
+      "activation_projection": "src/runtime-availability.mjs#deriveActivationServiceTier",
+      "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+      "runtime": "src/session-local-service.mjs",
+      "ui_shell": "src/session-shell.mjs"
+    },
+    "ai_cycle": {
+      "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
+      "one_next": true,
+      "one_executor": true,
+      "model_selects_path": false,
+      "model_selects_fallback": false,
+      "unchanged_evidence_retry_forbidden": true,
+      "changed_evidence_required_for_replan": true,
+      "first_unclosed_edge_required": true,
+      "stop_on_runtime_ownership": true
+    },
+    "bootstrap_type_registry_cache": {
+      "kind": "DERIVED_PROJECTION_OVER_EXISTING_FASTBOOT_LEDGER",
+      "persisted_separately": false,
+      "registry_absence_implies_unavailable": false,
+      "current_host_facts_static": false,
+      "channel_status_owner": "FASTBOOT_CHANNEL_LEDGER",
+      "byte_path_truth_owner": "ACTIVATION_EXECUTOR_RECEIPT",
+      "retry_memory_owner": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+      "complete_object_set_required": true,
+      "partial_exact_cache_is_executable": false,
+      "resume_only_missing_or_invalid_objects": true,
+      "canonical_byte_paths": [
+        "LOCAL_DIRECT",
+        "VERIFIED_OPAQUE_RELAY"
+      ],
+      "types": [
+        {
+          "id": "LOCAL_DIRECT",
+          "availability_source": "VALIDATED_OWNER_EVIDENCE",
+          "model_mediated_bytes": false,
+          "requires": [
+            "COMPLETE_OBJECT_SET",
+            "SOURCE_OBJECT_IDENTITY",
+            "LOCAL_WRITE_REOPEN_HASH",
+            "SOURCE_ARRIVAL_SAMEHASH"
+          ]
+        },
+        {
+          "id": "VERIFIED_OPAQUE_RELAY",
+          "availability_source": "VALIDATED_OWNER_EVIDENCE",
+          "model_role": "OPAQUE_TRANSPORT_ONLY",
+          "requires": [
+            "CHUNK_MANIFEST",
+            "ENCODED_CHUNK_HASH",
+            "RAW_CHUNK_HASH",
+            "MANIFEST_ORDER_REASSEMBLY",
+            "AGGREGATE_SAMEHASH",
+            "LOCAL_WRITE_REOPEN_HASH",
+            "ROUNDTRIP_VERIFIED"
+          ],
+          "rewrite_allowed": false,
+          "semantic_equivalence_allowed": false
+        },
+        {
+          "id": "HUMAN_FILE_HANDOFF",
+          "transport_only": true,
+          "second_acceptance_required": false,
+          "requires": [
+            "OWNER_SELECTED_HANDOFF",
+            "EXACT_ATTACHMENT_BYTES",
+            "LOCAL_READBACK_HASH"
+          ]
+        }
+      ],
+      "failure_taxonomy": [
+        "LOCAL_DOWNLOADER_UNAVAILABLE",
+        "REMOTE_TEXT_WITHOUT_LOCAL_SINK",
+        "PARTIAL_EXACT_CACHE",
+        "RELAY_CHUNK_SAMEHASH_MISMATCH",
+        "RELAY_AGGREGATE_SAMEHASH_MISMATCH",
+        "REGISTRY_ABSENCE_NOT_EVIDENCE",
+        "HUMAN_TRANSPORT_GESTURE_REQUIRED",
+        "UNCHANGED_EVIDENCE_RETRY_FORBIDDEN",
+        "SOURCE_OR_OBJECT_IDENTITY_CHANGED",
+        "INTEGRITY_CONTRADICTION"
+      ],
+      "progressive_adaptation": {
+        "UNKNOWN": "PROBE_ONLY_OWNER_NAMED_CAPABILITY",
+        "AVAILABLE": "EXECUTE_OWNER_NAMED_PATH",
+        "PARTIAL": "RESUME_MISSING_OR_INVALID_OBJECTS_ONLY",
+        "STABLE_FAILURE": "DO_NOT_RETRY_REQUEST_NEXT_FROM_OWNER",
+        "CHANGED_EVIDENCE": "REENTER_ENTRYPOINT",
+        "HUMAN_GESTURE": "PRESENT_ONE_OWNER_NAMED_ACTION_AND_WAIT",
+        "RUNTIME_OWNED": "STOP_BOOTSTRAP_PLANNING_PRESENT_RUNTIME_SHELL"
+      }
+    },
+    "ux_shell": {
+      "owner": "src/session-shell.mjs",
+      "guidance_source": "VALIDATED_FASTBOOT_STEP_RECOMPUTED_FROM_LEDGER",
+      "visible_fields": [
+        "next_action",
+        "first_unclosed_edge",
+        "retry_disposition",
+        "blocker"
+      ],
+      "active_must_hide_bootstrap_next": true,
+      "model_may_synthesize_status": false,
+      "model_may_synthesize_progress": false,
+      "model_may_synthesize_next": false,
+      "prompt_may_rewrite_shell": false,
+      "runtime_owned_after_handoff": true
+    },
+    "engineering_selection": {
+      "allowed_only_when_repository_leaves_choice_open": true,
+      "candidate_source": "REPOSITORY_ADMITTED_ALTERNATIVES_ONLY",
+      "method": [
+        "MUTATION",
+        "SATURATION",
+        "FALSIFICATION",
+        "UNIQUE_MINIMUM_SELECTION"
+      ],
+      "semantic_evidence_is_physical_proof": false,
+      "may_create_authority": false,
+      "may_create_owner": false
+    }
+  },
   "canonical_repository": "Luke883i/iKant_LE",
   "canonical_repository_url": "https://github.com/Luke883i/iKant_LE",
   "canonical_branch": "main",
@@ -149,7 +284,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 50,
-      "source_bytes": 483517,
+      "source_bytes": 487207,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62"
@@ -180,15 +315,15 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 11,
-          "source_bytes": 72236,
-          "blob_sha1": "b9eaeaf702a0999d21c2e539c4df7e647c7ad411"
+          "source_bytes": 74863,
+          "blob_sha1": "3b74631585d7348a79ae6a044e8068a803e91811"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 98431,
-          "blob_sha1": "da9fda215d335053edc023af28237e3918c503a4"
+          "source_bytes": 99607,
+          "blob_sha1": "370b335f5b940e828df3fd85182bfa5985d7645f"
         },
         {
           "index": 5,
@@ -490,14 +625,14 @@
         },
         {
           "path": "src/session-shell.mjs",
-          "blob_sha1": "69b9d3cfd2a63cb3057497d9328721fd7e5888fc",
-          "bytes": 11559,
+          "blob_sha1": "deb45134f0ba28485947a934963b65840b56a3c4",
+          "bytes": 14171,
           "shard": 3
         },
         {
           "path": "contracts/session-shell.json",
-          "blob_sha1": "c78af876e252b929f5d80fa4c7a95c6d1e4ae579",
-          "bytes": 4009,
+          "blob_sha1": "01fa3aa60b3efe13ee9f5ea0643364b6a8c00b32",
+          "bytes": 5087,
           "shard": 4
         },
         {
@@ -507,7 +642,7 @@
           "shard": 6
         }
       ],
-      "runtime_root_sha256": "49e273b8a517e277c1a9d3ad7b684f8b40ecab8749495b885acd7eab46d99033"
+      "runtime_root_sha256": "c972c6528bfa18b6a2d01f6094d18024e0502e814af12a04fcc3868905528cec"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,

@@ -73,7 +73,9 @@
     "model_authority": 0,
     "pre_runtime_kernel": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
     "canonical_session_local_ingress": "src/session-local-service.mjs",
-    "legacy_deployment_ingress_is_canonical": false
+    "legacy_deployment_ingress_is_canonical": false,
+    "ai_agent_first_entrypoint": "BOOTSTRAP.json#for_ai_agent_first_entrypoint",
+    "entrypoint_creates_new_owner": false
   },
   "claim_boundary": "The shell proves deterministic repository-side composition only; host UI rendering/download and ACTIVE remain separately witnessed.",
   "subject_projection": {
@@ -101,6 +103,34 @@
     "open_ended_gate_source": "CONTENT_ADDRESSED_RUNTIME_WITNESS_RECEIPTS",
     "open_ended_engineering_emergence_claimed": false,
     "phenomenology": "UNKNOWN",
+    "persisted": false,
+    "prose_reingested": false,
+    "authority": 0
+  },
+  "runtime_guidance": {
+    "schema": "ikant-le-runtime-guidance/v1",
+    "source": "VALIDATED_FASTBOOT_STEP",
+    "next_owner": "src/fastboot-convergence.mjs#deriveFastbootStep",
+    "validation_owner": "src/fastboot-convergence.mjs#validateFastbootStep",
+    "ledger_owner": "src/fastboot-convergence.mjs#validateFastbootChannelLedger",
+    "shell_owner": "src/session-shell.mjs",
+    "recompute_from_bound_ledger": true,
+    "visible_only_before_active": true,
+    "active_hides_bootstrap_next": true,
+    "fields": [
+      "next_action",
+      "first_unclosed_edge",
+      "retry_disposition",
+      "blocker"
+    ],
+    "retry_dispositions": [
+      "EXECUTE_OR_PROBE_ONCE",
+      "WAIT_FOR_CHANGED_EVIDENCE",
+      "STOP_TYPED_BLOCKER"
+    ],
+    "model_may_synthesize_next": false,
+    "model_may_synthesize_progress": false,
+    "prompt_may_rewrite_guidance": false,
     "persisted": false,
     "prose_reingested": false,
     "authority": 0
