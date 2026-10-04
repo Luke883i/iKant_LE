@@ -48,12 +48,3 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 
 Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 
-
-
-## Optional persistent co-host context root (C45)
-
-A ChatGPT-like host may place the existing `SESSION_CHAT_LOCAL` runtime in a durable co-host context root. This does not create a hosted activation mode: the provider session handle is hashed into an opaque authority-zero locator, which selects one durable root containing the canonically materialized runtime. The manifest immutably binds that locator to `source_head`, `runtime_root_sha256` and the materialization receipt; raw provider session metadata is not persisted and is not iKant identity.
-
-Before every routed turn the adapter reopens the bound runtime, revalidates materialization plus the hash-linked runtime ledger, rejects a persisted `EXITED` state, and invokes only `src/runtime.mjs#runCommand` from that root. C20 deployment remains compatibility-only. Canonical Surface B and state ownership are unchanged.
-
-The runtime already emits the validated C44 ASCII Session Shell. The co-host adapter may seal those exact bytes, but native-chat delivery is a separate external fact: repository code validates an attributable `HOST_NATIVE_CHAT` receipt and cannot self-issue one. Endpoint reachability, provider-session metadata arrival and native-chat roundtrip therefore remain explicit external gaps until physically observed.
