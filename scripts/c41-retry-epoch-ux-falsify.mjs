@@ -38,7 +38,7 @@ const families=[
  ['SHELL_HANDOFF_CONTINUITY',i=>{const x=completeCycle('ui'+i).cycle,s=buildSessionShell({surfaceText:'x',state:preState(),bootstrapTransition:x}),g=s.status.runtime_guidance;return validateSessionShell(s).ok&&g?.next_action==='EXECUTE_PRE_RUNTIME_BOOTSTRAP'&&g?.first_unclosed_edge==='LOCAL_MATERIALIZATION'&&g?.retry_disposition==='OWNER_HANDOFF_ONCE'&&s.status.active===false;}],
  ['SHELL_REENTRY_CONTINUITY',i=>{const x=probeCycle('ri'+i),s=buildSessionShell({surfaceText:'x',state:preState(),bootstrapTransition:x.cycle});return validateSessionShell(s).ok&&s.status.runtime_guidance?.next_action===x.cycle.next_step.canonical_next&&s.status.runtime_guidance?.first_unclosed_edge==='LOCAL_INGRESS';}],
  ['ACTIVE_HIDES_TRANSITION_GUIDANCE',i=>{const x=completeCycle('act'+i).cycle,s=buildSessionShell({surfaceText:'x',state:activeState(),bootstrapTransition:x});return s.status.active===true&&s.status.runtime_guidance===null;}],
- ['DUPLICATE_FAILURE_EPOCH_DEDUP',i=>{const x=baseFailure('d'+i),again=recordFastbootFailure(x.failed,x.step);return again.failed_decisions.length===1;}]
+ ['DUPLICATE_FAILURE_EPOCH_DEDUP',i=>{const x=baseFailure('d'+i),again=recordFastbootFailure(x.ledger,x.step);return again.failed_decisions.length===1&&again.receipt_sha256===x.failed.receipt_sha256;}]
 ];
 
 let killed=0,mismatches=0;const familyKills=Object.fromEntries(families.map(([n])=>[n,0]));
