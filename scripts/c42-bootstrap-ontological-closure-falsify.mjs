@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {ROOT} from '../src/contract.mjs';
 import {runtimeRootDescriptor} from '../src/runtime-root-verified.mjs';
-import {FASTBOOT_CAPABILITY_FIELDS,buildFastbootChannelLedger,issueFastbootCapabilityReceipt} from '../src/fastboot-convergence.mjs';
+import {FASTBOOT_CAPABILITY_FIELDS,FASTBOOT_MACHINE_CARRIERS,buildFastbootChannelLedger,issueFastbootCapabilityReceipt} from '../src/fastboot-convergence.mjs';
 import {classifyHumanIntent,for_ai_agent_first_entrypoint} from '../src/local-host-meta-prompt.mjs';
 
 const CASES=Number(process.argv.includes('--cases')?process.argv[process.argv.indexOf('--cases')+1]:1000000);
@@ -26,7 +26,7 @@ const starts=['inizializza iKant','avvia iKant','attiva iKant','start ikant','in
 const exits=['chiudi iKant','esci da iKant','disattiva iKant','stop ikant','EXIT IKANT','release ikant'];
 const noisy=(x,n)=>{let s=x;if(n&1)s=s.toUpperCase();if(n&2)s='  '+s+'  ';if(n&4)s=s.replaceAll(' ','   ');if(n&8)s+='!';return s};
 const direct=()=>for_ai_agent_first_entrypoint({preaccept_handoff:preaccept,activation_executor:executor,human_input:'I ACCEPT',acceptance_observed_monotonic_ms:42,runtime_root_descriptor:D});
-const fileLedger=i=>buildFastbootChannelLedger({sourceHead:HEAD,receipts:[cap('WARM_CACHE_EXACT','UNAVAILABLE','warm-'+i)]});
+const fileLedger=i=>buildFastbootChannelLedger({sourceHead:HEAD,receipts:[...FASTBOOT_MACHINE_CARRIERS.map((carrier,j)=>cap(carrier,'UNAVAILABLE','machine-'+i+'-'+j)),cap('HOST_FILE_BRIDGE','AVAILABLE','file-'+i)]});
 const warmLedger=i=>buildFastbootChannelLedger({sourceHead:HEAD,receipts:[cap('WARM_CACHE_EXACT','AVAILABLE','warm-'+i)]});
 const contract=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/bootstrap-ontological-closure.json'),'utf8'));
 const boot=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8')).for_ai_agent_first_entrypoint;
@@ -38,7 +38,7 @@ const families=[
  ['ACCEPT_NOT_START',i=>classifyHumanIntent('I ACCEPT').kind==='OTHER'],
  ['NO_FALSE_START',i=>classifyHumanIntent('analizza il bilancio '+i).kind==='OTHER'],
  ['START_ENTRYPOINT',i=>{const x=for_ai_agent_first_entrypoint({human_input:noisy(starts[i%starts.length],rnd())});return x.next?.recognized===true&&x.readiness?.public_line==='iKant · PREPARA'}],
- ['EXIT_ENTRYPOINT',i=>{const x=for_ai_agent_first_entrypoint({human_input:noisy(exits[i%exits.length],rnd())});return x.next?.action==='DELEGATE_EXIT_TO_CURRENT_OWNER'&&x.readiness?.public_line==='iKant · CHIUDI'}],
+ ['EXIT_ENTRYPOINT',i=>{const x=for_ai_agent_first_entrypoint({human_input:noisy(exits[i%exits.length],rnd())});return x.next?.action==='EXIT_COMPLETE'&&x.readiness?.public_line==='iKant · CHIUDI'}],
  ['FILE_NEXT',i=>{const x=for_ai_agent_first_entrypoint({channel_ledger:fileLedger(i),runtime_root_sha256:D.runtime_root_sha256});return x.next?.canonical_carrier==='HOST_FILE_BRIDGE'&&x.readiness?.public_line==='iKant · CARICA FILE'}],
  ['WARM_NEXT',i=>{const x=for_ai_agent_first_entrypoint({channel_ledger:warmLedger(i),runtime_root_sha256:D.runtime_root_sha256});return x.next?.canonical_carrier==='WARM_CACHE_EXACT'&&x.readiness?.public_line==='iKant · AVVIA'}],
  ['DIRECT_VALID',i=>{const x=direct();return x.handoff?.action==='EXECUTE_PRE_RUNTIME_BOOTSTRAP'&&x.handoff?.first_unclosed_edge==='LOCAL_MATERIALIZATION'&&x.handoff?.active_claim===false&&x.readiness?.public_line==='iKant · MATERIALIZZA'}],

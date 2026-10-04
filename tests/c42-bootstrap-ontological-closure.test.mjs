@@ -5,7 +5,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {ROOT} from '../src/contract.mjs';
 import {runtimeRootDescriptor} from '../src/runtime-root-verified.mjs';
-import {FASTBOOT_CAPABILITY_FIELDS,buildFastbootChannelLedger,issueFastbootCapabilityReceipt} from '../src/fastboot-convergence.mjs';
+import {FASTBOOT_CAPABILITY_FIELDS,FASTBOOT_MACHINE_CARRIERS,buildFastbootChannelLedger,issueFastbootCapabilityReceipt} from '../src/fastboot-convergence.mjs';
 import {classifyHumanIntent,for_ai_agent_first_entrypoint} from '../src/local-host-meta-prompt.mjs';
 
 const sha=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
@@ -47,8 +47,9 @@ test('C42 invalid acceptance and executor cannot cross pre-runtime boundary',()=
 });
 
 test('C42 file and warm carriers project only ultra-compressed owner-derived UX',()=>{
- const unavailable=issueFastbootCapabilityReceipt({carrier:'WARM_CACHE_EXACT',status:'UNAVAILABLE',capabilities:{...proven(),surface_supported:false},evidence:'no-warm',probeOwner:'c42',operationId:'no-warm',sourceHead:HEAD});
- const file=for_ai_agent_first_entrypoint({channel_ledger:buildFastbootChannelLedger({sourceHead:HEAD,receipts:[unavailable]}),runtime_root_sha256:D.runtime_root_sha256});
+ const unavailable=FASTBOOT_MACHINE_CARRIERS.map((carrier,i)=>issueFastbootCapabilityReceipt({carrier,status:'UNAVAILABLE',capabilities:{...proven(),surface_supported:false},evidence:'no-machine-'+i,probeOwner:'c42',operationId:'no-machine-'+i,sourceHead:HEAD}));
+ const fileAvailable=issueFastbootCapabilityReceipt({carrier:'HOST_FILE_BRIDGE',status:'AVAILABLE',capabilities:proven(),evidence:'file-ready',probeOwner:'c42',operationId:'file-ready',sourceHead:HEAD});
+ const file=for_ai_agent_first_entrypoint({channel_ledger:buildFastbootChannelLedger({sourceHead:HEAD,receipts:[...unavailable,fileAvailable]}),runtime_root_sha256:D.runtime_root_sha256});
  assert.equal(file.next.canonical_carrier,'HOST_FILE_BRIDGE');assert.equal(file.readiness.public_line,'iKant · CARICA FILE');assert.ok(file.readiness.public_line.length<=32);
  const warm=issueFastbootCapabilityReceipt({carrier:'WARM_CACHE_EXACT',status:'AVAILABLE',capabilities:proven(),evidence:'warm',probeOwner:'c42',operationId:'warm',sourceHead:HEAD});
  const ready=for_ai_agent_first_entrypoint({channel_ledger:buildFastbootChannelLedger({sourceHead:HEAD,receipts:[warm]}),runtime_root_sha256:D.runtime_root_sha256});

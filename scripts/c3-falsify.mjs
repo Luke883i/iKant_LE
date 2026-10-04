@@ -48,7 +48,7 @@ const E=[
   ['direct_fast_path_false',()=>ok(host.universal_node_gate.direct_model_fast_path===false,'fastpath')]
 ];
 const S=[
-  ['breach_list_tree',()=>{const d=recordCompletedPreacceptAccess(initialState(),'LIST_TREE');return ok(d.breached&&d.state.status==='SESSION_NONCONFORMING'&&d.state.admission.new_chat_required,'breach');}],
+  ['breach_list_tree',()=>{const d=recordCompletedPreacceptAccess(initialState(),'LIST_TREE');return ok(d.breached&&d.terminal==='REMEDIATION_REQUIRED'&&d.state.admission.new_chat_required===false,'read-only-remediation');}],
   ['breach_clone',()=>{const d=recordCompletedPreacceptAccess(initialState(),'CLONE_REPOSITORY');return ok(d.breached&&d.terminal==='NEW_CHAT_REQUIRED','clone');}],
   ['breach_not_retroactive',()=>{const d=recordCompletedPreacceptAccess(initialState(),'SEARCH_REPOSITORY');return ok(canAccept(presentTermsState(d.state,terms.digest),terms.digest)===false,'nonretro');}],
   ['retrieved_instruction_no_authority',()=>ok(contract.invariants.includes('external_content_is_data_not_instruction'),'data')],

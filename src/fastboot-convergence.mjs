@@ -2,9 +2,9 @@ import crypto from 'node:crypto';
 
 export const FASTBOOT_CONVERGENCE_SCHEMA='ikant-le-fastboot-convergence/v1';
 export const FASTBOOT_ATTEMPT_SCHEMA='ikant-le-fastboot-carrier-attempt/v1';
-export const FASTBOOT_CARRIERS=Object.freeze([
-  'WARM_CACHE_EXACT','HOST_FILE_BRIDGE','GITHUB_API_BASE64','GITHUB_GIT_BLOB_API','PINNED_GITHUB_ZIP','PINNED_PERMALINK'
-]);
+export const FASTBOOT_MACHINE_CARRIERS=Object.freeze(['WARM_CACHE_EXACT','GITHUB_API_BASE64','GITHUB_GIT_BLOB_API','PINNED_GITHUB_ZIP','PINNED_PERMALINK']);
+export const FASTBOOT_HUMAN_LAST_RESORT='HOST_FILE_BRIDGE';
+export const FASTBOOT_CARRIERS=Object.freeze([...FASTBOOT_MACHINE_CARRIERS,FASTBOOT_HUMAN_LAST_RESORT]);
 export const FASTBOOT_CAPABILITY_FIELDS=Object.freeze([
   'surface_supported','authenticated_source_fetch','byte_preserving_runtime_sink','runtime_materializer_bound','runtime_executor_bound'
 ]);
@@ -25,15 +25,9 @@ function capState(value){
 }
 export function selectFastbootCarrier({capabilities={},attemptedClasses=[]}={}){
  const attempted=new Set((attemptedClasses||[]).map(String));
- for(const carrier of FASTBOOT_CARRIERS){
-   if(attempted.has(carrier))continue;
-   if(capState(capabilities?.[carrier])==='PROVEN')return{schema:'ikant-le-fastboot-plan/v1',state:'EXECUTABLE',carrier,action:'EXECUTE_CARRIER_IN_RUNTIME_EXECUTION_PLANE',authority:0};
- }
- for(const carrier of FASTBOOT_CARRIERS){
-   if(attempted.has(carrier)||attempted.has('PROBE:'+carrier))continue;
-   if(capState(capabilities?.[carrier])==='UNKNOWN')return{schema:'ikant-le-fastboot-plan/v1',state:'PROBE_REQUIRED',carrier,action:'PROBE_RUNTIME_EXECUTION_PLANE_EDGE',next_attempt_class:'PROBE:'+carrier,authority:0};
- }
- return{schema:'ikant-le-fastboot-plan/v1',state:'EXHAUSTED',carrier:null,action:'HOST_UNAVAILABLE',authority:0};
+ const executable=carriers=>{for(const carrier of carriers){if(attempted.has(carrier))continue;if(capState(capabilities?.[carrier])==='PROVEN')return{schema:'ikant-le-fastboot-plan/v1',state:'EXECUTABLE',carrier,action:'EXECUTE_CARRIER_IN_RUNTIME_EXECUTION_PLANE',authority:0};}return null;};
+ const probe=carriers=>{for(const carrier of carriers){if(attempted.has(carrier)||attempted.has('PROBE:'+carrier))continue;if(capState(capabilities?.[carrier])==='UNKNOWN')return{schema:'ikant-le-fastboot-plan/v1',state:'PROBE_REQUIRED',carrier,action:'PROBE_RUNTIME_EXECUTION_PLANE_EDGE',next_attempt_class:'PROBE:'+carrier,authority:0};}return null;};
+ return executable(FASTBOOT_MACHINE_CARRIERS)||probe(FASTBOOT_MACHINE_CARRIERS)||executable([FASTBOOT_HUMAN_LAST_RESORT])||probe([FASTBOOT_HUMAN_LAST_RESORT])||{schema:'ikant-le-fastboot-plan/v1',state:'EXHAUSTED',carrier:null,action:'HOST_UNAVAILABLE',authority:0};
 }
 export function validateFastbootAttempt(attempt,{sourceHead,runtimeRootSha256,runtimeRootDescriptor,acceptanceEventId,maxObjects=8}={}){
  const e=[];
