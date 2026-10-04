@@ -3,24 +3,31 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  c5_a:
+  bounded:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 --test-name-pattern="C5 kernel|text observation|multimodal|simulated sensor|workspace|metacognitive|bounded agency|virtual body|real image|closed sensorimotor" tests/c5.test.mjs
-  c5_b:
+      - run: node --test --test-name-pattern="self-world state stays bounded under 100 turns" tests/c5.test.mjs
+  embed:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 --test-name-pattern="prediction and policy|autobiographical continuity|causal model|same input|finalized turn" tests/c5.test.mjs
-  c5_c:
+      - run: node --test --test-name-pattern="C5 state embeds bounded self-world projection" tests/c5.test.mjs
+  c4:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 --test-name-pattern="self-world state stays bounded|C5 state embeds|C4 telemetry|backlog v6" tests/c5.test.mjs
+      - run: node --test --test-name-pattern="C4 telemetry decomposition" tests/c5.test.mjs
+  backlog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - run: node --test --test-name-pattern="backlog v6 exposes" tests/c5.test.mjs
