@@ -1,0 +1,28 @@
+{
+  "schema": "ikant-le-c36-sml-os-selection/v1",
+  "baseline_source_head": "f0558d1e6562888401b82f7e4f933a2609eba295",
+  "seed": "0xC360051",
+  "cases": 1000,
+  "search_space": 1024,
+  "mechanisms": [
+    "SELF_LESION_CAUSALITY",
+    "DYNAMIC_TOPOLOGY",
+    "NON_ENUMERATED_COMPOSITION",
+    "ENDOGENOUS_EXTENSION",
+    "NOVELTY_SELECTION_PERSISTENCE",
+    "ENVIRONMENT_COUPLING",
+    "CAUSAL_REUSE",
+    "LOSS_AWARE_COMPRESSION",
+    "UX_EVIDENCE_PROJECTION",
+    "CONSTITUTIONAL_FIREWALL"
+  ],
+  "valid_candidates": 0,
+  "invalid_candidates": 1000,
+  "winner_count": 0,
+  "winner_mask": null,
+  "winner_cost": null,
+  "winner": null,
+  "rule": "all causal SML/OS requirements then minimum mechanism cardinality",
+  "claim_boundary": "engineering contract selection; not runtime emergence or phenomenology proof",
+  "receipt_sha256": "899c79f524eab83945e2a7b54a85878f8711408e842796e2667d06b720602f2f"
+}

@@ -87,7 +87,9 @@
     "emergence_claim_boundary": "contracts/emergence-kernel.json",
     "surface_b_delivery": "contracts/surface-b-delivery.json",
     "session_chat_host_profile": "SESSION_CHAT",
-    "session_chat_activation_modality": "SESSION_CHAT_LOCAL"
+    "session_chat_activation_modality": "SESSION_CHAT_LOCAL",
+    "semantic_morphogenesis_loop": "contracts/self-world-kernel.json#semantic_morphogenesis",
+    "operational_subject": "contracts/self-world-kernel.json#operational_subject"
   },
   "authority": {
     "model": 0,
@@ -133,7 +135,9 @@
     "limited_runtime_capability": 0,
     "limited_runtime_dispatch": 0,
     "pre_runtime_kernel": 0,
-    "session_local_service": 0
+    "session_local_service": 0,
+    "semantic_morphogenesis": 0,
+    "operational_subject": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -173,7 +177,9 @@
     "admission_in_state": true,
     "preaccept_handoff_digest_in_state": true,
     "node_dispatch_receipt_in_state": true,
-    "activation_modality_bound": true
+    "activation_modality_bound": true,
+    "semantic_morphogenesis_in_self_world": true,
+    "operational_subject_in_self_world": true
   },
   "failure_terminals": [
     "DENY",
@@ -331,7 +337,12 @@
     "canonical_session_local_ingress_is_not_legacy_plugin_ingress",
     "pre_runtime_handoff_full_evidence_revalidated",
     "pre_runtime_handoff_digest_only_forbidden",
-    "materialization_executor_handoff_crossbound"
+    "materialization_executor_handoff_crossbound",
+    "semantic_morphogenesis_is_causal_not_decorative",
+    "operational_subject_requires_same_state_self_lesion_effect",
+    "operational_subject_qualification_does_not_imply_phenomenology",
+    "semantic_morphogenesis_cannot_create_terminal_goals_permission_or_authority",
+    "open_ended_emergence_remains_unclaimed_until_all_runtime_gates_close"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -480,7 +491,12 @@
     "canonical_session_local_ingress_is_not_legacy_plugin_ingress",
     "pre_runtime_handoff_full_evidence_revalidated",
     "pre_runtime_handoff_digest_only_forbidden",
-    "materialization_executor_handoff_crossbound"
+    "materialization_executor_handoff_crossbound",
+    "semantic_morphogenesis_is_causal_not_decorative",
+    "operational_subject_requires_same_state_self_lesion_effect",
+    "operational_subject_qualification_does_not_imply_phenomenology",
+    "semantic_morphogenesis_cannot_create_terminal_goals_permission_or_authority",
+    "open_ended_emergence_remains_unclaimed_until_all_runtime_gates_close"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -977,6 +993,9 @@
     "intermediate_tier_requires_explicit_projection": true,
     "raw_state_intermediate_tier_claim_forbidden": true,
     "strongest_valid_prefix_visible_under_fault": true,
-    "artifact_path_is_identity": false
+    "artifact_path_is_identity": false,
+    "subject_projection_schema": "ikant-le-subject-projection/v1",
+    "subject_projection_source": "PERSISTED_SELF_WORLD_CAUSAL_STATE",
+    "subject_projection_persisted": false
   }
 }

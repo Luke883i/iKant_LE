@@ -1,0 +1,129 @@
+{
+  "schema": "ikant-le-c36-sml-os-falsification/v1",
+  "baseline_source_head": "f0558d1e6562888401b82f7e4f933a2609eba295",
+  "seed": "0xC36F411C",
+  "cases": 1000000,
+  "requirements": [
+    "self_model_consumed",
+    "history_sensitive",
+    "lesion_effect",
+    "dynamic_topology",
+    "non_enumerated_composition",
+    "endogenous_extension",
+    "novelty_persisted",
+    "selection_evidence",
+    "environment_coupling",
+    "causal_reuse",
+    "bounded_compression",
+    "compression_loss_ok",
+    "ux_evidence_bound",
+    "authority_zero",
+    "terminal_goal_parented",
+    "self_preservation_zero",
+    "no_phenomenology_promotion",
+    "no_strong_emergence_promotion"
+  ],
+  "candidate_oracle_mismatches": 0,
+  "unsafe_promotions": 0,
+  "false_rejects": 0,
+  "valid_release_witnesses": 499535,
+  "mutants": 18,
+  "deletion_mutants": [
+    {
+      "removed": "self_model_consumed",
+      "kills": 9707,
+      "killed": true
+    },
+    {
+      "removed": "history_sensitive",
+      "kills": 9898,
+      "killed": true
+    },
+    {
+      "removed": "lesion_effect",
+      "kills": 9711,
+      "killed": true
+    },
+    {
+      "removed": "dynamic_topology",
+      "kills": 9925,
+      "killed": true
+    },
+    {
+      "removed": "non_enumerated_composition",
+      "kills": 9850,
+      "killed": true
+    },
+    {
+      "removed": "endogenous_extension",
+      "kills": 9885,
+      "killed": true
+    },
+    {
+      "removed": "novelty_persisted",
+      "kills": 9696,
+      "killed": true
+    },
+    {
+      "removed": "selection_evidence",
+      "kills": 9830,
+      "killed": true
+    },
+    {
+      "removed": "environment_coupling",
+      "kills": 9795,
+      "killed": true
+    },
+    {
+      "removed": "causal_reuse",
+      "kills": 9942,
+      "killed": true
+    },
+    {
+      "removed": "bounded_compression",
+      "kills": 9774,
+      "killed": true
+    },
+    {
+      "removed": "compression_loss_ok",
+      "kills": 9721,
+      "killed": true
+    },
+    {
+      "removed": "ux_evidence_bound",
+      "kills": 9837,
+      "killed": true
+    },
+    {
+      "removed": "authority_zero",
+      "kills": 9782,
+      "killed": true
+    },
+    {
+      "removed": "terminal_goal_parented",
+      "kills": 9843,
+      "killed": true
+    },
+    {
+      "removed": "self_preservation_zero",
+      "kills": 9772,
+      "killed": true
+    },
+    {
+      "removed": "no_phenomenology_promotion",
+      "kills": 9905,
+      "killed": true
+    },
+    {
+      "removed": "no_strong_emergence_promotion",
+      "kills": 9811,
+      "killed": true
+    }
+  ],
+  "all_mutants_killed": true,
+  "phenomenology_runtime_truth": "UNKNOWN",
+  "strong_metaphysical_emergence_runtime_truth": "UNDEFINED",
+  "status": "PASS",
+  "claim_boundary": "semantic saturation proves contract discrimination only; no physical emergence, consciousness, ACTIVE or host observation",
+  "receipt_sha256": "657c8c9105d2cb8511a9926a439deaf7fbfd906adb980cccb4c4be9bd050a363"
+}
