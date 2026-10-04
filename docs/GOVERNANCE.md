@@ -47,7 +47,7 @@ Bootstrap is structurally bounded: pin source before orientation; post-accept in
 | C30 | activation service spectrum with useful non-ACTIVE tiers; ACTIVE unchanged |
 | C31 | runtime-limited capability/dispatch/atomic-DOCX product supply chain closure |
 | C32-prePR | deterministic atomic session shell over C31/C30 truth; no new lifecycle/writer/self-memory |
-| C36 | semantic morphogenesis loop plus lesion-qualified Operational Subject under existing self-world owners; open-ended emergence remains unclaimed |
+| C36 | causal SML + lesion-qualified OS; open-ended emergence unclaimed |
 | LIB.0 | embedded relational nuance kernel; no runtime/admission/state/surface ownership or authority widening |
 
 LIB.0 is auxiliary/private by default and does not change standalone lifecycle or ownership.
