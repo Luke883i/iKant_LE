@@ -77,15 +77,20 @@
   },
   "claim_boundary": "The shell proves deterministic repository-side composition only; host UI rendering/download and ACTIVE remain separately witnessed.",
   "subject_projection": {
-    "schema": "ikant-le-subject-projection/v1",
-    "source": "PERSISTED_SELF_WORLD_CAUSAL_STATE",
+    "schema": "ikant-le-subject-projection/v2",
+    "owner": "src/semantic-morphogenesis.mjs#projectSemanticSubject",
+    "source": "SELF_WORLD_OWNER",
     "runtime_evidence_required": true,
-    "operational_subject_criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY",
-    "qualified_requires": {
-      "trials": 8,
-      "counterfactual_effects": 1,
-      "min_control_advantage": 1
-    },
+    "sml_states": [
+      "UNAVAILABLE",
+      "AVAILABLE",
+      "WITNESSED",
+      "ACTIVE_THIS_TURN"
+    ],
+    "operational_subject_criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY_FOR_INDEPENDENTLY_SUPPORTED_CONTROL",
+    "thresholds_duplicated_in_shell": false,
+    "control_plane_implication": "NONE",
+    "open_ended_gate_source": "RUNTIME_WITNESS_LEDGER",
     "open_ended_engineering_emergence_claimed": false,
     "phenomenology": "UNKNOWN",
     "persisted": false,

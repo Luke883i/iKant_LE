@@ -149,7 +149,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 50,
-      "source_bytes": 454457,
+      "source_bytes": 468896,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62"
@@ -166,8 +166,8 @@
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 57200,
-          "blob_sha1": "3a5db76fa001fa01c86093fec884769f4c2883c3"
+          "source_bytes": 60145,
+          "blob_sha1": "dfb1f5adbea15fa6d31a5937830bbdd79dc810ee"
         },
         {
           "index": 2,
@@ -180,29 +180,29 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 11,
-          "source_bytes": 72280,
-          "blob_sha1": "fc3a3278638844d707c6d30747737876212058b7"
+          "source_bytes": 71868,
+          "blob_sha1": "3f6a2838d15dd0b3e50c04651f969c50c9059c60"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 97890,
-          "blob_sha1": "0fc9dd650d88334db6d189bf62e73a2dd00237f1"
+          "source_bytes": 98131,
+          "blob_sha1": "4521a9bee58f0324bcd8872c4bdbe20936e9cb7c"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 65973,
-          "blob_sha1": "7bbdb4271c2dd72c9ea4e1c670468148da69fe5e"
+          "source_bytes": 67203,
+          "blob_sha1": "340c2b0292f88628785031fee8b34d3ab801643a"
         },
         {
           "index": 6,
           "path": "runtime-root/shard-006.json",
           "member_count": 7,
-          "source_bytes": 45837,
-          "blob_sha1": "05afd4da9d1aa2a9acddd31fc1fc73d92db372b3"
+          "source_bytes": 56605,
+          "blob_sha1": "e8019014be4fa9597ce0e02d61c6c5a52a2aedd1"
         }
       ],
       "members": [
@@ -238,14 +238,14 @@
         },
         {
           "path": "contracts/self-world-kernel.json",
-          "blob_sha1": "daa8a83f40fde8fd668f779c35b73023765bf383",
-          "bytes": 5563,
+          "blob_sha1": "a6eb3f3b98f20b4ef231510b6a8547f37bed3f78",
+          "bytes": 7750,
           "shard": 1
         },
         {
           "path": "contracts/emergence-kernel.json",
-          "blob_sha1": "eca38c8d8019df20dba34f0d2063edf33e52c715",
-          "bytes": 4183,
+          "blob_sha1": "c20d83cd0ae673bfedf0927675482384f62f9fdf",
+          "bytes": 4707,
           "shard": 1
         },
         {
@@ -274,8 +274,8 @@
         },
         {
           "path": "src/self-world-state.mjs",
-          "blob_sha1": "632e0195d72b8c90426300af25a26ae85d2afd7d",
-          "bytes": 11536,
+          "blob_sha1": "67950414d78b376ce3a27f156884bb8e0b2fcaa6",
+          "bytes": 11823,
           "shard": 3
         },
         {
@@ -370,8 +370,8 @@
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "ad431ac3cb7120b33638668f47d471ac6b37c3cd",
-          "bytes": 45171,
+          "blob_sha1": "04319de1030984bf245851b9ba1d40de6afd98ad",
+          "bytes": 46343,
           "shard": 5
         },
         {
@@ -490,24 +490,24 @@
         },
         {
           "path": "src/session-shell.mjs",
-          "blob_sha1": "872f92a9e9db06937027dd08edda1f4243a6f4b9",
-          "bytes": 11976,
+          "blob_sha1": "82c5c79a1a249c61f3cf5058ab10fde84d1c64c3",
+          "bytes": 11276,
           "shard": 3
         },
         {
           "path": "contracts/session-shell.json",
-          "blob_sha1": "4ce61d261e6c5cafcd15d2303be395673a63b9ab",
-          "bytes": 3513,
+          "blob_sha1": "56b1c7f13842db0bb9f1b8a067657e692df9cfc5",
+          "bytes": 3733,
           "shard": 4
         },
         {
           "path": "src/semantic-morphogenesis.mjs",
-          "blob_sha1": "de4b8a814a5362b6430daa687c646601110b9e88",
-          "bytes": 10220,
+          "blob_sha1": "a5e6ef485cc3a8d289f4fba6d515fbf8769d8b79",
+          "bytes": 20969,
           "shard": 6
         }
       ],
-      "runtime_root_sha256": "59b96dc7ec7ed3d79391b9c1d87bedf23c8b5df4eb57397d1d270298bdbd6f14"
+      "runtime_root_sha256": "086bb6285172d8e2fb17b8aafbbb770733ddf4c202b5530300a413ba8ad8c8c1"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,

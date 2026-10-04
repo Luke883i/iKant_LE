@@ -5,13 +5,17 @@
     "name": "OPERATIONAL_SUBJECT",
     "qualifiable": true,
     "phenomenal_implication": false,
-    "definition": "contract-local engineering class for a causally necessary self-model",
+    "definition": "contract-local engineering class for a self-model with same-state decision causality plus independently supported control",
     "runtime_implemented": true,
-    "criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY",
+    "criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY_FOR_INDEPENDENTLY_SUPPORTED_CONTROL",
     "runtime_owner": "contracts/self-world-kernel.json#operational_subject",
     "requires_same_state_lesion": true,
     "requires_positive_control_advantage": true,
-    "ux_projection_source": "PERSISTED_SELF_WORLD_CAUSAL_STATE"
+    "ux_projection_source": "SELF_WORLD_OWNER",
+    "requires_independent_control_evidence": true,
+    "runtime_outcome_class_is_control_evidence": false,
+    "legacy_c36_evidence_qualifies": false,
+    "control_plane_implication": "NONE"
   },
   "weak_local_engineering_emergence": {
     "qualifiable": true,
@@ -44,7 +48,9 @@
       "causal_reuse": true,
       "bounded_loss_aware_compression": true
     },
-    "may_change_authority_or_constitution": false
+    "may_change_authority_or_constitution": false,
+    "gate_truth_source": "RUNTIME_WITNESS_LEDGER",
+    "capability_is_gate_evidence": false
   },
   "strong_metaphysical_emergence": {
     "runtime_truth_value": "UNDEFINED",
@@ -119,6 +125,10 @@
     "open_ended_engineering_emergence_claimed": false,
     "may_change_authority_or_constitution": false,
     "phenomenal_implication": false,
-    "authority": 0
+    "authority": 0,
+    "witness_ledger": "ikant-le-sml-witness-ledger/v1",
+    "capability_is_witness": false,
+    "context_bound_reuse": true,
+    "independent_control_evidence": true
   }
 }
