@@ -21,12 +21,16 @@ on:
       - 'scripts/check.mjs'
       - 'package.json'
       - 'docs/GOVERNANCE.md'
+      - '.github/workflows/c23-ontology-collapse.yml'
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - run: npm run qualify:current
+      - run: npm run runtime-root:verify
+      - run: node --test --test-concurrency=1 tests/c23-ontology-collapse.test.mjs
+      - run: npm run check
+      - run: npm run falsify:c23
