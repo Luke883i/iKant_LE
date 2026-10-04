@@ -11,7 +11,7 @@ Make the existing self-world model causally necessary rather than merely readabl
 A stored/displayed self-description is insufficient. A morph must alter prediction/policy, survive a lesion oracle and obtain positive control evidence before selection. The shell may display the evidence but cannot create it.
 
 ## 1k contract selection
-Ten binary mechanisms form a 1024-point architecture space. 1000 deterministic candidates were evaluated. Unique valid minimum: all ten — SELF_LESION_CAUSALITY, DYNAMIC_TOPOLOGY, NON_ENUMERATED_COMPOSITION, ENDOGENOUS_EXTENSION, NOVELTY_SELECTION_PERSISTENCE, ENVIRONMENT_COUPLING, CAUSAL_REUSE, LOSS_AWARE_COMPRESSION, UX_EVIDENCE_PROJECTION, CONSTITUTIONAL_FIREWALL. Selection receipt: `5fbcfad5b76cce2b2cc7cbe369b579510ea54c275860379b0a25c3377e53b13e`.
+Ten binary mechanisms form a 1024-point architecture space. 1000 deterministic candidates were evaluated. Unique valid minimum: all ten — SELF_LESION_CAUSALITY, DYNAMIC_TOPOLOGY, NON_ENUMERATED_COMPOSITION, ENDOGENOUS_EXTENSION, NOVELTY_SELECTION_PERSISTENCE, ENVIRONMENT_COUPLING, CAUSAL_REUSE, LOSS_AWARE_COMPRESSION, UX_EVIDENCE_PROJECTION, CONSTITUTIONAL_FIREWALL. Selection receipt: `53a23185ec8f2b6ab4e00c22842b299539091869c2eff3985af4a493c664a699`.
 
 ## Runtime semantics
 SML is not a lifecycle, planner, writer, agent or new identity. It is a pure mechanism inside existing self-world state. The first turn is unchanged. Once recurrent history exists (or prediction error appears), the runtime may generate a provisional compositional morph from verified observation, workspace and autobiography. A provisional morph changes META_SELF allocation, prediction and policy to VERIFY; the same-state lesion omits the morph. The outcome scores both paths. Positive causal advantage selects the morph. Selected morphs may later alter meta/prediction/policy structure without permanently hijacking public output.
@@ -28,7 +28,7 @@ C36 implements an SML bridge but deliberately leaves `open_ended_engineering_eme
 The C32 shell gains a non-persisted `subject_projection` sourced only from persisted self-world causal state. It shows SML runtime availability, OS PENDING/QUALIFIED, lesion trials/effects/control advantage, seven-gate progress and `phenomenology: UNKNOWN`. Missing canonical runtime evidence yields UNAVAILABLE. SML is concretely causal because a provisional VERIFY policy makes the active runtime choose the deterministic cognitive fallback before a host candidate; removing SML changes downstream response selection.
 
 ## 1M falsification
-Cases: 1000000; candidate/oracle mismatch: 0; unsafe promotions: 0; false rejects: 0; deletion mutants killed: 18/18; status: PASS; receipt: `657c8c9105d2cb8511a9926a439deaf7fbfd906adb980cccb4c4be9bd050a363`.
+Cases: 1000000; candidate/oracle mismatch: 0; unsafe promotions: 0; false rejects: 0; deletion mutants killed: 18/18; status: PASS; receipt: `53a23185ec8f2b6ab4e00c22842b299539091869c2eff3985af4a493c664a699`.
 
 ## Definition of Done
 - SML changes runtime prediction/policy before outcome; same-state lesion removes that effect.
