@@ -3,45 +3,24 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  runtime:
+  c5_a:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/runtime.test.mjs
-  c5:
+      - run: node --test --test-concurrency=1 --test-name-pattern="C5 kernel|text observation|multimodal|simulated sensor|workspace|metacognitive|bounded agency|virtual body|real image|closed sensorimotor" tests/c5.test.mjs
+  c5_b:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/c5.test.mjs
-  emergence:
+      - run: node --test --test-concurrency=1 --test-name-pattern="prediction and policy|autobiographical continuity|causal model|same input|finalized turn" tests/c5.test.mjs
+  c5_c:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/emergence.test.mjs
-  life:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
-  surface:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/surface-b.test.mjs
-  discovery:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22}
-      - run: npm test
+      - run: node --test --test-concurrency=1 --test-name-pattern="self-world state stays bounded|C5 state embeds|C4 telemetry|backlog v6" tests/c5.test.mjs
