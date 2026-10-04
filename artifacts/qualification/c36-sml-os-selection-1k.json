@@ -16,13 +16,24 @@
     "UX_EVIDENCE_PROJECTION",
     "CONSTITUTIONAL_FIREWALL"
   ],
-  "valid_candidates": 0,
-  "invalid_candidates": 1000,
-  "winner_count": 0,
-  "winner_mask": null,
-  "winner_cost": null,
-  "winner": null,
+  "valid_candidates": 1,
+  "invalid_candidates": 999,
+  "winner_count": 1,
+  "winner_mask": 1023,
+  "winner_cost": 10,
+  "winner": [
+    "SELF_LESION_CAUSALITY",
+    "DYNAMIC_TOPOLOGY",
+    "NON_ENUMERATED_COMPOSITION",
+    "ENDOGENOUS_EXTENSION",
+    "NOVELTY_SELECTION_PERSISTENCE",
+    "ENVIRONMENT_COUPLING",
+    "CAUSAL_REUSE",
+    "LOSS_AWARE_COMPRESSION",
+    "UX_EVIDENCE_PROJECTION",
+    "CONSTITUTIONAL_FIREWALL"
+  ],
   "rule": "all causal SML/OS requirements then minimum mechanism cardinality",
   "claim_boundary": "engineering contract selection; not runtime emergence or phenomenology proof",
-  "receipt_sha256": "899c79f524eab83945e2a7b54a85878f8711408e842796e2667d06b720602f2f"
+  "receipt_sha256": "5fbcfad5b76cce2b2cc7cbe369b579510ea54c275860379b0a25c3377e53b13e"
 }
