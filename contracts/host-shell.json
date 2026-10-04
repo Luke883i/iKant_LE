@@ -70,7 +70,7 @@
     "fastboot_step_schema": "ikant-le-fastboot-step/v1",
     "failure_memory_key": [
       "decision_key",
-      "evidence_sha256"
+      "carrier_evidence_sha256"
     ],
     "unchanged_failed_decision_retry_forbidden": true,
     "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
@@ -101,7 +101,9 @@
     "source_arrival_samehash_required": true,
     "first_unclosed_edge_required": true,
     "session_closure_projection": "ikant-le-session-closure-projection/v1",
-    "diagnostic_stage_persisted": false
+    "diagnostic_stage_persisted": false,
+    "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
+    "unrelated_channel_evidence_requalifies_failed_carrier": false
   },
   "automatic_after_acceptance": [
     "LOCAL_EXECUTOR_CAPABILITY_PROBE",
@@ -378,12 +380,14 @@
     "one_next": true,
     "failure_memory_key": [
       "decision_key",
-      "evidence_sha256"
+      "carrier_evidence_sha256"
     ],
     "failure_memory_owner": "CHANNEL_LEDGER",
     "fastboot_step_recompute_required": true,
     "channel_evidence_digest_excludes_failure_memory": true,
-    "unavailable_persists_until_changed_channel_evidence": true
+    "unavailable_persists_until_changed_channel_evidence": true,
+    "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
+    "unrelated_channel_evidence_requalifies_failed_carrier": false
   },
   "session_chat_activation": {
     "contract": "contracts/session-chat-activation.json",
@@ -440,7 +444,11 @@
     "new_writer": false,
     "authority": 0,
     "intermediate_tier_requires_explicit_projection": true,
-    "strongest_valid_prefix_survives_fault": true
+    "strongest_valid_prefix_survives_fault": true,
+    "transition_guidance_source": "VALIDATED_FASTBOOT_TRANSITION",
+    "complete_transition_next_action": "EXECUTE_PRE_RUNTIME_BOOTSTRAP",
+    "complete_transition_next_edge": "LOCAL_MATERIALIZATION",
+    "caller_attempted_classes_forbidden": true
   },
   "pre_runtime_kernel": {
     "contract": "contracts/pre-runtime-kernel.json",

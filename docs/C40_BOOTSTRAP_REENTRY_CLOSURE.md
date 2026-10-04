@@ -2,7 +2,7 @@
 
 C40 closes the remaining repository-owned gap observed after C39: the AI-agent entrypoint could derive one canonical NEXT but could not consume the resulting typed evidence in the same machine-actionable loop.
 
-The existing Fastboot owner remains the only planner and retry-memory owner. `FASTBOOT_CHANNEL_LEDGER.failed_decisions` excludes a failed carrier automatically for the same channel-evidence digest; materially changed evidence may requalify it. Re-entry accepts exactly one existing typed capability receipt or carrier-attempt receipt. Raw booleans, prose outcomes and caller-supplied attempted-carrier lists are rejected.
+The existing Fastboot owner remains the only planner and retry-memory owner. `FASTBOOT_CHANNEL_LEDGER.failed_decisions` excludes a failed carrier while its carrier-local evidence epoch is unchanged; only materially changed evidence for that same carrier may requalify it. Re-entry accepts exactly one existing typed capability receipt or carrier-attempt receipt. Raw booleans, prose outcomes and caller-supplied attempted-carrier lists are rejected.
 
 A failed or partial execution advances to a materially distinct canonical carrier. A complete execution produces only a pre-runtime handoff and cannot claim ACTIVE.
 
@@ -24,7 +24,7 @@ A failed or partial execution advances to a materially distinct canonical carrie
 3. consume execute receipts through the existing carrier-attempt validator;
 4. bind observations to source, root and current canonical carrier;
 5. advance failure/partial only to a distinct carrier;
-6. allow requalification only after changed channel evidence;
+6. allow requalification only after changed evidence for the failed carrier;
 7. hand complete execution to pre-runtime without ACTIVE;
 8. wire the single AI entrypoint to re-entry;
 9. regenerate the content-addressed runtime root;

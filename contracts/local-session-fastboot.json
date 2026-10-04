@@ -360,12 +360,37 @@
     "caller_attempted_classes_canonical": false,
     "same_evidence_same_carrier_retry": false,
     "distinct_carrier_retry_same_evidence": true,
-    "changed_evidence_may_requalify_carrier": true,
+    "changed_evidence_may_requalify_carrier": false,
     "observation_schemas": [
       "ikant-le-fastboot-capability-receipt/v1",
       "ikant-le-fastboot-carrier-attempt/v1"
     ],
     "complete_attempt_handoff": "PRE_RUNTIME_HOST_ADAPTER",
-    "complete_attempt_active_claim": false
+    "complete_attempt_active_claim": false,
+    "changed_same_carrier_evidence_may_requalify_carrier": true,
+    "unrelated_carrier_evidence_may_requalify_failed_carrier": false
+  },
+  "c41_retry_epoch_ux_continuity": {
+    "authority": 0,
+    "retry_memory_owner": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+    "failure_memory_key": [
+      "decision_key",
+      "carrier_evidence_sha256"
+    ],
+    "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
+    "canonical_step_caller_attempted_classes_forbidden": true,
+    "session_shell_caller_attempted_classes_forbidden": true,
+    "unrelated_carrier_evidence_may_requalify_failed_carrier": false,
+    "changed_same_carrier_evidence_may_requalify_carrier": true,
+    "complete_transition_route": {
+      "owner": "PRE_RUNTIME_HOST_ADAPTER",
+      "action": "EXECUTE_PRE_RUNTIME_BOOTSTRAP",
+      "digest_bound": true,
+      "active_claim": false,
+      "next_constitutional_edge": "LOCAL_MATERIALIZATION"
+    },
+    "new_planner": false,
+    "new_retry_memory": false,
+    "new_truth_owner": false
   }
 }
