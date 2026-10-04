@@ -16,7 +16,8 @@
       "activation_projection": "src/runtime-availability.mjs#deriveActivationServiceTier",
       "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
       "runtime": "src/session-local-service.mjs",
-      "ui_shell": "src/session-shell.mjs"
+      "ui_shell": "src/session-shell.mjs",
+      "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation"
     },
     "ai_cycle": {
       "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
@@ -133,6 +134,22 @@
       "semantic_evidence_is_physical_proof": false,
       "may_create_authority": false,
       "may_create_owner": false
+    },
+    "reentry": {
+      "observation_owner": "src/fastboot-convergence.mjs#advanceFastbootObservation",
+      "accepted_observation_schemas": [
+        "ikant-le-fastboot-capability-receipt/v1",
+        "ikant-le-fastboot-carrier-attempt/v1"
+      ],
+      "one_observation": true,
+      "raw_boolean_outcome_forbidden": true,
+      "prose_outcome_forbidden": true,
+      "caller_attempted_classes_forbidden": true,
+      "retry_memory_from_ledger": true,
+      "same_evidence_failed_carrier_excluded": true,
+      "changed_evidence_may_requalify_carrier": true,
+      "complete_attempt_handoff_owner": "PRE_RUNTIME_HOST_ADAPTER",
+      "complete_attempt_may_claim_active": false
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",

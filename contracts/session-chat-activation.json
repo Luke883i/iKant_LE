@@ -78,7 +78,7 @@
     },
     {
       "id": "C22_G13",
-      "claim": "unchanged channel evidence plus a recorded failed decision yields WAIT_CHANGED_EVIDENCE without retry"
+      "claim": "unchanged channel evidence plus a recorded failed decision forbids replay of that same carrier; the ledger may select a materially distinct canonical carrier without caller-supplied retry memory"
     },
     {
       "id": "C23_G13",
@@ -183,6 +183,10 @@
     {
       "id": "C29_G38",
       "claim": "overall ontological promise is assessed from 36 source-bound atomic DoDs at >99%, with no evidence-class laundering and no second promise state machine"
+    },
+    {
+      "id": "C40_G39",
+      "claim": "execute-observe-reenter is closed by the existing Fastboot owner: only typed capability/attempt receipts may advance the ledger, failed carriers are skipped at unchanged evidence, complete attempts hand off pre-runtime without claiming ACTIVE"
     }
   ],
   "claim_boundary": {
@@ -225,7 +229,8 @@
     "COMPATIBILITY_ZERO_AUTHORITY",
     "FIRST_UNCLOSED_EDGE",
     "DURABLE_RETRY_LEDGER",
-    "EXTERNAL_GAP_HONESTY"
+    "EXTERNAL_GAP_HONESTY",
+    "TYPED_REENTRY_RECEIPT"
   ],
   "canonical_activation_model": "LOCAL_EXECUTOR_V1",
   "legacy_v1_required": [
@@ -277,7 +282,8 @@
     "SIX_EDGE_CANONICAL_BOUNDARY",
     "LOCAL_INGRESS_SINGLE_OWNER",
     "FIRST_UNCLOSED_EDGE",
-    "EXPLICIT_EXTERNAL_GAPS"
+    "EXPLICIT_EXTERNAL_GAPS",
+    "TYPED_EXECUTE_OBSERVE_REENTER"
   ],
   "canonical_v2_executor_law": [
     "the local activation executor owns byte-path validation and content-addressed acquisition",
@@ -296,7 +302,9 @@
     "retry history is owned only by the durable Fastboot ledger and keyed by decision plus evidence",
     "N0-N8 is a non-persisted diagnostic projection only",
     "current-host topology is receipt/fixture evidence and never constitutional truth",
-    "repository closure must list external platform gaps separately"
+    "repository closure must list external platform gaps separately",
+    "failed carrier memory is derived from the durable ledger; callers do not supply attempted carrier classes",
+    "re-entry accepts exactly one typed capability or carrier-attempt receipt and complete attempts hand off to pre-runtime without ACTIVE"
   ],
   "capability_lattice_contract": "contracts/session-local-capability-lattice.json",
   "session_closure_projection": "ikant-le-session-closure-projection/v1",

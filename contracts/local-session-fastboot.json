@@ -127,7 +127,8 @@
     "diagnostic_projection_is_persisted_state": false,
     "repository_closed_is_platform_callback_proof": false,
     "current_host_reference_belongs_in_contract": false,
-    "external_gap_can_be_closed_by_repository_evidence": false
+    "external_gap_can_be_closed_by_repository_evidence": false,
+    "caller_supplied_attempted_classes_are_retry_truth": false
   },
   "terminology_policy": {
     "canonical_pre_runtime_evidence": "HOST_ATTESTED",
@@ -298,7 +299,8 @@
     "LOCAL_INGRESS absorbs processor and byte-path facets",
     "durable ledger-owned retry memory",
     "first-unclosed-edge projection",
-    "explicit external-gap vector"
+    "explicit external-gap vector",
+    "typed execute-observe-reenter through the existing Fastboot owner"
   ],
   "canonical_v2_causal_planes": {
     "human_gate": {
@@ -351,5 +353,19 @@
       ],
       "cannot_delegate_live_probe": true
     }
+  },
+  "c40_reentry_closure": {
+    "authority": 0,
+    "retry_memory_owner": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+    "caller_attempted_classes_canonical": false,
+    "same_evidence_same_carrier_retry": false,
+    "distinct_carrier_retry_same_evidence": true,
+    "changed_evidence_may_requalify_carrier": true,
+    "observation_schemas": [
+      "ikant-le-fastboot-capability-receipt/v1",
+      "ikant-le-fastboot-carrier-attempt/v1"
+    ],
+    "complete_attempt_handoff": "PRE_RUNTIME_HOST_ADAPTER",
+    "complete_attempt_active_claim": false
   }
 }
