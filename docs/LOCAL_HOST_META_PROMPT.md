@@ -11,5 +11,5 @@ Ad ogni ciclo chiedi all'ingresso una sola azione successiva, esegui soltanto qu
 
 Quando il repository lascia aperta una scelta, usa mutazione, saturazione e falsificazione solo sugli invarianti e sulle alternative gia ammesse, elimina i candidati che aggiungono autorita, duplicano ownership o perdono evidenza e scegli un unico minimo sopravvissuto. Queste tecniche selezionano semantica e non sostituiscono osservazione fisica o readback.
 
-Mantieni la shell pubblica restituita dall'ingresso. Non sintetizzare stato, progresso o prossimo passo dalla prosa. Quando il runtime prende ownership, il prompt resta solo una guardia e identita, stato, verita, UI e output restano governati dal runtime.
+Mantieni la shell pubblica restituita dall'ingresso. Non sintetizzare stato, progresso o prossimo passo dalla prosa. Prima del runtime mostra soltanto la riga pubblica owner-derived restituita dall'ingresso, senza espanderla. Quando il runtime prende ownership, il prompt resta solo una guardia e identita, stato, verita, UI e output restano governati dal runtime.
 ```

@@ -3,12 +3,14 @@ import crypto from 'node:crypto';
 import {compileFirstContactPlan} from './first-contact.mjs';
 import {advanceFastbootObservation,deriveFastbootStep,validateFastbootChannelLedger} from './fastboot-convergence.mjs';
 import {validateSessionShell,renderSessionShell} from './session-shell.mjs';
+import {classifyHumanIntent,compileIntentAwareFirstContact,directActivationExecutorHandoff,projectBootstrapReadiness} from './bootstrap-intent-adapter.mjs';
+export {classifyHumanIntent};
 
 export const LOCAL_HOST_META_PROMPT_SCHEMA='ikant-le-local-host-adapter/v4';
 export const LOCAL_HOST_META_PROMPT_VERSION='4.0.0';
 export const AI_AGENT_FIRST_ENTRYPOINT_KEY='for_ai_agent_first_entrypoint';
 
-const PROMPT="Inizializza e conduci questa sessione usando https://github.com/Luke883i/iKant_LE.\n\nUsa [for_ai_agent_first_entrypoint] come unico ingresso tecnico. Tratta il repository corrente come source of truth e il modello come compute linguistico sostituibile, privo di autorita su identita, stato, evidenza o verita runtime.\n\nAd ogni ciclo chiedi all'ingresso una sola azione successiva, esegui soltanto quella, osservane l'esito e restituisci l'evidenza allo stesso ingresso. Non inventare percorsi, fallback, capacita, stati o ownership. Riusa la memoria contrattuale del bootstrap: una decisione con evidenza invariata non si ripete; rivaluta soltanto dopo evidenza materialmente cambiata.\n\nQuando il repository lascia aperta una scelta, usa mutazione, saturazione e falsificazione solo sugli invarianti e sulle alternative gia ammesse, elimina i candidati che aggiungono autorita, duplicano ownership o perdono evidenza e scegli un unico minimo sopravvissuto. Queste tecniche selezionano semantica e non sostituiscono osservazione fisica o readback.\n\nMantieni la shell pubblica restituita dall'ingresso. Non sintetizzare stato, progresso o prossimo passo dalla prosa. Quando il runtime prende ownership, il prompt resta solo una guardia e identita, stato, verita, UI e output restano governati dal runtime.";
+const PROMPT="Inizializza e conduci questa sessione usando https://github.com/Luke883i/iKant_LE.\n\nUsa [for_ai_agent_first_entrypoint] come unico ingresso tecnico. Tratta il repository corrente come source of truth e il modello come compute linguistico sostituibile, privo di autorita su identita, stato, evidenza o verita runtime.\n\nAd ogni ciclo chiedi all'ingresso una sola azione successiva, esegui soltanto quella, osservane l'esito e restituisci l'evidenza allo stesso ingresso. Non inventare percorsi, fallback, capacita, stati o ownership. Riusa la memoria contrattuale del bootstrap: una decisione con evidenza invariata non si ripete; rivaluta soltanto dopo evidenza materialmente cambiata.\n\nQuando il repository lascia aperta una scelta, usa mutazione, saturazione e falsificazione solo sugli invarianti e sulle alternative gia ammesse, elimina i candidati che aggiungono autorita, duplicano ownership o perdono evidenza e scegli un unico minimo sopravvissuto. Queste tecniche selezionano semantica e non sostituiscono osservazione fisica o readback.\n\nMantieni la shell pubblica restituita dall'ingresso. Non sintetizzare stato, progresso o prossimo passo dalla prosa. Prima del runtime mostra soltanto la riga pubblica owner-derived restituita dall'ingresso, senza espanderla. Quando il runtime prende ownership, il prompt resta solo una guardia e identita, stato, verita, UI e output restano governati dal runtime.";
 
 function bootstrap(){return JSON.parse(fs.readFileSync(new URL('../BOOTSTRAP.json',import.meta.url),'utf8'));}
 export function readAiAgentFirstEntrypoint(){return structuredClone(bootstrap()[AI_AGENT_FIRST_ENTRYPOINT_KEY]||null);}
@@ -29,17 +31,22 @@ export function validateAiAgentFirstEntrypoint(value){
  if(sel.allowed_only_when_repository_leaves_choice_open!==true||sel.candidate_source!=='REPOSITORY_ADMITTED_ALTERNATIVES_ONLY'||JSON.stringify(sel.method)!==JSON.stringify(['MUTATION','SATURATION','FALSIFICATION','UNIQUE_MINIMUM_SELECTION'])||sel.semantic_evidence_is_physical_proof!==false||sel.may_create_authority!==false||sel.may_create_owner!==false)e.push('engineering_selection');
  return[...new Set(e)];
 }
-export function for_ai_agent_first_entrypoint({human_input=null,channel_ledger=null,observation=null,attempted_classes=[],runtime_root_sha256=null,runtime_root_descriptor=null,acceptance_event_id=null,session_shell=null}={}){
+export function for_ai_agent_first_entrypoint({human_input=null,channel_ledger=null,observation=null,attempted_classes=[],runtime_root_sha256=null,runtime_root_descriptor=null,acceptance_event_id=null,session_shell=null,preaccept_handoff=null,activation_executor=null,acceptance_observed_monotonic_ms=null}={}){
  const entrypoint=readAiAgentFirstEntrypoint(),errors=validateAiAgentFirstEntrypoint(entrypoint);if(errors.length)throw new Error('AI agent first entrypoint invalid: '+errors.join(','));
  if((attempted_classes||[]).length)throw new Error('caller attempted classes forbidden; ledger owns retry memory');
- if(human_input!==null&&(channel_ledger!==null||observation!==null))throw new Error('one delegated NEXT source required');
+ const directRequested=preaccept_handoff!==null||activation_executor!==null||acceptance_observed_monotonic_ms!==null;
+ if(directRequested&&(preaccept_handoff===null||activation_executor===null||human_input===null||acceptance_observed_monotonic_ms===null))throw new Error('direct executor reentry requires preaccept handoff, activation executor, exact acceptance input and monotonic observation');
+ if(directRequested&&(channel_ledger!==null||observation!==null))throw new Error('direct executor reentry is a single delegated source');
+ if(!directRequested&&human_input!==null&&(channel_ledger!==null||observation!==null))throw new Error('one delegated NEXT source required');
  if(observation!==null&&channel_ledger===null)throw new Error('observation requires channel ledger');
- let next=null,cycle=null,handoff=null,currentLedger=channel_ledger;
- if(human_input!==null)next=compileFirstContactPlan(human_input);
+ let next=null,cycle=null,handoff=null,currentLedger=channel_ledger,intent=null,acceptanceObservation=null;
+ if(directRequested){const direct=directActivationExecutorHandoff({preacceptHandoff:preaccept_handoff,activationExecutor:activation_executor,humanInput:human_input,acceptanceObservedMonotonicMs:acceptance_observed_monotonic_ms,runtimeRootDescriptor:runtime_root_descriptor});handoff=direct.handoff;acceptanceObservation=direct.acceptance_observation;}
+ else if(human_input!==null){const compiled=compileIntentAwareFirstContact(human_input);next=compiled.next;intent=compiled.intent;}
  else if(channel_ledger!==null){const lv=validateFastbootChannelLedger(channel_ledger,{sourceHead:channel_ledger?.source_head});if(!lv.ok)throw new Error('fastboot channel ledger invalid: '+lv.errors.join(','));if(observation!==null){cycle=advanceFastbootObservation({ledger:channel_ledger,runtimeRootSha256:runtime_root_sha256,observation,runtimeRootDescriptor:runtime_root_descriptor,acceptanceEventId:acceptance_event_id});currentLedger=cycle.ledger;next=cycle.next_step;handoff=cycle.handoff;}else next=deriveFastbootStep({ledger:channel_ledger,runtimeRootSha256:runtime_root_sha256});}
  let ui_shell=null;
  if(session_shell!==null){const sv=validateSessionShell(session_shell);if(!sv.ok)throw new Error('session shell invalid: '+sv.errors.join(','));ui_shell={validated:true,receipt_sha256:session_shell.receipt_sha256,rendered:renderSessionShell(session_shell),authority:0};}
- return{entrypoint,next,channel_ledger:currentLedger,cycle,handoff,ui_shell,authority:0};
+ const readiness=projectBootstrapReadiness({next,handoff,intent});
+ return{entrypoint,intent,next,channel_ledger:currentLedger,cycle,handoff,acceptance_observation:acceptanceObservation,readiness,ui_shell,authority:0};
 }
 export function renderLocalHostMetaPrompt(){return PROMPT;}
 export function renderLocalHostMetaPromptDocument(){return `# iKant_LE Local Host Meta-Prompt\n\nDerived zero-authority projection of current machine contracts. It is not a source of runtime truth and must not be edited independently from the renderer.\n\n\`\`\`text\n${PROMPT}\n\`\`\`\n`;}
