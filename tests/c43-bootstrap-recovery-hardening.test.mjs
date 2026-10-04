@@ -33,9 +33,11 @@ test('C43 file handoff is last resort after machine exhaustion, never before mac
 });
 
 test('C43 planner tier is machine execute -> machine probe -> file execute -> file probe',()=>{
- let p=selectFastbootCarrier({capabilities:{HOST_FILE_BRIDGE:proven(),GITHUB_API_BASE64:{}}});
+ const probeCaps=Object.fromEntries(FASTBOOT_MACHINE_CARRIERS.map(c=>[c,false]));probeCaps.GITHUB_API_BASE64={};probeCaps.HOST_FILE_BRIDGE=proven();
+ let p=selectFastbootCarrier({capabilities:probeCaps});
  assert.equal(p.carrier,'GITHUB_API_BASE64');assert.equal(p.state,'PROBE_REQUIRED');
- p=selectFastbootCarrier({capabilities:{HOST_FILE_BRIDGE:proven(),GITHUB_API_BASE64:proven()}});
+ const execCaps=Object.fromEntries(FASTBOOT_MACHINE_CARRIERS.map(c=>[c,false]));execCaps.GITHUB_API_BASE64=proven();execCaps.HOST_FILE_BRIDGE=proven();
+ p=selectFastbootCarrier({capabilities:execCaps});
  assert.equal(p.carrier,'GITHUB_API_BASE64');assert.equal(p.state,'EXECUTABLE');
  const caps=Object.fromEntries(FASTBOOT_MACHINE_CARRIERS.map(c=>[c,false]));caps.HOST_FILE_BRIDGE=proven();
  p=selectFastbootCarrier({capabilities:caps});assert.equal(p.carrier,'HOST_FILE_BRIDGE');assert.equal(p.state,'EXECUTABLE');

@@ -387,15 +387,15 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 114074,
-          "blob_sha1": "3431c99470daad77f735016fa1299cd552b05429"
+          "source_bytes": 115565,
+          "blob_sha1": "8902f55ed07b5590e6ffc72aab74b82bfe5f6240"
         },
         {
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 60845,
-          "blob_sha1": "7bcaf343857653057b223e0e0c63772e99bdff9a"
+          "source_bytes": 62634,
+          "blob_sha1": "b34d6c75e6ddd4f79798a223b0eccece69273b90"
         },
         {
           "index": 2,
@@ -408,29 +408,29 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 11,
-          "source_bytes": 77543,
-          "blob_sha1": "b9a2f5c330fb60496d36de398f38a506b1827496"
+          "source_bytes": 78595,
+          "blob_sha1": "c707fc84114d2272fbb5627b10c902be6fe5c9e7"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 104373,
-          "blob_sha1": "874f7d83912618d7e0be8c5b0200c3debbfc29fd"
+          "source_bytes": 111759,
+          "blob_sha1": "62e2a918c38e669d12f154d1cc6d3898ead1a57e"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 65211,
-          "blob_sha1": "5b3055ccb38a141400d42586dc6effecdc89ae1f"
+          "source_bytes": 69114,
+          "blob_sha1": "9d83890bf1fa9b7d5cc61f30f7ebe6a59633760b"
         },
         {
           "index": 6,
           "path": "runtime-root/shard-006.json",
           "member_count": 7,
-          "source_bytes": 66345,
-          "blob_sha1": "716c5547ca99d08934d31da8ec58a31684b72ccc"
+          "source_bytes": 68016,
+          "blob_sha1": "76bffe923695620f489730ec7265731153361060"
         }
       ],
       "members": [
@@ -735,7 +735,7 @@
           "shard": 6
         }
       ],
-      "runtime_root_sha256": "471d02aecd4f0d4f0767c322285a361cc17dd87e8b62a2beeb44d8ab636224a2"
+      "runtime_root_sha256": "2c34adcaa5551ef3c6cb59c2a6fecfb553cf6d5dafc8d3281c458a61c1b26536"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
