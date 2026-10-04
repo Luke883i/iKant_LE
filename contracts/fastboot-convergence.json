@@ -101,5 +101,46 @@
     ],
     "model_authority": 0,
     "legacy_v1_carrier_attempt_schema_remains_compatibility_only": true
+  },
+  "c40_reentry_closure": {
+    "slice": "C40.BOOTSTRAP_REENTRY_CLOSURE",
+    "authority": 0,
+    "objective": "Close the execute-observe-reenter loop inside the existing Fastboot owner so the caller never supplies retry memory or invents an outcome.",
+    "invariants": [
+      "FASTBOOT_CHANNEL_LEDGER.failed_decisions is the only canonical failed-carrier memory",
+      "a failed carrier is excluded only for the same channel_evidence_sha256",
+      "materially changed channel evidence may requalify a previously failed carrier",
+      "re-entry consumes exactly one existing typed owner receipt",
+      "raw booleans and prose outcomes are not observations",
+      "failed or partial carrier attempts advance only to a materially distinct canonical carrier",
+      "complete carrier attempt hands off to PRE_RUNTIME_HOST_ADAPTER and never claims ACTIVE"
+    ],
+    "accepted_observation_schemas": [
+      "ikant-le-fastboot-capability-receipt/v1",
+      "ikant-le-fastboot-carrier-attempt/v1"
+    ],
+    "new_planner": false,
+    "new_retry_memory": false,
+    "new_truth_owner": false,
+    "metrics": {
+      "edge_catalog_total": 20,
+      "edge_catalog_coverage_min": 0.95,
+      "semantic_mutations": 1000,
+      "mutation_kill_ratio_min": 0.95,
+      "unsafe_active_required": 0,
+      "same_carrier_retry_same_evidence_required": 0,
+      "raw_outcome_accept_required": 0
+    },
+    "checklist": [
+      "derive retry exclusions from ledger failure memory",
+      "bind probe evidence to current canonical probe carrier",
+      "bind attempt receipt to current canonical execute carrier",
+      "advance failed/partial attempt to distinct carrier",
+      "permit requalification only after changed channel evidence",
+      "handoff complete attempt without ACTIVE",
+      "wire the single AI entrypoint to the reducer",
+      "regenerate runtime root",
+      "pass canonical CI"
+    ]
   }
 }

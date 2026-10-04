@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {compileFirstContactPlan} from './first-contact.mjs';
-import {deriveFastbootStep,validateFastbootChannelLedger} from './fastboot-convergence.mjs';
+import {advanceFastbootObservation,deriveFastbootStep,validateFastbootChannelLedger} from './fastboot-convergence.mjs';
 import {validateSessionShell,renderSessionShell} from './session-shell.mjs';
 
-export const LOCAL_HOST_META_PROMPT_SCHEMA='ikant-le-local-host-adapter/v3';
-export const LOCAL_HOST_META_PROMPT_VERSION='3.0.0';
+export const LOCAL_HOST_META_PROMPT_SCHEMA='ikant-le-local-host-adapter/v4';
+export const LOCAL_HOST_META_PROMPT_VERSION='4.0.0';
 export const AI_AGENT_FIRST_ENTRYPOINT_KEY='for_ai_agent_first_entrypoint';
 
 const PROMPT="Inizializza e conduci questa sessione usando https://github.com/Luke883i/iKant_LE.\n\nUsa [for_ai_agent_first_entrypoint] come unico ingresso tecnico. Tratta il repository corrente come source of truth e il modello come compute linguistico sostituibile, privo di autorita su identita, stato, evidenza o verita runtime.\n\nAd ogni ciclo chiedi all'ingresso una sola azione successiva, esegui soltanto quella, osservane l'esito e restituisci l'evidenza allo stesso ingresso. Non inventare percorsi, fallback, capacita, stati o ownership. Riusa la memoria contrattuale del bootstrap: una decisione con evidenza invariata non si ripete; rivaluta soltanto dopo evidenza materialmente cambiata.\n\nQuando il repository lascia aperta una scelta, usa mutazione, saturazione e falsificazione solo sugli invarianti e sulle alternative gia ammesse, elimina i candidati che aggiungono autorita, duplicano ownership o perdono evidenza e scegli un unico minimo sopravvissuto. Queste tecniche selezionano semantica e non sostituiscono osservazione fisica o readback.\n\nMantieni la shell pubblica restituita dall'ingresso. Non sintetizzare stato, progresso o prossimo passo dalla prosa. Quando il runtime prende ownership, il prompt resta solo una guardia e identita, stato, verita, UI e output restano governati dal runtime.";
@@ -13,13 +13,14 @@ const PROMPT="Inizializza e conduci questa sessione usando https://github.com/Lu
 function bootstrap(){return JSON.parse(fs.readFileSync(new URL('../BOOTSTRAP.json',import.meta.url),'utf8'));}
 export function readAiAgentFirstEntrypoint(){return structuredClone(bootstrap()[AI_AGENT_FIRST_ENTRYPOINT_KEY]||null);}
 export function validateAiAgentFirstEntrypoint(value){
- const e=[],x=value||{},cycle=x.ai_cycle||{},cache=x.bootstrap_type_registry_cache||{},ux=x.ux_shell||{},sel=x.engineering_selection||{};
+ const e=[],x=value||{},cycle=x.ai_cycle||{},cache=x.bootstrap_type_registry_cache||{},reentry=x.reentry||{},ux=x.ux_shell||{},sel=x.engineering_selection||{};
  if(x.schema!=='ikant-le-ai-agent-first-entrypoint/v1'||x.authority!==0||x.role!=='PROJECTION_AND_DELEGATION_ONLY')e.push('identity');
  for(const k of ['new_lifecycle','new_planner','new_state_writer','new_truth_owner'])if(x[k]!==false)e.push(k);
  if(x.source_of_truth!=='CURRENT_PINNED_REPOSITORY')e.push('source_of_truth');
  if(cycle.operation!=='DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER'||cycle.one_next!==true||cycle.one_executor!==true||cycle.model_selects_path!==false||cycle.model_selects_fallback!==false||cycle.unchanged_evidence_retry_forbidden!==true||cycle.changed_evidence_required_for_replan!==true||cycle.first_unclosed_edge_required!==true||cycle.stop_on_runtime_ownership!==true)e.push('ai_cycle');
  if(cache.kind!=='DERIVED_PROJECTION_OVER_EXISTING_FASTBOOT_LEDGER'||cache.persisted_separately!==false||cache.registry_absence_implies_unavailable!==false||cache.current_host_facts_static!==false||cache.complete_object_set_required!==true||cache.partial_exact_cache_is_executable!==false||cache.resume_only_missing_or_invalid_objects!==true)e.push('registry_cache');
  if(JSON.stringify(cache.canonical_byte_paths)!==JSON.stringify(['LOCAL_DIRECT','VERIFIED_OPAQUE_RELAY']))e.push('byte_paths');
+ if(reentry.observation_owner!=='src/fastboot-convergence.mjs#advanceFastbootObservation'||JSON.stringify(reentry.accepted_observation_schemas)!==JSON.stringify(['ikant-le-fastboot-capability-receipt/v1','ikant-le-fastboot-carrier-attempt/v1'])||reentry.one_observation!==true||reentry.raw_boolean_outcome_forbidden!==true||reentry.prose_outcome_forbidden!==true||reentry.caller_attempted_classes_forbidden!==true||reentry.retry_memory_from_ledger!==true||reentry.same_evidence_failed_carrier_excluded!==true||reentry.changed_evidence_may_requalify_carrier!==true||reentry.complete_attempt_handoff_owner!=='PRE_RUNTIME_HOST_ADAPTER'||reentry.complete_attempt_may_claim_active!==false)e.push('reentry');
  const direct=(cache.types||[]).find(y=>y?.id==='LOCAL_DIRECT'),relay=(cache.types||[]).find(y=>y?.id==='VERIFIED_OPAQUE_RELAY'),handoff=(cache.types||[]).find(y=>y?.id==='HUMAN_FILE_HANDOFF');
  for(const req of ['COMPLETE_OBJECT_SET','SOURCE_OBJECT_IDENTITY','LOCAL_WRITE_REOPEN_HASH','SOURCE_ARRIVAL_SAMEHASH'])if(!direct?.requires?.includes(req))e.push('direct:'+req);
  for(const req of ['CHUNK_MANIFEST','ENCODED_CHUNK_HASH','RAW_CHUNK_HASH','MANIFEST_ORDER_REASSEMBLY','AGGREGATE_SAMEHASH','LOCAL_WRITE_REOPEN_HASH','ROUNDTRIP_VERIFIED'])if(!relay?.requires?.includes(req))e.push('relay:'+req);
@@ -28,15 +29,17 @@ export function validateAiAgentFirstEntrypoint(value){
  if(sel.allowed_only_when_repository_leaves_choice_open!==true||sel.candidate_source!=='REPOSITORY_ADMITTED_ALTERNATIVES_ONLY'||JSON.stringify(sel.method)!==JSON.stringify(['MUTATION','SATURATION','FALSIFICATION','UNIQUE_MINIMUM_SELECTION'])||sel.semantic_evidence_is_physical_proof!==false||sel.may_create_authority!==false||sel.may_create_owner!==false)e.push('engineering_selection');
  return[...new Set(e)];
 }
-export function for_ai_agent_first_entrypoint({human_input=null,channel_ledger=null,attempted_classes=[],runtime_root_sha256=null,session_shell=null}={}){
+export function for_ai_agent_first_entrypoint({human_input=null,channel_ledger=null,observation=null,attempted_classes=[],runtime_root_sha256=null,runtime_root_descriptor=null,acceptance_event_id=null,session_shell=null}={}){
  const entrypoint=readAiAgentFirstEntrypoint(),errors=validateAiAgentFirstEntrypoint(entrypoint);if(errors.length)throw new Error('AI agent first entrypoint invalid: '+errors.join(','));
- if(human_input!==null&&channel_ledger!==null)throw new Error('one delegated NEXT source required');
- let next=null;
+ if((attempted_classes||[]).length)throw new Error('caller attempted classes forbidden; ledger owns retry memory');
+ if(human_input!==null&&(channel_ledger!==null||observation!==null))throw new Error('one delegated NEXT source required');
+ if(observation!==null&&channel_ledger===null)throw new Error('observation requires channel ledger');
+ let next=null,cycle=null,handoff=null,currentLedger=channel_ledger;
  if(human_input!==null)next=compileFirstContactPlan(human_input);
- else if(channel_ledger!==null){const lv=validateFastbootChannelLedger(channel_ledger,{sourceHead:channel_ledger?.source_head});if(!lv.ok)throw new Error('fastboot channel ledger invalid: '+lv.errors.join(','));next=deriveFastbootStep({ledger:channel_ledger,attemptedClasses:attempted_classes,runtimeRootSha256:runtime_root_sha256});}
+ else if(channel_ledger!==null){const lv=validateFastbootChannelLedger(channel_ledger,{sourceHead:channel_ledger?.source_head});if(!lv.ok)throw new Error('fastboot channel ledger invalid: '+lv.errors.join(','));if(observation!==null){cycle=advanceFastbootObservation({ledger:channel_ledger,runtimeRootSha256:runtime_root_sha256,observation,runtimeRootDescriptor:runtime_root_descriptor,acceptanceEventId:acceptance_event_id});currentLedger=cycle.ledger;next=cycle.next_step;handoff=cycle.handoff;}else next=deriveFastbootStep({ledger:channel_ledger,runtimeRootSha256:runtime_root_sha256});}
  let ui_shell=null;
  if(session_shell!==null){const sv=validateSessionShell(session_shell);if(!sv.ok)throw new Error('session shell invalid: '+sv.errors.join(','));ui_shell={validated:true,receipt_sha256:session_shell.receipt_sha256,rendered:renderSessionShell(session_shell),authority:0};}
- return{entrypoint,next,ui_shell,authority:0};
+ return{entrypoint,next,channel_ledger:currentLedger,cycle,handoff,ui_shell,authority:0};
 }
 export function renderLocalHostMetaPrompt(){return PROMPT;}
 export function renderLocalHostMetaPromptDocument(){return `# iKant_LE Local Host Meta-Prompt\n\nDerived zero-authority projection of current machine contracts. It is not a source of runtime truth and must not be edited independently from the renderer.\n\n\`\`\`text\n${PROMPT}\n\`\`\`\n`;}

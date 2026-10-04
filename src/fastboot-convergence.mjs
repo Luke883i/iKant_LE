@@ -107,6 +107,7 @@ export function validateFastbootConvergence(receipt,{sourceHead,runtimeRootSha25
 export const FASTBOOT_CAPABILITY_RECEIPT_SCHEMA='ikant-le-fastboot-capability-receipt/v1';
 export const FASTBOOT_CHANNEL_LEDGER_SCHEMA='ikant-le-fastboot-channel-ledger/v1';
 export const FASTBOOT_STEP_SCHEMA='ikant-le-fastboot-step/v1';
+export const FASTBOOT_OBSERVATION_TRANSITION_SCHEMA='ikant-le-fastboot-observation-transition/v1';
 export const FASTBOOT_BYTE_BRIDGE_SCHEMA='ikant-le-fastboot-byte-bridge/v2';
 export const LOCAL_SESSION_ACTIVATION_MODALITY='SESSION_CHAT_LOCAL';
 export const FASTBOOT_CHANNEL_STATES=Object.freeze(['UNKNOWN','AVAILABLE','UNAVAILABLE']);
@@ -167,10 +168,12 @@ export function validateFastbootChannelLedger(ledger,{sourceHead=null}={}){
  return{ok:e.length===0,errors:uniq(e)};
 }
 function ledgerCapabilities(ledger){const out={};for(const c of FASTBOOT_CARRIERS){const row=ledger.channels[c];out[c]=row.status==='AVAILABLE'?structuredClone(row.capabilities):row.status==='UNAVAILABLE'?false:{};}return out;}
+function failedCarriersForCurrentEvidence(ledger){const evidence=ledger?.channel_evidence_sha256;return uniq((ledger?.failed_decisions||[]).filter(x=>x?.evidence_sha256===evidence&&FASTBOOT_CARRIERS.includes(x?.carrier)).map(x=>x.carrier));}
+export function deriveFastbootAttemptedClasses(ledger,{attemptedClasses=[]}={}){const v=validateFastbootChannelLedger(ledger,{sourceHead:ledger?.source_head});if(!v.ok)throw new Error('fastboot channel ledger invalid:'+v.errors.join(','));return uniq([...failedCarriersForCurrentEvidence(ledger),...(attemptedClasses||[]).map(String)]);}
 export function deriveFastbootStep({ledger,attemptedClasses=[],runtimeRootSha256}={}){
  const v=validateFastbootChannelLedger(ledger,{sourceHead:ledger?.source_head});if(!v.ok)return{schema:FASTBOOT_STEP_SCHEMA,state:'BLOCKED',action:'BLOCK',blocker:'CHANNEL_LEDGER_INVALID',errors:v.errors,one_next:true,one_executor:true,retry_allowed:false,authority:0};
  if(!HEX64.test(String(runtimeRootSha256||'')))return{schema:FASTBOOT_STEP_SCHEMA,state:'BLOCKED',action:'BLOCK',blocker:'RUNTIME_ROOT_INVALID',one_next:true,one_executor:true,retry_allowed:false,authority:0};
- const plan=selectFastbootCarrier({capabilities:ledgerCapabilities(ledger),attemptedClasses});
+ const effectiveAttempts=deriveFastbootAttemptedClasses(ledger,{attemptedClasses}),plan=selectFastbootCarrier({capabilities:ledgerCapabilities(ledger),attemptedClasses:effectiveAttempts});
  const decisionMaterial={activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:ledger.source_head,runtime_root_sha256:runtimeRootSha256,plan_state:plan.state,carrier:plan.carrier,plan_action:plan.action};
  const decisionKey=sha256(decisionMaterial),evidenceSha=ledger.channel_evidence_sha256;
  const repeated=(ledger.failed_decisions||[]).some(x=>x?.decision_key===decisionKey&&x?.evidence_sha256===evidenceSha);
@@ -189,6 +192,35 @@ export function recordFastbootFailure(ledger,step){
  const next=structuredClone(ledger),row={decision_key:step.decision_key,evidence_sha256:step.evidence_sha256,carrier:step.canonical_carrier};
  if(!(next.failed_decisions||[]).some(x=>x.decision_key===row.decision_key&&x.evidence_sha256===row.evidence_sha256))next.failed_decisions=[...(next.failed_decisions||[]),row];
  delete next.receipt_sha256;return{...next,receipt_sha256:sha256(next)};
+}
+function observationTransitionMaterial(x){return{schema:x.schema,activation_modality:x.activation_modality,source_head:x.source_head,runtime_root_sha256:x.runtime_root_sha256,observation_schema:x.observation_schema,observation_receipt_sha256:x.observation_receipt_sha256,from_ledger_receipt_sha256:x.from_ledger_receipt_sha256,to_ledger_receipt_sha256:x.to_ledger_receipt_sha256,current_step_receipt_sha256:x.current_step_receipt_sha256,next_step_receipt_sha256:x.next_step_receipt_sha256,disposition:x.disposition,handoff_owner:x.handoff_owner,active_claim:x.active_claim,authority:x.authority};}
+export function advanceFastbootObservation({ledger,runtimeRootSha256,observation,runtimeRootDescriptor=null,acceptanceEventId=null}={}){
+ const lv=validateFastbootChannelLedger(ledger,{sourceHead:ledger?.source_head});if(!lv.ok)throw new Error('fastboot channel ledger invalid:'+lv.errors.join(','));
+ if(!HEX64.test(String(runtimeRootSha256||'')))throw new Error('runtime root invalid');
+ const step=deriveFastbootStep({ledger,runtimeRootSha256});if(!validateFastbootStep(step,{sourceHead:ledger.source_head,runtimeRootSha256,ledger}).ok)throw new Error('canonical fastboot step invalid');
+ let nextLedger=ledger,nextStep=null,handoff=null,disposition=null;
+ if(observation?.schema===FASTBOOT_CAPABILITY_RECEIPT_SCHEMA){
+   if(step.action!=='PROBE_CANONICAL_CARRIER')throw new Error('capability receipt requires canonical probe step');
+   const ov=validateFastbootCapabilityReceipt(observation,{sourceHead:ledger.source_head});if(!ov.ok)throw new Error('capability receipt invalid:'+ov.errors.join(','));
+   if(observation.carrier!==step.canonical_carrier)throw new Error('capability receipt carrier mismatch');
+   nextLedger=buildFastbootChannelLedger({previous:ledger,receipts:[observation],sourceHead:ledger.source_head});
+   nextStep=deriveFastbootStep({ledger:nextLedger,runtimeRootSha256});disposition='PROBE_EVIDENCE_ACCEPTED';
+ }else if(observation?.schema===FASTBOOT_ATTEMPT_SCHEMA){
+   if(step.action!=='EXECUTE_CANONICAL_CARRIER')throw new Error('carrier attempt requires canonical execute step');
+   const ov=validateFastbootAttempt(observation,{sourceHead:ledger.source_head,runtimeRootSha256,runtimeRootDescriptor,acceptanceEventId});if(!ov.ok)throw new Error('carrier attempt invalid:'+ov.errors.join(','));
+   if(observation.carrier!==step.canonical_carrier)throw new Error('carrier attempt mismatch');
+   if(observation.result==='COMPLETE'){disposition='HANDOFF_PRE_RUNTIME';handoff={owner:'PRE_RUNTIME_HOST_ADAPTER',action:'EXECUTE_PRE_RUNTIME_BOOTSTRAP',attempt_receipt_sha256:observation.receipt_sha256,active_claim:false,authority:0};}
+   else{nextLedger=recordFastbootFailure(ledger,step);nextStep=deriveFastbootStep({ledger:nextLedger,runtimeRootSha256});disposition='DISTINCT_RETRY_REQUIRED';}
+ }else throw new Error('typed fastboot observation required');
+ const material={schema:FASTBOOT_OBSERVATION_TRANSITION_SCHEMA,activation_modality:LOCAL_SESSION_ACTIVATION_MODALITY,source_head:ledger.source_head,runtime_root_sha256:runtimeRootSha256,observation_schema:observation.schema,observation_receipt_sha256:observation.receipt_sha256,from_ledger_receipt_sha256:ledger.receipt_sha256,to_ledger_receipt_sha256:nextLedger.receipt_sha256,current_step_receipt_sha256:step.receipt_sha256,next_step_receipt_sha256:nextStep?.receipt_sha256??null,disposition,handoff_owner:handoff?.owner??null,active_claim:false,authority:0};
+ return{...material,ledger:structuredClone(nextLedger),next_step:nextStep?structuredClone(nextStep):null,handoff,receipt_sha256:sha256(material)};
+}
+export function validateFastbootObservationTransition(value,{sourceHead=null,runtimeRootSha256=null}={}){
+ const r=value||{},e=[];if(r.schema!==FASTBOOT_OBSERVATION_TRANSITION_SCHEMA)e.push('schema');if(r.activation_modality!==LOCAL_SESSION_ACTIVATION_MODALITY)e.push('activation_modality');if(!HEX40.test(String(r.source_head||''))||(sourceHead&&r.source_head!==String(sourceHead).toLowerCase()))e.push('source_head');if(!HEX64.test(String(r.runtime_root_sha256||''))||(runtimeRootSha256&&r.runtime_root_sha256!==runtimeRootSha256))e.push('runtime_root');
+ if(![FASTBOOT_CAPABILITY_RECEIPT_SCHEMA,FASTBOOT_ATTEMPT_SCHEMA].includes(r.observation_schema)||!HEX64.test(String(r.observation_receipt_sha256||''))||!HEX64.test(String(r.from_ledger_receipt_sha256||''))||!HEX64.test(String(r.to_ledger_receipt_sha256||''))||!HEX64.test(String(r.current_step_receipt_sha256||'')))e.push('binding');
+ if(r.next_step_receipt_sha256!==null&&!HEX64.test(String(r.next_step_receipt_sha256||'')))e.push('next_step');if(!['PROBE_EVIDENCE_ACCEPTED','DISTINCT_RETRY_REQUIRED','HANDOFF_PRE_RUNTIME'].includes(r.disposition))e.push('disposition');if(r.disposition==='HANDOFF_PRE_RUNTIME'&&r.handoff_owner!=='PRE_RUNTIME_HOST_ADAPTER')e.push('handoff');if(r.disposition!=='HANDOFF_PRE_RUNTIME'&&r.handoff_owner!==null)e.push('handoff');if(r.active_claim!==false||r.authority!==0)e.push('authority');
+ if(r.ledger){const lv=validateFastbootChannelLedger(r.ledger,{sourceHead:r.source_head});if(!lv.ok||r.ledger.receipt_sha256!==r.to_ledger_receipt_sha256)e.push('ledger');}if(r.next_step){const sv=validateFastbootStep(r.next_step,{sourceHead:r.source_head,runtimeRootSha256:r.runtime_root_sha256,ledger:r.ledger});if(!sv.ok||r.next_step.receipt_sha256!==r.next_step_receipt_sha256)e.push('next_step_binding');}else if(r.next_step_receipt_sha256!==null)e.push('next_step_binding');
+ const material=observationTransitionMaterial(r);if(!HEX64.test(String(r.receipt_sha256||''))||sha256(material)!==r.receipt_sha256)e.push('receipt_digest');return{ok:e.length===0,errors:uniq(e)};
 }
 export function validateFastbootStep(step,{sourceHead=null,runtimeRootSha256=null,ledger=null,attemptedClasses=[]}={}){
  const e=[],r=step||{};

@@ -16,7 +16,8 @@
       "activation_projection": "src/runtime-availability.mjs#deriveActivationServiceTier",
       "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
       "runtime": "src/session-local-service.mjs",
-      "ui_shell": "src/session-shell.mjs"
+      "ui_shell": "src/session-shell.mjs",
+      "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation"
     },
     "ai_cycle": {
       "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
@@ -133,6 +134,22 @@
       "semantic_evidence_is_physical_proof": false,
       "may_create_authority": false,
       "may_create_owner": false
+    },
+    "reentry": {
+      "observation_owner": "src/fastboot-convergence.mjs#advanceFastbootObservation",
+      "accepted_observation_schemas": [
+        "ikant-le-fastboot-capability-receipt/v1",
+        "ikant-le-fastboot-carrier-attempt/v1"
+      ],
+      "one_observation": true,
+      "raw_boolean_outcome_forbidden": true,
+      "prose_outcome_forbidden": true,
+      "caller_attempted_classes_forbidden": true,
+      "retry_memory_from_ledger": true,
+      "same_evidence_failed_carrier_excluded": true,
+      "changed_evidence_may_requalify_carrier": true,
+      "complete_attempt_handoff_owner": "PRE_RUNTIME_HOST_ADAPTER",
+      "complete_attempt_may_claim_active": false
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",
@@ -284,7 +301,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 50,
-      "source_bytes": 487207,
+      "source_bytes": 496375,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62"
@@ -294,8 +311,8 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 106587,
-          "blob_sha1": "07b207711cb27a631fcd2b0d3840881b200e9085"
+          "source_bytes": 113043,
+          "blob_sha1": "ffcd43a250442901f40ebdcdc60f310e22bcea27"
         },
         {
           "index": 1,
@@ -315,15 +332,15 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 11,
-          "source_bytes": 74863,
-          "blob_sha1": "3b74631585d7348a79ae6a044e8068a803e91811"
+          "source_bytes": 74998,
+          "blob_sha1": "789bfef8277103662a8ac39d48f335bb74a478f7"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 99607,
-          "blob_sha1": "370b335f5b940e828df3fd85182bfa5985d7645f"
+          "source_bytes": 102357,
+          "blob_sha1": "96603b3e8c31114eea78d92c3741aec9dcc72641"
         },
         {
           "index": 5,
@@ -433,8 +450,8 @@
         },
         {
           "path": "src/runtime.mjs",
-          "blob_sha1": "3c870d0a90e2584c9279b006b497dc0f64c8780a",
-          "bytes": 2792,
+          "blob_sha1": "0787cf7b78e10f69118214a3d55e99faec55fc4c",
+          "bytes": 2927,
           "shard": 3
         },
         {
@@ -607,20 +624,20 @@
         },
         {
           "path": "src/fastboot-convergence.mjs",
-          "blob_sha1": "c3c4e52d1f261f9287f898ac1c37e66680cbd506",
-          "bytes": 24454,
+          "blob_sha1": "5eff3091aa3d8dcb873eb447d66de912e1de6a16",
+          "bytes": 30878,
           "shard": 0
         },
         {
           "path": "contracts/fastboot-convergence.json",
-          "blob_sha1": "f70ec3016be89d10cbafe9a51521e44c9d11ebd4",
-          "bytes": 5012,
+          "blob_sha1": "5e54c1f657dd1e2a8fd544551c53327bf6faa3b0",
+          "bytes": 6912,
           "shard": 4
         },
         {
           "path": "contracts/session-chat-activation.json",
-          "blob_sha1": "b43b9e361f6b3352a3a73b375c96a03c59149315",
-          "bytes": 14605,
+          "blob_sha1": "26bb0ee61fba5b93ef5cd2bb2cb9da92f1db1c04",
+          "bytes": 15314,
           "shard": 4
         },
         {
@@ -642,7 +659,7 @@
           "shard": 6
         }
       ],
-      "runtime_root_sha256": "c972c6528bfa18b6a2d01f6094d18024e0502e814af12a04fcc3868905528cec"
+      "runtime_root_sha256": "e179f8533c907ab386151fea4502648caea65d314dce0ddbeedb94f9d4fc2a63"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
