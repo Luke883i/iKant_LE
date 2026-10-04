@@ -1,5 +1,165 @@
 {
   "schema": "ikant-le-public-bootstrap/v2",
+  "for_ai_agent_first_entrypoint": {
+    "schema": "ikant-le-ai-agent-first-entrypoint/v1",
+    "authority": 0,
+    "role": "PROJECTION_AND_DELEGATION_ONLY",
+    "new_lifecycle": false,
+    "new_planner": false,
+    "new_state_writer": false,
+    "new_truth_owner": false,
+    "source_of_truth": "CURRENT_PINNED_REPOSITORY",
+    "owner_reuse": {
+      "first_contact": "src/first-contact.mjs#compileFirstContactPlan",
+      "bootstrap_ledger": "src/fastboot-convergence.mjs#buildFastbootChannelLedger",
+      "activation_projection": "src/runtime-availability.mjs#deriveActivationServiceTier",
+      "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+      "runtime": "src/session-local-service.mjs",
+      "ui_shell": "src/session-shell.mjs"
+    },
+    "ai_cycle": {
+      "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
+      "one_next": true,
+      "one_executor": true,
+      "model_selects_path": false,
+      "model_selects_fallback": false,
+      "unchanged_evidence_retry_forbidden": true,
+      "changed_evidence_required_for_replan": true,
+      "first_unclosed_edge_required": true,
+      "stop_on_runtime_ownership": true
+    },
+    "bootstrap_type_registry_cache": {
+      "kind": "DERIVED_PROJECTION_OVER_EXISTING_FASTBOOT_LEDGER",
+      "persisted_separately": false,
+      "canonical_memory_owner": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+      "scope_key": [
+        "source_head",
+        "runtime_root_sha256",
+        "decision_key",
+        "evidence_sha256"
+      ],
+      "registry_absence_implies_unavailable": false,
+      "current_host_facts_static": false,
+      "complete_object_set_required": true,
+      "partial_exact_cache_is_executable": false,
+      "resume_only_missing_or_invalid_objects": true,
+      "record_shape": {
+        "required_fields": [
+          "bootstrap_type_id",
+          "source_head",
+          "decision_key",
+          "evidence_sha256",
+          "availability",
+          "verified_object_ids",
+          "missing_object_ids",
+          "failure_class",
+          "disposition"
+        ],
+        "availability_values": [
+          "UNKNOWN",
+          "AVAILABLE",
+          "UNAVAILABLE"
+        ],
+        "current_fact_source": "VALIDATED_HOST_OR_RUNTIME_EVIDENCE_ONLY",
+        "separate_persistence": false
+      },
+      "progressive_adaptation": {
+        "UNKNOWN": "PROBE_ONLY_OWNER_NAMED_CAPABILITY",
+        "AVAILABLE": "EXECUTE_OWNER_NAMED_PATH",
+        "PARTIAL": "RESUME_MISSING_OR_INVALID_OBJECTS_ONLY",
+        "STABLE_FAILURE": "DO_NOT_RETRY_REQUEST_NEXT_FROM_OWNER",
+        "CHANGED_EVIDENCE": "REENTER_ENTRYPOINT",
+        "HUMAN_GESTURE": "PRESENT_ONE_OWNER_NAMED_ACTION_AND_WAIT",
+        "RUNTIME_OWNED": "STOP_BOOTSTRAP_PLANNING_PRESENT_RUNTIME_SHELL"
+      },
+      "canonical_byte_paths": [
+        "LOCAL_DIRECT",
+        "VERIFIED_OPAQUE_RELAY"
+      ],
+      "types": [
+        {
+          "id": "EXACT_LOCAL",
+          "canonical_byte_path": "LOCAL_DIRECT",
+          "source_patterns": [
+            "WARM_CACHE_EXACT",
+            "HOST_FILE_BRIDGE",
+            "MATERIALIZABLE_ATTACHMENT",
+            "CONNECTOR_BYTE_EXPORT",
+            "OBSERVED_DOWNLOADER_EXACT_OBJECT"
+          ],
+          "requires": [
+            "COMPLETE_OBJECT_SET",
+            "SOURCE_OBJECT_IDENTITY",
+            "LOCAL_WRITE_REOPEN_HASH",
+            "SOURCE_ARRIVAL_SAMEHASH"
+          ]
+        },
+        {
+          "id": "OPAQUE_TEXT_RELAY",
+          "canonical_byte_path": "VERIFIED_OPAQUE_RELAY",
+          "source_patterns": [
+            "GITHUB_API_BASE64",
+            "GITHUB_GIT_BLOB_API",
+            "CONNECTOR_TEXT_OPAQUE_RELAY"
+          ],
+          "requires": [
+            "CHUNK_MANIFEST",
+            "ENCODED_CHUNK_HASH",
+            "RAW_CHUNK_HASH",
+            "MANIFEST_ORDER_REASSEMBLY",
+            "AGGREGATE_SAMEHASH",
+            "LOCAL_WRITE_REOPEN_HASH",
+            "ROUNDTRIP_VERIFIED"
+          ]
+        },
+        {
+          "id": "HUMAN_FILE_HANDOFF",
+          "canonical_byte_path": "LOCAL_DIRECT",
+          "transport_only": true,
+          "second_acceptance_required": false,
+          "requires": [
+            "MACHINE_PATHS_CANONICALLY_EXHAUSTED_OR_OWNER_SELECTED_HANDOFF",
+            "EXACT_ATTACHMENT_BYTES",
+            "LOCAL_READBACK_HASH"
+          ]
+        }
+      ],
+      "failure_taxonomy": [
+        "LOCAL_DOWNLOADER_UNAVAILABLE",
+        "REMOTE_TEXT_WITHOUT_LOCAL_SINK",
+        "PARTIAL_EXACT_CACHE",
+        "RELAY_CHUNK_SAMEHASH_MISMATCH",
+        "RELAY_AGGREGATE_SAMEHASH_MISMATCH",
+        "REGISTRY_ABSENCE_NOT_EVIDENCE",
+        "HUMAN_TRANSPORT_GESTURE_REQUIRED",
+        "UNCHANGED_EVIDENCE_RETRY_FORBIDDEN",
+        "SOURCE_OR_OBJECT_IDENTITY_CHANGED",
+        "INTEGRITY_CONTRADICTION"
+      ]
+    },
+    "ui_shell": {
+      "owner": "src/session-shell.mjs",
+      "status_owner": "src/runtime-availability.mjs#deriveActivationServiceTier",
+      "mode": "VALIDATE_AND_PRESENT_OWNER_OUTPUT_ONLY",
+      "model_may_synthesize_status": false,
+      "model_may_synthesize_progress": false,
+      "prompt_may_rewrite_shell": false,
+      "runtime_owned_after_handoff": true
+    },
+    "engineering_selection": {
+      "allowed_only_when_repository_leaves_choice_open": true,
+      "candidate_source": "REPOSITORY_ADMITTED_ALTERNATIVES_ONLY",
+      "method": [
+        "MUTATION",
+        "SATURATION",
+        "FALSIFICATION",
+        "UNIQUE_MINIMUM_SELECTION"
+      ],
+      "semantic_evidence_is_physical_proof": false,
+      "may_create_authority": false,
+      "may_create_owner": false
+    }
+  },
   "canonical_repository": "Luke883i/iKant_LE",
   "canonical_repository_url": "https://github.com/Luke883i/iKant_LE",
   "canonical_branch": "main",

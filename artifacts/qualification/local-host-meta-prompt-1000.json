@@ -1,0 +1,33 @@
+{
+  "schema": "ikant-le-ai-agent-first-entrypoint-falsification/v1",
+  "selection": {
+    "candidate_architectures": 1024,
+    "obligations": [
+      "single_entrypoint",
+      "existing_owner_delegation",
+      "one_next",
+      "ledger_cache_reuse",
+      "changed_evidence_retry",
+      "byte_path_collapse",
+      "partial_coverage",
+      "chunk_relay_exactness",
+      "shell_delegation",
+      "runtime_handoff"
+    ],
+    "valid_candidates": 1,
+    "winner_mask": 1023,
+    "winner_cost": 10,
+    "winner_count": 1,
+    "unique_minimum": true
+  },
+  "prompt_chars": 1356,
+  "prompt_words": 174,
+  "prompt_sha256": "fc12ed3912d438120e7ff412f9d3baf7e975ba18e36af5695f7e725ef910155f",
+  "mutations": 1000,
+  "killed": 1000,
+  "survivors": [],
+  "base_errors": [],
+  "claim_boundary": "bounded semantic selection/falsification only; not current-host physical proof",
+  "status": "PASS",
+  "receipt_sha256": "8399947ffb4d14d286c6c5ec07c1b5eead052c592d760062b8647f24ebf78166"
+}
