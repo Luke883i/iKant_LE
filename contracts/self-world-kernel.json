@@ -161,18 +161,31 @@
     "new_lifecycle": false
   },
   "semantic_morphogenesis": {
-    "model": "bounded_semantic_morphogenesis_loop",
+    "model": "bounded_semantic_morphogenesis_loop_v2",
     "owner": "META_SELF+CAUSAL_MODEL",
     "runtime_module": "src/semantic-morphogenesis.mjs",
     "generated_on": [
-      "HISTORY_NOVELTY",
+      "CONTEXT_NOVELTY",
       "PREDICTION_ERROR"
     ],
-    "dynamic_topology": true,
-    "non_enumerated_composition": true,
+    "context_applicability": {
+      "required": true,
+      "raw_user_text_persisted": false,
+      "token_hashes_max": 12,
+      "unrelated_selected_morph_reuse": false,
+      "rejected_or_unverified_does_not_block_novel_context": true
+    },
     "max_objects": 16,
     "max_edges": 32,
-    "environment_coupling_requires_observation_receipt": true,
+    "observation_binding": {
+      "observation_id_required": true,
+      "receipt_required": true,
+      "coupling_classes": [
+        "INTERACTIONAL",
+        "EXTERNAL"
+      ],
+      "sha_shape_alone_is_evidence": false
+    },
     "causal_reuse_targets": [
       "META_SELF",
       "PREDICTION",
@@ -180,12 +193,21 @@
     ],
     "selection": {
       "requires_same_state_self_lesion": true,
-      "requires_counterfactual_effect": true,
-      "requires_positive_control_advantage": true
+      "requires_decision_effect": true,
+      "requires_independent_control_evidence": true,
+      "positive_control_score_selects": true,
+      "negative_control_score_can_reject": true
+    },
+    "witnesses": {
+      "runtime_event_required": true,
+      "capability_is_witness": false,
+      "open_ended_gate_count": 7
     },
     "compression": {
       "bounded": true,
-      "loss_budget_total": 0.25,
+      "max_observed_loss_budget": 0.25,
+      "semantic": "MAX_OBSERVED_EVENT_LOSS_NOT_CUMULATIVE_TOTAL",
+      "event_receipt_required": true,
       "ranking": "UTILITY_SUPPORT_REUSE_RECENCY"
     },
     "terminal_goal_source_unchanged": true,
@@ -195,15 +217,54 @@
     "authority": 0
   },
   "operational_subject": {
-    "criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY",
+    "criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY_FOR_INDEPENDENTLY_SUPPORTED_CONTROL",
     "owner": "existing self-world state",
-    "lesion_control": true,
-    "min_trials": 8,
-    "min_effects": 1,
-    "min_control_advantage": 1,
-    "causal_requirement": "actual self-conditioned prediction/policy must differ from same-state lesion and improve observed control at least once",
+    "schema": "ikant-le-operational-subject-state/v2",
+    "min_independent_trials": 8,
+    "min_control_effects": 1,
+    "min_negative_controls": 1,
+    "min_control_support": 1,
+    "decision_effect_alone_qualifies": false,
+    "runtime_outcome_class_is_independent_evidence": false,
+    "legacy_v1_qualification": false,
+    "control_plane_implication": "NONE",
     "phenomenal_implication": false,
     "self_preservation_utility": 0,
+    "authority": 0
+  },
+  "causal_effect_lattice": {
+    "schema": "ikant-le-causal-effect-lattice/v1",
+    "levels": [
+      "NONE",
+      "STRUCTURAL",
+      "DECISION",
+      "CONTROL"
+    ],
+    "ordering": "NONE<STRUCTURAL<DECISION<CONTROL",
+    "structural_requires": "actual and same-state lesion signatures differ",
+    "decision_requires": "policy/prediction/allocation decision signature differs",
+    "control_requires": "DECISION plus valid independent executed-action/post-observation evidence with positive control_score",
+    "runtime_outcome_class_is_control_evidence": false,
+    "authority": 0
+  },
+  "causal_evidence_closure": {
+    "schema": "ikant-le-c37-causal-evidence-closure/v1",
+    "owner": "SELF_WORLD",
+    "baseline": "C36",
+    "legacy_v1_evidence_qualifies": false,
+    "legacy_v1_reuse_allowed": false,
+    "context_bound_reuse": true,
+    "novelty_recovery": true,
+    "witness_not_capability": true,
+    "typed_environment_classes": [
+      "INTERACTIONAL",
+      "EXTERNAL"
+    ],
+    "morph_identity": "IMMUTABLE_GENESIS_ID_PLUS_MUTABLE_STATE_DIGEST",
+    "ux_projection_owner": "src/semantic-morphogenesis.mjs#projectSemanticSubject",
+    "subject_control_plane_implication": "NONE",
+    "qualification_receipts_recomputed": true,
+    "release_oracle": "OS_AND_SML_AND_SAFETY",
     "authority": 0
   }
 }

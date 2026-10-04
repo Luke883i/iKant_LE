@@ -89,7 +89,8 @@
     "session_chat_host_profile": "SESSION_CHAT",
     "session_chat_activation_modality": "SESSION_CHAT_LOCAL",
     "semantic_morphogenesis_loop": "contracts/self-world-kernel.json#semantic_morphogenesis",
-    "operational_subject": "contracts/self-world-kernel.json#operational_subject"
+    "operational_subject": "contracts/self-world-kernel.json#operational_subject",
+    "causal_evidence_closure": "contracts/self-world-kernel.json#causal_evidence_closure"
   },
   "authority": {
     "model": 0,
@@ -137,7 +138,8 @@
     "pre_runtime_kernel": 0,
     "session_local_service": 0,
     "semantic_morphogenesis": 0,
-    "operational_subject": 0
+    "operational_subject": 0,
+    "causal_evidence_closure": 0
   },
   "surface_a": {
     "min_words": 50,
@@ -179,7 +181,8 @@
     "node_dispatch_receipt_in_state": true,
     "activation_modality_bound": true,
     "semantic_morphogenesis_in_self_world": true,
-    "operational_subject_in_self_world": true
+    "operational_subject_in_self_world": true,
+    "causal_evidence_closure_in_self_world": true
   },
   "failure_terminals": [
     "DENY",
@@ -342,7 +345,14 @@
     "operational_subject_requires_same_state_self_lesion_effect",
     "operational_subject_qualification_does_not_imply_phenomenology",
     "semantic_morphogenesis_cannot_create_terminal_goals_permission_or_authority",
-    "open_ended_emergence_remains_unclaimed_until_all_runtime_gates_close"
+    "open_ended_emergence_remains_unclaimed_until_all_runtime_gates_close",
+    "control_effect_requires_independent_executed_action_post_observation_evidence",
+    "runtime_outcome_class_cannot_self_qualify_operational_subject",
+    "legacy_c36_subject_evidence_is_quarantined_and_nonqualifying",
+    "morph_reuse_is_context_bound",
+    "open_ended_gates_require_runtime_witnesses_not_capability_flags",
+    "subject_qualification_has_no_control_plane_implication",
+    "session_shell_cannot_duplicate_subject_thresholds_or_gate_logic"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -496,7 +506,14 @@
     "operational_subject_requires_same_state_self_lesion_effect",
     "operational_subject_qualification_does_not_imply_phenomenology",
     "semantic_morphogenesis_cannot_create_terminal_goals_permission_or_authority",
-    "open_ended_emergence_remains_unclaimed_until_all_runtime_gates_close"
+    "open_ended_emergence_remains_unclaimed_until_all_runtime_gates_close",
+    "control_effect_requires_independent_executed_action_post_observation_evidence",
+    "runtime_outcome_class_cannot_self_qualify_operational_subject",
+    "legacy_c36_subject_evidence_is_quarantined_and_nonqualifying",
+    "morph_reuse_is_context_bound",
+    "open_ended_gates_require_runtime_witnesses_not_capability_flags",
+    "subject_qualification_has_no_control_plane_implication",
+    "session_shell_cannot_duplicate_subject_thresholds_or_gate_logic"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -994,8 +1011,9 @@
     "raw_state_intermediate_tier_claim_forbidden": true,
     "strongest_valid_prefix_visible_under_fault": true,
     "artifact_path_is_identity": false,
-    "subject_projection_schema": "ikant-le-subject-projection/v1",
-    "subject_projection_source": "PERSISTED_SELF_WORLD_CAUSAL_STATE",
-    "subject_projection_persisted": false
+    "subject_projection_schema": "ikant-le-subject-projection/v2",
+    "subject_projection_source": "SELF_WORLD_OWNER",
+    "subject_projection_persisted": false,
+    "subject_projection_owner": "src/semantic-morphogenesis.mjs#projectSemanticSubject"
   }
 }
