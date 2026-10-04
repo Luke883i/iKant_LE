@@ -96,3 +96,5 @@ jobs:
           console.log(`IKANT_LE_C9_SOURCE=${r.source_binding.digest}`);
           console.log(`IKANT_LE_C9_RECEIPT=${r.receipt_sha256}`);
           NODE
+      - name: C38 one-million semantic-lossless runtime falsification
+        run: npm run falsify:c38
