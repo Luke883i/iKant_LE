@@ -120,7 +120,9 @@
       "model_may_synthesize_progress": false,
       "model_may_synthesize_next": false,
       "prompt_may_rewrite_shell": false,
-      "runtime_owned_after_handoff": true
+      "runtime_owned_after_handoff": true,
+      "transition_guidance_source": "VALIDATED_FASTBOOT_TRANSITION",
+      "transition_handoff_visible": true
     },
     "engineering_selection": {
       "allowed_only_when_repository_leaves_choice_open": true,
@@ -149,7 +151,14 @@
       "same_evidence_failed_carrier_excluded": true,
       "changed_evidence_may_requalify_carrier": true,
       "complete_attempt_handoff_owner": "PRE_RUNTIME_HOST_ADAPTER",
-      "complete_attempt_may_claim_active": false
+      "complete_attempt_may_claim_active": false,
+      "requalification_scope": "SAME_CARRIER_EVIDENCE_ONLY",
+      "unrelated_carrier_evidence_may_requalify_failed_carrier": false,
+      "canonical_step_caller_attempted_classes_forbidden": true,
+      "session_shell_caller_attempted_classes_forbidden": true,
+      "complete_attempt_handoff_action": "EXECUTE_PRE_RUNTIME_BOOTSTRAP",
+      "complete_attempt_handoff_digest_bound": true,
+      "complete_attempt_next_edge": "LOCAL_MATERIALIZATION"
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",
@@ -762,7 +771,7 @@
     "single_local_activation_modality": true,
     "failure_memory_key": [
       "decision_key",
-      "evidence_sha256"
+      "carrier_evidence_sha256"
     ],
     "unchanged_failed_decision_retry_forbidden": true,
     "channel_evidence_class": "HOST_ATTESTED_AUTHORITY_ZERO",
@@ -879,7 +888,9 @@
       "turn": "runLocalLimitedTurn",
       "compatibility_plugin_required": false,
       "legacy_deployment_adapter_canonical": false
-    }
+    },
+    "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
+    "unrelated_channel_evidence_requalifies_failed_carrier": false
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
@@ -915,7 +926,7 @@
     "channel_ledger": "ikant-le-fastboot-channel-ledger/v1",
     "fastboot_step": "ikant-le-fastboot-step/v1",
     "one_next": true,
-    "failure_memory": "decision_key+evidence_sha256",
+    "failure_memory": "decision_key+carrier_evidence_sha256",
     "hosted_runtime_required": false,
     "plugin_or_mcp_registration_required": false,
     "diagnostic_precedence": [

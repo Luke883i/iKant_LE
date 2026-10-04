@@ -108,8 +108,8 @@
     "objective": "Close the execute-observe-reenter loop inside the existing Fastboot owner so the caller never supplies retry memory or invents an outcome.",
     "invariants": [
       "FASTBOOT_CHANNEL_LEDGER.failed_decisions is the only canonical failed-carrier memory",
-      "a failed carrier is excluded only for the same channel_evidence_sha256",
-      "materially changed channel evidence may requalify a previously failed carrier",
+      "a failed carrier is excluded while the same carrier-local evidence epoch remains",
+      "only materially changed evidence for that carrier may requalify a previously failed carrier",
       "re-entry consumes exactly one existing typed owner receipt",
       "raw booleans and prose outcomes are not observations",
       "failed or partial carrier attempts advance only to a materially distinct canonical carrier",
@@ -136,11 +136,61 @@
       "bind probe evidence to current canonical probe carrier",
       "bind attempt receipt to current canonical execute carrier",
       "advance failed/partial attempt to distinct carrier",
-      "permit requalification only after changed channel evidence",
+      "permit requalification only after changed evidence for the failed carrier",
       "handoff complete attempt without ACTIVE",
       "wire the single AI entrypoint to the reducer",
       "regenerate runtime root",
       "pass canonical CI"
+    ]
+  },
+  "c41_retry_epoch_ux_continuity": {
+    "slice": "C41.CARRIER_LOCAL_RETRY_AND_UX_CONTINUITY",
+    "authority": 0,
+    "objective": "Close the remaining post-C40 bypasses without new owners: canonical retry memory is ledger-only and carrier-local, complete Fastboot transition routing is digest-bound, and Session Shell preserves one owner-derived NEXT into LOCAL_MATERIALIZATION.",
+    "invariants": [
+      "deriveFastbootStep rejects caller-supplied attempted carrier classes",
+      "Session Shell rejects caller-supplied attempted carrier classes",
+      "failed carrier exclusion is keyed by decision_key plus carrier_evidence_sha256",
+      "unrelated carrier evidence cannot requalify a failed carrier",
+      "changed evidence for the failed carrier may requalify that carrier",
+      "HANDOFF_PRE_RUNTIME binds owner, action, attempt receipt, authority and active claim into the transition digest",
+      "HANDOFF_PRE_RUNTIME cannot coexist with a next Fastboot step or ledger mutation",
+      "Session Shell renders EXECUTE_PRE_RUNTIME_BOOTSTRAP only from a validated Fastboot transition",
+      "the first unclosed constitutional edge after complete LOCAL_INGRESS is LOCAL_MATERIALIZATION",
+      "ACTIVE continues to hide bootstrap guidance"
+    ],
+    "retry_memory_owner": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+    "retry_evidence_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
+    "transition_owner": "src/fastboot-convergence.mjs#advanceFastbootObservation",
+    "shell_owner": "src/session-shell.mjs",
+    "new_lifecycle": false,
+    "new_planner": false,
+    "new_retry_memory": false,
+    "new_truth_owner": false,
+    "new_status_owner": false,
+    "metrics": {
+      "edge_catalog_total": 26,
+      "edge_catalog_coverage_min": 0.95,
+      "semantic_attack_cases": 10000,
+      "semantic_attack_families": 20,
+      "mutation_kill_ratio_min": 0.95,
+      "caller_retry_memory_accept_required": 0,
+      "unrelated_requalification_required": 0,
+      "unbound_handoff_route_required": 0,
+      "actionable_transition_ui_gap_required": 0,
+      "unsafe_active_required": 0
+    },
+    "checklist": [
+      "remove caller retry influence from canonical step derivation",
+      "remove caller retry influence from Session Shell validation",
+      "bind failures to carrier-local evidence epoch",
+      "prove unrelated evidence does not requalify the failed carrier",
+      "prove relevant same-carrier evidence can requalify",
+      "digest-bind the complete pre-runtime route",
+      "project validated transition NEXT through Session Shell",
+      "regenerate runtime root",
+      "run exact-candidate semantic attacks",
+      "pass canonical qualification"
     ]
   }
 }

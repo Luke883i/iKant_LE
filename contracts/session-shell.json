@@ -126,13 +126,26 @@
     "retry_dispositions": [
       "EXECUTE_OR_PROBE_ONCE",
       "WAIT_FOR_CHANGED_EVIDENCE",
-      "STOP_TYPED_BLOCKER"
+      "STOP_TYPED_BLOCKER",
+      "OWNER_HANDOFF_ONCE"
     ],
     "model_may_synthesize_next": false,
     "model_may_synthesize_progress": false,
     "prompt_may_rewrite_guidance": false,
     "persisted": false,
     "prose_reingested": false,
-    "authority": 0
+    "authority": 0,
+    "transition_source": "VALIDATED_FASTBOOT_TRANSITION",
+    "transition_validation_owner": "src/fastboot-convergence.mjs#validateFastbootObservationTransition",
+    "caller_attempted_classes_forbidden": true,
+    "retry_memory_owner": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+    "transition_handoff": {
+      "disposition": "HANDOFF_PRE_RUNTIME",
+      "next_action": "EXECUTE_PRE_RUNTIME_BOOTSTRAP",
+      "first_unclosed_edge": "LOCAL_MATERIALIZATION",
+      "retry_disposition": "OWNER_HANDOFF_ONCE",
+      "active_claim": false,
+      "digest_bound": true
+    }
   }
 }

@@ -78,7 +78,7 @@
     },
     {
       "id": "C22_G13",
-      "claim": "unchanged channel evidence plus a recorded failed decision forbids replay of that same carrier; the ledger may select a materially distinct canonical carrier without caller-supplied retry memory"
+      "claim": "unchanged carrier-local evidence plus a recorded failed decision forbids replay of that carrier; unrelated channel evidence cannot requalify it"
     },
     {
       "id": "C23_G13",
@@ -187,6 +187,10 @@
     {
       "id": "C40_G39",
       "claim": "execute-observe-reenter is closed by the existing Fastboot owner: only typed capability/attempt receipts may advance the ledger, failed carriers are skipped at unchanged evidence, complete attempts hand off pre-runtime without claiming ACTIVE"
+    },
+    {
+      "id": "C41_G40",
+      "claim": "canonical retry is ledger-only and carrier-local; complete Fastboot route fields are digest-bound and the Session Shell preserves the owner-derived NEXT into LOCAL_MATERIALIZATION without claiming ACTIVE"
     }
   ],
   "claim_boundary": {
@@ -230,7 +234,10 @@
     "FIRST_UNCLOSED_EDGE",
     "DURABLE_RETRY_LEDGER",
     "EXTERNAL_GAP_HONESTY",
-    "TYPED_REENTRY_RECEIPT"
+    "TYPED_REENTRY_RECEIPT",
+    "CARRIER_LOCAL_FAILURE_EPOCH",
+    "DIGEST_BOUND_PRE_RUNTIME_ROUTE",
+    "CONTINUOUS_OWNER_DERIVED_BOOTSTRAP_UX"
   ],
   "canonical_activation_model": "LOCAL_EXECUTOR_V1",
   "legacy_v1_required": [
@@ -239,7 +246,7 @@
     "SOURCE_HEAD_PIN",
     "TYPED_HOST_ATTESTED_CHANNEL_LEDGER",
     "ONE_CANONICAL_NEXT",
-    "FAILURE_MEMORY_BY_DECISION_AND_EVIDENCE",
+    "FAILURE_MEMORY_BY_DECISION_AND_CARRIER_EVIDENCE",
     "PHYSICAL_BYTE_INGRESS",
     "CONTENT_ADDRESSED_LOCAL_ROOT_READBACK",
     "EXECUTED_CODE_PROVENANCE",
@@ -251,8 +258,8 @@
     "UNKNOWN capability is probed rather than guessed",
     "AVAILABLE and UNAVAILABLE require host-observed evidence receipts; such receipts are authority-zero attestations, not physical proof",
     "UNAVAILABLE persists until changed channel evidence",
-    "same decision_key plus same evidence plus previous non-progress cannot be retried",
-    "changed evidence recomputes the canonical NEXT",
+    "same decision_key plus same carrier-local evidence plus previous non-progress cannot be retried",
+    "changed evidence recomputes the canonical NEXT without requalifying unrelated failed carriers",
     "exactly one NEXT and one executor are exposed",
     "model preference never selects carrier or fallback",
     "registry absence never proves host capability absence",
@@ -283,7 +290,10 @@
     "LOCAL_INGRESS_SINGLE_OWNER",
     "FIRST_UNCLOSED_EDGE",
     "EXPLICIT_EXTERNAL_GAPS",
-    "TYPED_EXECUTE_OBSERVE_REENTER"
+    "TYPED_EXECUTE_OBSERVE_REENTER",
+    "CARRIER_LOCAL_FAILURE_MEMORY",
+    "DIGEST_BOUND_FASTBOOT_ROUTE",
+    "TRANSITION_CONTINUOUS_SESSION_SHELL"
   ],
   "canonical_v2_executor_law": [
     "the local activation executor owns byte-path validation and content-addressed acquisition",
@@ -304,7 +314,10 @@
     "current-host topology is receipt/fixture evidence and never constitutional truth",
     "repository closure must list external platform gaps separately",
     "failed carrier memory is derived from the durable ledger; callers do not supply attempted carrier classes",
-    "re-entry accepts exactly one typed capability or carrier-attempt receipt and complete attempts hand off to pre-runtime without ACTIVE"
+    "re-entry accepts exactly one typed capability or carrier-attempt receipt and complete attempts hand off to pre-runtime without ACTIVE",
+    "caller-supplied attempted carrier classes are rejected by canonical step derivation and Session Shell",
+    "only same-carrier evidence change can requalify that carrier after failure",
+    "complete Fastboot transition exposes one digest-bound pre-runtime action and leaves ACTIVE false"
   ],
   "capability_lattice_contract": "contracts/session-local-capability-lattice.json",
   "session_closure_projection": "ikant-le-session-closure-projection/v1",
