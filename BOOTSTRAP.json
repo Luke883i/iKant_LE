@@ -125,7 +125,11 @@
       "transition_handoff_visible": true,
       "public_bootstrap_line_max_chars": 32,
       "model_may_expand_bootstrap_line": false,
-      "public_line_source": "src/session-shell.mjs#projectBootstrapPublicLine"
+      "public_line_source": "src/session-shell.mjs#projectBootstrapPublicLine",
+      "post_terms_ascii_shell_required": true,
+      "bootstrap_ascii_renderer": "src/session-shell.mjs#renderBootstrapAsciiShell",
+      "runtime_ascii_renderer": "src/session-shell.mjs#renderSessionShell",
+      "model_may_reframe_ascii_shell": false
     },
     "engineering_selection": {
       "allowed_only_when_repository_leaves_choice_open": true,
@@ -226,7 +230,46 @@
       "remediation_one_shot_per_admission": true,
       "continued_after_detection_escalates": true
     },
-    "bootstrap_recovery_hardening_contract": "contracts/bootstrap-recovery-hardening.json"
+    "bootstrap_recovery_hardening_contract": "contracts/bootstrap-recovery-hardening.json",
+    "methodology": {
+      "new_registry": false,
+      "consult_before_attempt": true,
+      "consult_before_retry": true,
+      "owner_registry_refs": [
+        "bootstrap_type_registry_cache.failure_taxonomy",
+        "bootstrap_type_registry_cache.progressive_adaptation",
+        "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+        "preaccept_forbidden",
+        "ux_shell"
+      ],
+      "conversation_is_retry_memory": false,
+      "on_impediment": "REENTER_ENTRYPOINT_REQUEST_NEXT",
+      "owner_selected_retry_only": true,
+      "tool_error_is_carrier_fact": false
+    },
+    "session_context_refs": {
+      "owner": "CURRENT_PINNED_REPOSITORY",
+      "declared_only": true,
+      "arbitrary_discovery": false,
+      "runtime_member_required": true,
+      "local_readback_required": true,
+      "default_effect": "VOICE_STYLE_ONLY",
+      "refs": [
+        {
+          "path": "stile_comunicativo.md",
+          "purpose": "COMMUNICATION_STYLE",
+          "effect": "VOICE_STYLE_ONLY",
+          "required": true
+        }
+      ],
+      "style_may_change_authority": false,
+      "style_may_change_state": false,
+      "style_may_change_permissions": false,
+      "style_may_change_evidence": false,
+      "style_may_change_next": false,
+      "style_may_change_retry_memory": false
+    },
+    "methodological_bootstrap_contract": "contracts/methodological-bootstrap.json"
   },
   "canonical_repository": "Luke883i/iKant_LE",
   "canonical_repository_url": "https://github.com/Luke883i/iKant_LE",
@@ -376,8 +419,8 @@
     "runtime_root": {
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
-      "member_count": 50,
-      "source_bytes": 513111,
+      "member_count": 51,
+      "source_bytes": 517371,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62"
@@ -407,16 +450,16 @@
         {
           "index": 3,
           "path": "runtime-root/shard-003.json",
-          "member_count": 11,
-          "source_bytes": 78595,
-          "blob_sha1": "c707fc84114d2272fbb5627b10c902be6fe5c9e7"
+          "member_count": 12,
+          "source_bytes": 81863,
+          "blob_sha1": "4aa9d5087acb1da15781115ec639274f118fab1b"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 111759,
-          "blob_sha1": "62e2a918c38e669d12f154d1cc6d3898ead1a57e"
+          "source_bytes": 112922,
+          "blob_sha1": "b8b912b53642c9d3760a123d86ba7091509e1169"
         },
         {
           "index": 5,
@@ -718,14 +761,14 @@
         },
         {
           "path": "src/session-shell.mjs",
-          "blob_sha1": "50db4883e98728dc46cae6330d4a1f5d1176739d",
-          "bytes": 17762,
+          "blob_sha1": "4716ae32f867b0e5738a076fc452df62cce8e620",
+          "bytes": 20169,
           "shard": 3
         },
         {
           "path": "contracts/session-shell.json",
-          "blob_sha1": "cea2636197ad3550e9a9e58257e73f90f8e96b72",
-          "bytes": 5688,
+          "blob_sha1": "19d8a4a90787d6a6d800c270bdb33f595a75b2fd",
+          "bytes": 6738,
           "shard": 4
         },
         {
@@ -733,9 +776,15 @@
           "blob_sha1": "ab41fd4250c5e2f7a8a7cedce455025116c61eb1",
           "bytes": 31203,
           "shard": 6
+        },
+        {
+          "path": "stile_comunicativo.md",
+          "blob_sha1": "1a7d215eb74965ac0b4a200de63be2b53e9f33fa",
+          "bytes": 803,
+          "shard": 3
         }
       ],
-      "runtime_root_sha256": "2c34adcaa5551ef3c6cb59c2a6fecfb553cf6d5dafc8d3281c458a61c1b26536"
+      "runtime_root_sha256": "54a046b940ee195daf45416d8e0c70a4d32f55596d94a6e8adadd31ff9b8980d"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
