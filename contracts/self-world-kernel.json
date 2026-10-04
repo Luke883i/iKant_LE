@@ -206,8 +206,12 @@
     "witnesses": {
       "runtime_event_required": true,
       "capability_is_witness": false,
-      "truth_source": "CONTENT_ADDRESSED_WITNESS_RECEIPTS",
-      "open_ended_gate_count": 7
+      "truth_source": "CONTENT_ADDRESSED_WITNESS_SUMMARY_AND_BOUNDED_RECEIPTS",
+      "open_ended_gate_count": 7,
+      "summary_schema": "ikant-le-sml-witness-summary/v1",
+      "summary_is_bounded_accumulator": true,
+      "recent_receipt_window_max": 128,
+      "historical_counts_do_not_depend_on_receipt_retention": true
     },
     "compression": {
       "bounded": true,
@@ -291,6 +295,8 @@
     "internal_coupling_is_external": false,
     "preactive_runtime_evidence_available": false,
     "operational_subject_requires_breadth": true,
-    "qualification_runtime_in_loop_required": true
+    "qualification_runtime_in_loop_required": true,
+    "witness_summary_accumulator": true,
+    "bounded_receipt_retention_preserves_historical_truth": true
   }
 }

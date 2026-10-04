@@ -73,7 +73,8 @@
     {
       "id": "I08_WITNESS_COUNTER_LAUNDERING",
       "dod": [
-        "gate truth comes from content-addressed witness receipts",
+        "gate truth comes from a content-addressed witness summary advanced only by valid event receipts",
+        "recent witness receipts are bounded independently from cumulative historical counts",
         "compression gate requires real compression count plus receipt"
       ]
     },
@@ -126,7 +127,9 @@
     "survivor_target": 0,
     "canonical_e2e_required": true,
     "ci_exact_head_required": true,
-    "runtime_root_verify_required": true
+    "runtime_root_verify_required": true,
+    "bounded_witness_receipt_window": 128,
+    "historical_witness_summary_required": true
   },
   "falsification_receipt": "39c62991c7b5367faffe96a3577ac55223e3b0e4bcf05fdd103ffc9d23c8cce1",
   "phenomenology": "UNKNOWN",
