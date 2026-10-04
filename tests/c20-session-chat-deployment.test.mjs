@@ -48,3 +48,5 @@ test('C20 compatibility contradiction is translated to canonical transfer bindin
  assert.ok(d.integrity_codes.includes('TRANSFER_IDENTITY_MISMATCH'));
  assert.equal(d.fresh_chat_required,true);
 });
+
+test('C38 canonical deployed turn exposes CONTROL evidence unavailability without simulating OS',{concurrency:false},async()=>{const d=temp(),deployment=path.join(d,'deploy');try{deploySessionChatRuntime({deploymentRoot:deployment});await acceptDeployedSession({deploymentRoot:deployment,sessionId:'CHAT-C38',humanInput:'I ACCEPT'});const turn=await runDeployedSessionTurn({deploymentRoot:deployment,sessionId:'CHAT-C38',input:'verifica la chiusura semantica del control evidence'});const q=turn.session_shell?.self_summary?.subject_projection;assert.equal(turn.state,'ACTIVE');assert.equal(q?.schema,'ikant-le-subject-projection/v3');assert.equal(q?.runtime_evidence_available,true);assert.equal(q?.control_evidence?.availability,'UNAVAILABLE');assert.equal(q?.operational_subject,'UNAVAILABLE');assert.equal(q?.control_plane_implication,'NONE');}finally{fs.rmSync(d,{recursive:true,force:true});}});
