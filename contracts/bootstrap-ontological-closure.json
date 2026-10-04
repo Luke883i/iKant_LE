@@ -23,8 +23,18 @@
     "OPTIONAL_MCP_HOST_BRIDGE_NONCANONICAL"
   ],
   "intent": {
-    "activation_examples": ["inizializza iKant","avvia iKant","attiva iKant","start ikant"],
-    "exit_examples": ["chiudi iKant","esci da iKant","disattiva iKant","EXIT IKANT"],
+    "activation_examples": [
+      "inizializza iKant",
+      "avvia iKant",
+      "attiva iKant",
+      "start ikant"
+    ],
+    "exit_examples": [
+      "chiudi iKant",
+      "esci da iKant",
+      "disattiva iKant",
+      "EXIT IKANT"
+    ],
     "adapter_authority": 0,
     "may_accept_terms": false,
     "may_choose_carrier": false,
@@ -43,9 +53,18 @@
     "projection_only": true,
     "persisted": false,
     "max_public_bootstrap_line_chars": 32,
-    "examples": ["iKant · PREPARA","iKant · CARICA FILE","iKant · AVVIA","iKant · ACQUISISCI","iKant · MATERIALIZZA","iKant · CHIUDI"],
+    "examples": [
+      "iKant · PREPARA",
+      "iKant · CARICA FILE",
+      "iKant · AVVIA",
+      "iKant · ACQUISISCI",
+      "iKant · MATERIALIZZA",
+      "iKant · CHIUDI"
+    ],
     "technical_receipts_visible": false,
-    "model_may_expand_owner_next": false
+    "model_may_expand_owner_next": false,
+    "public_line_owner": "src/session-shell.mjs",
+    "secondary_readiness_state_machine": false
   },
   "distribution": {
     "existing_content_addressed_runtime_root_reused": true,
@@ -53,7 +72,9 @@
     "warm_carrier": "WARM_CACHE_EXACT",
     "file_carrier": "HOST_FILE_BRIDGE",
     "human_file_handoff_type_reused": "HUMAN_FILE_HANDOFF",
-    "file_handoff_creates_runtime_identity": false
+    "file_handoff_creates_runtime_identity": false,
+    "file_handoff_last_resort_after_machine_exhaustion": true,
+    "file_handoff_unknown_means_probe": true
   },
   "optional_host_integration": {
     "technology": "MCP_APP_OR_PLUGIN",
@@ -64,7 +85,11 @@
     "purpose": "Optional typed host/file/model/egress bridge only when the host exposes it; absence cannot change canonical iKant truth.",
     "tool_surface_only": true,
     "recommended_transport": "MCP_PLUGIN_WHEN_HOST_EXPOSES_IT",
-    "host_tool_examples": ["PROVIDE_DISTRIBUTION_FILE","MODEL_INVOCATION_GATE","PRE_DISPLAY_EGRESS_GATE"],
+    "host_tool_examples": [
+      "PROVIDE_DISTRIBUTION_FILE",
+      "MODEL_INVOCATION_GATE",
+      "PRE_DISPLAY_EGRESS_GATE"
+    ],
     "tools_must_map_to_user_outcomes": true
   },
   "dod": {

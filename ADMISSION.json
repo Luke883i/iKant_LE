@@ -31,8 +31,8 @@
     "MATERIALIZE_CHECKOUT"
   ],
   "completed_forbidden_access_is_nonretroactive": true,
-  "breach_terminal": "SESSION_NONCONFORMING",
-  "new_chat_required_for_conforming_runtime": true,
+  "breach_terminal": "CLASSIFIED_READ_ONLY_REMEDIATION_OR_SESSION_NONCONFORMING",
+  "new_chat_required_for_conforming_runtime": "HARD_PREACCEPT_BREACH_ONLY",
   "preaccept_handoff": {
     "schema": "ikant-le-preaccept-handoff/v2",
     "canonical_schema": "ikant-le-preaccept-handoff/v2",
@@ -85,5 +85,28 @@
     "canonical_clock_required": false,
     "canonical_event_id_required": true,
     "legacy_host_origin_receipts_compatibility_only": true
-  }
+  },
+  "recoverable_read_only_preaccept_overread_enabled": true,
+  "recoverable_read_only_actions": [
+    "GIT_LS_REMOTE",
+    "LIST_TREE",
+    "SEARCH_REPOSITORY",
+    "READ_ARBITRARY_REPOSITORY_FILE",
+    "READ_HISTORY",
+    "READ_ISSUE_PR"
+  ],
+  "hard_preaccept_breach_actions": [
+    "CLONE_REPOSITORY",
+    "GIT_FETCH",
+    "GH_CLI",
+    "RAW_WEB_READ",
+    "DIRECT_DOWNLOAD",
+    "ARCHIVE_DOWNLOAD",
+    "SHELL_HTTP_DOWNLOAD",
+    "MATERIALIZE_CHECKOUT"
+  ],
+  "read_only_remediation_receipt_schema": "ikant-le-preaccept-remediation/v1",
+  "read_only_remediation_preserves_history": true,
+  "read_only_remediation_requires_reacquisition": true,
+  "read_only_remediation_retroactive_authorization": false
 }

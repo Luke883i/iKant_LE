@@ -124,7 +124,8 @@
       "transition_guidance_source": "VALIDATED_FASTBOOT_TRANSITION",
       "transition_handoff_visible": true,
       "public_bootstrap_line_max_chars": 32,
-      "model_may_expand_bootstrap_line": false
+      "model_may_expand_bootstrap_line": false,
+      "public_line_source": "src/session-shell.mjs#projectBootstrapPublicLine"
     },
     "engineering_selection": {
       "allowed_only_when_repository_leaves_choice_open": true,
@@ -189,7 +190,16 @@
       "human_file_handoff_first_class": true,
       "file_handoff_creates_runtime_identity": false,
       "update_on_activate": false,
-      "new_carrier": false
+      "new_carrier": false,
+      "human_file_handoff_priority": "LAST_RESORT_AFTER_MACHINE_EXHAUSTION",
+      "file_handoff_unknown_means_probe": true,
+      "machine_carriers_before_human_file": [
+        "WARM_CACHE_EXACT",
+        "GITHUB_API_BASE64",
+        "GITHUB_GIT_BLOB_API",
+        "PINNED_GITHUB_ZIP",
+        "PINNED_PERMALINK"
+      ]
     },
     "optional_host_bridge": {
       "technology": "MCP_APP_OR_PLUGIN",
@@ -198,7 +208,25 @@
       "may_create_authority": false,
       "may_replace_canonical_runtime": false,
       "tool_surface_only": true
-    }
+    },
+    "exit_adapter": {
+      "authority": 0,
+      "new_owner": false,
+      "owned_next": "RELEASE_TO_HOST",
+      "runtime_active_next": "EXIT IKANT",
+      "already_host_next": "EXIT_COMPLETE",
+      "one_next": true
+    },
+    "preaccept_remediation": {
+      "owner": "src/admission.mjs",
+      "recoverable_class": "READ_ONLY_PREACCEPT_OVERREAD",
+      "hard_class": "HARD_PREACCEPT_BREACH",
+      "retroactive_authorization": false,
+      "reacquisition_required": true,
+      "remediation_one_shot_per_admission": true,
+      "continued_after_detection_escalates": true
+    },
+    "bootstrap_recovery_hardening_contract": "contracts/bootstrap-recovery-hardening.json"
   },
   "canonical_repository": "Luke883i/iKant_LE",
   "canonical_repository_url": "https://github.com/Luke883i/iKant_LE",
@@ -349,7 +377,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 50,
-      "source_bytes": 505649,
+      "source_bytes": 513111,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62"
@@ -359,15 +387,15 @@
           "index": 0,
           "path": "runtime-root/shard-000.json",
           "member_count": 7,
-          "source_bytes": 115227,
-          "blob_sha1": "7a4ec07b17db5c265b4b9b06907933c6e1985e08"
+          "source_bytes": 115565,
+          "blob_sha1": "8902f55ed07b5590e6ffc72aab74b82bfe5f6240"
         },
         {
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 62263,
-          "blob_sha1": "8965d94ff888fd28cfa4d72a176b5f1db214406c"
+          "source_bytes": 62634,
+          "blob_sha1": "b34d6c75e6ddd4f79798a223b0eccece69273b90"
         },
         {
           "index": 2,
@@ -380,29 +408,29 @@
           "index": 3,
           "path": "runtime-root/shard-003.json",
           "member_count": 11,
-          "source_bytes": 77439,
-          "blob_sha1": "71594a0978abb40192c456d5fe184bf51d5af7bf"
+          "source_bytes": 78595,
+          "blob_sha1": "c707fc84114d2272fbb5627b10c902be6fe5c9e7"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 107292,
-          "blob_sha1": "a7347375464c614b04ed63ddaad1c1ee490a9f8e"
+          "source_bytes": 111759,
+          "blob_sha1": "62e2a918c38e669d12f154d1cc6d3898ead1a57e"
         },
         {
           "index": 5,
           "path": "runtime-root/shard-005.json",
           "member_count": 5,
-          "source_bytes": 69021,
-          "blob_sha1": "b2ab37bc0a8601058cab1ab1b536366e2002e69f"
+          "source_bytes": 69114,
+          "blob_sha1": "9d83890bf1fa9b7d5cc61f30f7ebe6a59633760b"
         },
         {
           "index": 6,
           "path": "runtime-root/shard-006.json",
           "member_count": 7,
-          "source_bytes": 66855,
-          "blob_sha1": "cadf2d56c4534f7c675aa61d70ce54988d8a68ed"
+          "source_bytes": 68016,
+          "blob_sha1": "76bffe923695620f489730ec7265731153361060"
         }
       ],
       "members": [
@@ -426,8 +454,8 @@
         },
         {
           "path": "src/runtime-command.mjs",
-          "blob_sha1": "326653a2e0316717649843d8ee3f4282850bd931",
-          "bytes": 39924,
+          "blob_sha1": "85f529c80cdab4f255b29d2eb49b4a4ece967fde",
+          "bytes": 40295,
           "shard": 1
         },
         {
@@ -540,8 +568,8 @@
         },
         {
           "path": "src/admission.mjs",
-          "blob_sha1": "e3613411937351b40d60add7b32b9a37ca15b998",
-          "bytes": 10834,
+          "blob_sha1": "d597d793cb7c51df1f8ced711d78d535f929ee7a",
+          "bytes": 15294,
           "shard": 4
         },
         {
@@ -570,8 +598,8 @@
         },
         {
           "path": "contracts/ikant-le.json",
-          "blob_sha1": "471db49537a0e67b4e3505ec0fa83cde022c3e79",
-          "bytes": 47735,
+          "blob_sha1": "b8b48687c32811e97fb57ae4003388b15732985e",
+          "bytes": 47825,
           "shard": 5
         },
         {
@@ -612,8 +640,8 @@
         },
         {
           "path": "contracts/orientation-capsule.json",
-          "blob_sha1": "8d5aadd2cc70c7229f5162d9443ae989663dbfbf",
-          "bytes": 1652,
+          "blob_sha1": "5f9b4a617f6788fde3f7443f1a175182debee012",
+          "bytes": 2695,
           "shard": 6
         },
         {
@@ -672,8 +700,8 @@
         },
         {
           "path": "src/fastboot-convergence.mjs",
-          "blob_sha1": "9d5d5628814b2dfb2d41490d13d855bc7a9fae6e",
-          "bytes": 33058,
+          "blob_sha1": "e0821cf54e009430b712463f75c0f562a80fcce9",
+          "bytes": 33402,
           "shard": 0
         },
         {
@@ -690,8 +718,8 @@
         },
         {
           "path": "src/session-shell.mjs",
-          "blob_sha1": "7ebf0925a6be0706ea236d12e55d95c098221d17",
-          "bytes": 16608,
+          "blob_sha1": "50db4883e98728dc46cae6330d4a1f5d1176739d",
+          "bytes": 17762,
           "shard": 3
         },
         {
@@ -707,7 +735,7 @@
           "shard": 6
         }
       ],
-      "runtime_root_sha256": "9dc2ac17d4032f1439ec2f81f45860529554654bd2bcd5ab2bb980d56740cc05"
+      "runtime_root_sha256": "2c34adcaa5551ef3c6cb59c2a6fecfb553cf6d5dafc8d3281c458a61c1b26536"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -929,7 +957,17 @@
       "legacy_deployment_adapter_canonical": false
     },
     "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
-    "unrelated_channel_evidence_requalifies_failed_carrier": false
+    "unrelated_channel_evidence_requalifies_failed_carrier": false,
+    "carrier_priority": [
+      "WARM_CACHE_EXACT",
+      "GITHUB_API_BASE64",
+      "GITHUB_GIT_BLOB_API",
+      "PINNED_GITHUB_ZIP",
+      "PINNED_PERMALINK",
+      "HOST_FILE_BRIDGE"
+    ],
+    "human_file_handoff_last_resort": true,
+    "human_file_handoff_priority_law": "MACHINE_EXECUTE_THEN_MACHINE_PROBE_THEN_HUMAN_FILE_EXECUTE_THEN_HUMAN_FILE_PROBE"
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
@@ -941,8 +979,31 @@
   ],
   "breach": {
     "completed_forbidden_access_is_nonretroactive": true,
-    "terminal": "SESSION_NONCONFORMING",
-    "fresh_chat_required_for_conforming_runtime": true
+    "recoverable_read_only_preaccept_overread_enabled": true,
+    "recoverable_read_only_actions": [
+      "GIT_LS_REMOTE",
+      "LIST_TREE",
+      "SEARCH_REPOSITORY",
+      "READ_ARBITRARY_REPOSITORY_FILE",
+      "READ_HISTORY",
+      "READ_ISSUE_PR"
+    ],
+    "read_only_remediation_receipt_schema": "ikant-le-preaccept-remediation/v1",
+    "read_only_remediation_preserves_history": true,
+    "read_only_remediation_requires_reacquisition": true,
+    "read_only_remediation_one_shot_per_admission": true,
+    "hard_preaccept_breach_actions": [
+      "CLONE_REPOSITORY",
+      "GIT_FETCH",
+      "GH_CLI",
+      "RAW_WEB_READ",
+      "DIRECT_DOWNLOAD",
+      "ARCHIVE_DOWNLOAD",
+      "SHELL_HTTP_DOWNLOAD",
+      "MATERIALIZE_CHECKOUT"
+    ],
+    "hard_breach_terminal": "SESSION_NONCONFORMING",
+    "fresh_chat_required_for_hard_breach": true
   },
   "host_constraints_precede_local_contract": true,
   "session_chat_profile": {
