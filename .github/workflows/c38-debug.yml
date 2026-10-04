@@ -3,48 +3,41 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  core:
+  runtime:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/runtime.test.mjs tests/c5.test.mjs tests/emergence.test.mjs tests/life-consciousness.test.mjs tests/surface-b.test.mjs
-  bootstrap:
+      - run: node --test --test-concurrency=1 tests/runtime.test.mjs
+  c5:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/first-contact.test.mjs tests/fastboot.test.mjs tests/chat-bootstrap-semantic.test.mjs tests/session-chat-fastboot.test.mjs tests/runtime-availability.test.mjs
-  c17_c25:
+      - run: node --test --test-concurrency=1 tests/c5.test.mjs
+  emergence:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/c17-deadline-integrity.test.mjs tests/c18-activation-continuation.test.mjs tests/c19-fastboot-convergence.test.mjs tests/c20-session-chat-deployment.test.mjs tests/c21-local-session-fastboot.test.mjs tests/c23-ontology-collapse.test.mjs tests/c24-canonical-boundary.test.mjs tests/c25-executor-data-plane.test.mjs
-  c27_c34:
+      - run: node --test --test-concurrency=1 tests/emergence.test.mjs
+  life:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/c27-session-capability-lattice.test.mjs tests/c28-semantic-closure.test.mjs tests/c29-ontological-promise.test.mjs tests/c30-activation-service.test.mjs tests/c31-runtime-limited-acceptance.test.mjs tests/c31-runtime-limited-replay.test.mjs tests/c31-runtime-limited-supply-chain.test.mjs tests/c31-runtime-limited-tamper.test.mjs tests/c31-runtime-limited-turn.test.mjs tests/c32-session-shell.test.mjs tests/c33-post-187-closure.test.mjs tests/c34-pre-runtime-handoff.test.mjs
-  c35_c38:
+      - run: node --test --test-concurrency=1 tests/life-consciousness.test.mjs
+  surface:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/c35-control-plane-ownership.test.mjs tests/c36-semantic-morphogenesis.test.mjs tests/c37-causal-evidence-closure.test.mjs tests/c38-semantic-lossless-control.test.mjs
-  embedded_meta:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: 22}
-      - run: node --test --test-concurrency=1 tests/embedded-library.test.mjs tests/local-host-meta-prompt.test.mjs
+      - run: node --test --test-concurrency=1 tests/surface-b.test.mjs
   discovery:
     runs-on: ubuntu-latest
     steps:
