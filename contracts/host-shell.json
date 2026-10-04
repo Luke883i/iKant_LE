@@ -460,5 +460,24 @@
     "retires_at_runtime_handoff": true,
     "runtime_member": false,
     "authority": 0
+  },
+  "cohost_context_root": {
+    "schema": "ikant-le-cohost-context-root/v1",
+    "contract": "contracts/cohost-context-root.json",
+    "owner": "src/cohost-context-root.mjs",
+    "placement": "OPTIONAL_COHOST",
+    "activation_modality": "SESSION_CHAT_LOCAL",
+    "hosted_runtime_required": false,
+    "plugin_or_mcp_registration_required": false,
+    "raw_provider_session_persisted": false,
+    "provider_session_is_product_identity": false,
+    "runtime_route": "src/runtime.mjs#runCommand",
+    "compatibility_c20_canonical": false,
+    "reopen_before_every_turn": true,
+    "exit_readback_stops_routing": true,
+    "native_delivery_truth_owner": "HOST_NATIVE_CHAT",
+    "physical_registration_is_external_gap": true,
+    "native_delivery_is_external_gap_until_observed": true,
+    "authority": 0
   }
 }

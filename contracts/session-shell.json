@@ -182,5 +182,17 @@
     "may_change_next": false,
     "may_change_retry_memory": false,
     "authority": 0
+  },
+  "cohost_delivery": {
+    "schema": "ikant-le-cohost-ascii-delivery/v1",
+    "context_owner": "src/cohost-context-root.mjs",
+    "shell_owner": "src/session-shell.mjs",
+    "runtime_stdout_must_equal_owner_rendered_shell": true,
+    "native_delivery_receipt_schema": "ikant-le-cohost-native-delivery-receipt/v1",
+    "native_delivery_truth_owner": "HOST_NATIVE_CHAT",
+    "app_meta_or_widget_visibility_is_native_delivery": false,
+    "model_reframe_allowed": false,
+    "external_observation_required": true,
+    "authority": 0
   }
 }
