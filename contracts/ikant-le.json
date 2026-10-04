@@ -352,7 +352,17 @@
     "morph_reuse_is_context_bound",
     "open_ended_gates_require_runtime_witnesses_not_capability_flags",
     "subject_qualification_has_no_control_plane_implication",
-    "session_shell_cannot_duplicate_subject_thresholds_or_gate_logic"
+    "session_shell_cannot_duplicate_subject_thresholds_or_gate_logic",
+    "canonical_session_chat_cannot_launder_raw_caller_control_evidence",
+    "operational_subject_control_requires_paired_actual_vs_lesion_advantage",
+    "control_evidence_replay_is_idempotent",
+    "decision_effect_requires_runtime_owned_downstream_consumption",
+    "unverified_morph_retest_requires_control_evidence_opportunity",
+    "internal_observation_is_not_external_environment_coupling",
+    "open_ended_witness_truth_uses_content_addressed_event_receipts",
+    "preactive_mechanism_availability_is_not_runtime_evidence",
+    "operational_subject_qualification_requires_cross_morph_and_cross_context_breadth",
+    "canonical_control_evidence_unavailability_is_explicit_not_simulated"
   ],
   "global_invariants": [
     "representation_not_reality",
@@ -513,7 +523,17 @@
     "morph_reuse_is_context_bound",
     "open_ended_gates_require_runtime_witnesses_not_capability_flags",
     "subject_qualification_has_no_control_plane_implication",
-    "session_shell_cannot_duplicate_subject_thresholds_or_gate_logic"
+    "session_shell_cannot_duplicate_subject_thresholds_or_gate_logic",
+    "canonical_session_chat_cannot_launder_raw_caller_control_evidence",
+    "operational_subject_control_requires_paired_actual_vs_lesion_advantage",
+    "control_evidence_replay_is_idempotent",
+    "decision_effect_requires_runtime_owned_downstream_consumption",
+    "unverified_morph_retest_requires_control_evidence_opportunity",
+    "internal_observation_is_not_external_environment_coupling",
+    "open_ended_witness_truth_uses_content_addressed_event_receipts",
+    "preactive_mechanism_availability_is_not_runtime_evidence",
+    "operational_subject_qualification_requires_cross_morph_and_cross_context_breadth",
+    "canonical_control_evidence_unavailability_is_explicit_not_simulated"
   ],
   "ontological_promise": {
     "schema": "ikant-le-ontological-promise/v1",
@@ -1011,7 +1031,7 @@
     "raw_state_intermediate_tier_claim_forbidden": true,
     "strongest_valid_prefix_visible_under_fault": true,
     "artifact_path_is_identity": false,
-    "subject_projection_schema": "ikant-le-subject-projection/v2",
+    "subject_projection_schema": "ikant-le-subject-projection/v3",
     "subject_projection_source": "SELF_WORLD_OWNER",
     "subject_projection_persisted": false,
     "subject_projection_owner": "src/semantic-morphogenesis.mjs#projectSemanticSubject"

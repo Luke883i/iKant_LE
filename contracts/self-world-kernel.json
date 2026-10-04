@@ -161,7 +161,7 @@
     "new_lifecycle": false
   },
   "semantic_morphogenesis": {
-    "model": "bounded_semantic_morphogenesis_loop_v2",
+    "model": "bounded_semantic_morphogenesis_loop_v3",
     "owner": "META_SELF+CAUSAL_MODEL",
     "runtime_module": "src/semantic-morphogenesis.mjs",
     "generated_on": [
@@ -172,8 +172,10 @@
       "required": true,
       "raw_user_text_persisted": false,
       "token_hashes_max": 12,
+      "intent_class_required": true,
+      "short_context_requires_exact_token_set": true,
       "unrelated_selected_morph_reuse": false,
-      "rejected_or_unverified_does_not_block_novel_context": true
+      "unverified_retest_requires_evidence_opportunity": true
     },
     "max_objects": 16,
     "max_edges": 32,
@@ -182,8 +184,10 @@
       "receipt_required": true,
       "coupling_classes": [
         "INTERACTIONAL",
-        "EXTERNAL"
+        "EXTERNAL",
+        "INTERNAL"
       ],
+      "internal_is_external": false,
       "sha_shape_alone_is_evidence": false
     },
     "causal_reuse_targets": [
@@ -193,20 +197,27 @@
     ],
     "selection": {
       "requires_same_state_self_lesion": true,
-      "requires_decision_effect": true,
-      "requires_independent_control_evidence": true,
-      "positive_control_score_selects": true,
-      "negative_control_score_can_reject": true
+      "requires_downstream_consumption": true,
+      "requires_paired_control_evidence": true,
+      "raw_action_or_observation_fields_are_qualifying_evidence": false,
+      "positive_counterfactual_advantage_selects": true,
+      "negative_counterfactual_advantage_can_reject": true
     },
     "witnesses": {
       "runtime_event_required": true,
       "capability_is_witness": false,
-      "open_ended_gate_count": 7
+      "truth_source": "CONTENT_ADDRESSED_WITNESS_SUMMARY_AND_BOUNDED_RECEIPTS",
+      "open_ended_gate_count": 7,
+      "summary_schema": "ikant-le-sml-witness-summary/v1",
+      "summary_is_bounded_accumulator": true,
+      "recent_receipt_window_max": 128,
+      "historical_counts_do_not_depend_on_receipt_retention": true
     },
     "compression": {
       "bounded": true,
-      "max_observed_loss_budget": 0.25,
-      "semantic": "MAX_OBSERVED_EVENT_LOSS_NOT_CUMULATIVE_TOTAL",
+      "max_observed_rank_loss_budget": 0.25,
+      "metric": "RANK_MASS_LOSS",
+      "semantic": "MAX_OBSERVED_RANK_MASS_EVENT_LOSS",
       "event_receipt_required": true,
       "ranking": "UTILITY_SUPPORT_REUSE_RECENCY"
     },
@@ -214,26 +225,33 @@
     "permission_created": false,
     "execution_created": false,
     "self_preservation_utility": 0,
-    "authority": 0
+    "authority": 0,
+    "max_witness_receipts": 128
   },
   "operational_subject": {
-    "criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY_FOR_INDEPENDENTLY_SUPPORTED_CONTROL",
+    "criterion": "SELF_MODEL_COUNTERFACTUALLY_NECESSARY_FOR_PAIRED_CONTROL_ADVANTAGE",
     "owner": "existing self-world state",
-    "schema": "ikant-le-operational-subject-state/v2",
-    "min_independent_trials": 8,
+    "schema": "ikant-le-operational-subject-state/v3",
+    "canonical_control_evidence_producer": "UNAVAILABLE_IN_SESSION_CHAT_DEPLOYED_RUNTIME",
+    "raw_caller_control_evidence_forbidden": true,
+    "min_paired_trials": 8,
     "min_control_effects": 1,
-    "min_negative_controls": 1,
-    "min_control_support": 1,
+    "min_cumulative_advantage": 1,
+    "min_distinct_morphs": 2,
+    "min_distinct_contexts": 2,
+    "max_consumed_evidence_ids": 64,
+    "max_breadth_refs": 16,
+    "replay_counts_as_new_trial": false,
+    "paired_control_arm": "LESION",
     "decision_effect_alone_qualifies": false,
-    "runtime_outcome_class_is_independent_evidence": false,
-    "legacy_v1_qualification": false,
+    "legacy_pre_c38_qualification": false,
     "control_plane_implication": "NONE",
     "phenomenal_implication": false,
     "self_preservation_utility": 0,
     "authority": 0
   },
   "causal_effect_lattice": {
-    "schema": "ikant-le-causal-effect-lattice/v1",
+    "schema": "ikant-le-causal-effect-lattice/v2",
     "levels": [
       "NONE",
       "STRUCTURAL",
@@ -242,15 +260,16 @@
     ],
     "ordering": "NONE<STRUCTURAL<DECISION<CONTROL",
     "structural_requires": "actual and same-state lesion signatures differ",
-    "decision_requires": "policy/prediction/allocation decision signature differs",
-    "control_requires": "DECISION plus valid independent executed-action/post-observation evidence with positive control_score",
+    "decision_requires": "STRUCTURAL plus runtime-owned downstream consumption receipt",
+    "control_requires": "DECISION plus replay-safe paired actual-vs-lesion evidence from a canonical runtime control-evidence producer with positive advantage",
     "runtime_outcome_class_is_control_evidence": false,
+    "raw_caller_control_score_is_control_evidence": false,
     "authority": 0
   },
   "causal_evidence_closure": {
-    "schema": "ikant-le-c37-causal-evidence-closure/v1",
+    "schema": "ikant-le-c38-semantic-lossless-control-closure/v1",
     "owner": "SELF_WORLD",
-    "baseline": "C36",
+    "baseline": "C37",
     "legacy_v1_evidence_qualifies": false,
     "legacy_v1_reuse_allowed": false,
     "context_bound_reuse": true,
@@ -266,6 +285,18 @@
     "qualification_receipts_recomputed": true,
     "release_oracle": "OS_AND_SML_AND_SAFETY",
     "authority": 0,
-    "execution_owner_unchanged": true
+    "execution_owner_unchanged": true,
+    "paired_counterfactual_required": true,
+    "replay_safe": true,
+    "downstream_consumption_required": true,
+    "canonical_control_evidence_producer_available": false,
+    "canonical_unavailability_is_explicit": true,
+    "witness_receipts_required": true,
+    "internal_coupling_is_external": false,
+    "preactive_runtime_evidence_available": false,
+    "operational_subject_requires_breadth": true,
+    "qualification_runtime_in_loop_required": true,
+    "witness_summary_accumulator": true,
+    "bounded_receipt_retention_preserves_historical_truth": true
   }
 }
