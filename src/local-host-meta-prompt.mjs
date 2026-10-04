@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {validateSessionShell,renderSessionShell} from './session-shell.mjs';
+import {compileFirstContactPlan} from './first-contact.mjs';
+import {deriveFastbootStep,validateFastbootChannelLedger} from './fastboot-convergence.mjs';
 
 export const LOCAL_HOST_META_PROMPT_SCHEMA='ikant-le-local-host-adapter/v3';
 export const LOCAL_HOST_META_PROMPT_VERSION='3.0.0';
@@ -36,11 +38,12 @@ export function validateAiAgentFirstEntrypoint(value){
  if(sel.allowed_only_when_repository_leaves_choice_open!==true||sel.candidate_source!=='REPOSITORY_ADMITTED_ALTERNATIVES_ONLY'||JSON.stringify(sel.method)!==JSON.stringify(['MUTATION','SATURATION','FALSIFICATION','UNIQUE_MINIMUM_SELECTION'])||sel.semantic_evidence_is_physical_proof!==false||sel.may_create_authority!==false||sel.may_create_owner!==false)e.push('engineering_selection');
  return[...new Set(e)];
 }
-export function for_ai_agent_first_entrypoint({session_shell=null}={}){
+export function for_ai_agent_first_entrypoint({human_input=null,channel_ledger=null,attempted_classes=[],runtime_root_sha256=null,session_shell=null}={}){
  const entrypoint=readAiAgentFirstEntrypoint(),errors=validateAiAgentFirstEntrypoint(entrypoint);if(errors.length)throw new Error('AI agent first entrypoint invalid: '+errors.join(','));
- if(session_shell===null)return{entrypoint,ui_shell:null};
- const shell=validateSessionShell(session_shell);if(!shell.ok)throw new Error('session shell invalid: '+shell.errors.join(','));
- return{entrypoint,ui_shell:{validated:true,receipt_sha256:session_shell.receipt_sha256,rendered:renderSessionShell(session_shell),authority:0}};
+ if(human_input!==null&&channel_ledger!==null)throw new Error('one delegated NEXT source required');
+ let next=null;if(channel_ledger!==null){const lv=validateFastbootChannelLedger(channel_ledger,{sourceHead:channel_ledger?.source_head});if(!lv.ok)throw new Error('fastboot channel ledger invalid: '+lv.errors.join(','));next=deriveFastbootStep({ledger:channel_ledger,attemptedClasses:attempted_classes,runtimeRootSha256:runtime_root_sha256});}else if(human_input!==null)next=compileFirstContactPlan(human_input);
+ let ui_shell=null;if(session_shell!==null){const shell=validateSessionShell(session_shell);if(!shell.ok)throw new Error('session shell invalid: '+shell.errors.join(','));ui_shell={validated:true,receipt_sha256:session_shell.receipt_sha256,rendered:renderSessionShell(session_shell),authority:0};}
+ return{entrypoint,next,ui_shell};
 }
 export function renderLocalHostMetaPrompt(){return PROMPT;}
 export function renderLocalHostMetaPromptDocument(){return `# iKant_LE Local Host Meta-Prompt\n\nDerived zero-authority projection of current machine contracts. It is not a source of runtime truth and must not be edited independently from the renderer.\n\n\`\`\`text\n${PROMPT}\n\`\`\`\n`;}
