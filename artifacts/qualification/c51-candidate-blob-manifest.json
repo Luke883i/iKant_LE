@@ -1,0 +1,55 @@
+{
+  "schema": "ikant-le-c51-candidate-blob-manifest/v1",
+  "source_baseline": "fe40fa221612d5e9c9fe2e7506bd1fc41553fc9d",
+  "entries": [
+    {
+      "path": "contracts/supersystem-runtime-conformance-v1_1.json",
+      "bytes": 8991,
+      "sha256": "f7153ff9dd9c11701a5080a6a33cf48e5eb7c434ae7332d76b264b15d8abd459"
+    },
+    {
+      "path": "src/supersystem-runtime-conformance.mjs",
+      "bytes": 8901,
+      "sha256": "17f653ba2f08563e923729a9db8e15a184c64e715e67c4dcee267eddae037e2e"
+    },
+    {
+      "path": "src/cohost-coldstart-qualification.mjs",
+      "bytes": 2001,
+      "sha256": "08dca9a4d1bd36347a99a13c0dc3a1b32c63ff5ffab2f3a21d7be87e8bc22300"
+    },
+    {
+      "path": "src/native-transcript-participant.mjs",
+      "bytes": 4000,
+      "sha256": "7d94ab3dd5a1796bfcac7067dbd63e73bfe3c94db7a7f87957b2d532ffbce8d2"
+    },
+    {
+      "path": "scripts/c51-supersystem-select-10m.mjs",
+      "bytes": 10990,
+      "sha256": "d446bdb4c3ec1672d8fab9a81df8831a18f3980eb50405f33ef40e55d794739a"
+    },
+    {
+      "path": "scripts/c51-supersystem-falsify-1m.mjs",
+      "bytes": 11593,
+      "sha256": "fee8002efed0a253a8dd6804c11611042ed3388a7e8fbb9b960954733687db75"
+    },
+    {
+      "path": "scripts/c51-build-dod.mjs",
+      "bytes": 8141,
+      "sha256": "d4c8e0dfe4ed191726c515bae3005ceb81b45fc3114c924839cb55163f357fe0"
+    },
+    {
+      "path": "tests/c51-supersystem-runtime-conformance.test.mjs",
+      "bytes": 7878,
+      "sha256": "25876d640acb3b354d9f7da193b8adde893d1a339b2a1bf87f84a993758d166d"
+    },
+    {
+      "path": ".github/workflows/c51-supersystem-runtime.yml",
+      "bytes": 2753,
+      "sha256": "9d669146e9c799ab0394b1e252e2a296a899519c4d344e700529ee4512c76c59"
+    }
+  ],
+  "content_addressed": true,
+  "manifest_excludes_self": true,
+  "authority": 0,
+  "receipt_sha256": "a1e88678478fe7542aa17598d3cb16ec455ad9f4fcbbf4a5e2b3d9dc9df55ede"
+}
