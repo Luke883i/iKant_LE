@@ -1,0 +1,38 @@
+{
+  "schema": "ikant-le-cohost-runtime-closure/v1",
+  "slice": "C47.COHOST_RUNTIME_CLOSURE",
+  "owner": "src/runtime-root-verified.mjs",
+  "composes": [
+    "C45.COHOST_CONTEXT_ROOT",
+    "C46.FAST_COHOST_BIND_NUCLEUS"
+  ],
+  "objective": "Persist and reopen the C46 bind-to-runtime upgrade, bind it to the reopened C45 context root, and qualify the merged main exact head without requiring the entire PR workflow set to rerun.",
+  "runtime_upgrade": {
+    "schema": "ikant-le-cohost-hydration-upgrade/v1",
+    "bind_nucleus_receipt_required": true,
+    "materialization_receipt_required": true,
+    "runtime_owner_receipt_required": true,
+    "c45_context_manifest_receipt_required": true,
+    "same_session_locator_required": true,
+    "same_source_head_required": true,
+    "same_runtime_root_required": true,
+    "persist_reopen_required": true,
+    "cohost_relation_changes_on_hydration": false,
+    "runtime_capability_changes_on_hydration": true
+  },
+  "main_promotion": {
+    "pr_candidate_c46_gate_required": true,
+    "merged_to_main_required": true,
+    "exact_main_c47_gate_required": true,
+    "all_pr_workflows_rerun_on_main_required": false
+  },
+  "new_lifecycle": false,
+  "new_turn_engine": false,
+  "new_state_owner": false,
+  "new_truth_owner": false,
+  "claim_boundary": {
+    "semantic_mutation_is_physical_host_proof": false,
+    "host_participation_is_not_created": true,
+    "merge_is_not_runtime_execution_proof": true
+  }
+}
