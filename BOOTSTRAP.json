@@ -17,7 +17,8 @@
       "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
       "runtime": "src/session-local-service.mjs",
       "ui_shell": "src/session-shell.mjs",
-      "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation"
+      "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation",
+      "cohost_context_root": "src/cohost-context-root.mjs"
     },
     "ai_cycle": {
       "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
@@ -125,7 +126,11 @@
       "transition_handoff_visible": true,
       "public_bootstrap_line_max_chars": 32,
       "model_may_expand_bootstrap_line": false,
-      "public_line_source": "src/session-shell.mjs#projectBootstrapPublicLine"
+      "public_line_source": "src/session-shell.mjs#projectBootstrapPublicLine",
+      "post_terms_ascii_shell_required": true,
+      "bootstrap_ascii_renderer": "src/session-shell.mjs#renderBootstrapAsciiShell",
+      "runtime_ascii_renderer": "src/session-shell.mjs#renderSessionShell",
+      "model_may_reframe_ascii_shell": false
     },
     "engineering_selection": {
       "allowed_only_when_repository_leaves_choice_open": true,
@@ -226,7 +231,68 @@
       "remediation_one_shot_per_admission": true,
       "continued_after_detection_escalates": true
     },
-    "bootstrap_recovery_hardening_contract": "contracts/bootstrap-recovery-hardening.json"
+    "bootstrap_recovery_hardening_contract": "contracts/bootstrap-recovery-hardening.json",
+    "methodology": {
+      "new_registry": false,
+      "consult_before_attempt": true,
+      "consult_before_retry": true,
+      "owner_registry_refs": [
+        "bootstrap_type_registry_cache.failure_taxonomy",
+        "bootstrap_type_registry_cache.progressive_adaptation",
+        "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+        "preaccept_forbidden",
+        "ux_shell"
+      ],
+      "conversation_is_retry_memory": false,
+      "on_impediment": "REENTER_ENTRYPOINT_REQUEST_NEXT",
+      "owner_selected_retry_only": true,
+      "tool_error_is_carrier_fact": false
+    },
+    "session_context_refs": {
+      "owner": "CURRENT_PINNED_REPOSITORY",
+      "declared_only": true,
+      "arbitrary_discovery": false,
+      "runtime_member_required": true,
+      "local_readback_required": true,
+      "default_effect": "VOICE_STYLE_ONLY",
+      "refs": [
+        {
+          "path": "stile_comunicativo.md",
+          "purpose": "COMMUNICATION_STYLE",
+          "effect": "VOICE_STYLE_ONLY",
+          "required": true
+        }
+      ],
+      "style_may_change_authority": false,
+      "style_may_change_state": false,
+      "style_may_change_permissions": false,
+      "style_may_change_evidence": false,
+      "style_may_change_next": false,
+      "style_may_change_retry_memory": false
+    },
+    "methodological_bootstrap_contract": "contracts/methodological-bootstrap.json",
+    "cohost_context_root": {
+      "contract": "contracts/cohost-context-root.json",
+      "owner": "src/cohost-context-root.mjs",
+      "placement": "OPTIONAL_COHOST",
+      "activation_modality": "SESSION_CHAT_LOCAL",
+      "session_locator": "SHA256_HOST_SESSION_METADATA",
+      "raw_provider_session_persisted": false,
+      "provider_session_is_product_identity": false,
+      "durable_context_root_required": true,
+      "immutable_source_runtime_binding": true,
+      "runtime_route": "src/runtime.mjs#runCommand",
+      "compatibility_c20_canonical": false,
+      "reopen_before_every_turn": true,
+      "exit_readback_stops_routing": true,
+      "native_delivery_receipt_schema": "ikant-le-cohost-native-delivery-receipt/v1",
+      "native_delivery_truth_owner": "HOST_NATIVE_CHAT",
+      "physical_registration_is_external_gap": true,
+      "new_lifecycle": false,
+      "new_state_writer": false,
+      "new_truth_owner": false,
+      "authority": 0
+    }
   },
   "canonical_repository": "Luke883i/iKant_LE",
   "canonical_repository_url": "https://github.com/Luke883i/iKant_LE",
@@ -376,11 +442,11 @@
     "runtime_root": {
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
-      "member_count": 50,
-      "source_bytes": 513111,
+      "member_count": 51,
+      "source_bytes": 517371,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
-        "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62"
+        "blob_sha1": "4a6cf268eb4868613462d44ad926a6ae9e9e2991"
       },
       "shards": [
         {
@@ -407,16 +473,16 @@
         {
           "index": 3,
           "path": "runtime-root/shard-003.json",
-          "member_count": 11,
-          "source_bytes": 78595,
-          "blob_sha1": "c707fc84114d2272fbb5627b10c902be6fe5c9e7"
+          "member_count": 12,
+          "source_bytes": 81863,
+          "blob_sha1": "4aa9d5087acb1da15781115ec639274f118fab1b"
         },
         {
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 111759,
-          "blob_sha1": "62e2a918c38e669d12f154d1cc6d3898ead1a57e"
+          "source_bytes": 112922,
+          "blob_sha1": "b8b912b53642c9d3760a123d86ba7091509e1169"
         },
         {
           "index": 5,
@@ -718,14 +784,14 @@
         },
         {
           "path": "src/session-shell.mjs",
-          "blob_sha1": "50db4883e98728dc46cae6330d4a1f5d1176739d",
-          "bytes": 17762,
+          "blob_sha1": "4716ae32f867b0e5738a076fc452df62cce8e620",
+          "bytes": 20169,
           "shard": 3
         },
         {
           "path": "contracts/session-shell.json",
-          "blob_sha1": "cea2636197ad3550e9a9e58257e73f90f8e96b72",
-          "bytes": 5688,
+          "blob_sha1": "19d8a4a90787d6a6d800c270bdb33f595a75b2fd",
+          "bytes": 6738,
           "shard": 4
         },
         {
@@ -733,9 +799,15 @@
           "blob_sha1": "ab41fd4250c5e2f7a8a7cedce455025116c61eb1",
           "bytes": 31203,
           "shard": 6
+        },
+        {
+          "path": "stile_comunicativo.md",
+          "blob_sha1": "1a7d215eb74965ac0b4a200de63be2b53e9f33fa",
+          "bytes": 803,
+          "shard": 3
         }
       ],
-      "runtime_root_sha256": "2c34adcaa5551ef3c6cb59c2a6fecfb553cf6d5dafc8d3281c458a61c1b26536"
+      "runtime_root_sha256": "b6eecea874801d5eb09859e3cd7ca7446d350c17f2221fb3bd0076c17ecdfb6a"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -935,8 +1007,8 @@
       "schema": "ikant-le-pre-runtime-kernel/v2",
       "contract": "contracts/pre-runtime-kernel.json",
       "path": "src/runtime-root-verified.mjs",
-      "blob_sha1": "ee4585c61d2756e15184ca3d9f2644ec15a91d62",
-      "bytes": 20476,
+      "blob_sha1": "4a6cf268eb4868613462d44ad926a6ae9e9e2991",
+      "bytes": 27847,
       "direct_known_path": true,
       "stdlib_only": true,
       "reuses_runtime_root_loader": true,
@@ -947,7 +1019,19 @@
       "authority": 0,
       "handoff_schema": "ikant-le-pre-runtime-handoff/v2",
       "runtime_owner_independent_revalidation": true,
-      "digest_only_handoff_forbidden": true
+      "digest_only_handoff_forbidden": true,
+      "c46_fast_cohost_bind": {
+        "schema": "ikant-le-cohost-bind-nucleus/v1",
+        "contract": "contracts/cohost-bind-nucleus.json",
+        "common_contract": "contracts/cohost-coldstart-root-common.json",
+        "semantic_sha256": "fa4ccab342d14b7e2a1f4d6505374045d282d51e488557f5fd8f9c23c88158da",
+        "issue": "issuePreRuntimeBindNucleus",
+        "reopen": "reopenPreRuntimeBindNucleus",
+        "hydrate": "executePreRuntimeBootstrapFromBind",
+        "before_full_materialization": true,
+        "full_runtime_hydration_required_for_relation": false,
+        "authority": 0
+      }
     },
     "canonical_local_ingress": {
       "owner": "src/session-local-service.mjs",
@@ -1062,6 +1146,18 @@
     "first_unclosed_edge_required": true,
     "diagnostic_stage_persisted": false,
     "external_gap_laundering_forbidden": true,
-    "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise"
+    "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise",
+    "optional_cohost_context_root": {
+      "contract": "contracts/cohost-context-root.json",
+      "canonical_activation_modality_unchanged": true,
+      "placement": "OPTIONAL_COHOST",
+      "context_owner": "src/cohost-context-root.mjs",
+      "runtime_route": "src/runtime.mjs#runCommand",
+      "compatibility_plugin_ingress_is_canonical": false,
+      "hosted_runtime_required": false,
+      "plugin_or_mcp_registration_required": false,
+      "native_delivery_requires_external_host_receipt": true,
+      "authority": 0
+    }
   }
 }

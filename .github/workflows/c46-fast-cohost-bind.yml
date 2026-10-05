@@ -1,0 +1,31 @@
+name: C46 fast cohost bind nucleus
+on:
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'src/runtime-root-verified.mjs'
+      - 'src/cohost-coldstart-qualification.mjs'
+      - 'contracts/cohost-bind-nucleus.json'
+      - 'contracts/cohost-coldstart-root-common.json'
+      - 'tests/c46-coldstart-cohost-bind.test.mjs'
+      - 'scripts/c46-coldstart-cohost-falsify.mjs'
+      - 'artifacts/qualification/c46-cohost-coldstart-root-1k.json'
+      - 'artifacts/qualification/c46-bind-nucleus-implementation-1k.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  c46:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: C46 focused runtime witnesses
+        run: node --test tests/c46-coldstart-cohost-bind.test.mjs tests/c45-cohost-root-common.test.mjs
+      - name: C46 exact 1k semantic falsification
+        run: node scripts/c46-coldstart-cohost-falsify.mjs
+      - name: Repository check
+        run: node scripts/check.mjs
