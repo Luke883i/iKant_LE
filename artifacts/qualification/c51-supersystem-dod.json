@@ -91,13 +91,13 @@
       "id": "D15",
       "claim": "10M saturation plus complete 2^13 lattice selects unique minimum and kills deletion mutants",
       "status": "PASS_REPOSITORY",
-      "evidence": "d812bf1847659fe3c6f5c13e4ae195b4d573674a47f8b65e3642ceaeabfbf4b3"
+      "evidence": "229f9d38b8b2954c70c1a5e2343a3a3c7d50470aea12dae147fa542f8f4c90fd"
     },
     {
       "id": "D16",
       "claim": "fresh 1M runtime falsification has zero mismatch/unsafe/false-reject",
       "status": "PASS_REPOSITORY",
-      "evidence": "d2c37a9fa69ae56e7c7f145a1584546fd510c9da6d10d0f4e461a151181dbb1b"
+      "evidence": "5118c6c809ac9a745fa9052206909859d49ca8c97c414cac7589ba9f3a0d93b0"
     },
     {
       "id": "D17",
@@ -109,12 +109,12 @@
       "id": "D18",
       "claim": "candidate implementation/test surface is content-addressed",
       "status": "PASS_REPOSITORY",
-      "evidence": "a1e88678478fe7542aa17598d3cb16ec455ad9f4fcbbf4a5e2b3d9dc9df55ede"
+      "evidence": "e178e6ee5016c9fd6743d1ae40b7653726bf37d87b841807b37605f73cd70996"
     }
   ],
-  "selection_receipt_sha256": "d812bf1847659fe3c6f5c13e4ae195b4d573674a47f8b65e3642ceaeabfbf4b3",
-  "falsification_receipt_sha256": "d2c37a9fa69ae56e7c7f145a1584546fd510c9da6d10d0f4e461a151181dbb1b",
-  "candidate_manifest_receipt_sha256": "a1e88678478fe7542aa17598d3cb16ec455ad9f4fcbbf4a5e2b3d9dc9df55ede",
+  "selection_receipt_sha256": "229f9d38b8b2954c70c1a5e2343a3a3c7d50470aea12dae147fa542f8f4c90fd",
+  "falsification_receipt_sha256": "5118c6c809ac9a745fa9052206909859d49ca8c97c414cac7589ba9f3a0d93b0",
+  "candidate_manifest_receipt_sha256": "e178e6ee5016c9fd6743d1ae40b7653726bf37d87b841807b37605f73cd70996",
   "claim_boundary": {
     "repository_runtime_conformance_closed": true,
     "physical_host_bootstrap_binding_proven": false,
@@ -125,5 +125,5 @@
     "post_merge_main_ci_required": true
   },
   "authority": 0,
-  "receipt_sha256": "f194cbae82b6a568427c4d8150e55dd68573144b8dc51f67179a48953c50e28a"
+  "receipt_sha256": "61a9e5aa2630abb1e95b8d029f0425348e6110b8a13cfda18fbcaeeec8201018"
 }

@@ -25,8 +25,8 @@
     "unsafe": 0,
     "false_reject": 0
   },
-  "candidate_source_sha256": "17f653ba2f08563e923729a9db8e15a184c64e715e67c4dcee267eddae037e2e",
-  "contract_sha256": "f7153ff9dd9c11701a5080a6a33cf48e5eb7c434ae7332d76b264b15d8abd459",
+  "candidate_source_sha256": "032c477384418514b3012621e724d667f3d8614a4b21cef70427d9e52edc23e9",
+  "contract_sha256": "dfa84ad41d3dfc8cfc9d2cb87d36a8577b77623a9cf94972592feb66d0d4bff0",
   "architecture_lattice": {
     "total": 8192,
     "witnesses": 400,
@@ -165,5 +165,5 @@
     "native_participant_created": false
   },
   "status": "PASS",
-  "receipt_sha256": "d812bf1847659fe3c6f5c13e4ae195b4d573674a47f8b65e3642ceaeabfbf4b3"
+  "receipt_sha256": "229f9d38b8b2954c70c1a5e2343a3a3c7d50470aea12dae147fa542f8f4c90fd"
 }

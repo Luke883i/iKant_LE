@@ -57,9 +57,9 @@
     "native": 24
   },
   "runtime_functions_exercised": true,
-  "candidate_source_sha256": "17f653ba2f08563e923729a9db8e15a184c64e715e67c4dcee267eddae037e2e",
-  "contract_sha256": "f7153ff9dd9c11701a5080a6a33cf48e5eb7c434ae7332d76b264b15d8abd459",
-  "selection_receipt_sha256": "d812bf1847659fe3c6f5c13e4ae195b4d573674a47f8b65e3642ceaeabfbf4b3",
+  "candidate_source_sha256": "032c477384418514b3012621e724d667f3d8614a4b21cef70427d9e52edc23e9",
+  "contract_sha256": "dfa84ad41d3dfc8cfc9d2cb87d36a8577b77623a9cf94972592feb66d0d4bff0",
+  "selection_receipt_sha256": "229f9d38b8b2954c70c1a5e2343a3a3c7d50470aea12dae147fa542f8f4c90fd",
   "selection_unique_minimum": true,
   "compression_law": "1M mutations are collapsed by complete semantic input signature; actual runtime classifier is executed for every distinct signature and weighted back to all cases",
   "claim_boundary": {
@@ -68,5 +68,5 @@
     "native_host_primitives_required": true
   },
   "status": "PASS",
-  "receipt_sha256": "d2c37a9fa69ae56e7c7f145a1584546fd510c9da6d10d0f4e461a151181dbb1b"
+  "receipt_sha256": "5118c6c809ac9a745fa9052206909859d49ca8c97c414cac7589ba9f3a0d93b0"
 }

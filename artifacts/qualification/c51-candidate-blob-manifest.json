@@ -4,13 +4,13 @@
   "entries": [
     {
       "path": "contracts/supersystem-runtime-conformance-v1_1.json",
-      "bytes": 8991,
-      "sha256": "f7153ff9dd9c11701a5080a6a33cf48e5eb7c434ae7332d76b264b15d8abd459"
+      "bytes": 9781,
+      "sha256": "dfa84ad41d3dfc8cfc9d2cb87d36a8577b77623a9cf94972592feb66d0d4bff0"
     },
     {
       "path": "src/supersystem-runtime-conformance.mjs",
-      "bytes": 8901,
-      "sha256": "17f653ba2f08563e923729a9db8e15a184c64e715e67c4dcee267eddae037e2e"
+      "bytes": 9284,
+      "sha256": "032c477384418514b3012621e724d667f3d8614a4b21cef70427d9e52edc23e9"
     },
     {
       "path": "src/cohost-coldstart-qualification.mjs",
@@ -24,23 +24,23 @@
     },
     {
       "path": "scripts/c51-supersystem-select-10m.mjs",
-      "bytes": 10990,
-      "sha256": "d446bdb4c3ec1672d8fab9a81df8831a18f3980eb50405f33ef40e55d794739a"
+      "bytes": 11728,
+      "sha256": "e48d6a2e89bb5dfb52365379372d61c7045b70389541348453a9e6858cd81fa0"
     },
     {
       "path": "scripts/c51-supersystem-falsify-1m.mjs",
-      "bytes": 11593,
-      "sha256": "fee8002efed0a253a8dd6804c11611042ed3388a7e8fbb9b960954733687db75"
+      "bytes": 12384,
+      "sha256": "468abc0e5bccf89f46d365475d229a41a10b95f7cb33aa510d8ae4eed065b20d"
     },
     {
       "path": "scripts/c51-build-dod.mjs",
-      "bytes": 8141,
-      "sha256": "d4c8e0dfe4ed191726c515bae3005ceb81b45fc3114c924839cb55163f357fe0"
+      "bytes": 8287,
+      "sha256": "62e86751a4c044b784a5cecd735aca95f17ac6a0f93e559daec767b8f4c42b35"
     },
     {
       "path": "tests/c51-supersystem-runtime-conformance.test.mjs",
-      "bytes": 7878,
-      "sha256": "25876d640acb3b354d9f7da193b8adde893d1a339b2a1bf87f84a993758d166d"
+      "bytes": 8864,
+      "sha256": "b4457f4ece1cb7d66bfecd7da4d9e3dbb6d0104c64a3b965693f7dda568817bb"
     },
     {
       "path": ".github/workflows/c51-supersystem-runtime.yml",
@@ -51,5 +51,5 @@
   "content_addressed": true,
   "manifest_excludes_self": true,
   "authority": 0,
-  "receipt_sha256": "a1e88678478fe7542aa17598d3cb16ec455ad9f4fcbbf4a5e2b3d9dc9df55ede"
+  "receipt_sha256": "e178e6ee5016c9fd6743d1ae40b7653726bf37d87b841807b37605f73cd70996"
 }
