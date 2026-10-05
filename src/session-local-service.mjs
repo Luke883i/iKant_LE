@@ -11,6 +11,7 @@ const HEX40=/^[a-f0-9]{40}$/,HEX64=/^[a-f0-9]{64}$/;
 const LEDGER=path.join(ROOT,'.ikant','ledger.jsonl'),CAP=path.join(ROOT,'.ikant','limited-capability.json'),ORIGIN=path.join(ROOT,'.ikant','acceptance-origin.json');
 export const RUNTIME_EXECUTION_RECEIPT_SCHEMA='ikant-le-runtime-execution/v1';
 export const HOST_ROUTE_INTERPOSITION_RECEIPT_SCHEMA='ikant-le-host-route-interposition/v1';
+export const PHYSICAL_RUNTIME_TURN_RECEIPT_SCHEMA='ikant-le-physical-runtime-turn/v1';
 function gitBlobSha1(bytes){const b=Buffer.isBuffer(bytes)?bytes:Buffer.from(bytes);return crypto.createHash('sha1').update(Buffer.from(`blob ${b.length}\0`)).update(b).digest('hex');}
 function digestWithout(x,key='receipt_sha256'){const y=structuredClone(x||{});delete y[key];return sha256(Buffer.from(JSON.stringify(y)));}
 function atomicJson(file,value){fs.mkdirSync(path.dirname(file),{recursive:true});const tmp=file+'.tmp-'+crypto.randomUUID();let fd=null;try{fd=fs.openSync(tmp,'wx',0o600);fs.writeFileSync(fd,JSON.stringify(value,null,2)+'\n');fs.fsyncSync(fd);}finally{if(fd!==null)fs.closeSync(fd);}fs.renameSync(tmp,file);const reread=JSON.parse(fs.readFileSync(file,'utf8'));if(JSON.stringify(reread)!==JSON.stringify(value))throw new Error('runtime local ingress readback mismatch:'+path.basename(file));}
@@ -104,6 +105,25 @@ export function validateHostRouteInterpositionReceipt(value,{sourceHead=null,run
  return{ok:e.length===0,errors:[...new Set(e)],state,allow_next_turn:e.length===0&&state==='SAFE'};
 }
 
+export function validatePhysicalRuntimeTurnReceipt(value,{routeReceipt=null,runtimeExecutionReceipt=null,limitedTurnReceipt=null,sessionLocatorSha256=null,sourceHead=null,runtimeRootSha256=null}={}){
+ const x=value||{},e=[];
+ if(x.schema!==PHYSICAL_RUNTIME_TURN_RECEIPT_SCHEMA)e.push('schema');
+ if(x.observation_owner!=='MATERIALIZED_RUNTIME'||x.observed!==true)e.push('owner');
+ if(!HEX64.test(String(x.session_locator_sha256||''))||(sessionLocatorSha256&&x.session_locator_sha256!==sessionLocatorSha256))e.push('session');
+ if(!HEX40.test(String(x.source_head||''))||(sourceHead&&x.source_head!==sourceHead))e.push('source');
+ if(!HEX64.test(String(x.runtime_root_sha256||''))||(runtimeRootSha256&&x.runtime_root_sha256!==runtimeRootSha256))e.push('runtime_root');
+ if(!String(x.runtime_instance_id||'').trim()||(runtimeExecutionReceipt&&x.runtime_instance_id!==runtimeExecutionReceipt.runtime_instance_id))e.push('runtime_instance');
+ if(!String(x.host_turn_id||'').trim()||(routeReceipt&&x.host_turn_id!==routeReceipt.turn_id))e.push('host_turn');
+ if(!HEX64.test(String(x.host_route_receipt_sha256||''))||(routeReceipt&&x.host_route_receipt_sha256!==routeReceipt.receipt_sha256))e.push('route_ref');
+ if(!HEX64.test(String(x.limited_runtime_turn_receipt_sha256||''))||(limitedTurnReceipt&&x.limited_runtime_turn_receipt_sha256!==limitedTurnReceipt.receipt_sha256))e.push('limited_turn_ref');
+ if(!HEX64.test(String(x.runtime_turn_identity_sha256||''))||(limitedTurnReceipt&&x.runtime_turn_identity_sha256!==limitedTurnReceipt.turn_identity_sha256))e.push('runtime_turn_identity');
+ if(!HEX64.test(String(x.input_sha256||''))||(limitedTurnReceipt&&x.input_sha256!==limitedTurnReceipt.input_sha256))e.push('input');
+ if(!HEX64.test(String(x.output_sha256||''))||(limitedTurnReceipt&&x.output_sha256!==limitedTurnReceipt.output_sha256))e.push('output');
+ if(x.exact_runtime_bytes!==true||x.authority!==0)e.push('scope');
+ if(!HEX64.test(String(x.receipt_sha256||''))||digestWithout(x)!==x.receipt_sha256)e.push('receipt');
+ return{ok:e.length===0,errors:[...new Set(e)]};
+}
+
 export async function runLocalLimitedTurn({input,candidate,hostSurface='SESSION_CHAT_LOCAL_RUNTIME'}={}){
  if(fs.existsSync(LEDGER))throw new Error('limited turn canonical ledger mutation detected');if(!fs.existsSync(CAP))throw new Error('limited capability unavailable');
  const capability=JSON.parse(fs.readFileSync(CAP,'utf8')),out=processLimitedRuntimeTurn({input:String(input??''),candidate:String(candidate??''),capability,hostSurface,artifactDir:path.join(ROOT,'.ikant','artifacts')});
@@ -121,7 +141,8 @@ export async function runPhysicalClosureLimitedTurn({input,candidate,hostRouteIn
  const out=processLimitedRuntimeTurn({input:String(input??''),candidate:String(candidate??''),capability,hostSurface,artifactDir:path.join(ROOT,'.ikant','artifacts')});
  if(fs.existsSync(LEDGER))throw new Error('limited turn mutated canonical ledger');
  const tv=validateLimitedRuntimeTurnReceipt(out.receipt,{sourceHead:capability.source_head,runtimeRootSha256:capability.runtime_root_sha256});if(!tv.ok)throw new Error('runtime turn receipt invalid:'+tv.errors.join(','));
- return{schema:'ikant-le-session-local-physical-closure-turn/v1',state:'RUNTIME_BOUND_LIMITED',physical_route_guard_passed:true,turn_id:hostRouteInterpositionReceipt.turn_id,session_locator_sha256:hostRouteInterpositionReceipt.session_locator_sha256,source_head:capability.source_head,runtime_root_sha256:capability.runtime_root_sha256,runtime_instance_id:runtimeExecution.runtime_instance_id,runtime_execution_receipt:runtimeExecution,runtime_turn_receipt:out.receipt,runtime_output_sha256:out.receipt.output_sha256,stdout:out.stdout,code:out.code,artifacts:out.artifacts,session_shell:out.session_shell,canonical_state_mutation:false,active:false,authority:0};
+ const physicalTurnBody={schema:PHYSICAL_RUNTIME_TURN_RECEIPT_SCHEMA,observation_owner:'MATERIALIZED_RUNTIME',observed:true,session_locator_sha256:sessionBinding.session_locator_sha256,source_head:capability.source_head,runtime_root_sha256:capability.runtime_root_sha256,runtime_instance_id:runtimeExecution.runtime_instance_id,host_turn_id:hostRouteInterpositionReceipt.turn_id,host_route_receipt_sha256:hostRouteInterpositionReceipt.receipt_sha256,limited_runtime_turn_receipt_sha256:out.receipt.receipt_sha256,runtime_turn_identity_sha256:out.receipt.turn_identity_sha256,input_sha256:out.receipt.input_sha256,output_sha256:out.receipt.output_sha256,exact_runtime_bytes:true,authority:0},physicalTurn=signReceipt(physicalTurnBody),pv=validatePhysicalRuntimeTurnReceipt(physicalTurn,{routeReceipt:hostRouteInterpositionReceipt,runtimeExecutionReceipt:runtimeExecution,limitedTurnReceipt:out.receipt,sessionLocatorSha256:sessionBinding.session_locator_sha256,sourceHead:capability.source_head,runtimeRootSha256:capability.runtime_root_sha256});if(!pv.ok)throw new Error('physical runtime turn receipt invalid:'+pv.errors.join(','));
+ return{schema:'ikant-le-session-local-physical-closure-turn/v1',state:'RUNTIME_BOUND_LIMITED',physical_route_guard_passed:true,turn_id:hostRouteInterpositionReceipt.turn_id,session_locator_sha256:hostRouteInterpositionReceipt.session_locator_sha256,source_head:capability.source_head,runtime_root_sha256:capability.runtime_root_sha256,runtime_instance_id:runtimeExecution.runtime_instance_id,runtime_execution_receipt:runtimeExecution,runtime_turn_receipt:out.receipt,physical_runtime_turn_receipt:physicalTurn,runtime_output_sha256:out.receipt.output_sha256,stdout:out.stdout,code:out.code,artifacts:out.artifacts,session_shell:out.session_shell,canonical_state_mutation:false,active:false,authority:0};
 }
 
 function arg(name){const i=process.argv.indexOf(name);return i>=0?process.argv[i+1]:null;}
