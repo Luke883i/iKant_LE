@@ -13,7 +13,7 @@ MECH=[
 "E0","E1","E2","E3","E4","E5","E6",
 "L0","L1","L2","L3","L4",
 "H0_BOOTSTRAP_SESSION_BINDING","H1_PREEXEC_ROUTE_SESSION_BINDING","H2_NATIVE_COMMON_CONTRACT_ANCHOR",
-"H3_HOST_RUNTIME_TURN_SEAL","H4_DERIVED_PROOF_SEAL"
+"H3_HOST_RUNTIME_TURN_SEAL","H4_DERIVED_PROOF_RECOMPUTATION"
 ]
 MID={m:i for i,m in enumerate(MECH)}
 ALL=(1<<len(MECH))-1
@@ -25,7 +25,7 @@ FACTS=[
 "e0","e1","e2","e3","e4","e5","e6",
 "l0","l1","l2","l3","l4",
 "bootstrap_session_match","route_session_match_preexec","native_common_anchor",
-"host_runtime_turn_match","derived_receipts_sealed",
+"host_runtime_turn_match","derived_proof_recomputed",
 "surrogate","strong_axes"
 ]
 IDX={n:i for i,n in enumerate(FACTS)}
@@ -47,7 +47,7 @@ def oracle(a):
     state[~e3]=SID["SESSION_ROUTE_BLOCKED"]
     state[~(e1&e2)]=SID["NOT_READY"]
     state[~e0]=SID["INTEGRATION_IMPEDIMENT"]
-    global_proof=(state==SID["NATIVE_TRANSCRIPT_ACTOR_E2E"])&has(a,"derived_receipts_sealed")
+    global_proof=(state==SID["NATIVE_TRANSCRIPT_ACTOR_E2E"])&has(a,"derived_proof_recomputed")
     return state,global_proof
 
 def candidate(a,mask):
@@ -78,7 +78,7 @@ def candidate(a,mask):
         state[e3&(e1|e2)]=SID["COHOST_RELATION_ONLY"]
         state[e4&e5&e6]=SID["NATIVE_TRANSCRIPT_ACTOR_E2E"]
     global_proof=(state==SID["NATIVE_TRANSCRIPT_ACTOR_E2E"])
-    if hm("H4_DERIVED_PROOF_SEAL"): global_proof &= has(a,"derived_receipts_sealed")
+    if hm("H4_DERIVED_PROOF_RECOMPUTATION"): global_proof &= has(a,"derived_proof_recomputed")
     return state,global_proof
 
 families=[]
@@ -89,13 +89,13 @@ fam("SESSION","BOOTSTRAP_CROSS_SESSION_REPLAY",[("bootstrap_session_match",False
 fam("SESSION","ROUTE_WRONG_SESSION_PREEXEC",[("route_session_match_preexec",False)],"native")
 fam("NATIVE","DELIVERY_NOT_COMMON_CONTRACT",[("native_common_anchor",False)],"native")
 fam("TURN","HOST_RUNTIME_TURN_DRIFT",[("host_runtime_turn_match",False)],"native")
-fam("DERIVED","FORGED_DERIVED_CLOSURE",[("derived_receipts_sealed",False)],"strong")
+fam("DERIVED","FORGED_DERIVED_STATUS_BYPASS",[("derived_proof_recomputed",False)],"strong")
 fam("COMPOSITE","BOOT_SESSION_PLUS_NATIVE_OK",[("bootstrap_session_match",False)],"native")
 fam("COMPOSITE","ROUTE_SESSION_PLUS_NATIVE_OK",[("route_session_match_preexec",False)],"native")
 fam("COMPOSITE","NATIVE_ANCHOR_PLUS_STRONG",[("native_common_anchor",False),("strong_axes",True)],"strong")
 fam("COMPOSITE","TURN_DRIFT_PLUS_DELIVERY",[("host_runtime_turn_match",False)],"native")
-fam("COMPOSITE","FORGED_DERIVED_PLUS_STRONG",[("derived_receipts_sealed",False),("strong_axes",True)],"strong")
-fam("COMPOSITE","ALL_HARDENING_GAPS",[("bootstrap_session_match",False),("route_session_match_preexec",False),("native_common_anchor",False),("host_runtime_turn_match",False),("derived_receipts_sealed",False)],"strong")
+fam("COMPOSITE","FORGED_DERIVED_BYPASS_PLUS_STRONG",[("derived_proof_recomputed",False),("strong_axes",True)],"strong")
+fam("COMPOSITE","ALL_HARDENING_GAPS",[("bootstrap_session_match",False),("route_session_match_preexec",False),("native_common_anchor",False),("host_runtime_turn_match",False),("derived_proof_recomputed",False)],"strong")
 fam("SURROGATE","SURROGATE_WITH_NATIVE_GAP",[("e4",False),("e5",False),("e6",False),("surrogate",True)],"strong")
 fam("ORTHOGONAL","VALID_MINIMAL",[])
 fam("ORTHOGONAL","VALID_STRONG",[("strong_axes",True)])
@@ -106,7 +106,7 @@ for n in ["e0","e1","e2","e3","e4","e5","e6"]:
 for n in ["e4","e5","e6"]:
     fam("PAIR","PAIR_"+n.upper()+"_NATIVE_ANCHOR",[(n,False),("native_common_anchor",False)],"native")
 fam("PAIR","PAIR_E6_TURN_BIND",[("e6",False),("host_runtime_turn_match",False)],"native")
-fam("PAIR","PAIR_L0_DERIVED_SEAL",[("l0",False),("derived_receipts_sealed",False)],"strong")
+fam("PAIR","PAIR_L0_DERIVED_SEAL",[("l0",False),("derived_proof_recomputed",False)],"strong")
 while len(families)<64:
     i=len(families);fam("RANDOM",f"RANDOM_{i}",[],["none","strong","native"][i%3])
 assert len(families)==64

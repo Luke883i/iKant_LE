@@ -178,9 +178,13 @@ export function validatePhysicalClosurePersistenceWitness({baseClosure,secondRou
   return seal(body);
 }
 
-export function buildPhysicalClosureEvidenceBundle({closure,persistenceWitness=null,receipts={}}={}){
-  const cv=validatePhysicalClosureReceipt(closure),pv=validatePhysicalClosurePersistenceReceipt(persistenceWitness),refs=Object.fromEntries(Object.entries(receipts).map(([k,v])=>[k,v?.receipt_sha256||null]));
+export function buildPhysicalClosureEvidenceBundle({closureInputs=null,persistenceInputs=null,receipts={}}={}){
+  const closure=qualifyPhysicalRuntimeClosureV1(closureInputs||{});
+  const cv=validatePhysicalClosureReceipt(closure);
+  const persistence=cv.ok?validatePhysicalClosurePersistenceWitness({baseClosure:closure,...(persistenceInputs||{})}):seal({schema:'ikant-le-physical-runtime-persistence-witness/v1',status:'FAIL',same_session:false,same_runtime_instance:false,same_participant:false,fresh_turn:false,errors:['base'],authority:0});
+  const pv=validatePhysicalClosurePersistenceReceipt(persistence);
+  const refs=Object.fromEntries(Object.entries(receipts).map(([k,v])=>[k,v?.receipt_sha256||null]));
   const refsSealed=Object.values(receipts).every(v=>H64.test(String(v?.receipt_sha256||''))&&digest(strip(v))===v.receipt_sha256);
-  const body={schema:PHYSICAL_CLOSURE_EVIDENCE_SCHEMA,closure_receipt_sha256:closure?.receipt_sha256||null,persistence_receipt_sha256:persistenceWitness?.receipt_sha256||null,receipt_refs:refs,closure_valid:cv.ok,persistence_valid:pv.ok,receipt_refs_sealed:refsSealed,global_dod_pass:cv.ok&&pv.ok&&refsSealed,live_receipts_external_to_repository:true,authority:0};
+  const body={schema:PHYSICAL_CLOSURE_EVIDENCE_SCHEMA,closure_receipt_sha256:closure.receipt_sha256||null,persistence_receipt_sha256:persistence.receipt_sha256||null,receipt_refs:refs,closure_owner_recomputed:true,persistence_owner_recomputed:true,direct_derived_inputs_accepted_as_proof:false,closure_valid:cv.ok,persistence_valid:pv.ok,receipt_refs_sealed:refsSealed,global_dod_pass:cv.ok&&pv.ok&&refsSealed,live_receipts_external_to_repository:true,authority:0};
   return seal(body);
 }

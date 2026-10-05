@@ -43,9 +43,9 @@
       "claim": "The materialized runtime seals the host turn id, route receipt, limited runtime turn identity, input hash and output hash into one physical turn receipt before native delivery can close."
     },
     {
-      "id": "H4_DERIVED_PROOF_SEAL",
+      "id": "H4_DERIVED_PROOF_RECOMPUTATION",
       "absorbed_into": "L0",
-      "claim": "Derived closure and persistence witnesses are revalidated as content-sealed owner-derived receipts before a global evidence bundle can assert DoD PASS."
+      "claim": "Global DoD recomputes closure and persistence from underlying evidence; caller-supplied derived status/witness objects are never accepted as proof, and recomputed receipts remain sealed."
     }
   ],
   "semantic_simplification": {
@@ -55,14 +55,15 @@
     "new_lifecycle": false,
     "new_turn_engine": false,
     "physical_turn_receipt_is_supporting_evidence_not_new_top_level_entity": true,
-    "derived_closure_receipts_revalidated": true
+    "derived_closure_receipts_revalidated": false,
+    "derived_closure_and_persistence_owner_recomputed": true
   },
   "dod": [
     "cross-session E0 replay is INTEGRATION_IMPEDIMENT",
     "wrong-session E3 is rejected inside materialized runtime before processLimitedRuntimeTurn",
     "E6 passes the existing C50 native delivery validator before C52-specific grant/runtime checks",
     "host turn id and route are sealed to the exact executed runtime turn/input/output before E6 can close",
-    "forged closure or persistence witnesses cannot produce global_dod_pass",
+    "global DoD recomputes closure and persistence from underlying evidence; forged derived objects are ignored and cannot produce PASS",
     "C52 7+5 ontology and fail-closed state projection remain unchanged",
     "10M pre-seeded hardening falsification has zero mismatch, unsafe promotion and false reject",
     "combined 17-mechanism lattice has a unique minimum and all H0-H4 deletion mutants are killed",
