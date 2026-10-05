@@ -6,7 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {materializeRuntimeRoot,runtimeRootDescriptor} from '../src/runtime-root-verified.mjs';
 import {
- deriveCohostSessionLocator,deriveCohostRuntimeSink,bindCohostContextRoot,reopenCohostContextRoot,
+ deriveCohostSessionLocator,deriveCohostRuntimeSink,prepareCohostRuntimeSink,bindCohostContextRoot,reopenCohostContextRoot,
  routeCohostRuntimeTurn,validateCohostContextRoot,validateCohostDeliveryEnvelope,validateCohostNativeDeliveryReceipt,
  COHOST_NATIVE_RECEIPT_SCHEMA
 } from '../src/cohost-context-root.mjs';
@@ -14,7 +14,7 @@ import {
 const H='a'.repeat(40),T='b'.repeat(64);
 const sha=x=>crypto.createHash('sha256').update(Buffer.isBuffer(x)?x:Buffer.from(String(x))).digest('hex');
 const sign=x=>({...x,receipt_sha256:sha(Buffer.from(JSON.stringify(x)))});
-function fixture(){const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-le-c45-')),storage=path.join(root,'cohost'),session='chat-session-secret-value',sink=deriveCohostRuntimeSink({storageRoot:storage,hostSessionId:session});materializeRuntimeRoot({sink:sink.runtime_dir,sourceHead:H,transferReceiptSha256:T});const d=runtimeRootDescriptor(sink.runtime_dir),ctx=bindCohostContextRoot({storageRoot:storage,hostSessionId:session,sourceHead:H,runtimeRootSha256:d.runtime_root_sha256});return{root,storage,session,sink,d,ctx};}
+function fixture(){const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-le-c45-')),storage=path.join(root,'cohost'),session='chat-session-secret-value',sink=prepareCohostRuntimeSink({storageRoot:storage,hostSessionId:session});materializeRuntimeRoot({sink:sink.runtime_dir,sourceHead:H,transferReceiptSha256:T});const d=runtimeRootDescriptor(sink.runtime_dir),ctx=bindCohostContextRoot({storageRoot:storage,hostSessionId:session,sourceHead:H,runtimeRootSha256:d.runtime_root_sha256});return{root,storage,session,sink,d,ctx};}
 const cleanup=x=>fs.rmSync(x,{recursive:true,force:true});
 
 test('C45 provider session metadata is opaque locator only and distinct sessions isolate roots',()=>{
