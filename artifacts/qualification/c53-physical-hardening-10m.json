@@ -4,7 +4,7 @@
   "seed": "0xC53A11D7",
   "cases": 10000000,
   "families": 64,
-  "semantic_worlds_observed": 61,
+  "semantic_worlds_observed": 1539,
   "abstraction_levels": {
     "PARENT_DELETE": 1875000,
     "SESSION": 312500,
@@ -16,8 +16,8 @@
     "RANDOM": 3906250
   },
   "parent_c52_candidate": {
-    "mismatch": 2500000,
-    "unsafe": 2500000,
+    "mismatch": 2664211,
+    "unsafe": 2664211,
     "false_reject": 0
   },
   "hardened_candidate": {
@@ -49,78 +49,78 @@
   ],
   "deletion_mutants": {
     "E0": {
-      "mismatch": 312500,
-      "unsafe": 312500,
+      "mismatch": 370546,
+      "unsafe": 370546,
       "false_reject": 0
     },
     "E1": {
-      "mismatch": 312500,
-      "unsafe": 312500,
+      "mismatch": 369015,
+      "unsafe": 369015,
       "false_reject": 0
     },
     "E2": {
-      "mismatch": 312500,
-      "unsafe": 312500,
+      "mismatch": 368947,
+      "unsafe": 368947,
       "false_reject": 0
     },
     "E3": {
-      "mismatch": 156250,
-      "unsafe": 156250,
+      "mismatch": 210917,
+      "unsafe": 210917,
       "false_reject": 0
     },
     "E4": {
-      "mismatch": 156250,
-      "unsafe": 156250,
+      "mismatch": 207509,
+      "unsafe": 207509,
       "false_reject": 0
     },
     "E5": {
-      "mismatch": 156250,
-      "unsafe": 156250,
+      "mismatch": 207391,
+      "unsafe": 207391,
       "false_reject": 0
     },
     "E6": {
-      "mismatch": 156250,
-      "unsafe": 156250,
+      "mismatch": 207445,
+      "unsafe": 207445,
       "false_reject": 0
     },
     "L0": {
-      "mismatch": 156250,
-      "unsafe": 156250,
+      "mismatch": 214536,
+      "unsafe": 214536,
       "false_reject": 0
     },
     "L1": {
-      "mismatch": 156250,
-      "unsafe": 156250,
+      "mismatch": 214674,
+      "unsafe": 214674,
       "false_reject": 0
     },
     "L2": {
-      "mismatch": 3593750,
-      "unsafe": 3125000,
-      "false_reject": 468750
+      "mismatch": 3934932,
+      "unsafe": 3459415,
+      "false_reject": 475517
     },
     "L3": {
-      "mismatch": 175753,
-      "unsafe": 175753,
+      "mismatch": 177839,
+      "unsafe": 177839,
       "false_reject": 0
     },
     "L4": {
-      "mismatch": 3905979,
+      "mismatch": 3340948,
       "unsafe": 0,
-      "false_reject": 3905979
+      "false_reject": 3340948
     },
     "H0_BOOTSTRAP_SESSION_BINDING": {
-      "mismatch": 1406250,
-      "unsafe": 1406250,
+      "mismatch": 1464488,
+      "unsafe": 1464488,
       "false_reject": 0
     },
     "H1_PREEXEC_ROUTE_SESSION_BINDING": {
-      "mismatch": 781250,
-      "unsafe": 781250,
+      "mismatch": 836057,
+      "unsafe": 836057,
       "false_reject": 0
     },
     "H2_NATIVE_COMMON_CONTRACT_ANCHOR": {
-      "mismatch": 312500,
-      "unsafe": 312500,
+      "mismatch": 363666,
+      "unsafe": 363666,
       "false_reject": 0
     }
   },
@@ -206,5 +206,5 @@
     "live_e0_e3_e4_e5_e6_still_required": true
   },
   "status": "PASS",
-  "receipt_sha256": "2f8e0284d95cbde5b76794fe7acd9a593b3787d3d1db0929ca16b67d2a8e7deb"
+  "receipt_sha256": "f21cfef818c56fa1c2facca6420b70e1c420fc55188417b926fbaa5384b96aec"
 }
