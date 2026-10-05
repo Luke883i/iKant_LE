@@ -45,11 +45,13 @@ export function validateHostBootstrapBindingReceipt(value,{sourceHead=null,invoc
  return{ok:e.length===0,errors:uniq(e)};
 }
 
-export function validateSessionRouteReceipt(value,{sessionLocatorSha256=null}={}){
+export function validateSessionRouteReceipt(value,{sessionLocatorSha256=null,sourceHead=null,runtimeRootSha256=null}={}){
  const x=value||{},e=[];
  if(x.schema!==ROUTE_RECEIPT_SCHEMA)e.push('schema');
- if(x.observation_owner!=='HOST_NATIVE_CHAT'||x.external_observation!==true||x.observed!==true)e.push('observation');
+ if(x.observation_owner!=='HOST_SESSION_ROUTER'||x.external_observation!==true||x.observed!==true)e.push('observation');
  if(!H64.test(String(x.session_locator_sha256||''))||(sessionLocatorSha256&&x.session_locator_sha256!==sessionLocatorSha256))e.push('session');
+ if(!H40.test(String(x.source_head||''))||(sourceHead&&x.source_head!==sourceHead))e.push('source_head');
+ if(!H64.test(String(x.runtime_root_sha256||''))||(runtimeRootSha256&&x.runtime_root_sha256!==runtimeRootSha256))e.push('runtime_root');
  if(x.canonical_route!=='src/runtime.mjs#runCommand'||x.runtime_turn_offered!==true)e.push('route');
  if(!Number.isInteger(x.host_visible_turn_ordinal)||x.host_visible_turn_ordinal<0||!Number.isInteger(x.runtime_turn_ordinal)||x.runtime_turn_ordinal<0)e.push('ordinal');
  if(typeof x.canonical_turn_pending!=='boolean'||typeof x.next_turn_requested!=='boolean'||typeof x.host_bypass_observed!=='boolean'||typeof x.model_direct_reply_observed!=='boolean')e.push('flags');
@@ -63,8 +65,8 @@ export function validateSessionRouteReceipt(value,{sessionLocatorSha256=null}={}
 export function projectSessionRouteConformance({cohostStatus=null,routeReceipt=null}={}){
  const relation=cohostStatus?.state==='COHOST_SAME_SESSION'&&cohostStatus?.promise_satisfied===true&&cohostStatus?.common_semantic_sha256===COMMON_COHOST_SHA;
  if(!relation)return{state:'NOT_BOUND',allow_next_turn:false,relation_required:true,authority:0};
- const locator=cohostStatus?.session_locator_sha256||cohostStatus?.root_spine?.session_locator_sha256||null;
- const v=validateSessionRouteReceipt(routeReceipt,{sessionLocatorSha256:locator});
+ const locator=cohostStatus?.session_locator_sha256||null,sourceHead=cohostStatus?.source_head||null,runtimeRootSha256=cohostStatus?.runtime_root_sha256||null;
+ const v=validateSessionRouteReceipt(routeReceipt,{sessionLocatorSha256:locator,sourceHead,runtimeRootSha256});
  if(!v.ok)return{state:'EXTERNAL_ROUTE_GAP',allow_next_turn:false,errors:v.errors,authority:0};
  if(routeReceipt.host_bypass_observed||routeReceipt.model_direct_reply_observed)return{state:'BLOCKED_BYPASS',allow_next_turn:false,authority:0};
  if(routeReceipt.canonical_turn_pending)return{state:'PENDING_CANONICAL_TURN',allow_next_turn:false,pending_turn_id:routeReceipt.pending_turn_id,authority:0};
@@ -72,9 +74,10 @@ export function projectSessionRouteConformance({cohostStatus=null,routeReceipt=n
  return{state:'SAFE',allow_next_turn:true,authority:0};
 }
 
-export function validateNativeStatusProjection(value){
+export function validateNativeStatusProjection(value,{cohostStatus=null}={}){
  const x=value||{},e=[];
  if(x.semantic_sha256!==NATIVE_TRANSCRIPT_SHA)e.push('semantic_sha');
+ if(cohostStatus?.state==='COHOST_SAME_SESSION'&&x.session_locator_sha256!==cohostStatus?.session_locator_sha256)e.push('session_binding');
  if(!['NOT_READY','COHOST_RELATION_ONLY','NATIVE_TRANSCRIPT_ACTOR'].includes(x.state))e.push('state');
  if(!['NONE','COHOST_RELATION','NATIVE_TRANSCRIPT_ACTOR'].includes(x.relation_axis))e.push('relation_axis');
  if(x.state==='NATIVE_TRANSCRIPT_ACTOR'&&x.native_transcript_proven!==true)e.push('native_proof');
@@ -90,7 +93,7 @@ export function qualifySupersystemRuntimeV11({sourceHead=null,bootstrapInvocatio
  const bootstrap=iv.ok&&bv.ok?'CONFORMANT':'INTEGRATION_IMPEDIMENT';
  const cohost=cohostStatus?.state==='COHOST_SAME_SESSION'&&cohostStatus?.promise_satisfied===true&&cohostStatus?.common_semantic_sha256===COMMON_COHOST_SHA;
  const route=projectSessionRouteConformance({cohostStatus,routeReceipt});
- const nv=validateNativeStatusProjection(nativeStatus);
+ const nv=validateNativeStatusProjection(nativeStatus,{cohostStatus});
  let relation='NONE';
  if(cohost)relation='COHOST_RELATION';
  if(cohost&&nv.ok&&nativeStatus.state==='NATIVE_TRANSCRIPT_ACTOR')relation='NATIVE_TRANSCRIPT_ACTOR';
