@@ -90,7 +90,7 @@ export function validateNativeStatusProjection(value,{cohostStatus=null}={}){
 
 export function qualifySupersystemRuntimeV11({sourceHead=null,bootstrapInvocationReceipt=null,hostBootstrapBindingReceipt=null,cohostStatus=null,routeReceipt=null,nativeStatus=null,capabilityAxis='BIND_NUCLEUS',productAxis='CANDIDATE'}={}){
  const iv=validateBootstrapInvocationReceipt(bootstrapInvocationReceipt),bv=validateHostBootstrapBindingReceipt(hostBootstrapBindingReceipt,{sourceHead,invocationReceipt:bootstrapInvocationReceipt});
- const bootstrap=iv.ok&&bv.ok?'CONFORMANT':'INTEGRATION_IMPEDIMENT';
+ const bootstrap=iv.ok&&bv.ok&&hostBootstrapBindingReceipt?.result_class==='OWNER_NEXT'?'CONFORMANT':'INTEGRATION_IMPEDIMENT';
  const cohost=cohostStatus?.state==='COHOST_SAME_SESSION'&&cohostStatus?.promise_satisfied===true&&cohostStatus?.common_semantic_sha256===COMMON_COHOST_SHA;
  const route=projectSessionRouteConformance({cohostStatus,routeReceipt});
  const nv=validateNativeStatusProjection(nativeStatus,{cohostStatus});
