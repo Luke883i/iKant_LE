@@ -446,7 +446,7 @@
       "source_bytes": 517371,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
-        "blob_sha1": "4a6cf268eb4868613462d44ad926a6ae9e9e2991"
+        "blob_sha1": "71dbd96a715d07c0f0e4f74ea672d71930bfdb7a"
       },
       "shards": [
         {
@@ -807,7 +807,7 @@
           "shard": 3
         }
       ],
-      "runtime_root_sha256": "b6eecea874801d5eb09859e3cd7ca7446d350c17f2221fb3bd0076c17ecdfb6a"
+      "runtime_root_sha256": "bbda174a11de53555c4ea93bc37bba7a974d54823b44db9869180f65eeabc4fb"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -1007,8 +1007,8 @@
       "schema": "ikant-le-pre-runtime-kernel/v2",
       "contract": "contracts/pre-runtime-kernel.json",
       "path": "src/runtime-root-verified.mjs",
-      "blob_sha1": "4a6cf268eb4868613462d44ad926a6ae9e9e2991",
-      "bytes": 27847,
+      "blob_sha1": "71dbd96a715d07c0f0e4f74ea672d71930bfdb7a",
+      "bytes": 32754,
       "direct_known_path": true,
       "stdlib_only": true,
       "reuses_runtime_root_loader": true,
@@ -1030,6 +1030,16 @@
         "hydrate": "executePreRuntimeBootstrapFromBind",
         "before_full_materialization": true,
         "full_runtime_hydration_required_for_relation": false,
+        "authority": 0
+      },
+      "c47_runtime_closure": {
+        "schema": "ikant-le-cohost-runtime-closure/v1",
+        "contract": "contracts/cohost-runtime-closure.json",
+        "upgrade": "issueCohostHydrationUpgradeReceipt",
+        "reopen": "reopenCohostHydrationUpgradeReceipt",
+        "context_owner": "src/cohost-context-root.mjs",
+        "persist_reopen_required": true,
+        "exact_main_gate": ".github/workflows/c46-fast-cohost-bind.yml",
         "authority": 0
       }
     },
