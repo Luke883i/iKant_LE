@@ -17,7 +17,8 @@
       "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
       "runtime": "src/session-local-service.mjs",
       "ui_shell": "src/session-shell.mjs",
-      "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation"
+      "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation",
+      "cohost_context_root": "src/cohost-context-root.mjs"
     },
     "ai_cycle": {
       "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
@@ -269,7 +270,29 @@
       "style_may_change_next": false,
       "style_may_change_retry_memory": false
     },
-    "methodological_bootstrap_contract": "contracts/methodological-bootstrap.json"
+    "methodological_bootstrap_contract": "contracts/methodological-bootstrap.json",
+    "cohost_context_root": {
+      "contract": "contracts/cohost-context-root.json",
+      "owner": "src/cohost-context-root.mjs",
+      "placement": "OPTIONAL_COHOST",
+      "activation_modality": "SESSION_CHAT_LOCAL",
+      "session_locator": "SHA256_HOST_SESSION_METADATA",
+      "raw_provider_session_persisted": false,
+      "provider_session_is_product_identity": false,
+      "durable_context_root_required": true,
+      "immutable_source_runtime_binding": true,
+      "runtime_route": "src/runtime.mjs#runCommand",
+      "compatibility_c20_canonical": false,
+      "reopen_before_every_turn": true,
+      "exit_readback_stops_routing": true,
+      "native_delivery_receipt_schema": "ikant-le-cohost-native-delivery-receipt/v1",
+      "native_delivery_truth_owner": "HOST_NATIVE_CHAT",
+      "physical_registration_is_external_gap": true,
+      "new_lifecycle": false,
+      "new_state_writer": false,
+      "new_truth_owner": false,
+      "authority": 0
+    }
   },
   "canonical_repository": "Luke883i/iKant_LE",
   "canonical_repository_url": "https://github.com/Luke883i/iKant_LE",
@@ -1111,6 +1134,18 @@
     "first_unclosed_edge_required": true,
     "diagnostic_stage_persisted": false,
     "external_gap_laundering_forbidden": true,
-    "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise"
+    "ontological_promise_contract": "contracts/ikant-le.json#ontological_promise",
+    "optional_cohost_context_root": {
+      "contract": "contracts/cohost-context-root.json",
+      "canonical_activation_modality_unchanged": true,
+      "placement": "OPTIONAL_COHOST",
+      "context_owner": "src/cohost-context-root.mjs",
+      "runtime_route": "src/runtime.mjs#runCommand",
+      "compatibility_plugin_ingress_is_canonical": false,
+      "hosted_runtime_required": false,
+      "plugin_or_mcp_registration_required": false,
+      "native_delivery_requires_external_host_receipt": true,
+      "authority": 0
+    }
   }
 }
