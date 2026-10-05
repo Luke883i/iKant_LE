@@ -9,6 +9,8 @@ on:
       - 'contracts/cohost-bind-nucleus.json'
       - 'contracts/cohost-coldstart-root-common.json'
       - 'contracts/cohost-runtime-closure.json'
+      - 'contracts/cohost-closure-profile.json'
+      - 'artifacts/qualification/c49-tiered-cohost-closure-1k.json'
       - 'src/runtime-root-verified.mjs'
       - 'src/cohost-context-root.mjs'
       - 'src/cohost-root-qualification.mjs'
