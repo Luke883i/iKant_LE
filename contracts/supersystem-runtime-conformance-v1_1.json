@@ -1,0 +1,70 @@
+{
+  "schema": "ikant-le-supersystem-runtime-conformance-contract/v1.1",
+  "slice": "C51.SUPERSYSTEM_RUNTIME_CONFORMANCE",
+  "role": "DERIVED_CONFORMANCE_OVERLAY",
+  "authority": 0,
+  "source_baseline": "fe40fa221612d5e9c9fe2e7506bd1fc41553fc9d",
+  "common_semantic_roots": {
+    "cohost_coldstart": "fa4ccab342d14b7e2a1f4d6505374045d282d51e488557f5fd8f9c23c88158da",
+    "tiered_closure": "07df3f7726e00586900e83726a8cbd5b45e243f476160783c7c770bb75c63fe9",
+    "native_transcript": "0fe2ca72875f9782d474fadf022b746c253f755244bfa39cb2dd66d361a2cb56"
+  },
+  "owners_reused": {
+    "bootstrap_entrypoint": "src/local-host-meta-prompt.mjs#for_ai_agent_first_entrypoint",
+    "retry_memory": "FASTBOOT_CHANNEL_LEDGER.failed_decisions",
+    "pre_runtime": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+    "context": "src/cohost-context-root.mjs",
+    "cohost_qualification": "src/cohost-coldstart-qualification.mjs + src/cohost-root-qualification.mjs",
+    "runtime_route": "src/runtime.mjs#runCommand",
+    "native_qualification": "src/native-transcript-participant.mjs"
+  },
+  "boundaries": {
+    "H_B_BOOTSTRAP": "Repository exposes an executable adapter that delegates to the existing canonical entrypoint; actual host binding remains external and must be observed.",
+    "CORE_RELATION": "COHOST_RELATION remains exactly B0+R0+R1+R2; route conformance is not added to this ontology.",
+    "H_E_ROUTE": "Post-bind host interposition and unresolved-turn serialization are a separate session-route conformance axis.",
+    "H_N_NATIVE": "NATIVE_TRANSCRIPT_ACTOR remains S_SESSION_IDENTITY + P_NATIVE_PARTICIPANT_LEASE + T_PERSISTENT_TURN_SCHEDULER + D_NATIVE_ACTOR_DELIVERY."
+  },
+  "mechanisms": [
+    "K0_EVIDENCE_PINNED_ROOTS",
+    "K1_EXECUTABLE_BOOTSTRAP_ADAPTER",
+    "K2_OWNER_DERIVED_ONE_NEXT_REENTRY",
+    "K3_COHOST_ROOT_PRESERVED",
+    "K4_ROUTE_INTERPOSITION_GUARD",
+    "K5_UNRESOLVED_TURN_SERIALIZATION",
+    "K6_NATIVE_SESSION_IDENTITY",
+    "K7_NATIVE_PARTICIPANT_LEASE",
+    "K8_PERSISTENT_TURN_SCHEDULER",
+    "K9_EXACT_NATIVE_DELIVERY_READBACK",
+    "K10_AXIS_ORTHOGONALITY",
+    "K11_FAIL_CLOSED_EXTERNAL_GAPS",
+    "K12_AUTHORITY_OWNER_PRESERVATION"
+  ],
+  "projection_axes": {
+    "bootstrap": ["CONFORMANT", "INTEGRATION_IMPEDIMENT"],
+    "relation": ["NONE", "COHOST_RELATION", "NATIVE_TRANSCRIPT_ACTOR"],
+    "route": ["NOT_BOUND", "EXTERNAL_ROUTE_GAP", "PENDING_CANONICAL_TURN", "BLOCKED_BYPASS", "STALE_UNSYNCED", "SAFE"],
+    "capability": ["BIND_NUCLEUS", "FULL_RUNTIME"],
+    "product": ["CANDIDATE", "CANONICAL"]
+  },
+  "laws": {
+    "owner_code_is_not_owner_execution": true,
+    "predicted_next_is_not_owner_next": true,
+    "conversation_is_not_retry_memory": true,
+    "runtime_fail_closed_must_not_be_laundered_into_system_progress": true,
+    "cohost_relation_requires_route_conformance": false,
+    "native_actor_requires_full_runtime": false,
+    "native_actor_requires_control_ownership": false,
+    "repository_can_create_host_bootstrap_binding": false,
+    "repository_can_create_host_participant_api": false,
+    "semantic_falsification_is_physical_host_proof": false
+  },
+  "forbidden_new_authority": ["new lifecycle","new planner","new retry-memory owner","new state writer","new truth owner","new turn engine","source-shape import from full iKant"],
+  "qualification": {
+    "selection_cases": 10000000,
+    "independent_falsification_cases": 1000000,
+    "architecture_lattice": 8192,
+    "selection_artifact": "artifacts/qualification/c51-supersystem-selection-10m.json",
+    "falsification_artifact": "artifacts/qualification/c51-supersystem-falsification-1m.json",
+    "dod_artifact": "artifacts/qualification/c51-supersystem-dod.json"
+  }
+}
