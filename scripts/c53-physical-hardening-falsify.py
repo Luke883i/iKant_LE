@@ -113,6 +113,13 @@ for i,(level,name,mods,noise) in enumerate(families):
         flip=rng.integers(0,2,size=PER,dtype=np.uint8)==1;a[flip]|=bit("strong_axes")
     if noise=="native":
         flip=rng.integers(0,32,size=PER,dtype=np.uint8)==0;a[flip]|=bit("surrogate")
+    if level=="RANDOM":
+        # Independent low-rate perturbations across the proof lattice create
+        # thousands of realistic cross-layer semantic worlds without erasing
+        # the dedicated pre-seeded counterexample families above.
+        for n in FACTS[:15]:
+            flip=rng.integers(0,64,size=PER,dtype=np.uint8)==0
+            a[flip]^=bit(n)
     worlds[pos:pos+PER]=a;pos+=PER;counts[name]+=PER;levels[level]+=PER
 
 z=oracle(worlds)
