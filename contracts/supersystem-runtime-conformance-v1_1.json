@@ -40,11 +40,31 @@
     "K12_AUTHORITY_OWNER_PRESERVATION"
   ],
   "projection_axes": {
-    "bootstrap": ["CONFORMANT", "INTEGRATION_IMPEDIMENT"],
-    "relation": ["NONE", "COHOST_RELATION", "NATIVE_TRANSCRIPT_ACTOR"],
-    "route": ["NOT_BOUND", "EXTERNAL_ROUTE_GAP", "PENDING_CANONICAL_TURN", "BLOCKED_BYPASS", "STALE_UNSYNCED", "SAFE"],
-    "capability": ["BIND_NUCLEUS", "FULL_RUNTIME"],
-    "product": ["CANDIDATE", "CANONICAL"]
+    "bootstrap": [
+      "CONFORMANT",
+      "INTEGRATION_IMPEDIMENT"
+    ],
+    "relation": [
+      "NONE",
+      "COHOST_RELATION",
+      "NATIVE_TRANSCRIPT_ACTOR"
+    ],
+    "route": [
+      "NOT_BOUND",
+      "EXTERNAL_ROUTE_GAP",
+      "PENDING_CANONICAL_TURN",
+      "BLOCKED_BYPASS",
+      "STALE_UNSYNCED",
+      "SAFE"
+    ],
+    "capability": [
+      "BIND_NUCLEUS",
+      "FULL_RUNTIME"
+    ],
+    "product": [
+      "CANDIDATE",
+      "CANONICAL"
+    ]
   },
   "laws": {
     "owner_code_is_not_owner_execution": true,
@@ -58,7 +78,15 @@
     "repository_can_create_host_participant_api": false,
     "semantic_falsification_is_physical_host_proof": false
   },
-  "forbidden_new_authority": ["new lifecycle","new planner","new retry-memory owner","new state writer","new truth owner","new turn engine","source-shape import from full iKant"],
+  "forbidden_new_authority": [
+    "new lifecycle",
+    "new planner",
+    "new retry-memory owner",
+    "new state writer",
+    "new truth owner",
+    "new turn engine",
+    "source-shape import from full iKant"
+  ],
   "qualification": {
     "selection_cases": 10000000,
     "independent_falsification_cases": 1000000,
@@ -66,5 +94,142 @@
     "selection_artifact": "artifacts/qualification/c51-supersystem-selection-10m.json",
     "falsification_artifact": "artifacts/qualification/c51-supersystem-falsification-1m.json",
     "dod_artifact": "artifacts/qualification/c51-supersystem-dod.json"
-  }
+  },
+  "route_observation_owner": "HOST_SESSION_ROUTER",
+  "forensic_v1_1_normalizations": {
+    "route_conformance_is_orthogonal_to_cohost_relation": true,
+    "route_owner_is_not_native_participant_owner": true,
+    "cohost_projection_exposes_existing_session_source_runtime_binding": true,
+    "native_projection_exposes_existing_session_binding": true,
+    "ten_million_campaign_role": "CONTRACT_SATURATION_AND_MINIMUM_SELECTION_NOT_PHYSICAL_HOST_PROOF",
+    "one_million_campaign_role": "INDEPENDENT_RUNTIME_CLASSIFIER_FALSIFICATION_NOT_PHYSICAL_HOST_PROOF"
+  },
+  "cross_binding": {
+    "host_session_locator_required": true,
+    "source_head_required": true,
+    "runtime_root_sha256_required": true,
+    "route_receipt_must_match_cohost_session_source_runtime": true,
+    "native_status_must_match_cohost_session": true,
+    "projection_enrichment_changes_common_root_ontology": false
+  },
+  "audit_absorption": [
+    {
+      "id": "A1_EXECUTION_LAUNDERING",
+      "finding": "owner code or predicted NEXT cannot substitute owner execution",
+      "closed_by": [
+        "K1_EXECUTABLE_BOOTSTRAP_ADAPTER",
+        "K2_OWNER_DERIVED_ONE_NEXT_REENTRY",
+        "K11_FAIL_CLOSED_EXTERNAL_GAPS"
+      ]
+    },
+    {
+      "id": "A2_FALSE_OPERATIONAL_BLOCKER",
+      "finding": "unobserved host/tool failure cannot become carrier/environment fact",
+      "closed_by": [
+        "K2_OWNER_DERIVED_ONE_NEXT_REENTRY",
+        "K11_FAIL_CLOSED_EXTERNAL_GAPS"
+      ]
+    },
+    {
+      "id": "A3_POST_BIND_HOST_BYPASS",
+      "finding": "runtime fail-close is insufficient when host transcript can advance outside runtime",
+      "closed_by": [
+        "K4_ROUTE_INTERPOSITION_GUARD",
+        "K5_UNRESOLVED_TURN_SERIALIZATION"
+      ]
+    },
+    {
+      "id": "A4_NATIVE_ACTOR_BOUNDARY",
+      "finding": "cohost/app/runtime/control ownership cannot substitute native participant lease+scheduler+delivery/readback",
+      "closed_by": [
+        "K6_NATIVE_SESSION_IDENTITY",
+        "K7_NATIVE_PARTICIPANT_LEASE",
+        "K8_PERSISTENT_TURN_SCHEDULER",
+        "K9_EXACT_NATIVE_DELIVERY_READBACK",
+        "K10_AXIS_ORTHOGONALITY"
+      ]
+    },
+    {
+      "id": "A5_HOST_EXTERNALITY",
+      "finding": "repository may validate host receipts but cannot create bootstrap binding or participant API",
+      "closed_by": [
+        "K11_FAIL_CLOSED_EXTERNAL_GAPS",
+        "K12_AUTHORITY_OWNER_PRESERVATION"
+      ]
+    }
+  ],
+  "dod": [
+    {
+      "id": "D1",
+      "claim": "three common semantic roots fa4c/07df/0fe2 remain exact and unchanged"
+    },
+    {
+      "id": "D2",
+      "claim": "repository executable bootstrap adapter invokes the existing canonical entrypoint rather than predicting it"
+    },
+    {
+      "id": "D3",
+      "claim": "host bootstrap binding remains external typed evidence and cannot be created by repository invocation alone"
+    },
+    {
+      "id": "D4",
+      "claim": "caller retry memory and model-inferred NEXT remain forbidden; existing FASTBOOT_CHANNEL_LEDGER remains retry owner"
+    },
+    {
+      "id": "D5",
+      "claim": "COHOST_RELATION remains exactly existing B0+R0+R1+R2 and does not require route conformance or hydration"
+    },
+    {
+      "id": "D6",
+      "claim": "cohost status projects its already-owned session locator, source head and runtime root for exact supersystem cross-binding"
+    },
+    {
+      "id": "D7",
+      "claim": "route conformance is an orthogonal HOST_SESSION_ROUTER axis and does not require native participant infrastructure"
+    },
+    {
+      "id": "D8",
+      "claim": "unresolved canonical turn serializes next-turn advancement"
+    },
+    {
+      "id": "D9",
+      "claim": "observed host bypass, model direct reply, stale ordinal or route binding drift cannot project SAFE"
+    },
+    {
+      "id": "D10",
+      "claim": "native promotion consumes existing C50 semantics and is same-session bound"
+    },
+    {
+      "id": "D11",
+      "claim": "FULL_RUNTIME, control ownership, canonical product, app/panel/prefix/manual selection cannot substitute native host proof"
+    },
+    {
+      "id": "D12",
+      "claim": "missing host bootstrap binding yields INTEGRATION_IMPEDIMENT without inventing carrier/environment failure"
+    },
+    {
+      "id": "D13",
+      "claim": "valid cohost with missing/invalid native host proof remains COHOST_RELATION_ONLY"
+    },
+    {
+      "id": "D14",
+      "claim": "overlay creates no lifecycle, planner, retry-memory owner, state writer, truth owner or turn engine and has authority zero"
+    },
+    {
+      "id": "D15",
+      "claim": "10M independent-oracle saturation plus complete 2^13 lattice selects a unique 13-mechanism minimum and kills every deletion mutant"
+    },
+    {
+      "id": "D16",
+      "claim": "fresh 1M runtime falsification has zero mismatch, zero unsafe promotion and zero false reject"
+    },
+    {
+      "id": "D17",
+      "claim": "focused C51 plus C45/C46/C50 regressions pass on exact candidate bytes"
+    },
+    {
+      "id": "D18",
+      "claim": "candidate implementation/test surface is content-addressed and exact PR-head CI remains required external acceptance"
+    }
+  ]
 }

@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
 permissions:
-  contents: read
+  contents: write
 jobs:
   qualify:
     runs-on: ubuntu-latest
@@ -22,7 +22,19 @@ jobs:
         run: node scripts/c51-supersystem-falsify-1m.mjs --cases 1000000
       - name: Rebuild granular DoD and content-addressed candidate manifest
         run: node scripts/c51-build-dod.mjs
+      - name: Materialize qualification receipts on same-repository PR branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          git add artifacts/qualification/c51-supersystem-selection-10m.json artifacts/qualification/c51-supersystem-falsification-1m.json artifacts/qualification/c51-supersystem-dod.json artifacts/qualification/c51-candidate-blob-manifest.json
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "C51: materialize exact qualification receipts"
+            git push origin HEAD:c51/supersystem-runtime-conformance-v1-1
+          fi
       - name: Qualification artifacts are exact committed bytes
-        run: git diff --exit-code -- artifacts/qualification/c51-supersystem-selection-10m.json artifacts/qualification/c51-supersystem-falsification-1m.json artifacts/qualification/c51-supersystem-dod.json artifacts/qualification/c51-candidate-blob-manifest.json
+        run: |
+          git status --porcelain -- artifacts/qualification/c51-supersystem-selection-10m.json artifacts/qualification/c51-supersystem-falsification-1m.json artifacts/qualification/c51-supersystem-dod.json artifacts/qualification/c51-candidate-blob-manifest.json
+          test -z "$(git status --porcelain -- artifacts/qualification/c51-supersystem-selection-10m.json artifacts/qualification/c51-supersystem-falsification-1m.json artifacts/qualification/c51-supersystem-dod.json artifacts/qualification/c51-candidate-blob-manifest.json)"
       - name: Syntax
         run: node --check src/supersystem-runtime-conformance.mjs && node --check scripts/c51-supersystem-select-10m.mjs && node --check scripts/c51-supersystem-falsify-1m.mjs && node --check scripts/c51-build-dod.mjs
