@@ -21,9 +21,14 @@
     "runtime_capability_changes_on_hydration": true
   },
   "main_promotion": {
-    "pr_candidate_c46_gate_required": true,
+    "semantic_truth_owner": ".github/workflows/c46-fast-cohost-bind.yml@push:main",
+    "pr_candidate_c46_gate_required": false,
+    "pr_candidate_gate_role": "PROCESS_CONTROL_ONLY",
+    "pr_candidate_gate_expected_for_merge_process": true,
     "merged_to_main_required": true,
     "exact_main_c47_gate_required": true,
+    "exact_main_gate_freshness_required": true,
+    "exact_main_path_coverage_required": true,
     "all_pr_workflows_rerun_on_main_required": false
   },
   "new_lifecycle": false,
@@ -34,5 +39,41 @@
     "semantic_mutation_is_physical_host_proof": false,
     "host_participation_is_not_created": true,
     "merge_is_not_runtime_execution_proof": true
+  },
+  "additional_falsification": {
+    "schema": "ikant-le-main-cohost-gate-selection-1k/v1",
+    "seed": "0xC148BEEF",
+    "cases": 1000,
+    "families": 40,
+    "optimal": {
+      "mismatch": 0,
+      "unsafe": 0,
+      "false_reject": 0
+    },
+    "current_c47": {
+      "mismatch": 400,
+      "unsafe": 250,
+      "false_reject": 150
+    },
+    "require_pr_gate": {
+      "mismatch": 150,
+      "unsafe": 0,
+      "false_reject": 150
+    },
+    "no_freshness": {
+      "mismatch": 125,
+      "unsafe": 125,
+      "false_reject": 0
+    },
+    "no_path_coverage": {
+      "mismatch": 125,
+      "unsafe": 125,
+      "false_reject": 0
+    },
+    "all_pr_workflows": {
+      "mismatch": 277,
+      "unsafe": 0,
+      "false_reject": 277
+    }
   }
 }
