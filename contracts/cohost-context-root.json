@@ -262,5 +262,28 @@
     "delivery_envelope_is_native_delivery": false,
     "native_delivery_receipt_validator_can_self_issue_world_evidence": false,
     "optional_cohost_placement_changes_activation_modality": false
+  },
+  "cross_repo_root": {
+    "common_contract": "contracts/cohost-root-common.json",
+    "common_semantic_sha256": "1d5360e5d1df2babb743c83cfee0d64158f35966580d3118f9bc2383dfb38692",
+    "root_spine": [
+      "R0_DURABLE_CANONICAL_RUNTIME_CONTEXT",
+      "R1_PERSISTENT_PARTICIPATION_LEASE",
+      "R2_EXACT_ATTRIBUTED_DELIVERY_RECEIPT"
+    ],
+    "c45_scope": "R0_DURABLE_CANONICAL_RUNTIME_CONTEXT_PLUS_DELIVERY_SUBSTRATE",
+    "unique_full_cohost_root_claimed": false,
+    "external_host_receipts_required": [
+      "PERSISTENT_PARTICIPATION_LEASE",
+      "EXACT_ATTRIBUTED_DELIVERY_RECEIPT"
+    ],
+    "qualifier": "src/cohost-root-qualification.mjs",
+    "no_new_lifecycle": true,
+    "no_new_state_writer": true,
+    "no_new_truth_owner": true
+  },
+  "selection_scope": {
+    "statement": "C45 selection proves a minimum for the repository continuity/delivery sub-reticulum under its declared required/forbidden mechanism model; it is not a proof that eight mechanisms are the unique full cohost root.",
+    "full_root_uniqueness_claimed": false
   }
 }
