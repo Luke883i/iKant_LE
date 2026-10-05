@@ -178,13 +178,29 @@ export function validatePhysicalClosurePersistenceWitness({baseClosure,secondRou
   return seal(body);
 }
 
-export function buildPhysicalClosureEvidenceBundle({closureInputs=null,persistenceInputs=null,receipts={}}={}){
-  const closure=qualifyPhysicalRuntimeClosureV1(closureInputs||{});
-  const cv=validatePhysicalClosureReceipt(closure);
-  const persistence=cv.ok?validatePhysicalClosurePersistenceWitness({baseClosure:closure,...(persistenceInputs||{})}):seal({schema:'ikant-le-physical-runtime-persistence-witness/v1',status:'FAIL',same_session:false,same_runtime_instance:false,same_participant:false,fresh_turn:false,errors:['base'],authority:0});
+export function buildPhysicalClosureEvidenceBundle({closureInputs=null,persistenceInputs=null}={}){
+  const ci=closureInputs||{},pi=persistenceInputs||{},closure=qualifyPhysicalRuntimeClosureV1(ci),cv=validatePhysicalClosureReceipt(closure);
+  const persistence=cv.ok?validatePhysicalClosurePersistenceWitness({baseClosure:closure,...pi}):seal({schema:'ikant-le-physical-runtime-persistence-witness/v1',status:'FAIL',same_session:false,same_runtime_instance:false,same_participant:false,fresh_turn:false,errors:['base'],authority:0});
   const pv=validatePhysicalClosurePersistenceReceipt(persistence);
-  const refs=Object.fromEntries(Object.entries(receipts).map(([k,v])=>[k,v?.receipt_sha256||null]));
-  const refsSealed=Object.values(receipts).every(v=>H64.test(String(v?.receipt_sha256||''))&&digest(strip(v))===v.receipt_sha256);
-  const body={schema:PHYSICAL_CLOSURE_EVIDENCE_SCHEMA,closure_receipt_sha256:closure.receipt_sha256||null,persistence_receipt_sha256:persistence.receipt_sha256||null,receipt_refs:refs,closure_owner_recomputed:true,persistence_owner_recomputed:true,direct_derived_inputs_accepted_as_proof:false,closure_valid:cv.ok,persistence_valid:pv.ok,receipt_refs_sealed:refsSealed,global_dod_pass:cv.ok&&pv.ok&&refsSealed,live_receipts_external_to_repository:true,authority:0};
+  let cohostAttestation=null;try{cohostAttestation=issueCohostRelationAttestation(ci.cohostEvidence||{});}catch{}
+  const refs={
+   bootstrap_invocation:ci.bootstrapInvocationReceipt?.receipt_sha256||null,
+   host_bootstrap_binding:ci.hostBootstrapBindingReceipt?.receipt_sha256||null,
+   runtime_execution:ci.runtimeExecutionReceipt?.receipt_sha256||null,
+   cohost_relation_attestation:cohostAttestation?.receipt_sha256||null,
+   host_route_interposition:ci.hostRouteInterpositionReceipt?.receipt_sha256||null,
+   native_participant_lease:ci.nativeParticipantLease?.receipt_sha256||null,
+   native_turn_grant:ci.nativeTurnGrantReceipt?.receipt_sha256||null,
+   runtime_turn:ci.runtimeTurnReceipt?.receipt_sha256||null,
+   physical_runtime_turn:ci.physicalRuntimeTurnReceipt?.receipt_sha256||null,
+   native_delivery:ci.nativeDeliveryReadbackReceipt?.receipt_sha256||null,
+   persistence_route:pi.secondRouteReceipt?.receipt_sha256||null,
+   persistence_runtime_turn:pi.secondRuntimeTurnReceipt?.receipt_sha256||null,
+   persistence_physical_turn:pi.secondPhysicalRuntimeTurnReceipt?.receipt_sha256||null,
+   persistence_turn_grant:pi.secondTurnGrantReceipt?.receipt_sha256||null,
+   persistence_delivery:pi.secondDeliveryReceipt?.receipt_sha256||null
+  };
+  const refsComplete=Object.values(refs).every(v=>H64.test(String(v||'')));
+  const body={schema:PHYSICAL_CLOSURE_EVIDENCE_SCHEMA,closure_receipt_sha256:closure.receipt_sha256||null,persistence_receipt_sha256:persistence.receipt_sha256||null,receipt_refs:refs,receipt_refs_owner_derived:true,caller_supplied_receipt_refs_accepted:false,closure_owner_recomputed:true,persistence_owner_recomputed:true,direct_derived_inputs_accepted_as_proof:false,closure_valid:cv.ok,persistence_valid:pv.ok,receipt_refs_complete:refsComplete,global_dod_pass:cv.ok&&pv.ok&&refsComplete,live_receipts_external_to_repository:true,authority:0};
   return seal(body);
 }

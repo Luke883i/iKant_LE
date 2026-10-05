@@ -45,7 +45,7 @@
     {
       "id": "H4_DERIVED_PROOF_RECOMPUTATION",
       "absorbed_into": "L0",
-      "claim": "Global DoD recomputes closure and persistence from underlying evidence; caller-supplied derived status/witness objects are never accepted as proof, and recomputed receipts remain sealed."
+      "claim": "Global DoD recomputes closure and persistence from underlying evidence and derives the complete E0-E6 plus persistence proof-ref lineage itself; caller-supplied derived status, witness or receipt-ref lists are never accepted as proof."
     }
   ],
   "semantic_simplification": {
@@ -56,7 +56,8 @@
     "new_turn_engine": false,
     "physical_turn_receipt_is_supporting_evidence_not_new_top_level_entity": true,
     "derived_closure_receipts_revalidated": false,
-    "derived_closure_and_persistence_owner_recomputed": true
+    "derived_closure_and_persistence_owner_recomputed": true,
+    "global_bundle_derives_complete_proof_refs": true
   },
   "dod": [
     "cross-session E0 replay is INTEGRATION_IMPEDIMENT",

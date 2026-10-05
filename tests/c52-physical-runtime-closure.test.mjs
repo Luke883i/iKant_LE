@@ -51,8 +51,8 @@ test('C52 persistence witness requires same lease and a fresh later grant/delive
   const del2=delivery({session,sourceHead:f.sourceHead,root,instance,lease,grant:grant2,runtimeTurn:run2.runtime_turn_receipt,physicalTurn:run2.physical_runtime_turn_receipt,ordinal:2});
   const persistenceInputs={secondRouteReceipt:route2,secondRuntimeTurnReceipt:run2.runtime_turn_receipt,secondPhysicalRuntimeTurnReceipt:run2.physical_runtime_turn_receipt,nativeParticipantLease:lease,secondTurnGrantReceipt:grant2,secondDeliveryReceipt:del2};
   const w=validatePhysicalClosurePersistenceWitness({baseClosure:base,...persistenceInputs});
-  const bundle=buildPhysicalClosureEvidenceBundle({closureInputs,persistenceInputs,receipts:{bootstrap:f.bootstrap.binding,runtime:f.runtimeExecution,route:route1,participant:lease,grant:grant1,delivery:del1,physical_turn:run1.physical_runtime_turn_receipt}});
-  assert.equal(w.status,'PASS');assert.equal(bundle.global_dod_pass,true);assert.equal(bundle.closure_owner_recomputed,true);assert.equal(bundle.persistence_owner_recomputed,true);assert.equal(bundle.live_receipts_external_to_repository,true);
+  const bundle=buildPhysicalClosureEvidenceBundle({closureInputs,persistenceInputs});
+  assert.equal(w.status,'PASS');assert.equal(bundle.global_dod_pass,true);assert.equal(bundle.closure_owner_recomputed,true);assert.equal(bundle.persistence_owner_recomputed,true);assert.equal(bundle.receipt_refs_owner_derived,true);assert.equal(bundle.receipt_refs_complete,true);assert.equal(bundle.live_receipts_external_to_repository,true);
   const mismatchedRoute=routeReceipt({session,sourceHead:f.sourceHead,root,instance,turnId:'TURN-X',ordinal:2});
   const bad=validatePhysicalClosurePersistenceWitness({baseClosure:base,secondRouteReceipt:mismatchedRoute,secondRuntimeTurnReceipt:run2.runtime_turn_receipt,secondPhysicalRuntimeTurnReceipt:run2.physical_runtime_turn_receipt,nativeParticipantLease:lease,secondTurnGrantReceipt:grant2,secondDeliveryReceipt:del2});
   assert.equal(bad.status,'FAIL');assert.ok(bad.errors.includes('turn_binding'));
