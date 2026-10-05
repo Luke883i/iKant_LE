@@ -50,12 +50,12 @@ test('C51 native actor reuses C50 receipts and remains orthogonal to hydration/p
  const c=cohost(),l=nativeLease(),d=nativeDelivery(l),n=qualifyNativeTranscriptActor({cohostStatus:c,sessionLocatorSha256:SESSION,nativeParticipantLease:l,nativeDeliveryReceipt:d});
  assert.equal(n.semantic_sha256,NATIVE_TRANSCRIPT_SHA);assert.equal(n.session_locator_sha256,SESSION);assert.equal(n.state,'NATIVE_TRANSCRIPT_ACTOR');
  const inv=invokeCanonicalBootstrapOwner({human_input:'inizializza'}).receipt,b=bootstrapBinding(inv),q=qualifySupersystemRuntimeV11({sourceHead:HEAD,bootstrapInvocationReceipt:inv,hostBootstrapBindingReceipt:b,cohostStatus:c,routeReceipt:route(),nativeStatus:n,capabilityAxis:'BIND_NUCLEUS',productAxis:'CANDIDATE'});
- assert.equal(q.relation_axis,'NATIVE_TRANSCRIPT_ACTOR');assert.equal(q.capability_axis,'BIND_NUCLEUS');assert.equal(q.product_axis,'CANDIDATE');assert.equal(q.native_actor_requires_full_runtime,false);assert.equal(q.native_actor_requires_control_ownership,false);
+ assert.equal(q.relation_axis,'NATIVE_TRANSCRIPT_ACTOR');assert.equal(q.system_state,'NATIVE_TRANSCRIPT_ACTOR');assert.equal(q.system_progress_allowed,true);assert.equal(q.capability_axis,'BIND_NUCLEUS');assert.equal(q.product_axis,'CANDIDATE');assert.equal(q.native_actor_requires_full_runtime,false);assert.equal(q.native_actor_requires_control_ownership,false);
 });
 
 test('C51 missing native host proof declassifies only to COHOST_RELATION and missing bootstrap binding to impediment',()=>{
  const c=cohost(),n=qualifyNativeTranscriptActor({cohostStatus:c,sessionLocatorSha256:SESSION,nativeParticipantLease:{},nativeDeliveryReceipt:{}}),q=qualifySupersystemRuntimeV11({sourceHead:HEAD,cohostStatus:c,routeReceipt:route(),nativeStatus:n});
- assert.equal(n.state,'COHOST_RELATION_ONLY');assert.equal(q.relation_axis,'COHOST_RELATION');assert.equal(q.external_native_host_gap,true);assert.equal(q.bootstrap_conformance,'INTEGRATION_IMPEDIMENT');
+ assert.equal(n.state,'COHOST_RELATION_ONLY');assert.equal(q.relation_axis,'COHOST_RELATION');assert.equal(q.external_native_host_gap,true);assert.equal(q.bootstrap_conformance,'INTEGRATION_IMPEDIMENT');assert.equal(q.system_state,'INTEGRATION_IMPEDIMENT');assert.equal(q.system_progress_allowed,false);
 });
 
 test('C51 overlay creates no authority owner or turn engine',()=>{
@@ -63,3 +63,5 @@ test('C51 overlay creates no authority owner or turn engine',()=>{
  for(const k of ['new_lifecycle','new_planner','new_retry_memory_owner','new_state_writer','new_truth_owner','new_turn_engine'])assert.equal(q[k],false);
  assert.equal(q.authority,0);assert.equal(q.native_host_capability_created,false);assert.equal(q.cohost_relation_requires_route_conformance,false);
 });
+
+test('C51 global projection blocks route gaps without changing relation ontology',()=>{const inv=invokeCanonicalBootstrapOwner({human_input:'inizializza'}).receipt,b=bootstrapBinding(inv),c=cohost(),n=qualifyNativeTranscriptActor({cohostStatus:c,sessionLocatorSha256:SESSION,nativeParticipantLease:{},nativeDeliveryReceipt:{}}),q=qualifySupersystemRuntimeV11({sourceHead:HEAD,bootstrapInvocationReceipt:inv,hostBootstrapBindingReceipt:b,cohostStatus:c,routeReceipt:route({canonical_turn_pending:true,next_turn_requested:true,pending_turn_id:'TURN-PENDING'}),nativeStatus:n});assert.equal(q.relation_axis,'COHOST_RELATION');assert.equal(q.route_conformance,'PENDING_CANONICAL_TURN');assert.equal(q.system_state,'SESSION_ROUTE_BLOCKED');assert.equal(q.system_progress_allowed,false);});

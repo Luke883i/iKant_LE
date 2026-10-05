@@ -19,7 +19,8 @@ function oracle(x){
  if(cohost){if(!x.route_observed)route='EXTERNAL_ROUTE_GAP';else if(x.host_bypass||x.model_direct_reply)route='BLOCKED_BYPASS';else if(x.pending_turn)route='PENDING_CANONICAL_TURN';else if(!x.ordinal_sync)route='STALE_UNSYNCED';else route='SAFE';}
  const nativeCore=x.native_session&&x.participant_lease&&x.scheduler&&x.native_delivery&&x.host_native_observed;
  const relation=!cohost?'NONE':nativeCore?'NATIVE_TRANSCRIPT_ACTOR':'COHOST_RELATION';
- return{bootstrap,relation,route};
+ const system=bootstrap!=='CONFORMANT'?'INTEGRATION_IMPEDIMENT':(!cohost?'NOT_READY':(route!=='SAFE'?'SESSION_ROUTE_BLOCKED':(relation==='NATIVE_TRANSCRIPT_ACTOR'?'NATIVE_TRANSCRIPT_ACTOR':'COHOST_RELATION_ONLY')));
+ return{bootstrap,relation,route,system};
 }
 function candidate(x,mask){
  const integrity=(has(mask,0)?x.roots_pinned:true)&&(has(mask,12)?(!x.new_authority&&!x.new_owner):true);
@@ -31,11 +32,12 @@ function candidate(x,mask){
  if(has(mask,11))native=native&&x.host_native_observed;else native=native&&(x.host_native_observed||x.app_panel||x.model_prefix||x.manual_selection);
  if(!has(mask,10))native=native&&x.full_runtime&&x.canonical_product&&x.control_owned;
  const relation=!cohost?'NONE':native?'NATIVE_TRANSCRIPT_ACTOR':'COHOST_RELATION';
- return{bootstrap,relation,route};
+ const system=bootstrap!=='CONFORMANT'?'INTEGRATION_IMPEDIMENT':(!cohost?'NOT_READY':(route!=='SAFE'?'SESSION_ROUTE_BLOCKED':(relation==='NATIVE_TRANSCRIPT_ACTOR'?'NATIVE_TRANSCRIPT_ACTOR':'COHOST_RELATION_ONLY')));
+ return{bootstrap,relation,route,system};
 }
-const eq=(a,z)=>a.bootstrap===z.bootstrap&&a.relation===z.relation&&a.route===z.route;
-const unsafe=(a,z)=>(a.bootstrap==='CONFORMANT'&&z.bootstrap!=='CONFORMANT')||(a.relation==='NATIVE_TRANSCRIPT_ACTOR'&&z.relation!=='NATIVE_TRANSCRIPT_ACTOR')||(a.relation!=='NONE'&&z.relation==='NONE')||(a.route==='SAFE'&&z.route!=='SAFE'&&z.route!=='NOT_BOUND');
-const falseReject=(a,z)=>(a.bootstrap!=='CONFORMANT'&&z.bootstrap==='CONFORMANT')||(a.relation!=='NATIVE_TRANSCRIPT_ACTOR'&&z.relation==='NATIVE_TRANSCRIPT_ACTOR')||(a.relation==='NONE'&&z.relation!=='NONE')||(a.route!=='SAFE'&&z.route==='SAFE');
+const eq=(a,z)=>a.bootstrap===z.bootstrap&&a.relation===z.relation&&a.route===z.route&&a.system===z.system;
+const unsafe=(a,z)=>(a.bootstrap==='CONFORMANT'&&z.bootstrap!=='CONFORMANT')||(a.relation==='NATIVE_TRANSCRIPT_ACTOR'&&z.relation!=='NATIVE_TRANSCRIPT_ACTOR')||(a.relation!=='NONE'&&z.relation==='NONE')||(a.route==='SAFE'&&z.route!=='SAFE'&&z.route!=='NOT_BOUND')||(a.system==='NATIVE_TRANSCRIPT_ACTOR'&&z.system!=='NATIVE_TRANSCRIPT_ACTOR')||(['NATIVE_TRANSCRIPT_ACTOR','COHOST_RELATION_ONLY'].includes(a.system)&&['INTEGRATION_IMPEDIMENT','SESSION_ROUTE_BLOCKED','NOT_READY'].includes(z.system));
+const falseReject=(a,z)=>(a.bootstrap!=='CONFORMANT'&&z.bootstrap==='CONFORMANT')||(a.relation!=='NATIVE_TRANSCRIPT_ACTOR'&&z.relation==='NATIVE_TRANSCRIPT_ACTOR')||(a.relation==='NONE'&&z.relation!=='NONE')||(a.route!=='SAFE'&&z.route==='SAFE')||(a.system!==z.system&&!unsafe(a,z));
 const familyNames=[...MECH.map(x=>'DELETE_'+x),
  'APP_PANEL_SURROGATE','MODEL_PREFIX_SURROGATE','MANUAL_SELECTION_SURROGATE','FULL_RUNTIME_SURROGATE','CONTROL_OWNERSHIP_SURROGATE','CANONICAL_PRODUCT_SURROGATE','ROUTE_GAP','PENDING_ROUTE','BYPASS_ROUTE','STALE_ROUTE','BOOTSTRAP_GAP','RETRY_INJECTION','OWNER_NEXT_MISSING','ROOT_DRIFT','NEW_AUTHORITY','NEW_OWNER','VALID_BIND_NATIVE','VALID_FULL_NATIVE','VALID_BIND_COHOST_ONLY','VALID_FULL_COHOST_ONLY','PAIR_BOOT_ROUTE','PAIR_ROUTE_NATIVE','PAIR_ROOT_AUTH','PAIR_SURROGATES','PAIR_PENDING_NATIVE','PAIR_BOOT_NATIVE','PAIR_COHOST_GAP','PAIR_AXIS_BIND','PAIR_AXIS_FULL','RANDOM_STRESS','RANDOM_EDGE','RANDOM_TYPICAL','RANDOM_HOST_GAPS','RANDOM_SURROGATES','RANDOM_AUTHORITY','RANDOM_ORTHOGONAL','RANDOM_ROUTE'];
 function scenario(f,i){const x=base();

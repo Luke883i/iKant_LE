@@ -64,6 +64,13 @@
     "product": [
       "CANDIDATE",
       "CANONICAL"
+    ],
+    "system": [
+      "INTEGRATION_IMPEDIMENT",
+      "NOT_READY",
+      "SESSION_ROUTE_BLOCKED",
+      "COHOST_RELATION_ONLY",
+      "NATIVE_TRANSCRIPT_ACTOR"
     ]
   },
   "laws": {
@@ -76,7 +83,10 @@
     "native_actor_requires_control_ownership": false,
     "repository_can_create_host_bootstrap_binding": false,
     "repository_can_create_host_participant_api": false,
-    "semantic_falsification_is_physical_host_proof": false
+    "semantic_falsification_is_physical_host_proof": false,
+    "global_progress_requires_bootstrap_conformance": true,
+    "global_progress_requires_safe_session_route": true,
+    "global_projection_changes_relation_ontology": false
   },
   "forbidden_new_authority": [
     "new lifecycle",
@@ -231,5 +241,15 @@
       "id": "D18",
       "claim": "candidate implementation/test surface is content-addressed and exact PR-head CI remains required external acceptance"
     }
-  ]
+  ],
+  "system_projection": {
+    "precedence": [
+      "INTEGRATION_IMPEDIMENT",
+      "NOT_READY",
+      "SESSION_ROUTE_BLOCKED",
+      "NATIVE_TRANSCRIPT_ACTOR",
+      "COHOST_RELATION_ONLY"
+    ],
+    "rule": "bootstrap gap blocks globally; relation absence is NOT_READY; unsafe route blocks current session progress without deleting relation; native proof promotes only after safe route; otherwise valid relation remains COHOST_RELATION_ONLY"
+  }
 }
