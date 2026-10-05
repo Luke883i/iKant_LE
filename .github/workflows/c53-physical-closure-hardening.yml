@@ -31,8 +31,8 @@ jobs:
           python-version: '3.12'
       - name: Install deterministic mutation dependency
         run: python -m pip install --disable-pip-version-check --no-input numpy==2.1.2
-      - name: Exact runtime-root verification
-        run: npm run runtime-root:verify
+      - name: Regenerate exact runtime root for changed runtime owner
+        run: npm run runtime-root:regen
       - name: Execute materialized iKant runtime and hardening regressions
         run: node --test --test-concurrency=1 tests/c34-pre-runtime-handoff.test.mjs tests/c46-coldstart-cohost-bind.test.mjs tests/c50-native-transcript-participant.test.mjs tests/c51-supersystem-runtime-conformance.test.mjs tests/c52-physical-runtime-closure.test.mjs
       - name: Independent 10M pre-seeded semantic hardening falsification
@@ -44,13 +44,15 @@ jobs:
       - name: Materialize deterministic qualification bytes
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
-          git add artifacts/qualification/c53-physical-hardening-10m.json artifacts/qualification/c52-bundle-coverage.json artifacts/qualification/c52-candidate-blob-manifest.json artifacts/qualification/c52-runtime-physical-closure-dod.json
+          git add BOOTSTRAP.json runtime-root/shard-003.json artifacts/qualification/c53-physical-hardening-10m.json artifacts/qualification/c52-bundle-coverage.json artifacts/qualification/c52-candidate-blob-manifest.json artifacts/qualification/c52-runtime-physical-closure-dod.json
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "C53: materialize inherited exact qualification receipts"
             git push origin HEAD:${{ github.head_ref }}
           fi
+      - name: Exact runtime-root verification
+        run: npm run runtime-root:verify
       - name: Repository contract qualification
         run: npm run check
       - name: Claim boundary remains external
