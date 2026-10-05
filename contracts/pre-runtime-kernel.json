@@ -1,5 +1,5 @@
 {
-  "schema": "ikant-le-pre-runtime-kernel-contract/v2",
+  "schema": "ikant-le-pre-runtime-kernel-contract/v3",
   "slice": "C34.PRE_RUNTIME_HANDOFF_AUTHENTICITY",
   "authority": 0,
   "intent": "Preserve C33 ownership while requiring the materialized runtime owner to independently revalidate the complete preaccept, activation-executor, kernel-self and materialization evidence carried by pre-runtime-handoff/v2.",
@@ -32,7 +32,11 @@
     "runtime_owner_revalidates_full_preaccept_handoff",
     "runtime_owner_revalidates_full_activation_executor_receipt",
     "runtime_owner_rechecks_local_kernel_identity_and_H0",
-    "materialization_activation_executor_digest_matches_handoff"
+    "materialization_activation_executor_digest_matches_handoff",
+    "pre_runtime_bind_nucleus_persist_reopen_before_full_materialization",
+    "bind_nucleus_targets_exact_runtime_root_descriptor",
+    "cohost_relation_and_runtime_capability_are_separate_axes",
+    "same_session_bind_receipt_survives_full_runtime_hydration"
   ],
   "forbidden_promotions": [
     "model_prose_to_capability",
@@ -106,7 +110,11 @@
     "materialized runtime owner re-runs the local kernel self-check and matches its receipt",
     "materialization receipt activation-executor digest equals the handoff executor receipt digest",
     "digest-only v1 handoff is rejected",
-    "C34 1M saturation has zero mismatch, zero unsafe, zero false reject and kills all four deletion mutants"
+    "C34 1M saturation has zero mismatch, zero unsafe, zero false reject and kills all four deletion mutants",
+    "C46 bind nucleus is persisted and reopened before full runtime directory exists",
+    "C46 bind nucleus is bound to exact source head and target runtime_root_sha256",
+    "C46 hydration reuses the same session locator and bind receipt",
+    "C45 context root remains the durable full-runtime context owner after hydration"
   ],
   "claim_boundary": {
     "semantic_falsification_is_physical_proof": false,
@@ -115,7 +123,10 @@
     "runtime_bound_limited_is_active": false,
     "compatibility_plugin_is_canonical_ingress": false,
     "host_ui_delivery_proven": false,
-    "handoff_digest_is_evidence_authenticity": false
+    "handoff_digest_is_evidence_authenticity": false,
+    "bind_nucleus_is_full_runtime": false,
+    "bind_nucleus_is_second_lifecycle": false,
+    "bind_nucleus_proves_native_host_participation": false
   },
   "handoff": {
     "schema": "ikant-le-pre-runtime-handoff/v2",
@@ -125,5 +136,23 @@
     "kernel_self_receipt_embedded": true,
     "runtime_owner_independent_revalidation": true,
     "materialization_executor_cross_binding": true
+  },
+  "c46_fast_cohost_bind": {
+    "contract": "contracts/cohost-bind-nucleus.json",
+    "common_contract": "contracts/cohost-coldstart-root-common.json",
+    "semantic_sha256": "fa4ccab342d14b7e2a1f4d6505374045d282d51e488557f5fd8f9c23c88158da",
+    "issue": "src/runtime-root-verified.mjs#issuePreRuntimeBindNucleus",
+    "reopen": "src/runtime-root-verified.mjs#reopenPreRuntimeBindNucleus",
+    "hydrate": "src/runtime-root-verified.mjs#executePreRuntimeBootstrapFromBind",
+    "qualifier": "src/cohost-coldstart-qualification.mjs",
+    "before_full_materialization": true,
+    "target_full_runtime_digest_bound": true,
+    "same_session_upgrade_required": true,
+    "full_runtime_hydration_required_for_cohost_relation": false,
+    "full_runtime_hydration_required_for_full_turns": true,
+    "new_lifecycle": false,
+    "new_turn_engine": false,
+    "new_state_owner": false,
+    "new_truth_owner": false
   }
 }
