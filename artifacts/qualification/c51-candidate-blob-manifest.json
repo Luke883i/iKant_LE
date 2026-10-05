@@ -9,8 +9,8 @@
     },
     {
       "path": "src/supersystem-runtime-conformance.mjs",
-      "bytes": 9284,
-      "sha256": "032c477384418514b3012621e724d667f3d8614a4b21cef70427d9e52edc23e9"
+      "bytes": 9342,
+      "sha256": "c484c6663adcf9af7524fa784f7c0bf66e8314e028e252f12ecbd356388c4e48"
     },
     {
       "path": "src/cohost-coldstart-qualification.mjs",
@@ -44,12 +44,12 @@
     },
     {
       "path": ".github/workflows/c51-supersystem-runtime.yml",
-      "bytes": 2753,
-      "sha256": "9d669146e9c799ab0394b1e252e2a296a899519c4d344e700529ee4512c76c59"
+      "bytes": 1665,
+      "sha256": "4a45904415a20c3f78a5cb1080922611fd892e02d80046931b41c9c305da10d5"
     }
   ],
   "content_addressed": true,
   "manifest_excludes_self": true,
   "authority": 0,
-  "receipt_sha256": "e178e6ee5016c9fd6743d1ae40b7653726bf37d87b841807b37605f73cd70996"
+  "receipt_sha256": "ff0f3ada22ced3997d7bffb26c90ad29eb5fd05699be322eb56ab9c7f64f1db5"
 }
