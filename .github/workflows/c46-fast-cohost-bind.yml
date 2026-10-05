@@ -11,6 +11,18 @@ on:
       - 'scripts/c46-coldstart-cohost-falsify.mjs'
       - 'artifacts/qualification/c46-cohost-coldstart-root-1k.json'
       - 'artifacts/qualification/c46-bind-nucleus-implementation-1k.json'
+  push:
+    branches: [main]
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'src/runtime-root-verified.mjs'
+      - 'src/cohost-context-root.mjs'
+      - 'contracts/pre-runtime-kernel.json'
+      - 'contracts/cohost-runtime-closure.json'
+      - 'artifacts/qualification/c47-cohost-runtime-closure-1k.json'
+      - 'tests/c47-cohost-runtime-closure.test.mjs'
+      - 'scripts/c47-cohost-runtime-closure-falsify.mjs'
+      - '.github/workflows/c46-fast-cohost-bind.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,8 +36,10 @@ jobs:
         with:
           node-version: '20'
       - name: C46 focused runtime witnesses
-        run: node --test tests/c46-coldstart-cohost-bind.test.mjs tests/c45-cohost-root-common.test.mjs
+        run: node --test tests/c46-coldstart-cohost-bind.test.mjs tests/c45-cohost-root-common.test.mjs tests/c47-cohost-runtime-closure.test.mjs
       - name: C46 exact 1k semantic falsification
         run: node scripts/c46-coldstart-cohost-falsify.mjs
+      - name: C47 exact 1k closure selection
+        run: node scripts/c47-cohost-runtime-closure-falsify.mjs
       - name: Repository check
         run: node scripts/check.mjs

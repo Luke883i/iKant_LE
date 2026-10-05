@@ -154,5 +154,22 @@
     "new_turn_engine": false,
     "new_state_owner": false,
     "new_truth_owner": false
+  },
+  "c47_runtime_closure": {
+    "contract": "contracts/cohost-runtime-closure.json",
+    "owner": "src/runtime-root-verified.mjs",
+    "upgrade": "src/runtime-root-verified.mjs#issueCohostHydrationUpgradeReceipt",
+    "reopen": "src/runtime-root-verified.mjs#reopenCohostHydrationUpgradeReceipt",
+    "context_owner": "src/cohost-context-root.mjs",
+    "bind_receipt_required": true,
+    "materialization_receipt_required": true,
+    "runtime_owner_receipt_required": true,
+    "c45_context_manifest_receipt_required": true,
+    "persist_reopen_required": true,
+    "same_session_upgrade_required": true,
+    "new_lifecycle": false,
+    "new_turn_engine": false,
+    "new_state_owner": false,
+    "new_truth_owner": false
   }
 }
