@@ -6,7 +6,7 @@ import {
   NATIVE_TRANSCRIPT_SHA,
 } from './supersystem-runtime-conformance.mjs';
 import {qualifyColdstartCohostRoot} from './cohost-coldstart-qualification.mjs';
-import {validateNativeParticipantLease} from './native-transcript-participant.mjs';
+import {validateNativeParticipantLease,validateNativeDeliveryReceipt,NATIVE_DELIVERY_RECEIPT_SCHEMA} from './native-transcript-participant.mjs';
 import {
   validateRuntimeExecutionReceipt,
   validateHostRouteInterpositionReceipt,
@@ -17,7 +17,7 @@ export const PHYSICAL_CLOSURE_SCHEMA='ikant-le-physical-runtime-closure-status/v
 export const PHYSICAL_CLOSURE_EVIDENCE_SCHEMA='ikant-le-physical-runtime-closure-evidence/v1';
 export const COHOST_RELATION_ATTESTATION_SCHEMA='ikant-le-cohost-relation-attestation/v1';
 export const NATIVE_TURN_GRANT_SCHEMA='ikant-native-turn-grant/v1';
-export const NATIVE_DELIVERY_READBACK_SCHEMA='ikant-native-delivery-readback/v2';
+export const NATIVE_DELIVERY_READBACK_SCHEMA=NATIVE_DELIVERY_RECEIPT_SCHEMA;
 const H40=/^[a-f0-9]{40}$/;
 const H64=/^[a-f0-9]{64}$/;
 const uniq=a=>[...new Set(a)];
@@ -25,7 +25,7 @@ const digest=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x)
 const strip=x=>{const y=structuredClone(x||{});delete y.receipt_sha256;return y;};
 const seal=x=>({...x,receipt_sha256:digest(x)});
 
-export function validatePhysicalBootstrapBinding({sourceHead,bootstrapInvocationReceipt,hostBootstrapBindingReceipt}={}){
+export function validatePhysicalBootstrapBinding({sourceHead,sessionLocatorSha256=null,bootstrapInvocationReceipt,hostBootstrapBindingReceipt}={}){
   const iv=validateBootstrapInvocationReceipt(bootstrapInvocationReceipt),bv=validateHostBootstrapBindingReceipt(hostBootstrapBindingReceipt,{sourceHead,invocationReceipt:bootstrapInvocationReceipt}),e=[];
   if(!iv.ok)e.push(...iv.errors.map(x=>'invocation:'+x));
   if(!bv.ok)e.push(...bv.errors.map(x=>'binding:'+x));
@@ -33,6 +33,7 @@ export function validatePhysicalBootstrapBinding({sourceHead,bootstrapInvocation
   if(hostBootstrapBindingReceipt?.binding_fresh!==true)e.push('binding:fresh');
   if(!String(hostBootstrapBindingReceipt?.binding_epoch||'').trim()||!String(hostBootstrapBindingReceipt?.binding_nonce||'').trim())e.push('binding:epoch_nonce');
   if(!H40.test(String(sourceHead||''))||hostBootstrapBindingReceipt?.source_head!==sourceHead)e.push('binding:source');
+  if(!H64.test(String(hostBootstrapBindingReceipt?.session_locator_sha256||''))||(sessionLocatorSha256&&hostBootstrapBindingReceipt?.session_locator_sha256!==sessionLocatorSha256))e.push('binding:session');
   return{ok:e.length===0,errors:uniq(e)};
 }
 
@@ -77,7 +78,8 @@ export function validateNativeTurnGrantReceipt(value,{sessionLocatorSha256,parti
 }
 
 export function validateNativeDeliveryReadbackReceipt(value,{sessionLocatorSha256,participantLease,turnGrant,runtimeTurnReceipt,sourceHead=null,runtimeRootSha256=null,runtimeInstanceId=null}={}){
- const x=value||{},lease=participantLease||{},grant=turnGrant||{},turn=runtimeTurnReceipt||{},e=[];
+ const x=value||{},lease=participantLease||{},grant=turnGrant||{},turn=runtimeTurnReceipt||{},e=[],base=validateNativeDeliveryReceipt(x,{sessionLocatorSha256,participantLease});
+ if(!base.ok)e.push(...base.errors.map(y=>'c50:'+y));
  if(x.schema!==NATIVE_DELIVERY_READBACK_SCHEMA)e.push('schema');
  if(x.observation_owner!=='HOST_NATIVE_CHAT'||x.external_observation!==true||x.observed!==true)e.push('observation');
  if(!H64.test(String(x.session_locator_sha256||''))||x.session_locator_sha256!==sessionLocatorSha256)e.push('session');
@@ -97,9 +99,10 @@ export function validateNativeDeliveryReadbackReceipt(value,{sessionLocatorSha25
  return{ok:e.length===0,errors:uniq(e)};
 }
 
-function validateCrossBinding({sourceHead,runtimeExecutionReceipt,cohostAttestation,routeReceipt,nativeParticipantLease,nativeTurnGrantReceipt,nativeDeliveryReadbackReceipt,runtimeTurnReceipt}={}){
+function validateCrossBinding({sourceHead,hostBootstrapBindingReceipt,runtimeExecutionReceipt,cohostAttestation,routeReceipt,nativeParticipantLease,nativeTurnGrantReceipt,nativeDeliveryReadbackReceipt,runtimeTurnReceipt}={}){
   const e=[],session=cohostAttestation?.session_locator_sha256,root=runtimeExecutionReceipt?.runtime_root_sha256,instance=runtimeExecutionReceipt?.runtime_instance_id,participant=nativeParticipantLease?.participant_id,turn=nativeTurnGrantReceipt?.turn_id;
   if(!H40.test(String(sourceHead||'')))e.push('source_shape');
+  if(hostBootstrapBindingReceipt?.session_locator_sha256!==session)e.push('bootstrap_session');
   if(runtimeExecutionReceipt?.source_head!==sourceHead||cohostAttestation?.source_head!==sourceHead||routeReceipt?.source_head!==sourceHead||nativeTurnGrantReceipt?.source_head!==sourceHead||nativeDeliveryReadbackReceipt?.source_head!==sourceHead)e.push('source');
   if(!H64.test(String(root||''))||cohostAttestation?.runtime_root_sha256!==root||routeReceipt?.runtime_root_sha256!==root||nativeTurnGrantReceipt?.runtime_root_sha256!==root||nativeDeliveryReadbackReceipt?.runtime_root_sha256!==root)e.push('runtime_root');
   if(!String(instance||'').trim()||routeReceipt?.runtime_instance_id!==instance||nativeTurnGrantReceipt?.runtime_instance_id!==instance||nativeDeliveryReadbackReceipt?.runtime_instance_id!==instance)e.push('runtime_instance');
@@ -114,7 +117,8 @@ function validateCrossBinding({sourceHead,runtimeExecutionReceipt,cohostAttestat
 }
 
 export function qualifyPhysicalRuntimeClosureV1({sourceHead=null,bootstrapInvocationReceipt=null,hostBootstrapBindingReceipt=null,runtimeExecutionReceipt=null,cohostEvidence=null,hostRouteInterpositionReceipt=null,nativeParticipantLease=null,nativeTurnGrantReceipt=null,nativeDeliveryReadbackReceipt=null,runtimeTurnReceipt=null,capabilityAxis='BIND_NUCLEUS',productAxis='CANDIDATE',controlOwnership='HOST_OWNED'}={}){
-  const bootstrap=validatePhysicalBootstrapBinding({sourceHead,bootstrapInvocationReceipt,hostBootstrapBindingReceipt});
+  const expectedSession=cohostEvidence?.bindNucleus?.session_locator_sha256||null;
+  const bootstrap=validatePhysicalBootstrapBinding({sourceHead,sessionLocatorSha256:expectedSession,bootstrapInvocationReceipt,hostBootstrapBindingReceipt});
   let cohostAttestation=null,cohostError=null;
   try{cohostAttestation=issueCohostRelationAttestation(cohostEvidence||{});}catch(e){cohostError=String(e?.message||e);}
   const rv=validateRuntimeExecutionReceipt(runtimeExecutionReceipt,{sourceHead});
@@ -127,7 +131,7 @@ export function qualifyPhysicalRuntimeClosureV1({sourceHead=null,bootstrapInvoca
   const gv=validateNativeTurnGrantReceipt(nativeTurnGrantReceipt,{sessionLocatorSha256:cohostAttestation.session_locator_sha256,participantLease:nativeParticipantLease,sourceHead,runtimeRootSha256:runtimeExecutionReceipt.runtime_root_sha256,runtimeInstanceId:runtimeExecutionReceipt.runtime_instance_id});
   const tv=validateLimitedRuntimeTurnReceipt(runtimeTurnReceipt,{sourceHead,runtimeRootSha256:runtimeExecutionReceipt.runtime_root_sha256});
   const dv=validateNativeDeliveryReadbackReceipt(nativeDeliveryReadbackReceipt,{sessionLocatorSha256:cohostAttestation.session_locator_sha256,participantLease:nativeParticipantLease,turnGrant:nativeTurnGrantReceipt,runtimeTurnReceipt,sourceHead,runtimeRootSha256:runtimeExecutionReceipt.runtime_root_sha256,runtimeInstanceId:runtimeExecutionReceipt.runtime_instance_id});
-  const xb=validateCrossBinding({sourceHead,runtimeExecutionReceipt,cohostAttestation,routeReceipt:hostRouteInterpositionReceipt,nativeParticipantLease,nativeTurnGrantReceipt,nativeDeliveryReadbackReceipt,runtimeTurnReceipt});
+  const xb=validateCrossBinding({sourceHead,hostBootstrapBindingReceipt,runtimeExecutionReceipt,cohostAttestation,routeReceipt:hostRouteInterpositionReceipt,nativeParticipantLease,nativeTurnGrantReceipt,nativeDeliveryReadbackReceipt,runtimeTurnReceipt});
   if(!lv.ok||!gv.ok||!tv.ok||!dv.ok||!xb.ok)return seal({schema:PHYSICAL_CLOSURE_SCHEMA,state:'COHOST_RELATION_ONLY',physical_e2e_proven:false,relation_axis:'COHOST_RELATION',participant_errors:lv.errors,turn_grant_errors:gv.errors,runtime_turn_errors:tv.errors,delivery_errors:dv.errors,cross_binding_errors:xb.errors,authority:0});
   const material={schema:PHYSICAL_CLOSURE_SCHEMA,state:'NATIVE_TRANSCRIPT_ACTOR_E2E',physical_e2e_proven:true,relation_axis:'NATIVE_TRANSCRIPT_ACTOR',bootstrap_conformance:'CONFORMANT',route_conformance:'SAFE',source_head:sourceHead,runtime_root_sha256:runtimeExecutionReceipt.runtime_root_sha256,runtime_instance_id:runtimeExecutionReceipt.runtime_instance_id,session_locator_sha256:cohostAttestation.session_locator_sha256,participant_id:nativeParticipantLease.participant_id,turn_id:nativeTurnGrantReceipt.turn_id,cohost_semantic_sha256:COMMON_COHOST_SHA,native_semantic_sha256:NATIVE_TRANSCRIPT_SHA,capability_axis:capabilityAxis,product_axis:productAxis,control_ownership_axis:controlOwnership,full_runtime_required:false,control_ownership_required:false,canonical_product_required:false,legacy_active_required:false,live_host_receipts_required:true,synthetic_ci_is_physical_proof:false,authority:0};
   return seal(material);
