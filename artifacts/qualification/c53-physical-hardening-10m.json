@@ -1,0 +1,210 @@
+{
+  "schema": "ikant-le-c53-physical-hardening-falsification-10m/v1",
+  "source_baseline": "fcc1d67cb26b96ddb0f33e1a2ec5532f3a95e2e5",
+  "seed": "0xC53A11D7",
+  "cases": 10000000,
+  "families": 64,
+  "semantic_worlds_observed": 61,
+  "abstraction_levels": {
+    "PARENT_DELETE": 1875000,
+    "SESSION": 312500,
+    "NATIVE": 156250,
+    "COMPOSITE": 625000,
+    "SURROGATE": 156250,
+    "ORTHOGONAL": 312500,
+    "PAIR": 2656250,
+    "RANDOM": 3906250
+  },
+  "parent_c52_candidate": {
+    "mismatch": 2500000,
+    "unsafe": 2500000,
+    "false_reject": 0
+  },
+  "hardened_candidate": {
+    "mismatch": 0,
+    "unsafe": 0,
+    "false_reject": 0
+  },
+  "mechanisms": [
+    "E0",
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "H0_BOOTSTRAP_SESSION_BINDING",
+    "H1_PREEXEC_ROUTE_SESSION_BINDING",
+    "H2_NATIVE_COMMON_CONTRACT_ANCHOR"
+  ],
+  "hardening_obligations": [
+    "H0_BOOTSTRAP_SESSION_BINDING",
+    "H1_PREEXEC_ROUTE_SESSION_BINDING",
+    "H2_NATIVE_COMMON_CONTRACT_ANCHOR"
+  ],
+  "deletion_mutants": {
+    "E0": {
+      "mismatch": 312500,
+      "unsafe": 312500,
+      "false_reject": 0
+    },
+    "E1": {
+      "mismatch": 312500,
+      "unsafe": 312500,
+      "false_reject": 0
+    },
+    "E2": {
+      "mismatch": 312500,
+      "unsafe": 312500,
+      "false_reject": 0
+    },
+    "E3": {
+      "mismatch": 156250,
+      "unsafe": 156250,
+      "false_reject": 0
+    },
+    "E4": {
+      "mismatch": 156250,
+      "unsafe": 156250,
+      "false_reject": 0
+    },
+    "E5": {
+      "mismatch": 156250,
+      "unsafe": 156250,
+      "false_reject": 0
+    },
+    "E6": {
+      "mismatch": 156250,
+      "unsafe": 156250,
+      "false_reject": 0
+    },
+    "L0": {
+      "mismatch": 156250,
+      "unsafe": 156250,
+      "false_reject": 0
+    },
+    "L1": {
+      "mismatch": 156250,
+      "unsafe": 156250,
+      "false_reject": 0
+    },
+    "L2": {
+      "mismatch": 3593750,
+      "unsafe": 3125000,
+      "false_reject": 468750
+    },
+    "L3": {
+      "mismatch": 175753,
+      "unsafe": 175753,
+      "false_reject": 0
+    },
+    "L4": {
+      "mismatch": 3905979,
+      "unsafe": 0,
+      "false_reject": 3905979
+    },
+    "H0_BOOTSTRAP_SESSION_BINDING": {
+      "mismatch": 1406250,
+      "unsafe": 1406250,
+      "false_reject": 0
+    },
+    "H1_PREEXEC_ROUTE_SESSION_BINDING": {
+      "mismatch": 781250,
+      "unsafe": 781250,
+      "false_reject": 0
+    },
+    "H2_NATIVE_COMMON_CONTRACT_ANCHOR": {
+      "mismatch": 312500,
+      "unsafe": 312500,
+      "false_reject": 0
+    }
+  },
+  "all_deletion_mutants_killed": true,
+  "architecture_lattice": {
+    "total": 32768,
+    "valid_architectures": 1,
+    "minimum_cost": 15,
+    "minimum_count": 1,
+    "winner_masks": [
+      32767
+    ],
+    "unique_minimum": true
+  },
+  "family_counts": {
+    "DROP_E0": 156250,
+    "DROP_E1": 156250,
+    "DROP_E2": 156250,
+    "DROP_E3": 156250,
+    "DROP_E4": 156250,
+    "DROP_E5": 156250,
+    "DROP_E6": 156250,
+    "DROP_L0": 156250,
+    "DROP_L1": 156250,
+    "DROP_L2": 156250,
+    "DROP_L3": 156250,
+    "DROP_L4": 156250,
+    "BOOTSTRAP_CROSS_SESSION_REPLAY": 156250,
+    "ROUTE_WRONG_SESSION_PREEXEC": 156250,
+    "DELIVERY_NOT_COMMON_CONTRACT": 156250,
+    "BOOT_SESSION_PLUS_NATIVE_OK": 156250,
+    "ROUTE_SESSION_PLUS_NATIVE_OK": 156250,
+    "NATIVE_ANCHOR_PLUS_STRONG": 156250,
+    "TRIPLE_HARDENING_GAP": 156250,
+    "SURROGATE_WITH_NATIVE_GAP": 156250,
+    "VALID_MINIMAL": 156250,
+    "VALID_STRONG": 156250,
+    "PAIR_E0_BOOT_SESSION": 156250,
+    "PAIR_E1_BOOT_SESSION": 156250,
+    "PAIR_E2_BOOT_SESSION": 156250,
+    "PAIR_E3_BOOT_SESSION": 156250,
+    "PAIR_E4_BOOT_SESSION": 156250,
+    "PAIR_E5_BOOT_SESSION": 156250,
+    "PAIR_E6_BOOT_SESSION": 156250,
+    "PAIR_E0_ROUTE_SESSION": 156250,
+    "PAIR_E1_ROUTE_SESSION": 156250,
+    "PAIR_E2_ROUTE_SESSION": 156250,
+    "PAIR_E3_ROUTE_SESSION": 156250,
+    "PAIR_E4_ROUTE_SESSION": 156250,
+    "PAIR_E5_ROUTE_SESSION": 156250,
+    "PAIR_E6_ROUTE_SESSION": 156250,
+    "PAIR_E4_NATIVE_ANCHOR": 156250,
+    "PAIR_E5_NATIVE_ANCHOR": 156250,
+    "PAIR_E6_NATIVE_ANCHOR": 156250,
+    "RANDOM_39": 156250,
+    "RANDOM_40": 156250,
+    "RANDOM_41": 156250,
+    "RANDOM_42": 156250,
+    "RANDOM_43": 156250,
+    "RANDOM_44": 156250,
+    "RANDOM_45": 156250,
+    "RANDOM_46": 156250,
+    "RANDOM_47": 156250,
+    "RANDOM_48": 156250,
+    "RANDOM_49": 156250,
+    "RANDOM_50": 156250,
+    "RANDOM_51": 156250,
+    "RANDOM_52": 156250,
+    "RANDOM_53": 156250,
+    "RANDOM_54": 156250,
+    "RANDOM_55": 156250,
+    "RANDOM_56": 156250,
+    "RANDOM_57": 156250,
+    "RANDOM_58": 156250,
+    "RANDOM_59": 156250,
+    "RANDOM_60": 156250,
+    "RANDOM_61": 156250,
+    "RANDOM_62": 156250,
+    "RANDOM_63": 156250
+  },
+  "claim_boundary": {
+    "semantic_falsification_is_live_host_proof": false,
+    "live_e0_e3_e4_e5_e6_still_required": true
+  },
+  "status": "PASS",
+  "receipt_sha256": "2f8e0284d95cbde5b76794fe7acd9a593b3787d3d1db0929ca16b67d2a8e7deb"
+}
