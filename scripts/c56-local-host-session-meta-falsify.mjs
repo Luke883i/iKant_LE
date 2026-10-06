@@ -13,7 +13,7 @@ function oracleErrors(p,e){
  if(!p.includes("Solo la direttiva owner-derived autorizza un'azione")||!/proiezioni, stato e chat non autorizzano (?:nulla|azioni)/.test(p))z.push('M02_AUTHORIZATION');
  if(!p.includes('consuma una direttiva')||!p.includes("esegui una volta l'azione e il carrier nominati"))z.push('M03_SINGLE_EXECUTION');
  if(!p.includes('non fare azioni laterali')||!p.includes('salvo direttiva'))z.push('M04_NO_LATERAL');
- if(!p.includes('usando soltanto la forma di input che esso ammette')||!p.includes("se la re-entry richiede un'osservazione")||!p.includes('reimmetti solo evidenza tipizzata ammessa'))z.push('M05_REENTRY');
+ if(!p.includes('usando soltanto la forma di input che esso ammette')||!/se la re-entry richiede un'osservazione/i.test(p)||!p.includes('reimmetti solo evidenza tipizzata ammessa'))z.push('M05_REENTRY');
  if(!p.includes('Non usare la conversazione come ledger, retry memory, capability cache o stato')||!p.includes('non mantenere attempted carrier')||!p.includes('trattandoli come opachi'))z.push('M06_MEMORY');
  if(!p.includes('UNKNOWN non e evidenza negativa')||!p.includes('probe soltanto se la direttiva owner-derived lo richiede'))z.push('M07_UNKNOWN');
  if(!/(?:Errori tool restano|Un errore di tool resta) nel tool layer/.test(p))z.push('M08_TOOL_LAYER');
@@ -42,17 +42,17 @@ function candidateAccepts(p,e){
   /consuma una direttiva;[\s\S]*esegui una volta l'azione e il carrier nominati;[\s\S]*non fare azioni laterali/.test(p),
   /Durante l'attivazione[\s\S]*salvo direttiva/.test(p),
   /forma di input che esso ammette/.test(p)&&/re-entry richiede un'osservazione/.test(p)&&/evidenza tipizzata ammessa/.test(p),
-  /Non usare la conversazione come ledger, retry memory, capability cache o stato/.test(p)&&/attempted carrier/.test(p)&&/opachi/.test(p),
+  /Non usare la conversazione come ledger, retry memory, capability cache o stato/.test(p)&&/non mantenere attempted carrier/.test(p)&&/opachi/.test(p),
   /UNKNOWN non e evidenza negativa/.test(p)&&/probe soltanto se la direttiva owner-derived lo richiede/.test(p),
   /(?:Errori tool restano|Un errore di tool resta) nel tool layer/.test(p)&&/nuova evidenza (?:materialmente pertinente a quel carrier|pertinente allo stesso carrier)/.test(p),
   /Non creare un receipt/.test(p)&&/Non completare campi mancanti per inferenza/.test(p)&&/Nessun placeholder/.test(p)&&/Codice(?:, documentazione, test o PASS|\/test\/PASS) non sostituiscono/.test(p),
   /impedimento di integrazione osservato/.test(p)&&/non emulare l'owner dal sorgente/.test(p)&&/shadow planner/.test(p),
   /owner presenta i Terms/.test(p)&&/esattamente uguale a I ACCEPT/.test(p)&&/non inferire l'accettazione/.test(p)&&/secondo gate/.test(p),
   /handoff pre-runtime/.test(p)&&/smetti di pianificare il bootstrap/.test(p),
-  /runtime prende ownership/.test(p)&&/EXIT IKANT/.test(p)&&/route runtime\/host validata/.test(p),
+  /runtime prende ownership/.test(p)&&/incluso EXIT IKANT/.test(p)&&/route runtime\/host validata/.test(p),
   /baseline\/pre-accept/.test(p)&&/frame host validato owner-derived/.test(p)&&/Non ricostruire stato o UX/.test(p),
   /artifact verificati[\s\S]*shell ASCII esatta/.test(p)&&/Non riformulare, riordinare o omettere la shell/.test(p)&&/risposta sostitutiva fingendo che sia iKant/.test(p),
-  /attore nativo del transcript/.test(p)&&/participant lease persistente/.test(p)&&/grant\/standing del scheduler per il turno/.test(p)&&/delivery\/readback nativi degli exact runtime bytes/.test(p),
+  /Non dichiarare iKant attore nativo del transcript/.test(p)&&/participant lease persistente/.test(p)&&/grant\/standing del scheduler per il turno/.test(p)&&/delivery\/readback nativi degli exact runtime bytes/.test(p),
   /Mutazione, saturazione e falsificazione/.test(p)&&/non sostituiscono capability evidence o azioni fisiche/.test(p)
  ];
  const machine=e?.authority===0&&e?.role==='PROJECTION_AND_DELEGATION_ONLY'&&e?.new_planner===false&&e?.new_state_writer===false&&e?.new_truth_owner===false&&e?.ai_cycle?.one_next===true&&e?.ai_cycle?.one_executor===true&&e?.ai_cycle?.model_selects_path===false&&e?.ai_cycle?.model_selects_fallback===false&&e?.ai_cycle?.stop_on_runtime_ownership===true&&e?.reentry?.caller_attempted_classes_forbidden===true&&e?.reentry?.retry_memory_from_ledger===true&&e?.reentry?.requalification_scope==='SAME_CARRIER_EVIDENCE_ONLY'&&e?.reentry?.unrelated_carrier_evidence_may_requalify_failed_carrier===false;

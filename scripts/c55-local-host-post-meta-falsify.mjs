@@ -16,13 +16,13 @@ function oracle(p,e){
  const urls=p.match(/https?:\/\/[^\s]+/g)||[];if(urls.length!==1||urls[0]!=='https://github.com/Luke883i/iKant_LE.')z.push('url');
  if(banned.some(re=>re.test(p)))z.push('technical_leak');
  if(!p.includes('unico ingresso tecnico caller-facing')||!p.includes('Non e un nuovo owner del NEXT')||!p.includes('delega agli owner del repository')||!/(?:le altre proiezioni non autorizzano azioni|proiezioni, stato e chat non autorizzano azioni)/.test(p))z.push('entrypoint_scope');
- if(!p.includes('azione, handoff o arresto/blocco')||!p.includes('esegui una sola volta'))z.push('directive_union');
- if(!p.includes('Non usare la conversazione come ledger, retry memory, capability cache o stato')||!p.includes('trattandoli come opachi')||!p.includes('Non mantenere attempted carrier'))z.push('shadow_memory');
+ if(!p.includes('azione, handoff o arresto/blocco')||!/esegui (?:una )?(?:sola )?volta/.test(p))z.push('directive_union');
+ if(!p.includes('Non usare la conversazione come ledger, retry memory, capability cache o stato')||!p.includes('trattandoli come opachi')||!/non mantenere attempted carrier/i.test(p))z.push('shadow_memory');
  if(!p.includes('UNKNOWN non e evidenza negativa')||!p.includes('probe soltanto se la direttiva owner-derived lo richiede'))z.push('unknown');
- if(!/(?:errore di un tool resta nel tool layer|errore di un tool restano fatti del tool layer)/i.test(p))z.push('tool_layer');
+ if(!/errore di (?:un )?tool resta(?:no fatti)? nel tool layer/i.test(p))z.push('tool_layer');
  if(!p.includes('nuova evidenza materialmente pertinente a quel carrier'))z.push('retry_epoch');
  if(!p.includes('Non completare campi mancanti per inferenza')||!p.includes('Nessun placeholder'))z.push('field_completion');
- if(!p.includes("usando soltanto la forma di input che esso ammette")||!p.includes("se la re-entry richiede un'osservazione"))z.push('reentry_shape');
+ if(!p.includes("usando soltanto la forma di input che esso ammette")||!/se la re-entry richiede un'osservazione/i.test(p))z.push('reentry_shape');
  if(!p.includes('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata'))z.push('receipt');
  if(!p.includes('Codice, documentazione, test o PASS non sostituiscono probe, transfer, write/reopen, execution o readback'))z.push('nonexecution');
  if(!/Durante l'attivazione[^\n]*non fare studio generico del repository[^\n]*salvo direttiva/.test(p))z.push('activate_scope');
@@ -43,12 +43,12 @@ function featureVector(p,e){
  return{
  refs:has('https://github.com/Luke883i/iKant_LE.','[for_ai_agent_first_entrypoint]')&&(p.match(/https?:\/\/[^\s]+/g)||[]).length===1&&!banned.some(re=>re.test(p)),
  ingress:has('unico ingresso tecnico caller-facing','Non e un nuovo owner del NEXT','delega agli owner del repository')&&/(?:le altre proiezioni non autorizzano azioni|proiezioni, stato e chat non autorizzano azioni)/.test(p)&&!/unico owner del NEXT/i.test(p),
- directive:has('azione, handoff o arresto/blocco','esegui una sola volta'),
- memory:has('Non usare la conversazione come ledger, retry memory, capability cache o stato','trattandoli come opachi','Non mantenere attempted carrier')&&!/Mantieni come memoria operativa minima/i.test(p),
+ directive:has('azione, handoff o arresto/blocco')&&/esegui (?:una )?(?:sola )?volta/.test(p),
+ memory:has('Non usare la conversazione come ledger, retry memory, capability cache o stato','trattandoli come opachi')&&/non mantenere attempted carrier/i.test(p)&&!/Mantieni come memoria operativa minima/i.test(p),
  unknown:has('UNKNOWN non e evidenza negativa','probe soltanto se la direttiva owner-derived lo richiede')&&!/UNKNOWN significa PROBE/i.test(p),
- tool:/(?:errore di un tool resta nel tool layer|errore di un tool restano fatti del tool layer)/i.test(p),
+ tool:/errore di (?:un )?tool resta(?:no fatti)? nel tool layer/i.test(p),
  retry:has('nuova evidenza materialmente pertinente a quel carrier'),
- reentryShape:has("usando soltanto la forma di input che esso ammette","se la re-entry richiede un'osservazione"),
+ reentryShape:has("usando soltanto la forma di input che esso ammette")&&/se la re-entry richiede un'osservazione/i.test(p),
  receipt:has('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata'),
  fields:has('Non completare campi mancanti per inferenza','Nessun placeholder'),
  evidence:has('Codice, documentazione, test o PASS non sostituiscono probe, transfer, write/reopen, execution o readback'),
@@ -75,9 +75,9 @@ const families=[
  ['OPAQUE_LOSS',(p,e)=>[p.replace('trattandoli come opachi','reinterpretandoli liberamente'),e]],
  ['UNKNOWN_NEGATIVE',(p,e)=>[p.replace('UNKNOWN non e evidenza negativa','UNKNOWN e evidenza negativa'),e]],
  ['UNKNOWN_AUTO_PROBE',(p,e)=>[p.replace('probe soltanto se la direttiva owner-derived lo richiede','probe sempre'),e]],
- ['TOOL_ERROR_CARRIER',(p,e)=>[p.replace(/(?:Un errore di tool resta nel tool layer|errore di un tool restano fatti del tool layer)/i,'errore di un tool prova failure del carrier'),e]],
+ ['TOOL_ERROR_CARRIER',(p,e)=>[p.replace(/errore di (?:un )?tool resta(?:no fatti)? nel tool layer/i,'errore di un tool prova failure del carrier'),e]],
  ['RETRY_EPOCH_LOSS',(p,e)=>[p.replace('nuova evidenza materialmente pertinente a quel carrier','qualsiasi nuova evidenza'),e]],
- ['FORCE_OBSERVATION_REENTRY',(p,e)=>[p.replace("se la re-entry richiede un'osservazione","reimmetti sempre una osservazione"),e]],
+ ['FORCE_OBSERVATION_REENTRY',(p,e)=>[p.replace(/se la re-entry richiede un'osservazione/i,'reimmetti sempre una osservazione'),e]],
  ['RECEIPT_MINT',(p,e)=>[p.replace('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata','Crea sempre il receipt mancante'),e]],
  ['FIELD_INFER',(p,e)=>[p.replace('Non completare campi mancanti per inferenza','Completa i campi mancanti per inferenza'),e]],
  ['PLACEHOLDER',(p,e)=>[p.replace('Nessun placeholder','Usa placeholder ragionevoli'),e]],
