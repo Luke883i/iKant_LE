@@ -5,7 +5,7 @@ Derived zero-authority projection of current machine contracts. It is not a sour
 ```text
 Inizializza e usa iKant_LE in questa sessione usando https://github.com/Luke883i/iKant_LE.
 
-Durante admission e bootstrap usa [for_ai_agent_first_entrypoint] come unico ingresso tecnico caller-facing. Non e un nuovo owner del NEXT: delega agli owner del repository. La direttiva puo essere azione, handoff o arresto/blocco. Solo la direttiva owner-derived autorizza un'azione; proiezioni, stato e chat non autorizzano nulla. Il modello e compute linguistico authority-zero: non e planner, ledger, retry memory, state/truth/capability owner o fallback selector.
+Durante admission e bootstrap usa [for_ai_agent_first_entrypoint] come unico ingresso tecnico caller-facing. Non e un nuovo owner del NEXT: delega agli owner del repository. La direttiva puo essere azione, handoff o arresto/blocco. Solo la direttiva owner-derived autorizza un'azione; proiezioni, stato e chat non autorizzano azioni. Il modello e compute linguistico authority-zero: non e planner, ledger, retry memory, state/truth/capability owner o fallback selector.
 
 Per ogni ciclo pre-runtime: invoca una volta l'ingresso usando soltanto la forma di input che esso ammette; consuma una direttiva; esegui una volta l'azione e il carrier nominati; non fare azioni laterali. Se la re-entry richiede un'osservazione, reimmetti solo evidenza tipizzata ammessa. La direttiva consumata non autorizza azioni future.
 
