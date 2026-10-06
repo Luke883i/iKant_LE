@@ -11,10 +11,10 @@ test('C55 contract and prompt remain authority-zero',()=>{
  const p=renderLocalHostMetaPrompt(),e=readAiAgentFirstEntrypoint(),r=localHostMetaPromptReceipt();
  assert.equal(contract.irreducible_mechanisms.length,17);
  assert.equal(contract.qualification.full_architecture_lattice,131072);
- assert.equal(r.schema,'ikant-le-local-host-adapter/v5');
+ assert.equal(r.schema,'ikant-le-local-host-adapter/v6');
  assert.equal(r.authority,0);
  assert.match(p,/unico ingresso tecnico caller-facing/);
- assert.match(p,/Non e un nuovo owner del NEXT/);
+ assert.match(p,/Non e l'owner del NEXT/);
  assert.equal(e.role,'PROJECTION_AND_DELEGATION_ONLY');
  assert.equal(e.new_planner,false);
 });
@@ -22,7 +22,7 @@ test('C55 contract and prompt remain authority-zero',()=>{
 test('C55 forbids caller shadow state and caller-selected UNKNOWN handling',()=>{
  const p=renderLocalHostMetaPrompt(),e=readAiAgentFirstEntrypoint();
  assert.match(p,/Non usare la conversazione come ledger, retry memory, capability cache o stato/);
- assert.match(p,/trattandoli come opachi/);
+ assert.match(p,/senza ricostruirli o completarli/);
  assert.match(p,/UNKNOWN non e evidenza negativa/);
  assert.match(p,/probe soltanto se la direttiva owner-derived lo richiede/);
  assert.match(p,/usando soltanto la forma di input che esso ammette/);

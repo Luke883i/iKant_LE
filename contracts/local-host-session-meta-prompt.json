@@ -1,0 +1,96 @@
+{
+  "schema": "ikant-le-local-host-session-meta-prompt/v1",
+  "slice": "C56.LOCAL_HOST_SESSION_META_PROMPT",
+  "authority": 0,
+  "source_main": "c63ef5e63bddc2a26cb63629d922a1479248d26d",
+  "trajectory_prs": [
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64
+  ],
+  "objective": "Guide a zero-authority host language model through activation and subsequent iKant_LE use while consuming existing owner-derived runtime/host materialization instead of reconstructing it.",
+  "trajectory": {
+    "C46_C49": "Separate cohost relation, runtime capability and canonical product; persist/reopen upgrade evidence and qualify exact merged bytes.",
+    "C50": "Native transcript identity requires external persistent participant/scheduler/delivery evidence and is orthogonal to runtime capability.",
+    "C51_C53": "Bootstrap, route, execution, same-session and native evidence are fail-closed and cross-bound; repository semantics cannot manufacture host facts.",
+    "C54": "The earliest honest host consumption surface is one validated authority-zero host frame containing exact shell/artifact/promise projections.",
+    "C55": "The host model is a zero-authority caller over one entrypoint; it cannot become planner, retry memory, evidence owner or NEXT owner."
+  },
+  "challenged_c55_gaps": [
+    "C55 terminates at runtime ownership but does not explicitly make the C54 validated host frame the sole post-handoff presentation envelope.",
+    "C55 does not explicitly govern later user turns and EXIT after bootstrap retirement.",
+    "C55 does not explicitly forbid fallback assistant prose when the host frame/route is unavailable.",
+    "C55 does not state artifact-before-shell ordering required by C54.",
+    "C55 does not explicitly declassify assistant-prefix/app/widget presentation from NATIVE_TRANSCRIPT_ACTOR.",
+    "C55 leaves the admission/I ACCEPT UX implicit in owner behavior rather than stating the caller-safe presentation rule."
+  ],
+  "irreducible_mechanisms": [
+    "M00_CANONICAL_REPOSITORY_INTENT",
+    "M01_SINGLE_CALLER_ENTRYPOINT_NOT_NEXT_OWNER",
+    "M02_ONLY_OWNER_DIRECTIVE_AUTHORIZES",
+    "M03_ONE_DIRECTIVE_ONE_EXECUTION",
+    "M04_NO_LATERAL_ACTIVATION_EXPLORATION",
+    "M05_EXACT_ADMITTED_REENTRY_ONLY",
+    "M06_NO_SHADOW_MEMORY",
+    "M07_UNKNOWN_NOT_NEGATIVE_OWNER_PROBE_ONLY",
+    "M08_TOOL_ERROR_LAYER_PRESERVATION",
+    "M09_CARRIER_LOCAL_RETRY_EPOCH",
+    "M10_NO_EVIDENCE_OR_RECEIPT_COMPLETION",
+    "M11_NONEXECUTION_EVIDENCE_REJECTED",
+    "M12_UNCALLABLE_EDGE_IS_INTEGRATION_IMPEDIMENT",
+    "M13_TERMS_GATE_IS_OWNER_PRESENTED_EXACT_I_ACCEPT_ONLY",
+    "M14_HANDOFF_RETIRES_BOOTSTRAP_PLANNING",
+    "M15_RUNTIME_ROUTE_OWNS_LATER_TURNS_AND_EXIT",
+    "M16_VALIDATED_HOST_FRAME_IS_PRESENTATION_ENVELOPE",
+    "M17_REQUIRED_ARTIFACTS_BEFORE_EXACT_SHELL_NO_REFRAME",
+    "M18_NATIVE_IDENTITY_REQUIRES_EXTERNAL_HOST_EVIDENCE",
+    "M19_MUTATION_NEVER_SUBSTITUTES_PHYSICAL_EVIDENCE"
+  ],
+  "host_use_normal_form": [
+    "INVOKE_ENTRYPOINT",
+    "CONSUME_ONE_OWNER_DIRECTIVE",
+    "EXECUTE_ONE_NAMED_ACTION",
+    "RETURN_SCHEMA_ADMITTED_EVIDENCE",
+    "ON_HANDOFF_STOP_BOOTSTRAP_PLANNING",
+    "ON_RUNTIME_OWNERSHIP_USE_VALIDATED_HOST_FRAME",
+    "PRESENT_REQUIRED_ARTIFACTS_BEFORE_EXACT_SHELL",
+    "ROUTE_LATER_INPUTS_AND_EXIT_THROUGH_RUNTIME_OWNER",
+    "DO_NOT_IMPERSONATE_NATIVE_ACTOR"
+  ],
+  "ux_policy": {
+    "pre_runtime": "Present only owner-derived Terms/readiness/shell material; do not narrate synthetic progress.",
+    "acceptance": "Only a later exact I ACCEPT provided by the human is acceptance; the caller neither infers nor repeats the gate.",
+    "post_handoff": "Do not continue Fastboot planning.",
+    "runtime": "Consume the validated host-materialization frame; do not reconstruct state from stdout, filenames, prior chat or documentation.",
+    "artifact_order": "Required artifacts first, then exact owner-rendered ASCII shell.",
+    "shell": "Exact bytes; no summarization, reframing, relabeling or silent omission.",
+    "frame_failure": "No fallback assistant answer as iKant; remain at the observed integration impediment.",
+    "later_turns": "Use the established runtime/host route for every iKant turn; do not reuse bootstrap directives as future authority.",
+    "exit": "Pass exact EXIT IKANT through the owner route; do not self-deactivate from prose alone.",
+    "native_identity": "Do not claim native transcript actor from labels, app/widget UI, cohost relation, full runtime, control ownership or product status."
+  },
+  "qualification": {
+    "discovery_cases": 10000,
+    "discovery_families": 80,
+    "mechanisms": 20,
+    "complete_architecture_lattice": 1048576,
+    "unique_minimum_required": true,
+    "all_deletion_mutants_killed_required": true,
+    "independent_falsification_cases": 100000
+  },
+  "claim_boundary": {
+    "prompt_is_authority": false,
+    "prompt_is_runtime_owner": false,
+    "prompt_is_host_frame_owner": false,
+    "prompt_is_native_actor_proof": false,
+    "prompt_can_create_missing_host_capability": false,
+    "mutation_is_physical_host_proof": false
+  }
+}
