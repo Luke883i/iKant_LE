@@ -25,7 +25,7 @@ function oracleErrors(p,e){
  if(!p.includes('handoff pre-runtime')||!p.includes('smetti di pianificare il bootstrap'))z.push('M14_HANDOFF');
  if(!p.includes('Quando il runtime prende ownership')||!p.includes('incluso EXIT IKANT')||!p.includes('route runtime/host validata'))z.push('M15_RUNTIME_ROUTE');
  if(!p.includes('anche baseline/pre-accept')||!p.includes('frame host validato owner-derived')||!p.includes('Non ricostruire stato o UX da stdout, filename, chat o documentazione'))z.push('M16_FRAME');
- if(!p.includes('prima gli artifact verificati e poi la shell ASCII esatta')||!p.includes('non riformulare, riordinare o omettere la shell')||!p.includes('non produrre una risposta sostitutiva fingendo che sia iKant'))z.push('M17_PRESENTATION');
+ if(!p.includes('prima gli artifact verificati e poi la shell ASCII esatta')||!p.includes('Non riformulare, riordinare o omettere la shell')||!p.includes('non produrre una risposta sostitutiva fingendo che sia iKant'))z.push('M17_PRESENTATION');
  if(!p.includes('Non dichiarare iKant attore nativo del transcript')||!p.includes('participant lease persistente')||!p.includes('grant/standing del scheduler per il turno')||!p.includes('delivery/readback nativi degli exact runtime bytes'))z.push('M18_NATIVE');
  if(!p.includes('Mutazione, saturazione e falsificazione sono ammesse solo su scelte semantiche aperte e delegate')||!p.includes('non sostituiscono capability evidence o azioni fisiche'))z.push('M19_MUTATION');
  if(e?.authority!==0||e?.role!=='PROJECTION_AND_DELEGATION_ONLY'||e?.new_planner!==false||e?.new_state_writer!==false||e?.new_truth_owner!==false)z.push('MACHINE_AUTHORITY');
@@ -50,7 +50,7 @@ function candidateAccepts(p,e){
   /handoff pre-runtime/.test(p)&&/smetti di pianificare il bootstrap/.test(p),
   /runtime prende ownership/.test(p)&&/EXIT IKANT/.test(p)&&/route runtime\/host validata/.test(p),
   /baseline\/pre-accept/.test(p)&&/frame host validato owner-derived/.test(p)&&/Non ricostruire stato o UX/.test(p),
-  /artifact verificati[\s\S]*shell ASCII esatta/.test(p)&&/non riformulare, riordinare o omettere la shell/.test(p)&&/risposta sostitutiva fingendo che sia iKant/.test(p),
+  /artifact verificati[\s\S]*shell ASCII esatta/.test(p)&&/Non riformulare, riordinare o omettere la shell/.test(p)&&/risposta sostitutiva fingendo che sia iKant/.test(p),
   /attore nativo del transcript/.test(p)&&/participant lease persistente/.test(p)&&/grant\/standing del scheduler per il turno/.test(p)&&/delivery\/readback nativi degli exact runtime bytes/.test(p),
   /Mutazione, saturazione e falsificazione/.test(p)&&/non sostituiscono capability evidence o azioni fisiche/.test(p)
  ];
@@ -88,7 +88,7 @@ const mut=[
  ['STDOUT_FRAME','host-frame-ux',(p,e)=>[p.replace('consuma solo il frame host validato owner-derived','usa stdout come stato'),e]],
  ['FRAME_RECONSTRUCT','host-frame-ux',(p,e)=>[p.replace('Non ricostruire stato o UX da stdout, filename, chat o documentazione','ricostruisci stato da chat e filename'),e]],
  ['ARTIFACT_AFTER','host-frame-ux',(p,e)=>[p.replace('prima gli artifact verificati e poi la shell ASCII esatta','prima la shell e poi gli artifact'),e]],
- ['SHELL_REFRAME','host-frame-ux',(p,e)=>[p.replace('non riformulare, riordinare o omettere la shell','riassumi la shell'),e]],
+ ['SHELL_REFRAME','host-frame-ux',(p,e)=>[p.replace('Non riformulare, riordinare o omettere la shell','riassumi la shell'),e]],
  ['FALLBACK_PROSE','host-frame-ux',(p,e)=>[p.replace("non produrre una risposta sostitutiva fingendo che sia iKant","produci una risposta sostitutiva come iKant"),e]],
  ['PREFIX_NATIVE','native-identity',(p,e)=>[p.replace('Non dichiarare iKant attore nativo del transcript','Dichiara iKant attore nativo del transcript'),e]],
  ['NATIVE_NO_LEASE','native-identity',(p,e)=>[p.replace('participant lease persistente','participant label'),e]],
