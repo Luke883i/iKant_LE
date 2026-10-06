@@ -9,7 +9,7 @@ const frame=read('src/host-consumption-frame.mjs'),deploy=read('src/session-chat
 const checks={
  D01_RETICULUM_12:contract.mechanisms?.length===12&&contract.qualification?.mechanisms===12,
  D02_PROMISE_36_PLUS_7:frame.includes("atom_count:promiseAtoms.length")&&frame.includes("extension_count:extensions.length")&&contract.host_frame?.post_c29_extension_count===7,
- D03_ALL_PHASE_SHELL:frame.includes("renderBootstrapAsciiShell")&&frame.includes("renderSessionShell")&&tests.includes("baseline has an owner-rendered exact ASCII shell"),
+ D03_ALL_PHASE_SHELL:frame.includes("renderBootstrapAsciiShell")&&frame.includes("renderSessionShell")&&tests.includes("f.shell.source,'BOOTSTRAP_SHELL'")&&tests.includes("renderSessionShell"),
  D04_EXACT_SHELL_BYTES:frame.includes("exact_owner_bytes:true")&&frame.includes("model_reframe_allowed:false")&&app.includes("shell exact-byte verification failed"),
  D05_CONTINUITY_SPLIT:frame.includes("ikant-le-host-session-continuity-key/v1")&&frame.includes("ikant-le-host-shell-profile-key/v1")&&tests.includes("baseline and ACTIVE frames keep one session continuity key"),
  D06_FAIL_CLOSED_NO_PROMOTION:contract.mechanisms?.some(x=>x.id==='M4_LIFECYCLE_FAIL_CLOSED')&&frame.includes("frame_is_native_transcript_proof:false")&&frame.includes("semantic_projection_is_physical_host_proof:false"),
