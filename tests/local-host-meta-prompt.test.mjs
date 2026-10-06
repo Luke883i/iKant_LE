@@ -33,9 +33,9 @@ test('prompt exposes only repository URL plus the single caller-facing entrypoin
 
 test('prompt does not promote the caller-facing entrypoint into NEXT ownership',()=>{
  const p=renderLocalHostMetaPrompt();
- assert.match(p,/Non e l'owner del NEXT/);
+ assert.match(p,/Non e un nuovo owner del NEXT/);
  assert.match(p,/delega agli owner del repository/);
- assert.match(p,/proiezioni, stato, documentazione e chat non autorizzano nulla/);
+ assert.match(p,/proiezioni, stato e chat non autorizzano nulla/);
  assert.doesNotMatch(p,/unico owner del NEXT/i);
  assert.doesNotMatch(p,/il modello.*decide.*NEXT/i);
 });
@@ -43,7 +43,7 @@ test('prompt does not promote the caller-facing entrypoint into NEXT ownership',
 test('prompt has no caller-side shadow ledger or attempted-carrier memory',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/Non usare la conversazione come ledger, retry memory, capability cache o stato/);
- assert.match(p,/oggetti owner-returned richiesti dalla re-entry, senza ricostruirli o completarli/);
+ assert.match(p,/oggetti owner-returned richiesti dalla re-entry, trattandoli come opachi/);
  assert.match(p,/non mantenere attempted carrier/);
  assert.doesNotMatch(p,/Mantieni come memoria operativa minima/i);
 });
@@ -52,7 +52,7 @@ test('prompt scopes UNKNOWN and tool errors to owner-defined evidence',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/UNKNOWN non e evidenza negativa/);
  assert.match(p,/probe soltanto se la direttiva owner-derived lo richiede/);
- assert.match(p,/errore di un tool restano fatti del tool layer/);
+ assert.match(p,/Errori tool restano nel tool layer/);
  assert.doesNotMatch(p,/UNKNOWN significa PROBE/i);
 });
 
