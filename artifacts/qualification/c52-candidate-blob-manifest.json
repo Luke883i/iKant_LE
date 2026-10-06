@@ -9,8 +9,8 @@
     },
     {
       "path": "src/physical-runtime-closure.mjs",
-      "bytes": 18439,
-      "sha256": "0d4ee9b42ce45c982009a06d29fa593212dd992ef82f2eff3bd557431fe87991"
+      "bytes": 24191,
+      "sha256": "92e0513804c220f701c3e3b4abb64df3b7e8eff86900b2869dd4ebbf135aba5b"
     },
     {
       "path": "src/supersystem-runtime-conformance.mjs",
@@ -29,8 +29,8 @@
     },
     {
       "path": "src/session-local-service.mjs",
-      "bytes": 18195,
-      "sha256": "b704abcf2c0d6064cf929d05280e76938c98a804ef3eac896a44d78af6f67947"
+      "bytes": 22806,
+      "sha256": "c33e82c40e63529c68e9b5623efa5f7232b62f2ecdb8b90eb419b80e6dabc491"
     },
     {
       "path": "scripts/c52-physical-closure-saturate.py",
@@ -39,8 +39,8 @@
     },
     {
       "path": "scripts/c52-bundle-coverage.mjs",
-      "bytes": 5309,
-      "sha256": "e54907ccf7b840b87ac2329c1747ab0e6f3b337e357e4a7814e011de63a02613"
+      "bytes": 5461,
+      "sha256": "4f279c7b0fc9c52cf33704c99fffd09ca6577e3e5933be10a127f7566ad51dd5"
     },
     {
       "path": "scripts/c52-build-dod.mjs",
@@ -49,8 +49,8 @@
     },
     {
       "path": "tests/c52-physical-runtime-closure.test.mjs",
-      "bytes": 14491,
-      "sha256": "fbe05814b14237776c2a1183c56b958ca83d8c09e6706afe71fb499c208ea3af"
+      "bytes": 21134,
+      "sha256": "6052c10011adba2f93b596607b13998ed68627aa9ee52bb0da3969ab4cd06c69"
     },
     {
       "path": ".github/workflows/c51-supersystem-runtime.yml",
@@ -66,5 +66,5 @@
   "content_addressed": true,
   "manifest_excludes_self": true,
   "authority": 0,
-  "receipt_sha256": "9974e2fe625a1ca7d7dc94ddb38ae93e45edf70c659feb332f01e9ff595b6733"
+  "receipt_sha256": "c1c1e332c5a434cc5cfc57cacd1c14026a64c521314babc3926da93b8335ba95"
 }

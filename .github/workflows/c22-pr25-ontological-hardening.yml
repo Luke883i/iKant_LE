@@ -18,14 +18,28 @@ on:
       - 'scripts/c22-pr25-ontological-hardening-falsify.c'
       - 'scripts/check.mjs'
       - 'package.json'
+permissions:
+  contents: read
+
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Keep queue/setup delay from exhausting the execution budget before a
+    # GitHub-hosted runner is assigned. Bound the substantive commands below.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
-        with: {node-version: '22'}
-      - run: npm test
-      - run: npm run check
-      - run: npm run falsify:c22
+        with:
+          node-version: '22'
+      - name: Repository tests
+        timeout-minutes: 20
+        run: npm test
+      - name: Repository qualification
+        timeout-minutes: 10
+        run: npm run check
+      - name: C22 ontological hardening falsifier
+        timeout-minutes: 20
+        run: npm run falsify:c22
