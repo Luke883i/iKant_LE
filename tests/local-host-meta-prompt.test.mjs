@@ -8,17 +8,17 @@ import {AI_AGENT_FIRST_ENTRYPOINT_KEY,for_ai_agent_first_entrypoint,localHostMet
 
 const json=rel=>JSON.parse(fs.readFileSync(path.join(ROOT,rel),'utf8'));
 
-test('local-host meta-prompt v5 is a derived byte-exact document',()=>{
+test('local-host meta-prompt v6 is a derived byte-exact document',()=>{
  const doc=fs.readFileSync(path.join(ROOT,'docs/LOCAL_HOST_META_PROMPT.md'),'utf8');
  assert.equal(doc,renderLocalHostMetaPromptDocument());
  const r=localHostMetaPromptReceipt();
- assert.equal(r.schema,'ikant-le-local-host-adapter/v5');
- assert.equal(r.version,'5.0.0');
+ assert.equal(r.schema,'ikant-le-local-host-adapter/v6');
+ assert.equal(r.version,'6.0.0');
  assert.equal(r.authority,0);
  assert.ok(r.chars<3600);
  assert.match(renderLocalHostMetaPrompt(),/unico ingresso tecnico caller-facing/);
  assert.match(renderLocalHostMetaPrompt(),/Non e un nuovo owner del NEXT/);
- assert.match(renderLocalHostMetaPrompt(),/shell ASCII owner-rendered/);
+ assert.match(renderLocalHostMetaPrompt(),/shell ASCII esatta/);
  assert.match(r.sha256,/^[a-f0-9]{64}$/);
 });
 
@@ -35,7 +35,7 @@ test('prompt does not promote the caller-facing entrypoint into NEXT ownership',
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/Non e un nuovo owner del NEXT/);
  assert.match(p,/delega agli owner del repository/);
- assert.match(p,/le altre proiezioni non autorizzano azioni/);
+ assert.match(p,/proiezioni, stato e chat non autorizzano azioni/);
  assert.doesNotMatch(p,/unico owner del NEXT/i);
  assert.doesNotMatch(p,/il modello.*decide.*NEXT/i);
 });
@@ -43,8 +43,8 @@ test('prompt does not promote the caller-facing entrypoint into NEXT ownership',
 test('prompt has no caller-side shadow ledger or attempted-carrier memory',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/Non usare la conversazione come ledger, retry memory, capability cache o stato/);
- assert.match(p,/oggetti owner-returned necessari alla re-entry, trattandoli come opachi/);
- assert.match(p,/Non mantenere attempted carrier/);
+ assert.match(p,/oggetti owner-returned richiesti dalla re-entry, trattandoli come opachi/);
+ assert.match(p,/non mantenere attempted carrier/);
  assert.doesNotMatch(p,/Mantieni come memoria operativa minima/i);
 });
 
@@ -52,7 +52,7 @@ test('prompt scopes UNKNOWN and tool errors to owner-defined evidence',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/UNKNOWN non e evidenza negativa/);
  assert.match(p,/probe soltanto se la direttiva owner-derived lo richiede/);
- assert.match(p,/errore di un tool restano fatti del tool layer/);
+ assert.match(p,/errore di tool resta nel tool layer/i);
  assert.doesNotMatch(p,/UNKNOWN significa PROBE/i);
 });
 
