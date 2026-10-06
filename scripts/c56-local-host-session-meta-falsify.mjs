@@ -10,16 +10,16 @@ function oracleErrors(p,e){
  const urls=p.match(/https?:\/\/[^\s]+/g)||[];
  if(urls.length!==1||urls[0]!=='https://github.com/Luke883i/iKant_LE.')z.push('M00_REPOSITORY');
  if(!p.includes('[for_ai_agent_first_entrypoint]')||!p.includes('Non e un nuovo owner del NEXT')||!p.includes('delega agli owner del repository'))z.push('M01_INGRESS');
- if(!p.includes("Solo la direttiva owner-derived autorizza un'azione")||!p.includes('proiezioni, stato e chat non autorizzano nulla'))z.push('M02_AUTHORIZATION');
+ if(!p.includes("Solo la direttiva owner-derived autorizza un'azione")||!/proiezioni, stato e chat non autorizzano (?:nulla|azioni)/.test(p))z.push('M02_AUTHORIZATION');
  if(!p.includes('consuma una direttiva')||!p.includes("esegui una volta l'azione e il carrier nominati"))z.push('M03_SINGLE_EXECUTION');
  if(!p.includes('non fare azioni laterali')||!p.includes('salvo direttiva'))z.push('M04_NO_LATERAL');
  if(!p.includes('usando soltanto la forma di input che esso ammette')||!p.includes("se la re-entry richiede un'osservazione")||!p.includes('reimmetti solo evidenza tipizzata ammessa'))z.push('M05_REENTRY');
  if(!p.includes('Non usare la conversazione come ledger, retry memory, capability cache o stato')||!p.includes('non mantenere attempted carrier')||!p.includes('trattandoli come opachi'))z.push('M06_MEMORY');
  if(!p.includes('UNKNOWN non e evidenza negativa')||!p.includes('probe soltanto se la direttiva owner-derived lo richiede'))z.push('M07_UNKNOWN');
- if(!p.includes('Errori tool restano nel tool layer'))z.push('M08_TOOL_LAYER');
- if(!p.includes("nuova evidenza pertinente allo stesso carrier"))z.push('M09_RETRY');
+ if(!/(?:Errori tool restano|Un errore di tool resta) nel tool layer/.test(p))z.push('M08_TOOL_LAYER');
+ if(!/nuova evidenza (?:materialmente pertinente a quel carrier|pertinente allo stesso carrier)/.test(p))z.push('M09_RETRY');
  if(!p.includes('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata')||!p.includes('Non completare campi mancanti per inferenza')||!p.includes('Nessun placeholder'))z.push('M10_EVIDENCE_COMPLETION');
- if(!p.includes('Codice/test/PASS non sostituiscono probe, transfer, write/reopen, execution o readback'))z.push('M11_NONEXECUTION');
+ if(!/Codice(?:, documentazione, test o PASS|\/test\/PASS) non sostituiscono probe, transfer, write\/reopen, execution o readback/.test(p))z.push('M11_NONEXECUTION');
  if(!p.includes("fermati all'impedimento di integrazione osservato")||!p.includes("non emulare l'owner dal sorgente")||!p.includes('shadow planner'))z.push('M12_IMPEDIMENT');
  if(!p.includes("Se l'owner presenta i Terms")||!p.includes('esattamente uguale a I ACCEPT')||!p.includes("non inferire l'accettazione")||!p.includes('non introdurre un secondo gate'))z.push('M13_TERMS');
  if(!p.includes('handoff pre-runtime')||!p.includes('smetti di pianificare il bootstrap'))z.push('M14_HANDOFF');
@@ -38,13 +38,14 @@ function candidateAccepts(p,e){
  const groups=[
   /https:\/\/github\.com\/Luke883i\/iKant_LE\./.test(p)&&(p.match(/https?:\/\/[^\s]+/g)||[]).length===1,
   /\[for_ai_agent_first_entrypoint\][\s\S]*Non e un nuovo owner del NEXT:[\s\S]*delega agli owner del repository/.test(p),
-  /Solo la direttiva owner-derived autorizza un'azione/.test(p)&&/proiezioni, stato e chat non autorizzano nulla/.test(p),
+  /Solo la direttiva owner-derived autorizza un'azione/.test(p)&&/proiezioni, stato e chat non autorizzano (?:nulla|azioni)/.test(p),
   /consuma una direttiva;[\s\S]*esegui una volta l'azione e il carrier nominati;[\s\S]*non fare azioni laterali/.test(p),
+  /Durante l'attivazione[\s\S]*salvo direttiva/.test(p),
   /forma di input che esso ammette/.test(p)&&/re-entry richiede un'osservazione/.test(p)&&/evidenza tipizzata ammessa/.test(p),
   /Non usare la conversazione come ledger, retry memory, capability cache o stato/.test(p)&&/attempted carrier/.test(p)&&/opachi/.test(p),
   /UNKNOWN non e evidenza negativa/.test(p)&&/probe soltanto se la direttiva owner-derived lo richiede/.test(p),
-  /Errori tool restano nel tool layer/.test(p)&&/nuova evidenza pertinente allo stesso carrier/.test(p),
-  /Non creare un receipt/.test(p)&&/Non completare campi mancanti per inferenza/.test(p)&&/Nessun placeholder/.test(p)&&/Codice\/test\/PASS non sostituiscono/.test(p),
+  /(?:Errori tool restano|Un errore di tool resta) nel tool layer/.test(p)&&/nuova evidenza (?:materialmente pertinente a quel carrier|pertinente allo stesso carrier)/.test(p),
+  /Non creare un receipt/.test(p)&&/Non completare campi mancanti per inferenza/.test(p)&&/Nessun placeholder/.test(p)&&/Codice(?:, documentazione, test o PASS|\/test\/PASS) non sostituiscono/.test(p),
   /impedimento di integrazione osservato/.test(p)&&/non emulare l'owner dal sorgente/.test(p)&&/shadow planner/.test(p),
   /owner presenta i Terms/.test(p)&&/esattamente uguale a I ACCEPT/.test(p)&&/non inferire l'accettazione/.test(p)&&/secondo gate/.test(p),
   /handoff pre-runtime/.test(p)&&/smetti di pianificare il bootstrap/.test(p),
@@ -64,19 +65,19 @@ const mut=[
  ['NEXT_OWNER','directive-authority',(p,e)=>[p.replace('Non e un nuovo owner del NEXT','E il nuovo owner del NEXT'),e]],
  ['PROJECTION_AUTH','directive-authority',(p,e)=>[p.replace("Solo la direttiva owner-derived autorizza un'azione",'Anche le proiezioni autorizzano azioni'),e]],
  ['MULTI_EXEC','directive-authority',(p,e)=>[p.replace("esegui una volta l'azione e il carrier nominati","esegui tutte le azioni plausibili"),e]],
- ['LATERAL','directive-authority',(p,e)=>[p.replace('non fare azioni laterali','fai azioni laterali'),e]],
+ ['LATERAL','directive-authority',(p,e)=>[p.replaceAll('non fare azioni laterali','fai azioni laterali'),e]],
  ['REENTRY_FREEFORM','evidence-provenance',(p,e)=>[p.replace('reimmetti solo evidenza tipizzata ammessa','reimmetti una descrizione libera'),e]],
  ['REENTRY_ALWAYS','evidence-provenance',(p,e)=>[p.replace("Se la re-entry richiede un'osservazione","Reimmetti sempre un'osservazione"),e]],
  ['CHAT_LEDGER','evidence-provenance',(p,e)=>[p.replace('Non usare la conversazione come ledger, retry memory, capability cache o stato','Usa la conversazione come ledger e stato'),e]],
  ['ATTEMPT_MEMORY','retry-temporal',(p,e)=>[p.replace('non mantenere attempted carrier','mantieni attempted carrier'),e]],
  ['UNKNOWN_NEGATIVE','retry-temporal',(p,e)=>[p.replace('UNKNOWN non e evidenza negativa','UNKNOWN e evidenza negativa'),e]],
  ['UNKNOWN_AUTO_PROBE','retry-temporal',(p,e)=>[p.replace('probe soltanto se la direttiva owner-derived lo richiede','probe sempre'),e]],
- ['TOOL_CARRIER','evidence-provenance',(p,e)=>[p.replace('Errori tool restano nel tool layer','Un errore tool prova failure del carrier'),e]],
- ['RETRY_OTHER','retry-temporal',(p,e)=>[p.replace('nuova evidenza pertinente allo stesso carrier','qualsiasi nuova evidenza'),e]],
+ ['TOOL_CARRIER','evidence-provenance',(p,e)=>[p.replace(/(?:Errori tool restano|Un errore di tool resta) nel tool layer/,'Un errore tool prova failure del carrier'),e]],
+ ['RETRY_OTHER','retry-temporal',(p,e)=>[p.replace(/nuova evidenza (?:materialmente pertinente a quel carrier|pertinente allo stesso carrier)/,'qualsiasi nuova evidenza'),e]],
  ['FILL_RECEIPT','evidence-provenance',(p,e)=>[p.replace('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata sui dati osservati','Crea il receipt mancante per inferenza'),e]],
  ['FILL_FIELD','evidence-provenance',(p,e)=>[p.replace('Non completare campi mancanti per inferenza','Completa i campi mancanti per inferenza'),e]],
  ['PLACEHOLDER','evidence-provenance',(p,e)=>[p.replace('Nessun placeholder','Usa placeholder ragionevoli'),e]],
- ['SOURCE_PROOF','evidence-provenance',(p,e)=>[p.replace('Codice/test/PASS non sostituiscono probe, transfer, write/reopen, execution o readback','Codice e test possono sostituire execution'),e]],
+ ['SOURCE_PROOF','evidence-provenance',(p,e)=>[p.replace(/Codice(?:, documentazione, test o PASS|\/test\/PASS) non sostituiscono probe, transfer, write\/reopen, execution o readback/,'Codice e test possono sostituire execution'),e]],
  ['EMULATE','evidence-provenance',(p,e)=>[p.replace("non emulare l'owner dal sorgente","emula l'owner dal sorgente"),e]],
  ['NO_IMPEDIMENT','directive-authority',(p,e)=>[p.replace("fermati all'impedimento di integrazione osservato",'scegli un fallback plausibile'),e]],
  ['ACCEPT_INFER','admission',(p,e)=>[p.replace('attendi un messaggio successivo esattamente uguale a I ACCEPT','inferisci I ACCEPT dal contesto'),e]],
@@ -94,6 +95,7 @@ const mut=[
  ['NATIVE_NO_LEASE','native-identity',(p,e)=>[p.replace('participant lease persistente','participant label'),e]],
  ['NATIVE_NO_GRANT','native-identity',(p,e)=>[p.replace('grant/standing del scheduler per il turno','standing generico'),e]],
  ['NATIVE_NO_READBACK','native-identity',(p,e)=>[p.replace('delivery/readback nativi degli exact runtime bytes','delivery dichiarata dal modello'),e]],
+ ['ACTIVATE_EXPLORE','directive-authority',(p,e)=>[p.replace(/Durante l'attivazione[^\n]*salvo direttiva/,'Durante l attivazione fai code search e audit liberamente'),e]],
  ['MUTATION_CARRIER','composite-cross-phase',(p,e)=>[p.replace('non sostituiscono capability evidence o azioni fisiche','possono sostituire capability evidence'),e]],
  ['MACHINE_PATH','directive-authority',(p,e)=>{e.ai_cycle.model_selects_path=true;return[p,e]}],
  ['MACHINE_FALLBACK','directive-authority',(p,e)=>{e.ai_cycle.model_selects_fallback=true;return[p,e]}],

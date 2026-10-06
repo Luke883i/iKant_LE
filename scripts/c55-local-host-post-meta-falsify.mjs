@@ -15,22 +15,22 @@ function oracle(p,e){
  if(!p.includes('https://github.com/Luke883i/iKant_LE.')||!p.includes('[for_ai_agent_first_entrypoint]'))z.push('refs');
  const urls=p.match(/https?:\/\/[^\s]+/g)||[];if(urls.length!==1||urls[0]!=='https://github.com/Luke883i/iKant_LE.')z.push('url');
  if(banned.some(re=>re.test(p)))z.push('technical_leak');
- if(!p.includes('unico ingresso tecnico caller-facing')||!p.includes('Non e un nuovo owner del NEXT')||!p.includes('delega agli owner del repository')||!p.includes('le altre proiezioni non autorizzano azioni'))z.push('entrypoint_scope');
+ if(!p.includes('unico ingresso tecnico caller-facing')||!p.includes('Non e un nuovo owner del NEXT')||!p.includes('delega agli owner del repository')||!/(?:le altre proiezioni non autorizzano azioni|proiezioni, stato e chat non autorizzano azioni)/.test(p))z.push('entrypoint_scope');
  if(!p.includes('azione, handoff o arresto/blocco')||!p.includes('esegui una sola volta'))z.push('directive_union');
  if(!p.includes('Non usare la conversazione come ledger, retry memory, capability cache o stato')||!p.includes('trattandoli come opachi')||!p.includes('Non mantenere attempted carrier'))z.push('shadow_memory');
  if(!p.includes('UNKNOWN non e evidenza negativa')||!p.includes('probe soltanto se la direttiva owner-derived lo richiede'))z.push('unknown');
- if(!p.includes('errore di un tool restano fatti del tool layer'))z.push('tool_layer');
+ if(!/(?:errore di un tool resta nel tool layer|errore di un tool restano fatti del tool layer)/i.test(p))z.push('tool_layer');
  if(!p.includes('nuova evidenza materialmente pertinente a quel carrier'))z.push('retry_epoch');
  if(!p.includes('Non completare campi mancanti per inferenza')||!p.includes('Nessun placeholder'))z.push('field_completion');
  if(!p.includes("usando soltanto la forma di input che esso ammette")||!p.includes("se la re-entry richiede un'osservazione"))z.push('reentry_shape');
  if(!p.includes('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata'))z.push('receipt');
  if(!p.includes('Codice, documentazione, test o PASS non sostituiscono probe, transfer, write/reopen, execution o readback'))z.push('nonexecution');
- if(!p.includes('non fare studio generico del repository, code search, audit, test, mutation/scouting o azioni laterali salvo direttiva'))z.push('activate_scope');
+ if(!/Durante l'attivazione[^\n]*non fare studio generico del repository[^\n]*salvo direttiva/.test(p))z.push('activate_scope');
  if(!p.includes('Se l\'ingresso o la direttiva restituita non sono realmente invocabili')||!p.includes('non costruire uno shadow planner'))z.push('impediment');
  if(!p.includes('handoff pre-runtime')||!p.includes('smetti di pianificare il bootstrap'))z.push('handoff');
- if(!p.includes('Quando il runtime prende ownership')||!p.includes('shell ASCII owner-rendered validata'))z.push('runtime');
+ if(!p.includes('Quando il runtime prende ownership')||!p.includes('non sintetizzare stato, NEXT, progresso, tier o backlog')||!p.includes('frame host validato owner-derived'))z.push('runtime');
  if(!p.includes('Mutazione, saturazione e falsificazione sono ammesse solo su scelte semantiche'))z.push('mutation_scope');
- if(!p.includes('se non esiste, resta fermo all\'impedimento'))z.push('stop');
+ if(!p.includes("fermati all'impedimento di integrazione osservato"))z.push('stop');
  if(/unico owner del NEXT/i.test(p)||/UNKNOWN significa PROBE/i.test(p)||/Mantieni come memoria operativa minima/i.test(p))z.push('rejected_draft_phrase');
  if(e?.authority!==0||e?.role!=='PROJECTION_AND_DELEGATION_ONLY'||e?.new_planner!==false||e?.new_state_writer!==false||e?.new_truth_owner!==false)z.push('entrypoint_authority');
  if(e?.ai_cycle?.one_next!==true||e?.ai_cycle?.one_executor!==true||e?.ai_cycle?.model_selects_path!==false||e?.ai_cycle?.model_selects_fallback!==false||e?.ai_cycle?.stop_on_runtime_ownership!==true)z.push('cycle');
@@ -42,20 +42,20 @@ function featureVector(p,e){
  const has=(...xs)=>xs.every(x=>p.includes(x));
  return{
  refs:has('https://github.com/Luke883i/iKant_LE.','[for_ai_agent_first_entrypoint]')&&(p.match(/https?:\/\/[^\s]+/g)||[]).length===1&&!banned.some(re=>re.test(p)),
- ingress:has('unico ingresso tecnico caller-facing','Non e un nuovo owner del NEXT','delega agli owner del repository','le altre proiezioni non autorizzano azioni')&&!/unico owner del NEXT/i.test(p),
+ ingress:has('unico ingresso tecnico caller-facing','Non e un nuovo owner del NEXT','delega agli owner del repository')&&/(?:le altre proiezioni non autorizzano azioni|proiezioni, stato e chat non autorizzano azioni)/.test(p)&&!/unico owner del NEXT/i.test(p),
  directive:has('azione, handoff o arresto/blocco','esegui una sola volta'),
  memory:has('Non usare la conversazione come ledger, retry memory, capability cache o stato','trattandoli come opachi','Non mantenere attempted carrier')&&!/Mantieni come memoria operativa minima/i.test(p),
  unknown:has('UNKNOWN non e evidenza negativa','probe soltanto se la direttiva owner-derived lo richiede')&&!/UNKNOWN significa PROBE/i.test(p),
- tool:has('errore di un tool restano fatti del tool layer'),
+ tool:/(?:errore di un tool resta nel tool layer|errore di un tool restano fatti del tool layer)/i.test(p),
  retry:has('nuova evidenza materialmente pertinente a quel carrier'),
  reentryShape:has("usando soltanto la forma di input che esso ammette","se la re-entry richiede un'osservazione"),
  receipt:has('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata'),
  fields:has('Non completare campi mancanti per inferenza','Nessun placeholder'),
  evidence:has('Codice, documentazione, test o PASS non sostituiscono probe, transfer, write/reopen, execution o readback'),
- activate:has('non fare studio generico del repository, code search, audit, test, mutation/scouting o azioni laterali salvo direttiva'),
- impediment:has("Se l'ingresso o la direttiva restituita non sono realmente invocabili",'non costruire uno shadow planner',"se non esiste, resta fermo all'impedimento"),
+ activate:/Durante l'attivazione[^\n]*non fare studio generico del repository[^\n]*salvo direttiva/.test(p),
+ impediment:has("Se l'ingresso o la direttiva restituita non sono realmente invocabili",'non costruire uno shadow planner',"fermati all'impedimento di integrazione osservato"),
  handoff:has('handoff pre-runtime','smetti di pianificare il bootstrap'),
- runtime:has('Quando il runtime prende ownership','shell ASCII owner-rendered validata'),
+ runtime:has('Quando il runtime prende ownership','non sintetizzare stato, NEXT, progresso, tier o backlog','frame host validato owner-derived'),
  mutation:has('Mutazione, saturazione e falsificazione sono ammesse solo su scelte semantiche'),
  machine:e?.authority===0&&e?.role==='PROJECTION_AND_DELEGATION_ONLY'&&e?.new_planner===false&&e?.new_state_writer===false&&e?.new_truth_owner===false&&e?.ai_cycle?.one_next===true&&e?.ai_cycle?.one_executor===true&&e?.ai_cycle?.model_selects_path===false&&e?.ai_cycle?.model_selects_fallback===false&&e?.ai_cycle?.stop_on_runtime_ownership===true&&e?.reentry?.caller_attempted_classes_forbidden===true&&e?.reentry?.retry_memory_from_ledger===true&&e?.reentry?.requalification_scope==='SAME_CARRIER_EVIDENCE_ONLY'&&e?.reentry?.unrelated_carrier_evidence_may_requalify_failed_carrier===false
  };
@@ -65,7 +65,7 @@ function candidate(p,e){return Object.values(featureVector(p,e)).every(Boolean);
 const families=[
  ['ENTRYPOINT_AS_NEXT_OWNER',(p,e)=>[p.replace('Non e un nuovo owner del NEXT','E il unico owner del NEXT'),e]],
  ['ENTRYPOINT_REF_MISSING',(p,e)=>[p.replace('[for_ai_agent_first_entrypoint]','[entrypoint]'),e]],
- ['PROJECTION_AS_AUTHORITY',(p,e)=>[p.replace('le altre proiezioni non autorizzano azioni','le altre proiezioni autorizzano azioni'),e]],
+ ['PROJECTION_AS_AUTHORITY',(p,e)=>[p.replace(/(?:le altre proiezioni non autorizzano azioni|proiezioni, stato e chat non autorizzano azioni)/,'proiezioni, stato e chat autorizzano azioni'),e]],
  ['SECOND_URL',(p,e)=>[p+' https://example.invalid.',e]],
  ['TECHNICAL_LEAK',(p,e)=>[p+' src/runtime.mjs',e]],
  ['DIRECTIVE_UNION_LOSS',(p,e)=>[p.replace('azione, handoff o arresto/blocco','azione'),e]],
@@ -75,19 +75,19 @@ const families=[
  ['OPAQUE_LOSS',(p,e)=>[p.replace('trattandoli come opachi','reinterpretandoli liberamente'),e]],
  ['UNKNOWN_NEGATIVE',(p,e)=>[p.replace('UNKNOWN non e evidenza negativa','UNKNOWN e evidenza negativa'),e]],
  ['UNKNOWN_AUTO_PROBE',(p,e)=>[p.replace('probe soltanto se la direttiva owner-derived lo richiede','probe sempre'),e]],
- ['TOOL_ERROR_CARRIER',(p,e)=>[p.replace('errore di un tool restano fatti del tool layer','errore di un tool prova failure del carrier'),e]],
+ ['TOOL_ERROR_CARRIER',(p,e)=>[p.replace(/(?:Un errore di tool resta nel tool layer|errore di un tool restano fatti del tool layer)/i,'errore di un tool prova failure del carrier'),e]],
  ['RETRY_EPOCH_LOSS',(p,e)=>[p.replace('nuova evidenza materialmente pertinente a quel carrier','qualsiasi nuova evidenza'),e]],
  ['FORCE_OBSERVATION_REENTRY',(p,e)=>[p.replace("se la re-entry richiede un'osservazione","reimmetti sempre una osservazione"),e]],
  ['RECEIPT_MINT',(p,e)=>[p.replace('Non creare un receipt salvo trasformazione deterministica esplicitamente delegata','Crea sempre il receipt mancante'),e]],
  ['FIELD_INFER',(p,e)=>[p.replace('Non completare campi mancanti per inferenza','Completa i campi mancanti per inferenza'),e]],
  ['PLACEHOLDER',(p,e)=>[p.replace('Nessun placeholder','Usa placeholder ragionevoli'),e]],
  ['SOURCE_AS_EXECUTION',(p,e)=>[p.replace('Codice, documentazione, test o PASS non sostituiscono probe, transfer, write/reopen, execution o readback','Codice e test possono sostituire execution'),e]],
- ['ACTIVATE_EXPLORE',(p,e)=>[p.replace('non fare studio generico del repository, code search, audit, test, mutation/scouting o azioni laterali salvo direttiva','fai code search e audit liberamente'),e]],
+ ['ACTIVATE_EXPLORE',(p,e)=>[p.replace(/Durante l'attivazione[^\n]*salvo direttiva/,'Durante l attivazione fai code search e audit liberamente'),e]],
  ['SOURCE_EMULATION',(p,e)=>[p.replace("Non leggere sorgenti per emulare l'owner",'Leggi sorgenti per emulare l owner'),e]],
- ['IMPEDIMENT_ADVANCE',(p,e)=>[p.replace("se non esiste, resta fermo all'impedimento",'se non esiste, scegli un fallback'),e]],
+ ['IMPEDIMENT_ADVANCE',(p,e)=>[p.replace("fermati all'impedimento di integrazione osservato",'scegli un fallback plausibile'),e]],
  ['HANDOFF_REPLAN',(p,e)=>[p.replace('smetti di pianificare il bootstrap','ricalcola il bootstrap'),e]],
  ['RUNTIME_SYNTH',(p,e)=>[p.replace('non sintetizzare stato, NEXT, progresso, tier o backlog','sintetizza stato e NEXT'),e]],
- ['SHELL_REFRAME',(p,e)=>[p.replace('shell ASCII owner-rendered validata','shell riformulata dal modello'),e]],
+ ['SHELL_REFRAME',(p,e)=>[p.replace('shell ASCII esatta owner-rendered','shell riformulata dal modello'),e]],
  ['MUTATION_SELECTS_CARRIER',(p,e)=>[p.replace('Mutazione, saturazione e falsificazione sono ammesse solo su scelte semantiche','Mutazione e falsificazione possono scegliere carrier'),e]],
  ['AUTHORITY',(p,e)=>{e.authority=1;return[p,e]}],
  ['ROLE_OWNER',(p,e)=>{e.role='NEXT_OWNER';return[p,e]}],

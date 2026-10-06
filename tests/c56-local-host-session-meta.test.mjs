@@ -54,10 +54,10 @@ test('C56 preserves C55 anti-shadow and evidence discipline',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/Non usare la conversazione come ledger, retry memory, capability cache o stato/);
  assert.match(p,/UNKNOWN non e evidenza negativa/);
- assert.match(p,/Errori tool restano nel tool layer/);
- assert.match(p,/nuova evidenza pertinente allo stesso carrier/);
+ assert.match(p,/errore di tool resta nel tool layer/i);
+ assert.match(p,/nuova evidenza materialmente pertinente a quel carrier/);
  assert.match(p,/Non creare un receipt salvo trasformazione deterministica esplicitamente delegata/);
- assert.match(p,/Codice\/test\/PASS non sostituiscono probe, transfer, write\/reopen, execution o readback/);
+ assert.match(p,/Codice, documentazione, test o PASS non sostituiscono probe, transfer, write\/reopen, execution o readback/);
  assert.match(p,/non emulare l'owner dal sorgente/);
 });
 

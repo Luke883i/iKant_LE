@@ -35,7 +35,7 @@ test('prompt does not promote the caller-facing entrypoint into NEXT ownership',
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/Non e un nuovo owner del NEXT/);
  assert.match(p,/delega agli owner del repository/);
- assert.match(p,/proiezioni, stato e chat non autorizzano nulla/);
+ assert.match(p,/proiezioni, stato e chat non autorizzano azioni/);
  assert.doesNotMatch(p,/unico owner del NEXT/i);
  assert.doesNotMatch(p,/il modello.*decide.*NEXT/i);
 });
@@ -52,7 +52,7 @@ test('prompt scopes UNKNOWN and tool errors to owner-defined evidence',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/UNKNOWN non e evidenza negativa/);
  assert.match(p,/probe soltanto se la direttiva owner-derived lo richiede/);
- assert.match(p,/Errori tool restano nel tool layer/);
+ assert.match(p,/errore di tool resta nel tool layer/i);
  assert.doesNotMatch(p,/UNKNOWN significa PROBE/i);
 });
 
