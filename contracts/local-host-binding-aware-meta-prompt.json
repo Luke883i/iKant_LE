@@ -1,0 +1,75 @@
+{
+  "schema": "ikant-le-local-host-binding-aware-meta-prompt/v1",
+  "slice": "C57.LOCAL_HOST_BINDING_AWARE_META_PROMPT",
+  "authority": 0,
+  "source_main": "2d8032071b1320437df2c5e79d181800ba9b07b7",
+  "objective": "Bind the natural-language host discipline to the actually callable SESSION_CHAT surface before referencing repository-internal entrypoints.",
+  "audit_findings": [
+    "C56 tells the host model to use for_ai_agent_first_entrypoint, but that symbol is repository-internal and is not registered as a model-visible MCP tool.",
+    "The reference SESSION_CHAT app exposes only ikant_le_open to the model; exact acceptance and substantive turns are app-only.",
+    "Therefore a host obeying C56 can legitimately stop at integration impediment even when the reference app is actually connected.",
+    "C56 also phrases exact I ACCEPT and later turns as if the model itself owned their ingress, while the reference app owns those interactions.",
+    "A validated host frame is consumed by the app; duplicating/reframing its shell in assistant prose risks a parallel UX surface."
+  ],
+  "modes": {
+    "APP_BOUND": {
+      "admission_binding": "MODEL_VISIBLE_ikant_le_open",
+      "repository_entrypoint_direct_call": false,
+      "model_visible_tools": [
+        "ikant_le_open"
+      ],
+      "app_only_actions": [
+        "EXACT_I_ACCEPT",
+        "SUBSTANTIVE_TURN",
+        "EXIT_ROUTE"
+      ],
+      "shell_presentation_owner": "VALIDATED_HOST_APP",
+      "assistant_may_impersonate_ikant": false
+    },
+    "ADAPTER_BOUND": {
+      "admission_binding": "REAL_CALLABLE_ADAPTER_TO_for_ai_agent_first_entrypoint",
+      "repository_entrypoint_direct_call": false,
+      "owner_directive_required": true,
+      "caller_authority": 0
+    },
+    "NO_BINDING": {
+      "state": "INTEGRATION_IMPEDIMENT",
+      "source_emulation": false,
+      "github_read_is_execution": false,
+      "shadow_planner": false
+    }
+  },
+  "irreducible_mechanisms": [
+    "B0_DETECT_REAL_HOST_BINDING",
+    "B1_PREFER_MODEL_VISIBLE_SESSION_APP",
+    "B2_INTERNAL_ENTRYPOINT_NOT_DIRECT_HOST_TOOL",
+    "B3_APP_OWNS_ACCEPTANCE_AND_TURNS",
+    "B4_APP_OWNS_FRAME_SHELL_PRESENTATION",
+    "B5_ADAPTER_FALLBACK_REQUIRES_REAL_CALLABILITY",
+    "B6_NO_BINDING_STOPS_AT_INTEGRATION_IMPEDIMENT"
+  ],
+  "inherited_laws": [
+    "OWNER_DERIVED_NEXT_ONLY",
+    "NO_SHADOW_LEDGER_OR_RETRY_MEMORY",
+    "UNKNOWN_NOT_NEGATIVE",
+    "TOOL_ERROR_STAYS_TOOL_LAYER",
+    "NO_RECEIPT_OR_FIELD_INVENTION",
+    "HANDOFF_RETIRES_BOOTSTRAP_PLANNING",
+    "RUNTIME_OWNERSHIP_STOPS_HOST_SYNTHESIS",
+    "NATIVE_TRANSCRIPT_IDENTITY_REQUIRES_EXTERNAL_HOST_EVIDENCE"
+  ],
+  "claim_boundary": {
+    "tool_registration_is_runtime_active_proof": false,
+    "app_open_is_native_transcript_proof": false,
+    "app_frame_is_host_ui_receipt_only_where_observed_by_app": true,
+    "repository_internal_symbol_is_host_callability_proof": false,
+    "prompt_is_authority": false
+  },
+  "qualification": {
+    "mutation_cases": 10000,
+    "mechanisms": 7,
+    "architecture_lattice": 128,
+    "unique_minimum_required": true,
+    "all_deletion_mutants_killed_required": true
+  }
+}
