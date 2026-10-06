@@ -1,16 +1,24 @@
 import {createServer} from 'node:http';
 import {spawn} from 'node:child_process';
-import {dirname,resolve} from 'node:path';
+import {dirname,resolve,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {registerAppResource,registerAppTool,RESOURCE_MIME_TYPE} from '@modelcontextprotocol/ext-apps/server';
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {z} from 'zod';
-const here=dirname(fileURLToPath(import.meta.url)),repoRoot=resolve(process.env.IKANT_LE_REPO_ROOT||resolve(here,'../../..')),cli=resolve(repoRoot,'scripts/session-chat-runtime-cli.mjs'),widget=readFileSync(resolve(here,'public/ikant-le-app.html'),'utf8'),URI='ui://ikant-le/session-chat/v1.html';
+import {validateHostConsumptionFrame} from '../../../src/host-consumption-frame.mjs';
+const here=dirname(fileURLToPath(import.meta.url)),repoRoot=resolve(process.env.IKANT_LE_REPO_ROOT||resolve(here,'../../..')),deploymentRoot=resolve(process.env.IKANT_LE_DEPLOYMENT_ROOT||resolve(repoRoot,'.ikant-le-deployed')),cli=resolve(repoRoot,'scripts/session-chat-runtime-cli.mjs'),widget=readFileSync(resolve(here,'public/ikant-le-app.html'),'utf8'),URI='ui://ikant-le/session-chat/v1.html';
 function session(ctx={}){const id=String(ctx?._meta?.['openai/session']||'');if(!id)throw new Error('ChatGPT session metadata unavailable');return id;}
 function runtime(op,payload){return new Promise((ok,bad)=>{const child=spawn(process.execPath,[cli,op],{cwd:repoRoot,env:{...process.env,IKANT_LE_REPO_ROOT:repoRoot},stdio:['pipe','pipe','pipe']});let out='',err='';child.stdout.setEncoding('utf8');child.stderr.setEncoding('utf8');child.stdout.on('data',x=>{out+=x;if(out.length>8*1024*1024)child.kill();});child.stderr.on('data',x=>err+=x);child.on('error',bad);child.on('close',code=>{if(code!==0)return bad(new Error(err.slice(-4000)||'runtime bridge failed'));try{ok(JSON.parse(out));}catch(e){bad(e);}});child.stdin.end(JSON.stringify(payload));});}
-function result(x){return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:x}};}
+function digest(b){return createHash('sha256').update(b).digest('hex');}
+function appPayload(x){
+ const frame=x?.host_frame||null,rawByName=new Map((x?.artifacts||[]).map(a=>[a?.name||a?.filename,a])),artifacts=[];
+ for(const fa of frame?.artifacts||[]){const a=rawByName.get(fa.name),p=resolve(String(a?.path||a?.local_path||''));let valid=false,b=null;if(p&&(p===deploymentRoot||p.startsWith(deploymentRoot+sep))&&existsSync(p)){b=readFileSync(p);valid=b.length<=4*1024*1024&&digest(b)===fa.sha256&&b.length===fa.bytes&&fa.readback_verified===true;}if(!valid){if(fa.required_presentation===true)throw new Error('required host artifact bytes unavailable:'+fa.name);continue;}artifacts.push({name:fa.name,media_type:fa.media_type,bytes:b.length,sha256:fa.sha256,required_presentation:fa.required_presentation===true,data_base64:b.toString('base64')});}
+ const shell=frame?.shell||null;const material={schema:'ikant-le-host-app-payload/v1',frame_receipt_sha256:frame?.receipt_sha256||null,shell_sha256:shell?.sha256||null,artifacts:artifacts.map(a=>({name:a.name,bytes:a.bytes,sha256:a.sha256,required_presentation:a.required_presentation})),authority:0};return{...material,artifacts,transport_receipt_sha256:digest(Buffer.from(JSON.stringify(material)))};
+}
+function result(x){const fv=validateHostConsumptionFrame(x?.host_frame);if(!fv.ok)throw new Error('invalid host consumption frame:'+fv.errors.join(','));const enriched={...x,host_app_payload:appPayload(x)};return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:enriched}};}
 function appMeta(resource=false){return resource?{ui:{resourceUri:URI,visibility:['app']},'openai/widgetAccessible':true}:{ui:{visibility:['app']},'openai/widgetAccessible':true};}
 function createMcp(){const s=new McpServer({name:'ikant-le-session-chat',version:'0.1.0'});
  registerAppResource(s,'ikant-le',URI,{},async()=>({contents:[{uri:URI,mimeType:RESOURCE_MIME_TYPE,text:widget,_meta:{ui:{prefersBorder:true},'openai/widgetDescription':'Canonical deployed iKant_LE session surface'}}]}));
