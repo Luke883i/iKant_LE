@@ -8,6 +8,7 @@ const M=[
 'M18_NATIVE_IDENTITY_REQUIRES_EXTERNAL_HOST_EVIDENCE','M19_MUTATION_NEVER_SUBSTITUTES_PHYSICAL_EVIDENCE'];
 const N=M.length,ALL=(1<<N)-1,has=(m,i)=>(m&(1<<i))!==0;
 const CURRENT_C55_MASK=ALL^(1<<13)^(1<<15)^(1<<16)^(1<<17)^(1<<18);
+const LONG_FORM_DRAFT_MASK=ALL^(1<<1)^(1<<5)^(1<<6)^(1<<7)^(1<<10)^(1<<13)^(1<<15)^(1<<16)^(1<<17)^(1<<18);
 const base=()=>Object.fromEntries(M.map((_,i)=>['m'+i,true]));
 function oracle(w){return M.every((_,i)=>w['m'+i]===true)}
 function candidate(w,mask){for(let i=0;i<N;i++)if(has(mask,i)&&w['m'+i]!==true)return false;return true}
@@ -40,12 +41,12 @@ function scenario(f){
  if(i===29){for(const x of [7,8,9])w['m'+x]=false;return w}
  const faults=1+(rnd()%6);for(let j=0;j<faults;j++)w['m'+(rnd()%N)]=false;return w;
 }
-const cases=10000,selected={mismatch:0,unsafe:0,false_reject:0},current={mismatch:0,unsafe:0,false_reject:0},counts=Object.fromEntries(familyNames.map(x=>[x,0])),worlds=new Set();
+const cases=10000,selected={mismatch:0,unsafe:0,false_reject:0},current={mismatch:0,unsafe:0,false_reject:0},draft={mismatch:0,unsafe:0,false_reject:0},counts=Object.fromEntries(familyNames.map(x=>[x,0])),worlds=new Set();
 const encode=w=>M.reduce((n,_,i)=>n|(w['m'+i]?1<<i:0),0);
-for(let i=0;i<cases;i++){const f=i%80,w=scenario(f),z=oracle(w),c=candidate(w,ALL),old=candidate(w,CURRENT_C55_MASK);counts[familyNames[f]]++;worlds.add(encode(w));if(c!==z)selected.mismatch++;if(c&&!z)selected.unsafe++;if(!c&&z)selected.false_reject++;if(old!==z)current.mismatch++;if(old&&!z)current.unsafe++;if(!old&&z)current.false_reject++;}
+for(let i=0;i<cases;i++){const f=i%80,w=scenario(f),z=oracle(w),c=candidate(w,ALL),old=candidate(w,CURRENT_C55_MASK),draftC=candidate(w,LONG_FORM_DRAFT_MASK);counts[familyNames[f]]++;worlds.add(encode(w));if(c!==z)selected.mismatch++;if(c&&!z)selected.unsafe++;if(!c&&z)selected.false_reject++;if(old!==z)current.mismatch++;if(old&&!z)current.unsafe++;if(!old&&z)current.false_reject++;if(draftC!==z)draft.mismatch++;if(draftC&&!z)draft.unsafe++;if(!draftC&&z)draft.false_reject++;}
 const deletion={};for(let i=0;i<N;i++){const w=witness(i),z=oracle(w),c=candidate(w,ALL^(1<<i));deletion[M[i]]={killed:c!==z,unsafe:c&&!z,false_reject:!c&&z}}
 const basis=[base(),...Array.from({length:N},(_,i)=>witness(i))];let valid=0,min=99,winners=[];
 for(let mask=0;mask<=ALL;mask++){let ok=true;for(const w of basis)if(candidate(w,mask)!==oracle(w)){ok=false;break}if(!ok)continue;valid++;let cost=0;for(let i=0;i<N;i++)cost+=Number(has(mask,i));if(cost<min){min=cost;winners=[mask]}else if(cost===min)winners.push(mask)}
-const out={schema:'ikant-le-c56-local-host-session-meta-selection/v1',seed:'0xC56010A1',cases,families:80,semantic_worlds_observed:worlds.size,mechanisms:M,current_c55_mask:CURRENT_C55_MASK,current_c55:current,selected_mask:ALL,selected,deletion_mutants:deletion,all_deletion_mutants_killed:Object.values(deletion).every(x=>x.killed),architecture_lattice:{total:1<<N,basis_worlds:basis.length,valid_architectures:valid,minimum_cost:min,minimum_count:winners.length,winner_masks:winners.slice(0,8),unique_minimum:winners.length===1&&winners[0]===ALL},family_counts:counts,claim_boundary:{semantic_selection_is_physical_host_proof:false,minimality_is_relative_to_frozen_oracle:true}};
+const out={schema:'ikant-le-c56-local-host-session-meta-selection/v1',seed:'0xC56010A1',cases,families:80,semantic_worlds_observed:worlds.size,abstraction_levels:['lexical','directive-authority','evidence-provenance','retry-temporal','admission','handoff-runtime-route','host-frame-ux','native-identity','composite-cross-phase'],mechanisms:M,current_c55_mask:CURRENT_C55_MASK,current_c55:current,long_form_draft_mask:LONG_FORM_DRAFT_MASK,long_form_draft:draft,long_form_draft_expected_to_fail:true,selected_mask:ALL,selected,deletion_mutants:deletion,all_deletion_mutants_killed:Object.values(deletion).every(x=>x.killed),architecture_lattice:{total:1<<N,basis_worlds:basis.length,valid_architectures:valid,minimum_cost:min,minimum_count:winners.length,winner_masks:winners.slice(0,8),unique_minimum:winners.length===1&&winners[0]===ALL},family_counts:counts,claim_boundary:{semantic_selection_is_physical_host_proof:false,minimality_is_relative_to_frozen_oracle:true}};
 out.status=selected.mismatch===0&&selected.unsafe===0&&selected.false_reject===0&&out.all_deletion_mutants_killed&&out.architecture_lattice.unique_minimum?'PASS':'FAIL';
 out.receipt_sha256=crypto.createHash('sha256').update(JSON.stringify(out)).digest('hex');console.log(JSON.stringify(out,null,2));if(out.status!=='PASS')process.exitCode=1;

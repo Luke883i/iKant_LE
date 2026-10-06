@@ -18,18 +18,19 @@
   "objective": "Guide a zero-authority host language model through activation and subsequent iKant_LE use while consuming existing owner-derived runtime/host materialization instead of reconstructing it.",
   "trajectory": {
     "C46_C49": "Separate cohost relation, runtime capability and canonical product; persist/reopen upgrade evidence and qualify exact merged bytes.",
-    "C50": "Native transcript identity requires external persistent participant/scheduler/delivery evidence and is orthogonal to runtime capability.",
-    "C51_C53": "Bootstrap, route, execution, same-session and native evidence are fail-closed and cross-bound; repository semantics cannot manufacture host facts.",
+    "C50": "Native transcript identity is orthogonal to cohost/runtime/product and requires external participant identity, persistent scheduler standing and native delivery/readback evidence.",
+    "C51_C53": "Bootstrap, route and execution evidence are fail-closed/cross-bound; C52-C53 additionally require an independent per-turn scheduler grant and same-session native delivery binding. Repository semantics cannot manufacture host facts.",
     "C54": "The earliest honest host consumption surface is one validated authority-zero host frame containing exact shell/artifact/promise projections.",
     "C55": "The host model is a zero-authority caller over one entrypoint; it cannot become planner, retry memory, evidence owner or NEXT owner."
   },
   "challenged_c55_gaps": [
-    "C55 terminates at runtime ownership but does not explicitly make the C54 validated host frame the sole post-handoff presentation envelope.",
-    "C55 does not explicitly govern later user turns and EXIT after bootstrap retirement.",
-    "C55 does not explicitly forbid fallback assistant prose when the host frame/route is unavailable.",
-    "C55 does not state artifact-before-shell ordering required by C54.",
-    "C55 does not explicitly declassify assistant-prefix/app/widget presentation from NATIVE_TRANSCRIPT_ACTOR.",
-    "C55 leaves the admission/I ACCEPT UX implicit in owner behavior rather than stating the caller-safe presentation rule."
+    "C55 stops host synthesis at runtime ownership but does not bind all-phase shell/artifact presentation to the C54 validated host frame.",
+    "C55 does not explicitly govern later iKant turns and EXIT through the validated runtime/host route.",
+    "C55 does not explicitly forbid fallback assistant prose when the validated frame/route is unavailable.",
+    "C55 does not state C54 artifact-before-exact-shell ordering.",
+    "C55 does not explicitly declassify assistant-prefix/app/widget/cohost/full-runtime/product-control surfaces from NATIVE_TRANSCRIPT_ACTOR or require the independent per-turn scheduler grant.",
+    "C55 leaves owner-presented Terms plus the one later exact I ACCEPT gate implicit.",
+    "The supplied long-form draft reintroduced NEXT ownership, caller memory, UNKNOWN=>PROBE and generic caller receipt-minting; C56 rejects those regressions."
   ],
   "irreducible_mechanisms": [
     "M00_CANONICAL_REPOSITORY_INTENT",
@@ -54,27 +55,27 @@
     "M19_MUTATION_NEVER_SUBSTITUTES_PHYSICAL_EVIDENCE"
   ],
   "host_use_normal_form": [
-    "INVOKE_ENTRYPOINT",
+    "INVOKE_ENTRYPOINT_PRE_RUNTIME",
     "CONSUME_ONE_OWNER_DIRECTIVE",
     "EXECUTE_ONE_NAMED_ACTION",
-    "RETURN_SCHEMA_ADMITTED_EVIDENCE",
+    "RETURN_ONLY_SCHEMA_ADMITTED_EVIDENCE_WHEN_REENTRY_REQUIRES_IT",
     "ON_HANDOFF_STOP_BOOTSTRAP_PLANNING",
-    "ON_RUNTIME_OWNERSHIP_USE_VALIDATED_HOST_FRAME",
-    "PRESENT_REQUIRED_ARTIFACTS_BEFORE_EXACT_SHELL",
-    "ROUTE_LATER_INPUTS_AND_EXIT_THROUGH_RUNTIME_OWNER",
-    "DO_NOT_IMPERSONATE_NATIVE_ACTOR"
+    "WHEN_VALIDATED_HOST_FRAME_EXISTS_CONSUME_IT_IN_BASELINE_LIMITED_OR_ACTIVE",
+    "ON_RUNTIME_OWNERSHIP_ROUTE_LATER_TURNS_AND_EXIT_THROUGH_VALIDATED_RUNTIME_HOST_ROUTE",
+    "PRESENT_REQUIRED_VERIFIED_ARTIFACTS_BEFORE_EXACT_ASCII_SHELL",
+    "DO_NOT_IMPERSONATE_NATIVE_ACTOR_WITHOUT_PARTICIPANT_LEASE_PER_TURN_GRANT_AND_NATIVE_DELIVERY_READBACK"
   ],
   "ux_policy": {
-    "pre_runtime": "Present only owner-derived Terms/readiness/shell material; do not narrate synthetic progress.",
+    "pre_runtime": "Present only owner-derived Terms/readiness plus any validated baseline host frame; do not narrate synthetic progress.",
     "acceptance": "Only a later exact I ACCEPT provided by the human is acceptance; the caller neither infers nor repeats the gate.",
     "post_handoff": "Do not continue Fastboot planning.",
-    "runtime": "Consume the validated host-materialization frame; do not reconstruct state from stdout, filenames, prior chat or documentation.",
+    "runtime": "For shell/artifacts consume the validated host-materialization frame; do not reconstruct state from stdout, filenames, prior chat or documentation.",
     "artifact_order": "Required artifacts first, then exact owner-rendered ASCII shell.",
     "shell": "Exact bytes; no summarization, reframing, relabeling or silent omission.",
     "frame_failure": "No fallback assistant answer as iKant; remain at the observed integration impediment.",
     "later_turns": "Use the established runtime/host route for every iKant turn; do not reuse bootstrap directives as future authority.",
     "exit": "Pass exact EXIT IKANT through the owner route; do not self-deactivate from prose alone.",
-    "native_identity": "Do not claim native transcript actor from labels, app/widget UI, cohost relation, full runtime, control ownership or product status."
+    "native_identity": "Do not claim native transcript actor from labels, app/widget UI, cohost relation, full runtime, control ownership or product status; require same-session participant lease, independent per-turn scheduler grant/standing and native exact-byte delivery/readback."
   },
   "qualification": {
     "discovery_cases": 10000,
@@ -83,7 +84,19 @@
     "complete_architecture_lattice": 1048576,
     "unique_minimum_required": true,
     "all_deletion_mutants_killed_required": true,
-    "independent_falsification_cases": 100000
+    "independent_falsification_cases": 100000,
+    "abstraction_levels": [
+      "lexical",
+      "directive/authority",
+      "evidence/provenance",
+      "retry/temporal",
+      "admission",
+      "handoff/runtime-route",
+      "host-frame/UX",
+      "native-identity",
+      "composite cross-phase"
+    ],
+    "long_form_draft_is_explicit_negative_control": true
   },
   "claim_boundary": {
     "prompt_is_authority": false,

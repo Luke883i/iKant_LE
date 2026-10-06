@@ -36,7 +36,7 @@ test('C55 blocks receipt invention, lateral exploration and post-handoff plannin
  const p=renderLocalHostMetaPrompt(),e=readAiAgentFirstEntrypoint();
  assert.match(p,/Non creare un receipt salvo trasformazione deterministica esplicitamente delegata/);
  assert.match(p,/Nessun placeholder/);
- assert.match(p,/azioni laterali salvo direttiva/);
+ assert.match(p,/non fare azioni laterali/);
  assert.match(p,/smetti di pianificare il bootstrap/);
  assert.match(p,/Quando il runtime prende ownership/);
  assert.equal(e.ai_cycle.stop_on_runtime_ownership,true);

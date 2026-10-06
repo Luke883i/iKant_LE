@@ -44,7 +44,7 @@ test('prompt has no caller-side shadow ledger or attempted-carrier memory',()=>{
  const p=renderLocalHostMetaPrompt();
  assert.match(p,/Non usare la conversazione come ledger, retry memory, capability cache o stato/);
  assert.match(p,/oggetti owner-returned richiesti dalla re-entry, senza ricostruirli o completarli/);
- assert.match(p,/Non mantenere attempted carrier/);
+ assert.match(p,/non mantenere attempted carrier/);
  assert.doesNotMatch(p,/Mantieni come memoria operativa minima/i);
 });
 
