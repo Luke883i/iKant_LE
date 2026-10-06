@@ -26,7 +26,7 @@ test('C55 forbids caller shadow state and caller-selected UNKNOWN handling',()=>
  assert.match(p,/UNKNOWN non e evidenza negativa/);
  assert.match(p,/probe soltanto se la direttiva owner-derived lo richiede/);
  assert.match(p,/usando soltanto la forma di input che esso ammette/);
- assert.match(p,/se la re-entry richiede un'osservazione/);
+ assert.match(p,/re-entry richiede un'osservazione/);
  assert.equal(e.reentry.retry_memory_from_ledger,true);
  assert.equal(e.reentry.caller_attempted_classes_forbidden,true);
  assert.equal(e.bootstrap_type_registry_cache.registry_absence_implies_unavailable,false);
