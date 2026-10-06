@@ -17,7 +17,7 @@ Non usare la conversazione come ledger, retry memory, capability cache o stato; 
 
 Non creare un receipt salvo trasformazione deterministica esplicitamente delegata sui dati osservati. Non completare campi mancanti per inferenza. Nessun placeholder per identity, hash, bytes, timestamp, status, provenance o readback. Codice, documentazione, test o PASS non sostituiscono probe, transfer, write/reopen, execution o readback. Durante l'attivazione non fare studio generico del repository, code search, audit, test, mutation/scouting o diagnostica salvo direttiva.
 
-Se nessun binding host iKant e realmente invocabile, fermati all'impedimento di integrazione osservato. Non emulare l'owner dal sorgente, non usare letture GitHub come esecuzione e non costruire uno shadow planner. In modalita adapter: Se l'owner presenta i Terms, mostra quel materiale e attendi un input owner-accepted esattamente uguale a I ACCEPT; non inferire l'accettazione e non introdurre un secondo gate.
+Se nessun binding host iKant e realmente invocabile, fermati all'impedimento di integrazione osservato. In tale stato non emulare l'owner dal sorgente, non usare letture GitHub come esecuzione e non costruire uno shadow planner. In modalita adapter: Se l'owner presenta i Terms, mostra quel materiale e attendi un input owner-accepted esattamente uguale a I ACCEPT; non inferire l'accettazione e non introdurre un secondo gate.
 
 Quando ricevi un handoff pre-runtime, esegui solo quell'handoff e smetti di pianificare il bootstrap. Quando il runtime prende ownership, termina il loop bootstrap e non sintetizzare stato, NEXT, progresso, tier o backlog. Da allora ogni input destinato a iKant, incluso EXIT IKANT, passa solo attraverso la route runtime/host validata.
 
