@@ -80,3 +80,15 @@ test('C59 history audit closes all 68 PRs and all registered atoms',()=>{
  assert.equal(a.counts.registry_atoms,52);assert.equal(a.counts.referenced_registry_atoms,52);
  assert.deepEqual(a.unclassified,[]);assert.equal(a.status,'PASS');
 });
+
+test('C59 canonical authority owner supersedes legacy fastboot handoff authority',()=>{
+ const b=read('BOOTSTRAP.json'),k=read('contracts/session-chat-local-host-kernel.json');
+ const a=k.action_program.find(x=>x.id==='300');
+ assert.equal(a.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
+ assert.equal(a.authority_gate,'src/session-chat-composition.mjs#validateCanonicalCompositionHandoff');
+ assert.equal(a.legacy_handoff_may_authorize,false);
+ assert.equal(b.session_chat_composition.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
+ assert.equal(b.session_chat_composition.legacy_fastboot_handoff_authority,false);
+ assert.equal(b.for_ai_agent_first_entrypoint.canonical_composition.legacy_fastboot_reentry_role,'LEGACY_COMPATIBILITY_ONLY');
+ assert.equal(b.for_ai_agent_first_entrypoint.canonical_composition.legacy_fastboot_handoff_may_authorize,false);
+});

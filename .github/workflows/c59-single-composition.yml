@@ -12,11 +12,13 @@ on:
       - 'contracts/bootstrap-channel-lineage.json'
       - 'contracts/bootstrap-composition-space.json'
       - 'src/session-chat-local-prompt.mjs'
+      - 'src/session-chat-composition.mjs'
       - 'docs/SESSION_CHAT_LOCAL_PROMPT.md'
       - 'docs/C59_SINGLE_COMPOSITION_CHANNEL.md'
       - 'docs/C59_PR1_68_LINEAGE_AUDIT.md'
       - 'tests/c58-runtime-lifecycle-gate.test.mjs'
       - 'tests/c59-single-composition.test.mjs'
+      - 'tests/c59-canonical-authority-gate.test.mjs'
       - 'scripts/c58-composition-audit-10k.mjs'
       - 'scripts/c58-session-chat-local-prompt-falsify.mjs'
       - 'scripts/c59-composition-select.mjs'
@@ -40,7 +42,7 @@ jobs:
         with:
           node-version: '20'
       - name: C58/C59 focused tests
-        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs tests/c59-single-composition.test.mjs
+        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs tests/c59-single-composition.test.mjs tests/c59-canonical-authority-gate.test.mjs
       - name: C59 10k composition audit
         run: node scripts/c58-composition-audit-10k.mjs
       - name: C59 10k prompt mutations

@@ -78,7 +78,11 @@
       "byte_path": "VERIFIED_OPAQUE_RELAY",
       "container_github_network_required": false,
       "model_selects_carrier": false,
-      "model_selects_fallback": false
+      "model_selects_fallback": false,
+      "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+      "authority_gate": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+      "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
+      "legacy_handoff_may_authorize": false
     },
     {
       "id": "310",
@@ -126,7 +130,10 @@
     "runtime_root_exact_source": true,
     "probe_required": true,
     "active_readback_required": true,
-    "resume_pending_after_active_only": true
+    "resume_pending_after_active_only": true,
+    "canonical_owner": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
+    "legacy_fastboot_handoff_authority": false
   },
   "negative_controls": {
     "repository_symbol_is_host_capability": false,
@@ -140,7 +147,8 @@
     "container_github_network_is_bootstrap_dependency": false,
     "unclassified_live_channel_allowed": false,
     "future_blocker_search": false,
-    "substitute_ikant_output": false
+    "substitute_ikant_output": false,
+    "legacy_fastboot_handoff_may_authorize": false
   },
   "prompt_form": {
     "style": "COBOL_LIKE_NATURAL_LANGUAGE",
@@ -155,6 +163,7 @@
     "adversarial_cases": 100000,
     "all_live_channels_classified": true,
     "unique_minimum_required": true,
-    "surviving_harmful_mutants_required": 0
+    "surviving_harmful_mutants_required": 0,
+    "canonical_authority_gate_required": true
   }
 }

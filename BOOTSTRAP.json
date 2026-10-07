@@ -300,7 +300,15 @@
       "byte_path": "VERIFIED_OPAQUE_RELAY",
       "container_github_network_required": false,
       "model_selects_carrier": false,
-      "model_selects_fallback": false
+      "model_selects_fallback": false,
+      "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+      "authority_gate": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+      "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
+      "legacy_fastboot_reentry_role": "LEGACY_COMPATIBILITY_ONLY",
+      "legacy_fastboot_handoff_may_authorize": false,
+      "legacy_byte_paths_role": "VALIDATION_COMPATIBILITY_ONLY",
+      "legacy_distribution_boundary_role": "REMEDIATION_COMPATIBILITY_ONLY",
+      "canonical_activation_authority_owner": "SESSION_CHAT_COMPOSITION_CHANNEL"
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",
@@ -1217,6 +1225,11 @@
     "complete_object_set_required": true,
     "local_write_reopen_samehash_required": true,
     "active_readback_required": true,
-    "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json"
+    "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
+    "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "authority_gate": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+    "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
+    "legacy_fastboot_handoff_authority": false,
+    "precedence": "C59_CANONICAL_COMPOSITION_OVERRIDES_LEGACY_FASTBOOT_SELECTION_FOR_SESSION_CHAT_LOCAL"
   }
 }
