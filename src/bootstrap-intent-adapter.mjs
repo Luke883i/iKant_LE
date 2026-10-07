@@ -11,15 +11,9 @@ export const DIRECT_EXECUTOR_HANDOFF_SCHEMA='ikant-le-direct-executor-handoff/v1
 export const BOOTSTRAP_READINESS_SCHEMA='ikant-le-bootstrap-readiness/v1';
 
 const digest=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
-const normalize=value=>String(value??'').normalize('NFKC').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').toLowerCase().replace(/[_.,;:!?()[\]{}'"]+/g,' ').replace(/\s+/g,' ').trim();
-const NEGATION=/(^|\s)(non|no|not|don t|dont|do not)(\s|$)/;
-
 export function classifyHumanIntent(input){
- const raw=String(input??''),n=normalize(raw);let kind='OTHER';
- const start=/(^|\s)(inizializza|inizializzare|avvia|avviare|attiva|attivare|start|initialize|activate)\s+(?:i\s*kant|ikant)(\s|$)/.test(n);
- const exit=/(^|\s)(chiudi|disattiva|stop|exit|release)\s+(?:i\s*kant|ikant)(\s|$)/.test(n)||/(^|\s)esci\s+da\s+(?:i\s*kant|ikant)(\s|$)/.test(n);
- if(!NEGATION.test(n)){if(start)kind='ACTIVATE_IKANT';else if(exit)kind='EXIT_IKANT';}
- return{schema:HUMAN_INTENT_SCHEMA,kind,raw_sha256:crypto.createHash('sha256').update(raw).digest('hex'),authority:0};
+ const x=classifyLifecycleIntent(input);
+ return{schema:HUMAN_INTENT_SCHEMA,kind:x.kind,raw_sha256:x.raw_sha256,authority:0};
 }
 
 export function compileIntentAwareFirstContact(input){
