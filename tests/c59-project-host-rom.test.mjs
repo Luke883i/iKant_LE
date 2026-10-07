@@ -1,0 +1,43 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {execFileSync} from 'node:child_process';
+import {ROOT} from '../src/contract.mjs';
+
+const read=p=>fs.readFileSync(path.join(ROOT,p),'utf8');
+const json=p=>JSON.parse(read(p));
+
+test('C59 Project ROM document is generated exactly from the repository contract',()=>{
+ const rendered=execFileSync(process.execPath,['scripts/render-project-host-rom.mjs'],{cwd:ROOT,encoding:'utf8'});
+ assert.equal(read('docs/PROJECT_META_PROMPT_COBOL.md'),rendered);
+ const c=json('contracts/project-host-rom.json');
+ assert.equal(c.role,'COLD_START_ROM_ONLY');
+ assert.equal(c.authority,0);
+ assert.equal(c.repository,'https://github.com/Luke883i/iKant_LE');
+ assert.deepEqual(c.preaccept.direct_paths,['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md']);
+ assert.equal(c.preaccept.exact_acceptance,'I ACCEPT');
+ assert.equal(c.postaccept.invoke_only_repository_named_owner,true);
+ assert.equal(c.postaccept.model_selects_carrier,false);
+ assert.equal(c.postaccept.model_selects_fallback,false);
+ assert.equal(c.postaccept.model_selects_retry,false);
+ assert.equal(c.postaccept.model_selects_byte_path,false);
+});
+
+test('C59 Project ROM cannot shadow repository composition semantics',()=>{
+ const p=read('docs/PROJECT_META_PROMPT_COBOL.md');
+ for(const banned of ['GITHUB_API_BASE64','VERIFIED_OPAQUE_RELAY','LOCAL_DIRECT','WARM_CACHE_EXACT','PINNED_GITHUB_ZIP','PINNED_PERMALINK','HOST_FILE_BRIDGE','FASTBOOT_CHANNEL_LEDGER','.mjs','.json#'])assert.equal(p.includes(banned),false,banned);
+ assert.match(p,/READ SESSION-CHAT-COMPOSITION FROM FROZEN BOOTSTRAP-CONTRACT/);
+ assert.match(p,/INVOKE ONLY THE OWNER NAMED BY THAT REPOSITORY CONTRACT/);
+ assert.match(p,/MUST NEVER BECOME A SECOND IMPLEMENTATION OF IKANT/);
+ const urls=p.match(/https?:\/\/[^\s]+/g)||[];
+ assert.equal(urls.length,1);
+});
+
+test('C59 frozen BOOTSTRAP names the runtime composition owner consumed after the ROM',()=>{
+ const b=json('BOOTSTRAP.json');
+ assert.equal(b.session_chat_composition.canonical,true);
+ assert.equal(b.session_chat_composition.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
+ assert.equal(b.session_chat_composition.authority_gate,'src/session-chat-composition.mjs#validateCanonicalCompositionHandoff');
+ assert.equal(b.session_chat_composition.legacy_fastboot_handoff_authority,false);
+});
