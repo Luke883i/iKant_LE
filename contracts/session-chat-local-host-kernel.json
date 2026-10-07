@@ -1,0 +1,54 @@
+{
+  "schema": "ikant-le-session-chat-local-host-kernel/v1",
+  "slice": "C58.SESSION_CHAT_LOCAL_HOST_KERNEL",
+  "authority": 0,
+  "objective": "Reduce the model role to one binary host-routing decision while all bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
+  "irreducible_primitives": [
+    "DEDICATED_LIFECYCLE_GATE",
+    "READY_VISIBLE_OPEN_BINDING",
+    "ONE_MODEL_OPEN_EDGE",
+    "OWNER_HANDOFF_NO_SUBSTITUTE"
+  ],
+  "routing": {
+    "model_role": "BINARY_HOST_ONLY_OR_IKANT_OPEN",
+    "dedicated_lifecycle_only": true,
+    "mixed_request_activates": false,
+    "quoted_or_negated_activates": false,
+    "repository_discussion_activates": false,
+    "canonical_pending_intent": "inizializza iKant_LE",
+    "model_plans_bootstrap": false,
+    "model_selects_carrier": false,
+    "model_creates_retry_memory": false
+  },
+  "binding": {
+    "required": "CURRENT_SESSION_MODEL_VISIBLE_CALLABLE_IKANT_OPEN_BINDING",
+    "server_start_requires_valid_deployment_reopen": true,
+    "repository_symbol_is_binding": false,
+    "tool_name_in_prompt_required": false,
+    "physical_chat_registration_proven_by_repository": false
+  },
+  "app_surface": {
+    "model_visible_actions": [
+      "OPEN"
+    ],
+    "acceptance_owner": "APP_ONLY",
+    "runtime_turn_owner": "APP_ONLY_OR_RUNTIME_ROUTE",
+    "exact_acceptance": "I ACCEPT",
+    "open_accepts_terms": false
+  },
+  "claim_boundary": {
+    "prompt_is_authority": false,
+    "tool_arguments_are_attested_raw_user_turn": false,
+    "natural_language_route_is_model_mediated": true,
+    "missing_binding_may_be_emulated": false,
+    "semantic_falsification_is_physical_host_proof": false
+  },
+  "qualification": {
+    "local_actual_parser_cases": 10000000,
+    "global_model_cases": 10000000,
+    "full_model_cases": 1000000000,
+    "full_decision_bits": 30,
+    "architecture_lattice": 16,
+    "unique_minimum_required": true
+  }
+}
