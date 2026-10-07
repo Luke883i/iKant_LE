@@ -1,8 +1,6 @@
 name: C59 single composition channel
 
 on:
-  push:
-    branches: ['c61-cold-producer-closure']
   pull_request:
     paths:
       - 'BOOTSTRAP.json'
