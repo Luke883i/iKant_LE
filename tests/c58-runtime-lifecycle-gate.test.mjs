@@ -3,37 +3,41 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {ROOT,classifyLifecycleIntent,classifyPreactiveRoute} from '../src/contract.mjs';
-import {compileIntentAwareFirstContact} from '../src/bootstrap-intent-adapter.mjs';
+import {compileIntentAwareFirstContact,CANONICAL_ACTIVATION_PENDING_INTENT} from '../src/bootstrap-intent-adapter.mjs';
+import {renderSessionChatLocalPrompt,renderSessionChatLocalPromptDocument,sessionChatLocalPromptReceipt} from '../src/session-chat-local-prompt.mjs';
 
-test('C58 explicit lifecycle gate does not treat repository mention as activation',()=>{
- for(const x of ['studia iKant_LE','audit di Luke883i/iKant_LE','analizza https://github.com/Luke883i/iKant_LE','applica metodo a questa sessione']) {
-  assert.equal(classifyLifecycleIntent(x).kind,'OTHER');
-  assert.equal(classifyPreactiveRoute(x).route,'HOST');
-  assert.equal(compileIntentAwareFirstContact(x).next.terminal,'HOST_ONLY');
- }
+test('C58 dedicated lifecycle gate accepts only a dedicated lifecycle turn',()=>{
+ for(const x of ['avvia iKant','inizializza localmente iKant','per favore attiva iKant in questa sessione','initialize iKant_LE']){const k=classifyLifecycleIntent(x);assert.equal(k.kind,'ACTIVATE_IKANT',x);assert.equal(k.dedicated,true,x);assert.equal(classifyPreactiveRoute(x).route,'IKANT_ADMISSION',x);}
+ for(const x of ['studia iKant_LE','audit di Luke883i/iKant_LE','non avviare iKant','"avvia iKant" e un esempio','\`start ikant\`','avvia iKant e fai audit','non fare audit, avvia iKant','avvia iKant e poi chiudi iKant']){assert.equal(classifyLifecycleIntent(x).kind,'OTHER',x);assert.equal(classifyPreactiveRoute(x).route,'HOST',x);}
+ for(const x of ['chiudi iKant','exit ikant','esci da iKant'])assert.equal(classifyLifecycleIntent(x).kind,'EXIT_IKANT',x);
 });
 
-test('C58 activation and exit are explicit, clause-local and quote-safe',()=>{
- for(const x of ['avvia iKant','non fare audit, avvia iKant','please start ikant','non fare altro e attiva iKant'])assert.equal(classifyLifecycleIntent(x).kind,'ACTIVATE_IKANT');
- for(const x of ['non avviare iKant','do not start ikant','"avvia iKant" è un esempio','\`start ikant\`'])assert.equal(classifyLifecycleIntent(x).kind,'OTHER');
- for(const x of ['chiudi iKant','exit ikant','esci da iKant'])assert.equal(classifyLifecycleIntent(x).kind,'EXIT_IKANT');
- assert.equal(classifyLifecycleIntent('avvia iKant e poi chiudi iKant').kind,'OTHER');
-});
-
-test('C58 intent-aware first contact only opens admission on explicit activation',()=>{
- const a=compileIntentAwareFirstContact('avvia iKant e poi riassumi il documento');
- assert.equal(a.intent.kind,'ACTIVATE_IKANT');
- assert.equal(a.next.terminal,'CANONICAL_PREACCEPT');
- assert.equal(a.next.pending_intent,'avvia iKant e poi riassumi il documento');
- const h=compileIntentAwareFirstContact('studia iKant_LE senza avviarlo');
- assert.equal(h.intent.kind,'OTHER');assert.equal(h.next.terminal,'HOST_ONLY');assert.equal(h.next.action,'NO_IKANT_ACTION');
+test('C58 activation never forwards arbitrary mixed user bytes as pending runtime intent',()=>{
+ const x=compileIntentAwareFirstContact('per favore avvia iKant in questa sessione');
+ assert.equal(x.next.terminal,'CANONICAL_PREACCEPT');
+ assert.equal(x.next.pending_intent,CANONICAL_ACTIVATION_PENDING_INTENT);
+ assert.equal(x.next.pending_intent,'inizializza iKant_LE');
+ assert.equal(compileIntentAwareFirstContact('avvia iKant e fai audit').next.terminal,'HOST_ONLY');
 });
 
 test('C58 runtime-command consumes the same preactive gate before dispatch mutation',()=>{
  const src=fs.readFileSync(path.join(ROOT,'src/runtime-command.mjs'),'utf8');
- const gate=src.indexOf("preactiveRoute=state.status==='ACTIVE'?null:classifyPreactiveRoute(input)");
- const dispatch=src.indexOf('let dispatched=recordNodeDispatch(state,input,hostSurface)');
- assert.ok(gate>=0&&dispatch>gate);
- assert.match(src,/return declineToHost\(input,preactiveRoute\)/);
- assert.match(src,/ikant_output:false/);
+ const gate=src.indexOf("preactiveRoute=state.status==='ACTIVE'?null:classifyPreactiveRoute(input)"),dispatch=src.indexOf('let dispatched=recordNodeDispatch(state,input,hostSurface)');
+ assert.ok(gate>=0&&dispatch>gate);assert.match(src,/return declineToHost\(input,preactiveRoute\)/);assert.match(src,/ikant_output:false/);
+});
+
+test('C58 reference app exposes the model binding only after deployment preflight',()=>{
+ const server=fs.readFileSync(path.join(ROOT,'plugins/ikant-le-session-chat/server/server.mjs'),'utf8');
+ const preflight=server.indexOf('readSessionChatDeployment(deploymentRoot)'),register=server.indexOf("registerAppTool(s,'ikant_le_open'");
+ assert.ok(preflight>=0&&register>preflight);assert.match(server,/dedicated explicit user request/);assert.match(server,/never for audits, questions, repository analysis/);
+ assert.match(server,/visibility:\['model','app'\]/);assert.ok((server.match(/visibility:\['app'\]/g)||[]).length>=2);
+});
+
+test('C58 SESSION_CHAT_LOCAL prompt is a compact binary router, not a bootstrap planner',()=>{
+ const p=renderSessionChatLocalPrompt(),r=sessionChatLocalPromptReceipt();
+ assert.equal(r.schema,'ikant-le-session-chat-local-prompt/v1');assert.equal(r.version,'1.0.0');assert.equal(r.authority,0);assert.ok(r.chars<1600);
+ assert.match(p,/comando lifecycle dedicato/);assert.match(p,/messaggi misti restano host-only/);assert.match(p,/esattamente una volta un solo binding local-host/);assert.match(p,/Se il binding manca o fallisce, resta host/);
+ assert.match(p,/presenta soltanto il frame restituito/);assert.match(p,/esattamente I ACCEPT/);
+ assert.doesNotMatch(p,/for_ai_agent_first_entrypoint/);assert.doesNotMatch(p,/https:\/\/github\.com/);assert.doesNotMatch(p,/src\//);assert.doesNotMatch(p,/contracts\//);
+ assert.equal(fs.readFileSync(path.join(ROOT,'docs/SESSION_CHAT_LOCAL_PROMPT.md'),'utf8'),renderSessionChatLocalPromptDocument());
 });
