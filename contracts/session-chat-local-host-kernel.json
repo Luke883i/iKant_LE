@@ -2,9 +2,24 @@
   "schema": "ikant-le-session-chat-local-host-kernel/v1",
   "slice": "C58.SESSION_CHAT_LOCAL_HOST_KERNEL",
   "authority": 0,
-  "objective": "Reduce the model role to deterministic lifecycle routing HOST_ONLY/OPEN/EXIT while bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
+  "objective": "On any first user input, ensure or attest one local iKant_LE installation before substantive response, then reduce the model to deterministic lifecycle routing HOST_ONLY/OPEN/EXIT while bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
+  "first_input_installation": {
+    "operation": "ENSURE_LOCAL",
+    "repository": "https://github.com/Luke883i/iKant_LE",
+    "mandatory_on_any_first_user_input": true,
+    "mandatory_before_substantive_response": true,
+    "once_per_session": true,
+    "already_ready_attestation_satisfies_operation": true,
+    "reinstall_when_ready": false,
+    "single_host_install_or_ensure_binding_only": true,
+    "model_selects_clone_branch_path_carrier_command": false,
+    "preserve_first_input_exactly": true,
+    "ensure_does_not_imply_open": true,
+    "ensure_does_not_accept_terms": true,
+    "missing_install_path_is_fail_closed": true
+  },
   "routing": {
-    "model_role": "HOST_ONLY_OR_IKANT_OPEN_OR_IKANT_EXIT",
+    "model_role": "FIRST_INPUT_ENSURE_THEN_HOST_ONLY_OR_IKANT_OPEN_OR_IKANT_EXIT",
     "dedicated_lifecycle_only": true,
     "mixed_request_activates": false,
     "quoted_or_negated_activates": false,
@@ -41,22 +56,25 @@
     "semantic_falsification_is_physical_host_proof": false
   },
   "qualification": {
+    "first_input_prompt_adversarial_cases": 10000,
     "local_actual_parser_cases": 10000000,
     "global_model_cases": 10000000,
     "full_model_cases": 1000000000,
     "full_decision_bits": 40,
     "full_sample_without_replacement": true,
-    "total_system_architecture_lattice": 16,
-    "new_delta_architecture_lattice": 4,
+    "total_system_architecture_lattice": 32,
+    "new_delta_architecture_lattice": 8,
     "new_delta_unique_minimum_required": true
   },
   "system_irreducible_lattice": [
+    "FIRST_INPUT_LOCAL_ENSURE",
     "DEDICATED_LIFECYCLE_GATE",
     "READY_BOUND_OPEN",
     "ONE_MODEL_OPEN_EDGE",
     "OWNER_HANDOFF_NO_SUBSTITUTE"
   ],
   "new_irreducible_primitives": [
+    "FIRST_INPUT_LOCAL_ENSURE",
     "DEDICATED_LIFECYCLE_GATE",
     "READY_BOUND_OPEN"
   ],
@@ -64,7 +82,7 @@
     {
       "id": "ONE_MODEL_OPEN_EDGE",
       "owner": "C20_REFERENCE_APP",
-      "evidence": "only open is model-visible; acceptance and turns are app-only"
+      "evidence": "only lifecycle open/exit are model-visible; acceptance and turns are app-only"
     },
     {
       "id": "OWNER_HANDOFF_NO_SUBSTITUTE",

@@ -48,7 +48,7 @@ jobs:
         run: node --test --test-concurrency=1 tests/c42-bootstrap-ontological-closure.test.mjs tests/c57-host-binding-aware-meta.test.mjs tests/c58-runtime-lifecycle-gate.test.mjs
       - name: Ten-thousand composition cleanup mutations
         run: node scripts/c58-composition-audit-10k.mjs > /tmp/c58-composition-10k.json
-      - name: Exhaustive local-prompt semantic mutants
+      - name: Ten-thousand first-input prompt adversarial mutations
         run: node scripts/c58-session-chat-local-prompt-falsify.mjs > /tmp/c58-prompt.json
       - name: Ten-million local parser mutations
         run: node scripts/c58-runtime-lifecycle-gate-falsify.mjs --cases 10000000 > /tmp/c58-local-10m.json
