@@ -8,10 +8,11 @@ import {ROOT} from '../src/contract.mjs';
 const read=p=>fs.readFileSync(path.join(ROOT,p),'utf8');
 const json=p=>JSON.parse(read(p));
 
-test('C59 Project ROM document is generated exactly from the repository contract',()=>{
+test('C59 Project ROM v2 document is generated exactly from the repository contract',()=>{
  const rendered=execFileSync(process.execPath,['scripts/render-project-host-rom.mjs'],{cwd:ROOT,encoding:'utf8'});
  assert.equal(read('docs/PROJECT_META_PROMPT_COBOL.md'),rendered);
  const c=json('contracts/project-host-rom.json');
+ assert.equal(c.schema,'ikant-le-project-host-rom/v2');
  assert.equal(c.role,'COLD_START_ROM_ONLY');
  assert.equal(c.authority,0);
  assert.equal(c.repository,'https://github.com/Luke883i/iKant_LE');
@@ -22,6 +23,14 @@ test('C59 Project ROM document is generated exactly from the repository contract
  assert.equal(c.postaccept.model_selects_fallback,false);
  assert.equal(c.postaccept.model_selects_retry,false);
  assert.equal(c.postaccept.model_selects_byte_path,false);
+ assert.equal(c.host_binding.repository_symbol_proves_host_capability,false);
+ assert.equal(c.host_binding.source_plane_and_sink_plane_are_distinct,true);
+ assert.equal(c.host_binding.sink_network_failure_proves_source_failure,false);
+ assert.equal(c.evidence.code_is_execution_evidence,false);
+ assert.equal(c.evidence.test_pass_is_runtime_readback,false);
+ assert.equal(c.failure.autonomous_fallback_search_forbidden,true);
+ assert.equal(c.failure.retry_without_repository_owner_instruction_forbidden,true);
+ assert.equal(c.runtime.route_only_after_owner_validated_canonical_active_readback,true);
 });
 
 test('C59 Project ROM cannot shadow repository composition semantics',()=>{
@@ -29,6 +38,11 @@ test('C59 Project ROM cannot shadow repository composition semantics',()=>{
  for(const banned of ['GITHUB_API_BASE64','VERIFIED_OPAQUE_RELAY','LOCAL_DIRECT','WARM_CACHE_EXACT','PINNED_GITHUB_ZIP','PINNED_PERMALINK','HOST_FILE_BRIDGE','FASTBOOT_CHANNEL_LEDGER','.mjs','.json#'])assert.equal(p.includes(banned),false,banned);
  assert.match(p,/READ SESSION-CHAT-COMPOSITION FROM FROZEN BOOTSTRAP-CONTRACT/);
  assert.match(p,/INVOKE ONLY THE OWNER NAMED BY THAT REPOSITORY CONTRACT/);
+ assert.match(p,/A REPOSITORY SYMBOL DOES NOT PROVE A HOST CAPABILITY IS CALLABLE/);
+ assert.match(p,/KEEP SOURCE-PLANE AND SINK-PLANE DISTINCT/);
+ assert.match(p,/CODE OR DOCUMENTATION IS NOT EXECUTION EVIDENCE/);
+ assert.match(p,/A TEST PASS IS NOT RUNTIME READBACK/);
+ assert.match(p,/DO NOT SEARCH FOR A FALLBACK AUTONOMOUSLY/);
  assert.match(p,/MUST NEVER BECOME A SECOND IMPLEMENTATION OF IKANT/);
  const urls=p.match(/https?:\/\/[^\s]+/g)||[];
  assert.equal(urls.length,1);
@@ -40,4 +54,15 @@ test('C59 frozen BOOTSTRAP names the runtime composition owner consumed after th
  assert.equal(b.session_chat_composition.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
  assert.equal(b.session_chat_composition.authority_gate,'src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff');
  assert.equal(b.session_chat_composition.legacy_fastboot_handoff_authority,false);
+});
+
+test('C59 Project ROM v2 survives 100 adversarial semantic mutations with zero harmful survivors',()=>{
+ const rendered=execFileSync(process.execPath,['scripts/c59-project-rom-adversarial-100.mjs'],{cwd:ROOT,encoding:'utf8'});
+ const actual=JSON.parse(rendered),expected=json('artifacts/qualification/c59-project-rom-adversarial-100.json');
+ assert.deepEqual(actual,expected);
+ assert.equal(actual.cases,100);
+ assert.equal(actual.families,20);
+ assert.equal(actual.killed_mutants,100);
+ assert.equal(actual.surviving_harmful_mutants,0);
+ assert.equal(actual.status,'PASS');
 });
