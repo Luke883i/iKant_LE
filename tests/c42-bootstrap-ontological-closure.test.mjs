@@ -31,10 +31,13 @@ test('C42 natural start/exit intent is authority-zero and negation-safe',()=>{
 test('C42 direct activation-executor reentry removes premature runtime acceptance identity',()=>{
  const x=for_ai_agent_first_entrypoint({preaccept_handoff:preaccept,activation_executor:executor,human_input:'I ACCEPT',acceptance_observed_monotonic_ms:10,runtime_root_descriptor:D});
  assert.equal(x.handoff.action,'EXECUTE_PRE_RUNTIME_BOOTSTRAP');
- assert.equal(x.handoff.first_unclosed_edge,'LOCAL_MATERIALIZATION');
+ assert.equal(x.handoff.owner,'SESSION_CHAT_COMPOSITION_CHANNEL');
+ assert.equal(x.handoff.canonical_activation_authority,true);
  assert.equal(x.handoff.active_claim,false);
+ assert.equal(x.canonical_handoff.receipt_sha256,x.handoff.receipt_sha256);
+ assert.equal(x.legacy_handoff,null);
  assert.equal('acceptance_event_id'in x.handoff,false);
- assert.equal('acceptance_event_id'in x.handoff.execution_input,false);
+ assert.equal('acceptance_event_id'in x.handoff.direct_handoff.execution_input,false);
  assert.equal(x.acceptance_observation.human_input,'I ACCEPT');
  assert.match(x.acceptance_observation.receipt_sha256,/^[a-f0-9]{64}$/);
  assert.equal(x.readiness.public_line,'iKant · MATERIALIZZA');
