@@ -26,9 +26,9 @@ test('C58 runtime-command consumes the same preactive gate before dispatch mutat
  assert.ok(gate>=0&&dispatch>gate);assert.match(src,/return declineToHost\(input,preactiveRoute\)/);assert.match(src,/ikant_output:false/);
 });
 
-test('C58 reference app exposes the model binding only after deployment preflight',()=>{
+test('C58 reference app exposes the model binding only after deployment ensure/preflight',()=>{
  const server=fs.readFileSync(path.join(ROOT,'plugins/ikant-le-session-chat/server/server.mjs'),'utf8');
- const preflight=server.indexOf('readSessionChatDeployment(deploymentRoot)'),register=server.indexOf("registerAppTool(s,'ikant_le_open'");
+ const preflight=server.indexOf('ensureSessionChatDeployment({workspace:repoRoot,deploymentRoot})'),register=server.indexOf("registerAppTool(s,'ikant_le_open'");
  assert.ok(preflight>=0&&register>preflight);assert.match(server,/dedicated explicit user request/);assert.match(server,/never for audits, questions, repository analysis/);
  assert.match(server,/visibility:\['model','app'\]/);assert.ok((server.match(/visibility:\['app'\]/g)||[]).length>=2);
 });

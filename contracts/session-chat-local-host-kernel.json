@@ -25,7 +25,9 @@
     "server_start_requires_valid_deployment_reopen": true,
     "repository_symbol_is_binding": false,
     "tool_name_in_prompt_required": false,
-    "physical_chat_registration_proven_by_repository": false
+    "physical_chat_registration_proven_by_repository": false,
+    "server_start_ensures_missing_deployment": true,
+    "existing_deployment_must_match_current_source_and_runtime_root": true
   },
   "app_surface": {
     "model_visible_actions": [
@@ -47,8 +49,9 @@
     "local_actual_parser_cases": 10000000,
     "global_model_cases": 10000000,
     "full_model_cases": 1000000000,
-    "full_decision_bits": 30,
+    "full_decision_bits": 40,
     "architecture_lattice": 16,
-    "unique_minimum_required": true
+    "unique_minimum_required": true,
+    "full_sample_without_replacement": true
   }
 }
