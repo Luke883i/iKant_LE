@@ -7,7 +7,7 @@ import {compileIntentAwareFirstContact,CANONICAL_ACTIVATION_PENDING_INTENT} from
 import {renderSessionChatLocalPrompt,renderSessionChatLocalPromptDocument,sessionChatLocalPromptReceipt} from '../src/session-chat-local-prompt.mjs';
 
 test('C58 dedicated lifecycle gate accepts only a dedicated lifecycle turn',()=>{
- for(const x of ['avvia iKant','inizializza localmente iKant','per favore attiva iKant in questa sessione','initialize iKant_LE']){const k=classifyLifecycleIntent(x);assert.equal(k.kind,'ACTIVATE_IKANT',x);assert.equal(k.dedicated,true,x);assert.equal(classifyPreactiveRoute(x).route,'IKANT_ADMISSION',x);}
+ for(const x of ['avvia iKant','apri iKant','open iKant_LE','inizializza localmente iKant','per favore attiva iKant in questa sessione','initialize iKant_LE']){const k=classifyLifecycleIntent(x);assert.equal(k.kind,'ACTIVATE_IKANT',x);assert.equal(k.dedicated,true,x);assert.equal(classifyPreactiveRoute(x).route,'IKANT_ADMISSION',x);}
  for(const x of ['studia iKant_LE','audit di Luke883i/iKant_LE','non avviare iKant','"avvia iKant" e un esempio','\`start ikant\`','avvia iKant e fai audit','non fare audit, avvia iKant','avvia iKant e poi chiudi iKant']){assert.equal(classifyLifecycleIntent(x).kind,'OTHER',x);assert.equal(classifyPreactiveRoute(x).route,'HOST',x);}
  for(const x of ['chiudi iKant','exit ikant','esci da iKant'])assert.equal(classifyLifecycleIntent(x).kind,'EXIT_IKANT',x);
 });

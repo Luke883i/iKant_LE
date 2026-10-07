@@ -3,7 +3,7 @@ import {classifyLifecycleIntent,classifyPreactiveRoute} from '../src/contract.mj
 import {compileIntentAwareFirstContact} from '../src/bootstrap-intent-adapter.mjs';
 const arg=n=>{const i=process.argv.indexOf(n);return i>=0?process.argv[i+1]:null},CASES=Number(arg('--cases')||1000000);
 let seed=0xC58A11CE>>>0;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed};
-const starts=['avvia','attiva','inizializza','start','activate','initialize'],exits=['chiudi','disattiva','exit','stop'],noise=['audit','repo','bundle','artifact','chat','test','forensic','host','documento','analisi'];
+const starts=['avvia','attiva','inizializza','apri','start','open','activate','initialize'],exits=['chiudi','disattiva','exit','stop'],noise=['audit','repo','bundle','artifact','chat','test','forensic','host','documento','analisi'];
 const families=['ACTIVATE','ACTIVATE_LOCAL','ACTIVATE_POLITE','EXIT','NEG_ACTIVATE','NEG_EXIT','QUOTED_ACTIVATE','CODE_ACTIVATE','REPO_ONLY','MIXED_AFTER','MIXED_BEFORE','CONFLICT','ZERO_WIDTH','URL_ONLY','HOMOGLYPH','REPEATED_ACTIVATE','EXAMPLE_QUOTED','ACTIVATE_SESSION','QUESTION','BARE_NAME'];
 const counts=Object.fromEntries(families.map(x=>[x,0]));let mismatch=0,routeMismatch=0,nextMismatch=0;const samples=[];
 function word(){return noise[rnd()%noise.length]+String(rnd()%1000000)}
