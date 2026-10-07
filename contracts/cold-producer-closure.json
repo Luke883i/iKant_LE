@@ -23,7 +23,7 @@
     ]
   },
   "metrics": {
-    "cold_object_count": 13,
+    "cold_object_count": 8,
     "seed_object_count": 2,
     "exhaustive_mutations": 1048576,
     "unsafe_active_required": 0,
@@ -31,14 +31,16 @@
     "canonical_cold_owner_count_required": 1,
     "scratch_workspace_required": true,
     "fixture_executor_positive_path_required": 0,
-    "ci_required": "ALL_GREEN"
+    "ci_required": "ALL_GREEN",
+    "historical_c61_object_count": 13,
+    "superseded_by": "C62.EVIDENCE_RUNTIME_CUT"
   },
   "checklist": [
     "BOOTSTRAP_OWNER_IS_COLD_KERNEL",
     "SEED_IS_REPOSITORY_NAMED",
-    "MANIFEST_BINDS_13_OBJECTS",
+    "MANIFEST_BINDS_8_RUNTIME_OBJECTS",
     "OBSERVATION_READS_LOCAL_BYTES",
-    "EXECUTOR_DERIVED_FROM_13_RECEIPTS",
+    "EXECUTOR_DERIVED_FROM_8_RUNTIME_RECEIPTS_PLUS_RAW5_EVIDENCE",
     "HANDOFF_BINDS_EXECUTOR",
     "MATERIALIZER_REVALIDATES_HANDOFF",
     "RUNTIME_READBACK_C59_CANONICAL",
