@@ -1,100 +1,142 @@
 {
-  "schema": "ikant-le-session-chat-local-host-kernel/v1",
-  "slice": "C58.SESSION_CHAT_LOCAL_HOST_KERNEL",
+  "schema": "ikant-le-session-chat-local-host-kernel/v2",
+  "slice": "C58.SESSION_CHAT_LOCAL_ACTION_KERNEL",
   "authority": 0,
-  "objective": "On any first user input, ensure or attest one local iKant_LE installation before substantive response, then reduce the model to deterministic lifecycle routing HOST_ONLY/OPEN/EXIT while bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
-  "first_input_installation": {
-    "operation": "ENSURE_LOCAL",
-    "repository": "https://github.com/Luke883i/iKant_LE",
-    "mandatory_on_any_first_user_input": true,
-    "mandatory_before_substantive_response": true,
-    "once_per_session": true,
-    "already_ready_attestation_satisfies_operation": true,
-    "reinstall_when_ready": false,
-    "single_host_install_or_ensure_binding_only": true,
-    "model_selects_clone_branch_path_carrier_command": false,
-    "preserve_first_input_exactly": true,
-    "ensure_does_not_imply_open": true,
-    "ensure_does_not_accept_terms": true,
-    "missing_install_path_is_fail_closed": true
+  "repository": {
+    "full_name": "Luke883i/iKant_LE",
+    "url": "https://github.com/Luke883i/iKant_LE",
+    "branch": "main",
+    "source_head_binding": "GITHUB_API_EXACT_MAIN_HEAD_ONCE"
   },
-  "routing": {
-    "model_role": "FIRST_INPUT_ENSURE_THEN_HOST_ONLY_OR_IKANT_OPEN_OR_IKANT_EXIT",
-    "dedicated_lifecycle_only": true,
-    "mixed_request_activates": false,
-    "quoted_or_negated_activates": false,
-    "repository_discussion_activates": false,
-    "canonical_pending_intent": "inizializza iKant_LE",
-    "model_plans_bootstrap": false,
-    "model_selects_carrier": false,
-    "model_creates_retry_memory": false
+  "trigger": {
+    "event": "ANY_FIRST_USER_INPUT",
+    "action": "START_FROM_REPO",
+    "before_substantive_response": true,
+    "preserve_pending_intent": "BYTE_EXACT"
   },
-  "binding": {
-    "required": "READY_BOUND_CURRENT_SESSION_MODEL_VISIBLE_CALLABLE_IKANT_LIFECYCLE_SURFACE",
-    "server_start_requires_valid_deployment_reopen": true,
-    "repository_symbol_is_binding": false,
-    "tool_name_in_prompt_required": false,
-    "physical_chat_registration_proven_by_repository": false,
-    "server_start_ensures_missing_deployment": true,
-    "existing_deployment_must_match_current_source_and_runtime_root": true
-  },
-  "app_surface": {
-    "model_visible_actions": [
-      "OPEN",
-      "EXIT"
-    ],
-    "acceptance_owner": "APP_ONLY",
-    "runtime_turn_owner": "APP_ONLY_OR_RUNTIME_ROUTE",
-    "exact_acceptance": "I ACCEPT",
-    "open_accepts_terms": false
-  },
-  "claim_boundary": {
-    "prompt_is_authority": false,
-    "tool_arguments_are_attested_raw_user_turn": false,
-    "natural_language_route_is_model_mediated": true,
-    "missing_binding_may_be_emulated": false,
-    "semantic_falsification_is_physical_host_proof": false
-  },
-  "qualification": {
-    "first_input_prompt_adversarial_cases": 10000,
-    "local_actual_parser_cases": 10000000,
-    "global_model_cases": 10000000,
-    "full_model_cases": 1000000000,
-    "full_decision_bits": 40,
-    "full_sample_without_replacement": true,
-    "total_system_architecture_lattice": 32,
-    "new_delta_architecture_lattice": 8,
-    "new_delta_unique_minimum_required": true
-  },
-  "system_irreducible_lattice": [
-    "FIRST_INPUT_LOCAL_ENSURE",
-    "DEDICATED_LIFECYCLE_GATE",
-    "READY_BOUND_OPEN",
-    "ONE_MODEL_OPEN_EDGE",
-    "OWNER_HANDOFF_NO_SUBSTITUTE"
-  ],
-  "new_irreducible_primitives": [
-    "FIRST_INPUT_LOCAL_ENSURE",
-    "DEDICATED_LIFECYCLE_GATE",
-    "READY_BOUND_OPEN"
-  ],
-  "inherited_required_primitives": [
+  "action_program": [
     {
-      "id": "ONE_MODEL_OPEN_EDGE",
-      "owner": "C20_REFERENCE_APP",
-      "evidence": "only lifecycle open/exit are model-visible; acceptance and turns are app-only"
+      "id": "000",
+      "name": "START_FROM_REPO",
+      "owner": "HOST_ADAPTER",
+      "effect": "BEGIN_CANONICAL_REPOSITORY_BOOTSTRAP"
     },
     {
-      "id": "OWNER_HANDOFF_NO_SUBSTITUTE",
-      "owner": "C20_C54_RUNTIME_HOST_FRAME",
-      "evidence": "acceptance/runtime and exact host-frame presentation are already owner-enforced"
+      "id": "100",
+      "name": "BIND_SOURCE",
+      "owner": "REPOSITORY_TRANSPORT",
+      "transport": "GITHUB_API_ONLY",
+      "output": "SOURCE_HEAD"
+    },
+    {
+      "id": "110",
+      "name": "READ_ORIENTATION",
+      "owner": "REPOSITORY_TRANSPORT",
+      "paths": [
+        "README.md",
+        "BOOTSTRAP.json",
+        "ADMISSION.json",
+        "AGENTS.md",
+        "TERMS.md"
+      ],
+      "exact_ref": "SOURCE_HEAD"
+    },
+    {
+      "id": "120",
+      "name": "PRESENT_TERMS",
+      "owner": "TERMS.md",
+      "effect": "PRESENT_EXACT_TERMS"
+    },
+    {
+      "id": "130",
+      "name": "FREEZE",
+      "owner": "HOST_ADAPTER",
+      "effect": "FREEZE_PREACCEPT_ACQUISITION"
+    },
+    {
+      "id": "140",
+      "name": "WAIT_ACCEPTANCE",
+      "owner": "ADMISSION",
+      "exact_input": "I ACCEPT",
+      "type": "STOP"
+    },
+    {
+      "id": "200",
+      "name": "ACCEPT",
+      "owner": "ADMISSION",
+      "effect": "REUSE_FROZEN_SOURCE_AND_PENDING_INTENT"
+    },
+    {
+      "id": "300",
+      "name": "ACTIVATE_FIRST",
+      "owner": "REPOSITORY_OWNER_LOOP",
+      "one_next": true,
+      "one_action": true,
+      "model_selects_carrier": false
+    },
+    {
+      "id": "310",
+      "name": "MATERIALIZE_LOCAL",
+      "owner": "LOCAL_EXECUTOR_V1",
+      "allowed_only_after_acceptance": true,
+      "content_addressed_runtime_root": true,
+      "readback_required": true
+    },
+    {
+      "id": "400",
+      "name": "RUNTIME_ROUTE",
+      "owner": "LOCAL_RUNTIME",
+      "allowed_only_after_active": true
+    },
+    {
+      "id": "900",
+      "name": "EXIT",
+      "owner": "LOCAL_RUNTIME",
+      "exact_input": "EXIT IKANT"
+    },
+    {
+      "id": "990",
+      "name": "EDGE_STOP",
+      "owner": "CURRENT_EDGE",
+      "scope": "CURRENT_EDGE_ONLY",
+      "type": "STOP"
     }
   ],
+  "preaccept": {
+    "transport": "GITHUB_API_ONLY",
+    "materialize_local": false,
+    "generic_discovery": false
+  },
+  "postaccept": {
+    "mode": "ACTIVATE_FIRST",
+    "runtime_root_exact_source": true,
+    "probe_required": true,
+    "active_readback_required": true,
+    "resume_pending_after_active_only": true
+  },
+  "negative_controls": {
+    "repository_symbol_is_host_capability": false,
+    "tool_presence_is_success": false,
+    "tool_absence_is_carrier_unavailable": false,
+    "unknown_is_false": false,
+    "chat_is_ledger": false,
+    "model_may_invent_receipts": false,
+    "model_may_emulate_owner_from_source": false,
+    "future_blocker_search": false,
+    "substitute_ikant_output": false
+  },
   "prompt_form": {
     "style": "COBOL_LIKE_NATURAL_LANGUAGE",
     "flat_sections": true,
     "indentation": false,
-    "explicit_conditions": true,
-    "hidden_control_flow": false
+    "named_actions": true,
+    "named_stops": true,
+    "single_assignment_semantics": true
+  },
+  "qualification": {
+    "adversarial_cases": 10000,
+    "mutation_families": 32,
+    "all_families_must_be_covered": true,
+    "surviving_harmful_mutants_required": 0
   }
 }
