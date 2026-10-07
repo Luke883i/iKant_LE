@@ -1,0 +1,101 @@
+name: C62 evidence runtime cut
+
+on:
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'ADMISSION.json'
+      - 'contracts/evidence-runtime-cut.json'
+      - 'contracts/cold-producer-closure.json'
+      - 'contracts/host-shell.json'
+      - 'contracts/session-chat-composition-channel.json'
+      - 'contracts/session-chat-local-host-kernel.json'
+      - 'src/runtime-root-verified.mjs'
+      - 'src/session-local-service.mjs'
+      - 'src/admission.mjs'
+      - 'src/bootstrap-semantic.mjs'
+      - 'src/contract.mjs'
+      - 'runtime-root/**'
+      - 'tests/bootstrap-fixture.mjs'
+      - 'tests/c61-cold-producer.test.mjs'
+      - 'tests/c62-evidence-runtime-cut.test.mjs'
+      - 'scripts/c61-cold-producer-falsify.mjs'
+      - 'scripts/c62-evidence-runtime-cut-falsify.mjs'
+      - 'artifacts/qualification/c62-*'
+      - '.github/workflows/c62-evidence-runtime-cut.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --check src/runtime-root-verified.mjs
+      - run: node --check src/session-local-service.mjs
+      - run: node --check src/admission.mjs
+      - run: node --check src/bootstrap-semantic.mjs
+      - run: node --check src/contract.mjs
+
+  runtime-root:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm run runtime-root:verify
+
+  c62-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --test --test-concurrency=1 tests/c62-evidence-runtime-cut.test.mjs
+
+  c62-10k:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/c62-contract-select.mjs > /tmp/c62-select.json
+      - run: diff -u artifacts/qualification/c62-contract-selection-1k.json /tmp/c62-select.json
+      - run: node scripts/c62-evidence-runtime-cut-falsify.mjs > /tmp/c62-falsify.json
+      - run: diff -u artifacts/qualification/c62-evidence-runtime-cut-10k.json /tmp/c62-falsify.json
+
+  c61-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --test --test-concurrency=1 tests/c61-cold-producer.test.mjs
+      - run: node scripts/c61-cold-producer-falsify.mjs > /tmp/c61.json
+      - run: diff -u artifacts/qualification/c61-cold-producer-1m.json /tmp/c61.json
+
+  repository-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm run check
+
+  full-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm test
