@@ -1,6 +1,6 @@
 # iKant_LE SESSION_CHAT_LOCAL prompt
 
-C59 defines one canonical local composition: GitHub API -> base64 -> verified opaque relay -> session-local filesystem -> local Node -> ACTIVE readback. Container GitHub networking is not a canonical dependency.
+C59 defines one runtime-dominating local composition: repository owner -> verified source/relay -> local materialization -> canonical runtime entry -> receipt-bound ACTIVE readback. Container GitHub networking is not a canonical dependency.
 
 ```text
 IDENTITÀ.
@@ -40,6 +40,8 @@ Riusa esclusivamente sorgente e oggetti congelati.
 Non rileggere main e non introdurre un secondo gate umano.
 
 AZIONE 300 ACTIVATE_FIRST.
+Leggi da BOOTSTRAP.session_chat_composition l'owner canonico e invoca soltanto quell'owner.
+L'owner deve emettere un handoff canonico tipizzato; un HANDOFF_PRE_RUNTIME legacy non possiede autorità canonica.
 Usa un solo canale canonico SESSION_CHAT_LOCAL:
 GITHUB_API -> GITHUB_API_BASE64 -> VERIFIED_OPAQUE_RELAY -> SESSION_LOCAL_FILESYSTEM -> SESSION_LOCAL_NODE.
 La rete GitHub del container non è una dipendenza del canale canonico e non deve essere provata o ritentata.
@@ -50,14 +52,18 @@ contracts/session-chat-composition-census.json deve classificare ogni canale viv
 Un canale vivo non censito è un errore di composizione.
 
 AZIONE 310 MATERIALIZE_LOCAL.
+Invoca soltanto il materializer canonico nominato dal contratto repository.
+Il runtime materializzato deve rivalidare il medesimo handoff prima di poter dichiarare canonical ACTIVE.
 Dopo ogni write locale riapri e verifica byte count e Git blob identity.
 Un mismatch blocca per integrità e non autorizza un carrier alternativo.
 LOCAL_EXECUTOR_V1 materializza il runtime-root content-addressed.
 Provenance, live probe, writer readback e ACTIVE readback sono obbligatori.
+Il canonical ACTIVE readback deve essere legato allo stesso receipt di composizione emesso dall'owner.
 Riprendi PENDING_INTENT soltanto dopo ACTIVE readback.
 
 AZIONE 400 RUNTIME_ROUTE.
-Dopo ACTIVE inoltra ogni input iKant soltanto alla route runtime validata.
+Dopo canonical ACTIVE inoltra ogni input iKant soltanto alla route runtime validata.
+La superficie SESSION_CHAT_LOCAL non instrada uno stato ACTIVE con authority legacy.
 Usa soltanto frame e artifact owner-validati.
 
 AZIONE 900 EXIT.
@@ -68,6 +74,7 @@ CONTROLLI NEGATIVI.
 Solo GITHUB_API_BASE64 e VERIFIED_OPAQUE_RELAY compongono il cold ingress canonico.
 for_ai_agent_first_entrypoint, PRE_RUNTIME_HOST_ADAPTER e LOCAL_EXECUTOR_V1 sono owner interni assorbiti e non lifecycle alternativi.
 LOCAL_DIRECT, WARM_CACHE_EXACT, GITHUB_GIT_BLOB_API, PINNED_GITHUB_ZIP, PINNED_PERMALINK, HOST_FILE_BRIDGE, FASTBOOT_CHANNEL_LEDGER, LOCAL_HOST_META_PROMPT, C20 deployment e plugin/MCP non autorizzano il cold bootstrap canonico.
+runCommand raw, resumeActivation e deployed ACTIVE sono soltanto compatibilità esplicita e non possono produrre C59_CANONICAL_ACTIVE.
 Un simbolo repository non prova una capability host.
 Un tool presente non prova successo e un tool assente non prova impossibilità.
 UNKNOWN non significa FALSE e non autorizza probe, skip, retry o fallback.
