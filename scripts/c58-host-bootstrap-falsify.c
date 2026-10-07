@@ -99,7 +99,8 @@ int main(int argc,char**argv){
  printf("  \"baseline_mismatches\": %llu,\n",(unsigned long long)baseline_mismatch);
  printf("  \"baseline_unsafe_promotions\": %llu,\n",(unsigned long long)baseline_unsafe);
  printf("  \"final_candidate_mismatches\": %llu,\n",(unsigned long long)final_mismatch);
- printf("  \"deletion_scope\": \"%s\",\\n",global_mode?"M1_M2_M3_GLOBAL":"M0_M1_M2_M3_FULL");\n printf("  \"deletion_witness_counts\": {\"DEDICATED_LIFECYCLE_GATE\": %llu, \"READY_VISIBLE_OPEN_BINDING\": %llu, \"ONE_MODEL_OPEN_EDGE\": %llu, \"OWNER_HANDOFF_NO_SUBSTITUTE\": %llu},\n",(unsigned long long)del[0],(unsigned long long)del[1],(unsigned long long)del[2],(unsigned long long)del[3]);
+ printf("  \"deletion_scope\": \"%s\",\n",global_mode?"M1_M2_M3_GLOBAL":"M0_M1_M2_M3_FULL");
+ printf("  \"deletion_witness_counts\": {\"DEDICATED_LIFECYCLE_GATE\": %llu, \"READY_VISIBLE_OPEN_BINDING\": %llu, \"ONE_MODEL_OPEN_EDGE\": %llu, \"OWNER_HANDOFF_NO_SUBSTITUTE\": %llu},\n",(unsigned long long)del[0],(unsigned long long)del[1],(unsigned long long)del[2],(unsigned long long)del[3]);
  printf("  \"architecture_lattice\": {\"total\": 16, \"valid\": %d, \"minimum_cost\": %d, \"minimum_count\": %d, \"unique_minimum_all_four\": %s},\n",valid,min,minCount,unique?"true":"false");
  printf("  \"claim_boundary\": {\"semantic_model_is_physical_host_proof\": false, \"natural_language_route_is_model_mediated\": true, \"tool_input_is_not_attested_raw_user_turn\": true},\n");
  printf("  \"status\": \"%s\"\n}\n",unique?"PASS":"FAIL");
