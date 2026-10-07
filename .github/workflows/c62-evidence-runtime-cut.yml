@@ -99,3 +99,26 @@ jobs:
         with:
           node-version: '20'
       - run: npm test
+
+  historical-tests:
+    name: historical-${{ matrix.id }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { id: c13, file: tests/session-chat-fastboot.test.mjs }
+          - { id: c34, file: tests/c34-pre-runtime-handoff.test.mjs }
+          - { id: c42, file: tests/c42-bootstrap-ontological-closure.test.mjs }
+          - { id: c43, file: tests/c43-bootstrap-recovery-hardening.test.mjs }
+          - { id: c58, file: tests/c58-runtime-lifecycle-gate.test.mjs }
+          - { id: c59-single, file: tests/c59-single-composition.test.mjs }
+          - { id: c59-authority, file: tests/c59-canonical-authority-gate.test.mjs }
+          - { id: c59-runtime, file: tests/c59-runtime-dominator.test.mjs }
+          - { id: c59-orientation, file: tests/c59-orientation-closure.test.mjs }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --test --test-concurrency=1 ${{ matrix.file }}
