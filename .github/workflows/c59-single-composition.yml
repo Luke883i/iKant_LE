@@ -9,15 +9,21 @@ on:
       - 'contracts/session-chat-local-host-kernel.json'
       - 'contracts/session-chat-composition-channel.json'
       - 'contracts/session-chat-composition-census.json'
+      - 'contracts/bootstrap-channel-lineage.json'
+      - 'contracts/bootstrap-composition-space.json'
       - 'src/session-chat-local-prompt.mjs'
       - 'docs/SESSION_CHAT_LOCAL_PROMPT.md'
       - 'docs/C59_SINGLE_COMPOSITION_CHANNEL.md'
+      - 'docs/C59_PR1_68_LINEAGE_AUDIT.md'
       - 'tests/c58-runtime-lifecycle-gate.test.mjs'
       - 'tests/c59-single-composition.test.mjs'
       - 'scripts/c58-composition-audit-10k.mjs'
       - 'scripts/c58-session-chat-local-prompt-falsify.mjs'
       - 'scripts/c59-composition-select.mjs'
       - 'scripts/c59-composition-falsify.mjs'
+      - 'scripts/c59-pr-history-audit.mjs'
+      - 'scripts/c59-cartesian-closure.mjs'
+      - 'scripts/c59-render-pr-lineage.mjs'
       - 'artifacts/qualification/c59-*'
       - '.github/workflows/c59-single-composition.yml'
 
@@ -47,6 +53,18 @@ jobs:
         run: |
           node scripts/c59-composition-falsify.mjs > /tmp/c59-falsify.json
           diff -u artifacts/qualification/c59-composition-falsification-100k.json /tmp/c59-falsify.json
+      - name: C59 PR1-68 history closure
+        run: |
+          node scripts/c59-pr-history-audit.mjs > /tmp/c59-history.json
+          diff -u artifacts/qualification/c59-pr1-68-history-audit.json /tmp/c59-history.json
+      - name: C59 Cartesian quotient closure
+        run: |
+          node scripts/c59-cartesian-closure.mjs > /tmp/c59-cartesian.json
+          diff -u artifacts/qualification/c59-cartesian-closure.json /tmp/c59-cartesian.json
+      - name: C59 generated unitary PR audit
+        run: |
+          node scripts/c59-render-pr-lineage.mjs > /tmp/c59-lineage.md
+          diff -u docs/C59_PR1_68_LINEAGE_AUDIT.md /tmp/c59-lineage.md
       - name: Runtime root unchanged and valid
         run: npm run runtime-root:verify
       - name: Repository check

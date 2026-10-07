@@ -1,8 +1,8 @@
 {
-  "schema": "ikant-le-single-composition-channel/v1",
+  "schema": "ikant-le-single-composition-channel/v2",
   "slice": "C59.SINGLE_COMPOSITION_CHANNEL",
   "authority": 0,
-  "objective": "One deterministic SESSION_CHAT_LOCAL composition from pinned GitHub API source to local runtime ACTIVE readback; every live legacy channel is either absorbed or explicitly excluded from canonical activation.",
+  "objective": "One deterministic SESSION_CHAT_LOCAL composition from pinned GitHub API source to local runtime ACTIVE readback; every live and historical bootstrap/host-ingress attempt in PR1-68 is absorbed, normalized, excluded or deprecated with no second canonical composition.",
   "canonical_path": [
     "SOURCE_HEAD",
     "ORIENTATION",
@@ -45,12 +45,16 @@
     "global": [
       "exactly one canonical path can authorize activation",
       "container GitHub connectivity is not a dependency",
-      "ACTIVE requires physical local execution/readback"
+      "ACTIVE requires physical local execution/readback",
+      "all PR1-68 bootstrap/host-ingress attempts are terminally classified",
+      "the Cartesian quotient of historical composition dimensions has exactly one canonical class"
     ],
     "intermediate": [
       "all live legacy channels classified absorbed or excluded",
       "one canonical prompt/kernel owns caller composition",
-      "multi-carrier planner cannot choose canonical activation"
+      "multi-carrier planner cannot choose canonical activation",
+      "ingress aliases normalize to the same host kernel and cannot alter source/carrier/byte path",
+      "cohost/native/presentation layers are orthogonal and cannot authorize activation"
     ],
     "local": [
       "every relayed object remains source-head/path/blob bound",
@@ -65,7 +69,25 @@
     "unique_minimum_required": true,
     "unsafe_active_required": 0,
     "oracle_mismatch_required": 0,
-    "all_deletion_mutants_killed": true
+    "all_deletion_mutants_killed": true,
+    "history_prs": 68,
+    "history_registry_atoms": 52,
+    "cartesian_axes": 10,
+    "cartesian_raw_vectors": 1166400,
+    "cartesian_raw_alias_vectors": 8,
+    "cartesian_normalized_canonical_classes": 1,
+    "cartesian_rejected_vectors": 1166392,
+    "cartesian_exclusion_mutants": 29,
+    "cartesian_all_exclusion_mutants_killed": true
   },
-  "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json"
+  "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
+  "history_lineage": "contracts/bootstrap-channel-lineage.json",
+  "cartesian_space": "contracts/bootstrap-composition-space.json",
+  "closure_proofs": {
+    "pr_history": "artifacts/qualification/c59-pr1-68-history-audit.json",
+    "cartesian": "artifacts/qualification/c59-cartesian-closure.json",
+    "host_primitive": "artifacts/qualification/c59-host-connector-container-witness.json",
+    "semantic_lattice": "artifacts/qualification/c59-composition-selection-1k.json",
+    "adversarial": "artifacts/qualification/c59-composition-falsification-100k.json"
+  }
 }

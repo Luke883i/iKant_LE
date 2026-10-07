@@ -48,3 +48,35 @@ test('C59 semantic qualification receipts are strict',()=>{
  assert.ok(f.family_counts.CONTAINER_DNS_DOWN>0);
  assert.ok(f.good_path_cases>f.family_counts.GOOD,'container DNS loss must coexist with a valid path');
 });
+
+test('C59 PR1-68 lineage is total and terminally classified',()=>{
+ const l=read('contracts/bootstrap-channel-lineage.json'),reg=new Map(l.registry.map(x=>[x.id,x]));
+ assert.deepEqual(l.prs.map(x=>x.pr),Array.from({length:68},(_,i)=>i+1));
+ assert.deepEqual(l.prs.filter(x=>x.state==='CLOSED_UNMERGED').map(x=>x.pr),[24,27,34,36,42,43]);
+ assert.equal(l.prs.filter(x=>x.state==='MERGED').length,61);
+ assert.equal(l.prs.filter(x=>x.state==='OPEN').length,1);
+ const refs=new Set();
+ for(const p of l.prs)for(const a of p.channel_atoms){refs.add(a);assert.ok(reg.has(a),'unregistered historical atom:'+a);}
+ assert.equal(refs.size,l.registry.length);
+ for(const r of l.registry)assert.ok(refs.has(r.id),'unreferenced registry atom:'+r.id);
+});
+
+test('C59 Cartesian quotient has one and only one canonical composition class',()=>{
+ const a=read('artifacts/qualification/c59-cartesian-closure.json'),s=read('contracts/bootstrap-composition-space.json');
+ assert.equal(Object.keys(s.axes).length,10);
+ assert.equal(a.raw_vectors,1166400);
+ assert.equal(a.raw_canonical_alias_vectors,8);
+ assert.equal(a.normalized_canonical_classes,1);
+ assert.equal(a.rejected_vectors,1166392);
+ assert.equal(a.excluded_value_accepted,0);
+ assert.equal(a.exclusion_mutants,29);
+ assert.equal(a.all_exclusion_mutants_killed,true);
+ assert.equal(a.status,'PASS');
+});
+
+test('C59 history audit closes all 68 PRs and all registered atoms',()=>{
+ const a=read('artifacts/qualification/c59-pr1-68-history-audit.json');
+ assert.equal(a.counts.total_prs,68);assert.equal(a.counts.merged,61);assert.equal(a.counts.closed_unmerged,6);assert.equal(a.counts.open,1);
+ assert.equal(a.counts.registry_atoms,52);assert.equal(a.counts.referenced_registry_atoms,52);
+ assert.deepEqual(a.unclassified,[]);assert.equal(a.status,'PASS');
+});

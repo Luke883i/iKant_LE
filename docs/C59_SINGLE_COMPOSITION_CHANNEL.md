@@ -59,3 +59,24 @@ The ten-mechanism lattice has `2^10 = 1024` candidates and exactly one minimum: 
 The 100,000-case adversarial campaign covers parallel-kernel authority, source drift, source API loss, container DNS loss, model byte rewriting, partial object sets, readback mismatch, chat retry state, legacy laundering, missing execution proof, missing ACTIVE readback and cross-epoch evidence. Required result: zero oracle mismatches, zero unsafe ACTIVE, all deletion mutants killed.
 
 `CONTAINER_DNS_DOWN` is intentionally compatible with the good path. That is the semantic assertion corresponding to the physical connector-to-container witness.
+
+
+## PR1-68 historical closure
+
+C59 does not treat current enums as sufficient evidence of closure. `contracts/bootstrap-channel-lineage.json` audits every PR #1 through #68, including closed/unmerged #24, #27, #34, #36, #42 and #43. The generated human audit is `docs/C59_PR1_68_LINEAGE_AUDIT.md`.
+
+The lineage contains 52 distinct bootstrap/host-ingress atoms. Every atom has a terminal class: canonical, absorbed internal/evidence/adapter, excluded noncanonical, deprecated projection/retry/selector, legacy alias, or orthogonal post-activation/external host capability. No registered atom is unreferenced and no PR channel atom is unregistered.
+
+## Cartesian quotient closure
+
+`contracts/bootstrap-composition-space.json` derives ten finite axes from the historical trajectory: ingress adapter, source plane, carrier, byte path, sink, executor, planner, retry state, product profile and activation proof.
+
+The exhaustive product contains **1,166,400 raw vectors**. Eight raw vectors are declared aliases only: four caller adapters times the historical `COLD_API -> GITHUB_API_BASE64` alias. After normalization they collapse to **one canonical equivalence class**. The remaining **1,166,392 vectors are rejected**.
+
+All 29 single-value exclusion-widening mutants create unsafe alternatives and are therefore killed. This means each excluded historical value is causally necessary to keep outside the canonical quotient.
+
+The single normalized vector is:
+
+`HOST_KERNEL_EQUIV × GITHUB_API × GITHUB_API_BASE64 × VERIFIED_OPAQUE_RELAY × SESSION_LOCAL_FILESYSTEM × SESSION_LOCAL_NODE × NO_CALLER_PLANNER × OWNER_TYPED_ONLY × SESSION_CHAT_LOCAL × ACTIVE_READBACK_CHAIN`.
+
+This is a finite, repository-derived closure claim. It does not claim to enumerate physically impossible mechanisms never represented by the repository/history; CI additionally fails when current exported carriers or byte paths are not represented in the registry.
