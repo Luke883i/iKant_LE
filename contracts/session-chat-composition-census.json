@@ -1,0 +1,124 @@
+{
+  "schema": "ikant-le-c59-live-channel-census/v1",
+  "authority": 0,
+  "discovery_basis": {
+    "fastboot_carrier_owner": "src/fastboot-convergence.mjs#FASTBOOT_CARRIERS",
+    "byte_path_owner": "src/bootstrap-semantic.mjs#ACTIVATION_BYTE_PATHS",
+    "caller_kernel": "contracts/session-chat-local-host-kernel.json",
+    "public_prompt": "docs/SESSION_CHAT_LOCAL_PROMPT.md"
+  },
+  "closed_world_for_canonical_composition": true,
+  "channels": [
+    {
+      "id": "GITHUB_API_BASE64",
+      "kind": "carrier",
+      "status": "ABSORBED_CANONICAL_COLD",
+      "reason": "same pinned GitHub API source plane as preaccept; base64 supports byte-exact relay"
+    },
+    {
+      "id": "VERIFIED_OPAQUE_RELAY",
+      "kind": "byte_path",
+      "status": "ABSORBED_CANONICAL_COLD",
+      "reason": "authority-zero byte transport with samehash/readback"
+    },
+    {
+      "id": "LOCAL_EXECUTOR_V1",
+      "kind": "executor",
+      "status": "ABSORBED_INTERNAL",
+      "reason": "downstream local materialization/execution owner"
+    },
+    {
+      "id": "for_ai_agent_first_entrypoint",
+      "kind": "entrypoint",
+      "status": "ABSORBED_INTERNAL",
+      "reason": "owner projection only; no independent carrier or lifecycle authority"
+    },
+    {
+      "id": "PRE_RUNTIME_HOST_ADAPTER",
+      "kind": "handoff",
+      "status": "ABSORBED_INTERNAL",
+      "reason": "typed handoff boundary into materializer/runtime"
+    },
+    {
+      "id": "LOCAL_DIRECT",
+      "kind": "byte_path",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "retained validator compatibility; not canonical cold SESSION_CHAT path"
+    },
+    {
+      "id": "WARM_CACHE_EXACT",
+      "kind": "carrier",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "optional exact-cache remediation/optimization only"
+    },
+    {
+      "id": "GITHUB_GIT_BLOB_API",
+      "kind": "carrier",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "legacy alternate machine carrier"
+    },
+    {
+      "id": "PINNED_GITHUB_ZIP",
+      "kind": "carrier",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "legacy archive carrier"
+    },
+    {
+      "id": "PINNED_PERMALINK",
+      "kind": "carrier",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "legacy URL carrier"
+    },
+    {
+      "id": "HOST_FILE_BRIDGE",
+      "kind": "carrier",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "last-resort human/file remediation only"
+    },
+    {
+      "id": "FASTBOOT_CHANNEL_LEDGER",
+      "kind": "planner_state",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "compatibility/recovery evidence only; cannot select canonical path"
+    },
+    {
+      "id": "docs/LOCAL_HOST_META_PROMPT.md",
+      "kind": "prompt",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "pre-C59 legacy projection"
+    },
+    {
+      "id": "src/local-host-meta-prompt.mjs",
+      "kind": "prompt_renderer",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "pre-C59 legacy projection"
+    },
+    {
+      "id": "src/session-chat-deployment.mjs",
+      "kind": "deployment",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "C20/reference-app compatibility only"
+    },
+    {
+      "id": "plugins/ikant-le-session-chat",
+      "kind": "host_plugin",
+      "status": "EXCLUDED_NONCANONICAL",
+      "reason": "optional host integration; not canonical activation dependency"
+    },
+    {
+      "id": "RUNTIME_BOUND_LIMITED",
+      "kind": "runtime_tier",
+      "status": "EXCLUDED_AS_ACTIVATION_SUCCESS",
+      "reason": "diagnostic/limited runtime is not ACTIVE"
+    }
+  ],
+  "invariants": {
+    "unclassified_live_channel_allowed": false,
+    "excluded_channel_may_authorize_activation": false,
+    "absorbed_internal_may_define_second_lifecycle": false,
+    "canonical_cold_ids": [
+      "GITHUB_API_BASE64",
+      "VERIFIED_OPAQUE_RELAY"
+    ]
+  }
+}
