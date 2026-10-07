@@ -31,7 +31,7 @@ if(!runtime.includes('export function runCanonicalSessionChat')||!runtime.includ
 if(!runtime.includes("Canonical SESSION_CHAT_LOCAL runtime route rejected legacy ACTIVE state."))errors.push('canonical_surface_legacy_fence');
 if(!runtime.includes("Legacy activation resume is compatibility-only"))errors.push('resume_compatibility_fence');
 if(!runtime.includes("postAcceptBootstrapEvidence?.compatibility_only!==true"))errors.push('raw_activation_compatibility_fence');
-if(!pre.includes('export async function executeCanonicalSessionChatBootstrap')||!pre.includes("mod.runCanonicalSessionChat('I ACCEPT'"))errors.push('pre_runtime_to_runtime_edge');
+if(!pre.includes('export async function executeCanonicalSessionChatBootstrap')||!pre.includes("mod.runCanonicalSessionChat('I ACCEPT'"))errors.push('pre_runtime_to_runtime_edge');if(!pre.includes('export async function executeCanonicalColdBootstrap')||!pre.includes('export function issueCanonicalActivationExecutor')||!pre.includes('export function issueCanonicalRelayManifest'))errors.push('cold_producer_edge');const coldOwner=(R.surfaces||[]).find(x=>x.id==='C59_COMPOSITION_OWNER');if(coldOwner?.ref!=='src/runtime-root-verified.mjs#executeCanonicalColdBootstrap')errors.push('cold_producer_registry');
 if(!entry.includes('issueCanonicalCompositionHandoff(direct.handoff)')||!entry.includes('legacy_handoff:legacyHandoff'))errors.push('caller_owner_edge');
 if(!cli.includes('--canonical-composition-handoff-file')||!cli.includes('--compatibility-activation'))errors.push('cli_fence');
 if(!deployed.includes("composition_authority:'LEGACY_COMPATIBILITY',canonical_session_chat_local:false"))errors.push('deployed_legacy_label');
