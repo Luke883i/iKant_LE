@@ -19,7 +19,7 @@
       "ui_shell": "src/session-shell.mjs",
       "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation",
       "cohost_context_root": "src/cohost-context-root.mjs",
-      "canonical_composition": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+      "canonical_composition": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
       "canonical_materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
       "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat"
     },
@@ -310,7 +310,7 @@
       "container_github_network_required": false,
       "model_selects_carrier": false,
       "model_selects_fallback": false,
-      "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+      "owner_module": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
       "authority_gate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
       "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
       "legacy_fastboot_reentry_role": "LEGACY_COMPATIBILITY_ONLY",
@@ -325,7 +325,10 @@
       "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
       "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
       "canonical_authority": "C59_CANONICAL",
-      "canonical_surface": "SESSION_CHAT_LOCAL_RUNTIME"
+      "canonical_surface": "SESSION_CHAT_LOCAL_RUNTIME",
+      "relay_manifest_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayManifest",
+      "relay_observation_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayObservation",
+      "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor"
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",
@@ -480,7 +483,7 @@
       "source_bytes": 545050,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
-        "blob_sha1": "c5085ffcab72fe0ce06319d5ea5c49d27685b181"
+        "blob_sha1": "47feada8d6284d06eb40a2e7bb44df9eddb14e2b"
       },
       "shards": [
         {
@@ -841,7 +844,7 @@
           "shard": 3
         }
       ],
-      "runtime_root_sha256": "0af91b93b86cf5fe5620d9105d6ce23d01fddc70c5bebc290173c9e10824df1c"
+      "runtime_root_sha256": "d930e484916eb52c9eb577b6f8f839bebfc53380046637e6676c3fe0c75a3499"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -1050,8 +1053,8 @@
       "schema": "ikant-le-pre-runtime-kernel/v2",
       "contract": "contracts/pre-runtime-kernel.json",
       "path": "src/runtime-root-verified.mjs",
-      "blob_sha1": "c5085ffcab72fe0ce06319d5ea5c49d27685b181",
-      "bytes": 37156,
+      "blob_sha1": "47feada8d6284d06eb40a2e7bb44df9eddb14e2b",
+      "bytes": 54102,
       "direct_known_path": true,
       "stdlib_only": true,
       "reuses_runtime_root_loader": true,
@@ -1088,7 +1091,8 @@
       "canonical_active_owner": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
       "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
       "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
-      "legacy_limited_owner": "src/session-local-service.mjs"
+      "legacy_limited_owner": "src/session-local-service.mjs",
+      "canonical_cold_owner": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap"
     },
     "canonical_local_ingress": {
       "owner": "src/session-local-service.mjs",
@@ -1264,7 +1268,7 @@
     "local_write_reopen_samehash_required": true,
     "active_readback_required": true,
     "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
-    "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "owner_module": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
     "authority_gate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
     "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
     "legacy_fastboot_handoff_authority": false,
@@ -1281,6 +1285,19 @@
     "legacy_active_is_canonical": false,
     "raw_runtime_activation_role": "LEGACY_COMPATIBILITY_ONLY",
     "resume_activation_role": "LEGACY_COMPATIBILITY_ONLY",
-    "deployed_profile_role": "EXCLUDED_PROFILE_COMPATIBILITY"
+    "deployed_profile_role": "EXCLUDED_PROFILE_COMPATIBILITY",
+    "relay_manifest_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayManifest",
+    "relay_observation_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayObservation",
+    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor",
+    "cold_seed": {
+      "objects": [
+        "BOOTSTRAP.json",
+        "src/runtime-root-verified.mjs"
+      ],
+      "owner_named": true,
+      "post_accept_only": true,
+      "write_reopen_samehash_required": true,
+      "semantic_reconstruction_forbidden": true
+    }
   }
 }
