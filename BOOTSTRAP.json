@@ -487,7 +487,7 @@
       "source_bytes": 550075,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
-        "blob_sha1": "d5e3f5aeec03dbe0e54e69930c988dfe8634756f"
+        "blob_sha1": "9d70bf6dfb0ef6009633efb7c5a2dc9ffcb1a5d2"
       },
       "shards": [
         {
@@ -848,7 +848,7 @@
           "shard": 3
         }
       ],
-      "runtime_root_sha256": "967a61c551cfcfc155f02e81c8a953e1b0314ca8dfea4bcfeb7b62f7eb889eed"
+      "runtime_root_sha256": "06274434fc7371b36b7220529ad0971fb1a4f77ba6eb01de5ced5e3dd6e81b2d"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -1051,8 +1051,8 @@
       "schema": "ikant-le-pre-runtime-kernel/v2",
       "contract": "contracts/pre-runtime-kernel.json",
       "path": "src/runtime-root-verified.mjs",
-      "blob_sha1": "d5e3f5aeec03dbe0e54e69930c988dfe8634756f",
-      "bytes": 56973,
+      "blob_sha1": "9d70bf6dfb0ef6009633efb7c5a2dc9ffcb1a5d2",
+      "bytes": 56979,
       "direct_known_path": true,
       "stdlib_only": true,
       "reuses_runtime_root_loader": true,
@@ -1306,6 +1306,7 @@
     "pre_acquisition_object_authority": "FROZEN_BOOTSTRAP_REMOTE_PATHS",
     "runtime_transport_object_count": 8,
     "orientation_runtime_file_count": 0,
-    "orientation_projection": ".ikant/orientation-projection.json"
+    "orientation_projection": ".ikant/orientation-projection.json",
+    "relay_manifest_role": "VERIFICATION_PROJECTION_OF_FROZEN_BOOTSTRAP"
   }
 }

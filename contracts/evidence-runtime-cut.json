@@ -27,7 +27,7 @@
     ],
     "pre_acquisition_object_authority": "FROZEN_BOOTSTRAP.post_accept_fastboot.remote_paths",
     "cold_kernel_owner": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
-    "relay_manifest_role": "POST_ACQUISITION_VERIFICATION_PROJECTION",
+    "relay_manifest_role": "VERIFICATION_PROJECTION_OF_FROZEN_BOOTSTRAP",
     "orientation_runtime_projection": ".ikant/orientation-projection.json",
     "canonical_active_authority": "C59_CANONICAL"
   },
