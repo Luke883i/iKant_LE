@@ -1,0 +1,50 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {ROOT} from '../src/contract.mjs';
+import {FASTBOOT_CARRIERS} from '../src/fastboot-convergence.mjs';
+import {ACTIVATION_BYTE_PATHS} from '../src/bootstrap-semantic.mjs';
+const read=p=>JSON.parse(fs.readFileSync(path.join(ROOT,p),'utf8'));
+
+test('C59 census is closed over every live carrier and byte path',()=>{
+ const x=read('contracts/session-chat-composition-census.json'),rows=x.channels,ids=new Set(rows.map(r=>r.id));
+ for(const c of FASTBOOT_CARRIERS)assert.ok(ids.has(c),'uncensused carrier:'+c);
+ for(const p of ACTIVATION_BYTE_PATHS)assert.ok(ids.has(p),'uncensused byte path:'+p);
+ assert.deepEqual(x.invariants.canonical_cold_ids,['GITHUB_API_BASE64','VERIFIED_OPAQUE_RELAY']);
+ assert.equal(rows.filter(r=>r.status==='ABSORBED_CANONICAL_COLD').length,2);
+ assert.equal(x.invariants.unclassified_live_channel_allowed,false);
+ assert.equal(x.invariants.excluded_channel_may_authorize_activation,false);
+});
+
+test('C59 bootstrap binds the single channel and no container GitHub dependency',()=>{
+ const b=read('BOOTSTRAP.json'),c=read('contracts/session-chat-composition-channel.json'),k=read('contracts/session-chat-local-host-kernel.json');
+ assert.equal(b.session_chat_composition.canonical,true);
+ assert.equal(b.session_chat_composition.owner_contract,'contracts/session-chat-composition-channel.json');
+ assert.equal(b.session_chat_composition.cold_transport,'GITHUB_API_BASE64');
+ assert.equal(b.session_chat_composition.byte_path,'VERIFIED_OPAQUE_RELAY');
+ assert.equal(b.session_chat_composition.container_github_network_required,false);
+ assert.equal(c.canonical_transport.container_github_network_required,false);
+ assert.equal(k.postaccept.container_github_network_required,false);
+ assert.equal(k.negative_controls.unclassified_live_channel_allowed,false);
+});
+
+test('C59 host witness proves connector to container same Git blob identity without container GitHub network',()=>{
+ const w=read('artifacts/qualification/c59-host-connector-container-witness.json'),x={...w};delete x.receipt_sha256;
+ const digest=crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+ assert.equal(w.receipt_sha256,digest);
+ assert.equal(w.source_blob_sha1,w.local_git_blob_sha1);
+ assert.equal(w.same_git_blob_sha,true);
+ assert.equal(w.container_github_network_used,false);
+ assert.equal(w.claim_scope,'OBSERVED_IN_CURRENT_CHAT_HOST_ONLY');
+});
+
+test('C59 semantic qualification receipts are strict',()=>{
+ const s=read('artifacts/qualification/c59-composition-selection-1k.json');
+ const f=read('artifacts/qualification/c59-composition-falsification-100k.json');
+ assert.equal(s.cases,1024);assert.equal(s.valid_candidates,1);assert.equal(s.winner_mask,1023);assert.equal(s.status,'PASS');
+ assert.equal(f.cases,100000);assert.equal(f.candidate_oracle_mismatches,0);assert.equal(f.unsafe_active,0);assert.equal(f.all_deletion_mutants_killed,true);assert.equal(f.status,'PASS');
+ assert.ok(f.family_counts.CONTAINER_DNS_DOWN>0);
+ assert.ok(f.good_path_cases>f.family_counts.GOOD,'container DNS loss must coexist with a valid path');
+});

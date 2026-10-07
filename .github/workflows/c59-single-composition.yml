@@ -1,0 +1,53 @@
+name: C59 single composition channel
+
+on:
+  pull_request:
+    paths:
+      - 'BOOTSTRAP.json'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'contracts/session-chat-local-host-kernel.json'
+      - 'contracts/session-chat-composition-channel.json'
+      - 'contracts/session-chat-composition-census.json'
+      - 'src/session-chat-local-prompt.mjs'
+      - 'docs/SESSION_CHAT_LOCAL_PROMPT.md'
+      - 'docs/C59_SINGLE_COMPOSITION_CHANNEL.md'
+      - 'tests/c58-runtime-lifecycle-gate.test.mjs'
+      - 'tests/c59-single-composition.test.mjs'
+      - 'scripts/c58-composition-audit-10k.mjs'
+      - 'scripts/c58-session-chat-local-prompt-falsify.mjs'
+      - 'scripts/c59-composition-select.mjs'
+      - 'scripts/c59-composition-falsify.mjs'
+      - 'artifacts/qualification/c59-*'
+      - '.github/workflows/c59-single-composition.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: C58/C59 focused tests
+        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs tests/c59-single-composition.test.mjs
+      - name: C59 10k composition audit
+        run: node scripts/c58-composition-audit-10k.mjs
+      - name: C59 10k prompt mutations
+        run: node scripts/c58-session-chat-local-prompt-falsify.mjs
+      - name: C59 irreducible lattice
+        run: |
+          node scripts/c59-composition-select.mjs > /tmp/c59-select.json
+          diff -u artifacts/qualification/c59-composition-selection-1k.json /tmp/c59-select.json
+      - name: C59 100k falsification
+        run: |
+          node scripts/c59-composition-falsify.mjs > /tmp/c59-falsify.json
+          diff -u artifacts/qualification/c59-composition-falsification-100k.json /tmp/c59-falsify.json
+      - name: Runtime root unchanged and valid
+        run: npm run runtime-root:verify
+      - name: Repository check
+        run: npm run check
