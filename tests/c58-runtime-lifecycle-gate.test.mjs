@@ -32,7 +32,7 @@ test('C58 intent-aware first contact only opens admission on explicit activation
 test('C58 runtime-command consumes the same preactive gate before dispatch mutation',()=>{
  const src=fs.readFileSync(path.join(ROOT,'src/runtime-command.mjs'),'utf8');
  const gate=src.indexOf("preactiveRoute=state.status==='ACTIVE'?null:classifyPreactiveRoute(input)");
- const dispatch=src.indexOf('recordNodeDispatch(state,input,hostSurface)');
+ const dispatch=src.indexOf('let dispatched=recordNodeDispatch(state,input,hostSurface)');
  assert.ok(gate>=0&&dispatch>gate);
  assert.match(src,/return declineToHost\(input,preactiveRoute\)/);
  assert.match(src,/ikant_output:false/);
