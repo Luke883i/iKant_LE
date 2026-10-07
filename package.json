@@ -67,6 +67,7 @@
     "falsify:c44": "node scripts/c44-methodological-bootstrap-falsify.mjs > /tmp/c44-falsification.json && cmp /tmp/c44-falsification.json artifacts/qualification/c44-methodological-bootstrap-falsification-1m.json && cat /tmp/c44-falsification.json",
     "select:c45": "node scripts/c45-context-root-select.mjs > /tmp/c45-selection.json && cmp /tmp/c45-selection.json artifacts/qualification/c45-context-root-selection-10k.json && cat /tmp/c45-selection.json",
     "falsify:c45": "node scripts/c45-context-root-falsify.mjs > /tmp/c45-falsification.json && cmp /tmp/c45-falsification.json artifacts/qualification/c45-context-root-falsification-10m.json && cat /tmp/c45-falsification.json",
-    "falsify:c58": "node scripts/c58-runtime-lifecycle-gate-falsify.mjs --cases 1000000"
+    "falsify:c58": "node scripts/c58-runtime-lifecycle-gate-falsify.mjs --cases 1000000",
+    "prompt:session-chat-local": "node scripts/session-chat-local-prompt.mjs"
   }
 }

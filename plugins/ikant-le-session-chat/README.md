@@ -24,7 +24,7 @@ Per chat the app performs **no repository transfer**. It binds the host session 
 4. invokes the canonical iKant_LE runtime;
 5. requires live probe, writer/persistence, final deadline PASS, ACTIVE commit and ledger readback.
 
-Only `ikant_le_open` is model-visible. Acceptance and substantive ACTIVE turns are app-only. The server refuses to start unless the configured deployment can be fully reopened and validated, so a visible connected binding is never backed by a missing or corrupt deployment. Use `docs/SESSION_CHAT_LOCAL_PROMPT.md` as the session-side cold-start instruction; it reduces the model role to the binary HOST_ONLY vs IKANT_OPEN route.
+Only `ikant_le_open` is model-visible. Acceptance and substantive ACTIVE turns are app-only. The server refuses to start unless the configured deployment can be fully reopened and validated, so a visible connected binding is never backed by a missing or corrupt deployment. Use `docs/SESSION_CHAT_LOCAL_PROMPT.md` as the session-side cold-start instruction; it reduces the model role to the binary HOST_ONLY vs IKANT_OPEN route. `npm run prompt:session-chat-local` prints the exact canonical bytes; add `-- --receipt` to print its version/hash receipt.
 
 ## Claim boundary
 
