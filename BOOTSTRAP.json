@@ -463,7 +463,7 @@
       "source_bytes": 543633,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
-        "blob_sha1": "71dbd96a715d07c0f0e4f74ea672d71930bfdb7a"
+        "blob_sha1": "c5085ffcab72fe0ce06319d5ea5c49d27685b181"
       },
       "shards": [
         {
@@ -824,7 +824,7 @@
           "shard": 3
         }
       ],
-      "runtime_root_sha256": "25c08a8d8f9c6c4ef130667837bb2974a26204a571e7b20133debe91c8b1b4c0"
+      "runtime_root_sha256": "837a265ada2d6c4f14384aaea0c6d74c2370e5f67df36f4424dc97c3f18635b6"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
