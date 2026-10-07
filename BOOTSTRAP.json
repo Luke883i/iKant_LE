@@ -18,7 +18,10 @@
       "runtime": "src/session-local-service.mjs",
       "ui_shell": "src/session-shell.mjs",
       "bootstrap_observation": "src/fastboot-convergence.mjs#advanceFastbootObservation",
-      "cohost_context_root": "src/cohost-context-root.mjs"
+      "cohost_context_root": "src/cohost-context-root.mjs",
+      "canonical_composition": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+      "canonical_materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
+      "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat"
     },
     "ai_cycle": {
       "operation": "DERIVE_ONE_NEXT_EXECUTE_OBSERVE_REENTER",
@@ -29,7 +32,9 @@
       "unchanged_evidence_retry_forbidden": true,
       "changed_evidence_required_for_replan": true,
       "first_unclosed_edge_required": true,
-      "stop_on_runtime_ownership": true
+      "stop_on_runtime_ownership": true,
+      "canonical_session_chat_role": "LEGACY_COMPATIBILITY_ONLY",
+      "canonical_composition_precedes_cycle": true
     },
     "bootstrap_type_registry_cache": {
       "kind": "DERIVED_PROJECTION_OVER_EXISTING_FASTBOOT_LEDGER",
@@ -105,7 +110,9 @@
         "CHANGED_EVIDENCE": "REENTER_ENTRYPOINT",
         "HUMAN_GESTURE": "PRESENT_ONE_OWNER_NAMED_ACTION_AND_WAIT",
         "RUNTIME_OWNED": "STOP_BOOTSTRAP_PLANNING_PRESENT_RUNTIME_SHELL"
-      }
+      },
+      "role": "LEGACY_VALIDATION_COMPATIBILITY_ONLY",
+      "canonical_session_chat_authority": false
     },
     "ux_shell": {
       "owner": "src/session-shell.mjs",
@@ -204,7 +211,9 @@
         "GITHUB_GIT_BLOB_API",
         "PINNED_GITHUB_ZIP",
         "PINNED_PERMALINK"
-      ]
+      ],
+      "role": "LEGACY_REMEDIATION_COMPATIBILITY_ONLY",
+      "canonical_session_chat_authority": false
     },
     "optional_host_bridge": {
       "technology": "MCP_APP_OR_PLUGIN",
@@ -302,13 +311,21 @@
       "model_selects_carrier": false,
       "model_selects_fallback": false,
       "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
-      "authority_gate": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+      "authority_gate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
       "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
       "legacy_fastboot_reentry_role": "LEGACY_COMPATIBILITY_ONLY",
       "legacy_fastboot_handoff_may_authorize": false,
       "legacy_byte_paths_role": "VALIDATION_COMPATIBILITY_ONLY",
       "legacy_distribution_boundary_role": "REMEDIATION_COMPATIBILITY_ONLY",
-      "canonical_activation_authority_owner": "SESSION_CHAT_COMPOSITION_CHANNEL"
+      "canonical_activation_authority_owner": "SESSION_CHAT_COMPOSITION_CHANNEL",
+      "project_host_rom": "contracts/project-host-rom.json",
+      "executable_surface_registry": "contracts/session-chat-executable-surface-registry.json",
+      "minimum_semantic_lattice": "contracts/session-chat-semantic-lattice.json",
+      "canonical_materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
+      "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
+      "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
+      "canonical_authority": "C59_CANONICAL",
+      "canonical_surface": "SESSION_CHAT_LOCAL_RUNTIME"
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",
@@ -976,7 +993,12 @@
       "canonical_session_chat_transport": "GITHUB_API_BASE64",
       "canonical_session_chat_byte_path": "VERIFIED_OPAQUE_RELAY",
       "container_github_network_required": false,
-      "alternative_carriers_canonical": false
+      "alternative_carriers_canonical": false,
+      "canonical_authority": "C59_CANONICAL",
+      "canonical_authority_requires_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
+      "shared_runtime_predicate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
+      "local_direct_role": "LEGACY_COMPATIBILITY_ONLY",
+      "verified_opaque_relay_canonical_only_with_c59_handoff": true
     },
     "materialization_receipts": [
       "ikant-le-runtime-root-materialization/v2",
@@ -1062,14 +1084,20 @@
         "persist_reopen_required": true,
         "exact_main_gate": ".github/workflows/c46-fast-cohost-bind.yml",
         "authority": 0
-      }
+      },
+      "canonical_active_owner": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
+      "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
+      "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
+      "legacy_limited_owner": "src/session-local-service.mjs"
     },
     "canonical_local_ingress": {
       "owner": "src/session-local-service.mjs",
       "accept": "acceptLocalLimitedSession",
       "turn": "runLocalLimitedTurn",
       "compatibility_plugin_required": false,
-      "legacy_deployment_adapter_canonical": false
+      "legacy_deployment_adapter_canonical": false,
+      "role": "RUNTIME_BOUND_LIMITED_COMPATIBILITY",
+      "canonical_session_chat_active": false
     },
     "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
     "unrelated_channel_evidence_requalifies_failed_carrier": false,
@@ -1097,7 +1125,17 @@
       "runtime-root/shard-004.json",
       "runtime-root/shard-005.json",
       "runtime-root/shard-006.json"
-    ]
+    ],
+    "canonical_session_chat_active_ingress": {
+      "owner": "src/runtime-command.mjs#runCanonicalSessionChat",
+      "pre_runtime_owner": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
+      "authority_gate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
+      "authority": "C59_CANONICAL",
+      "active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
+      "canonical_surface": "SESSION_CHAT_LOCAL_RUNTIME",
+      "legacy_active_routable": false
+    },
+    "carrier_priority_role": "LEGACY_COMPATIBILITY_ONLY"
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
@@ -1207,7 +1245,7 @@
     }
   },
   "session_chat_composition": {
-    "schema": "ikant-le-session-chat-composition/v1",
+    "schema": "ikant-le-session-chat-composition/v2",
     "canonical": true,
     "owner_contract": "contracts/session-chat-composition-channel.json",
     "caller_kernel": "contracts/session-chat-local-host-kernel.json",
@@ -1227,9 +1265,22 @@
     "active_readback_required": true,
     "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
     "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
-    "authority_gate": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+    "authority_gate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
     "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
     "legacy_fastboot_handoff_authority": false,
-    "precedence": "C59_CANONICAL_COMPOSITION_OVERRIDES_LEGACY_FASTBOOT_SELECTION_FOR_SESSION_CHAT_LOCAL"
+    "precedence": "C59_CANONICAL_COMPOSITION_OVERRIDES_LEGACY_FASTBOOT_SELECTION_FOR_SESSION_CHAT_LOCAL",
+    "project_host_rom": "contracts/project-host-rom.json",
+    "executable_surface_registry": "contracts/session-chat-executable-surface-registry.json",
+    "minimum_semantic_lattice": "contracts/session-chat-semantic-lattice.json",
+    "shared_runtime_predicate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
+    "canonical_materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
+    "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
+    "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
+    "canonical_authority": "C59_CANONICAL",
+    "canonical_surface": "SESSION_CHAT_LOCAL_RUNTIME",
+    "legacy_active_is_canonical": false,
+    "raw_runtime_activation_role": "LEGACY_COMPATIBILITY_ONLY",
+    "resume_activation_role": "LEGACY_COMPATIBILITY_ONLY",
+    "deployed_profile_role": "EXCLUDED_PROFILE_COMPATIBILITY"
   }
 }

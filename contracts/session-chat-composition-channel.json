@@ -1,21 +1,23 @@
 {
-  "schema": "ikant-le-single-composition-channel/v2",
+  "schema": "ikant-le-single-composition-channel/v3",
   "slice": "C59.SINGLE_COMPOSITION_CHANNEL",
   "authority": 0,
-  "objective": "One deterministic SESSION_CHAT_LOCAL composition from pinned GitHub API source to local runtime ACTIVE readback; every live and historical bootstrap/host-ingress attempt in PR1-68 is absorbed, normalized, excluded or deprecated with no second canonical composition.",
+  "objective": "One deterministic SESSION_CHAT_LOCAL composition whose repository-issued handoff is the mandatory authority dominator of canonical ACTIVE; every historical or executable alternative is either absorbed, explicit compatibility, excluded, deprecated, or orthogonal.",
   "canonical_path": [
     "SOURCE_HEAD",
     "ORIENTATION",
     "I_ACCEPT",
+    "REPOSITORY_NAMED_COMPOSITION_OWNER",
     "GITHUB_API_BASE64",
     "VERIFIED_OPAQUE_RELAY",
     "SESSION_LOCAL_FILESYSTEM",
-    "LOCAL_EXECUTOR_V1",
     "MATERIALIZE_REOPEN",
+    "C59_CANONICAL_HANDOFF",
+    "CANONICAL_RUNTIME_ENTRY",
     "EXECUTED_PROVENANCE",
     "LIVE_PROBE",
     "WRITER_READBACK",
-    "ACTIVE_READBACK"
+    "CANONICAL_ACTIVE_READBACK"
   ],
   "canonical_transport": {
     "source_plane": "GITHUB_API",
@@ -30,41 +32,45 @@
     "model_selects_fallback": false
   },
   "mechanisms": [
-    "K0_SINGLE_CANONICAL_KERNEL",
-    "K1_PINNED_SOURCE_REUSE",
-    "K2_CONNECTOR_BASE64_SOURCE_WITHOUT_CONTAINER_GITHUB_NETWORK",
-    "K3_VERIFIED_OPAQUE_RELAY",
-    "K4_CLOSED_OBJECT_SET",
-    "K5_LOCAL_WRITE_REOPEN_SAMEHASH",
-    "K6_TYPED_OWNER_HANDOFF_NO_CHAT_LEDGER",
-    "K7_CLOSED_LEGACY_CENSUS",
-    "K8_EXECUTED_RUNTIME_PROOF",
-    "K9_ACTIVE_READBACK_BEFORE_PENDING_INTENT"
+    "K0_PINNED_SOURCE",
+    "K1_PREACCEPT_FREEZE",
+    "K2_SINGLE_CALLER_ENTRY",
+    "K3_SHARED_RUNTIME_PREDICATE",
+    "K4_CANONICAL_HANDOFF_BINDING",
+    "K5_GITHUB_API_BASE64_SOURCE",
+    "K6_VERIFIED_OPAQUE_RELAY",
+    "K7_LOCAL_WRITE_REOPEN",
+    "K8_CANONICAL_RUNTIME_ENTRY",
+    "K9_LEGACY_AUTHORITY_QUARANTINE",
+    "K10_CANONICAL_ACTIVE_READBACK",
+    "K11_CLOSED_EXECUTABLE_REGISTRY"
   ],
   "dod": {
     "global": [
-      "exactly one canonical path can authorize activation",
+      "exactly one repository-side entry may issue canonical SESSION_CHAT_LOCAL ACTIVE",
+      "canonical ACTIVE is unreachable without the repository-issued C59 handoff",
+      "the C59 authority predicate is present inside the materialized runtime root",
       "container GitHub connectivity is not a dependency",
-      "ACTIVE requires physical local execution/readback",
       "all PR1-68 bootstrap/host-ingress attempts are terminally classified",
-      "the Cartesian quotient of historical composition dimensions has exactly one canonical class"
+      "all executable activation-related files are closed-world censused"
     ],
     "intermediate": [
-      "all live legacy channels classified absorbed or excluded",
-      "one canonical prompt/kernel owns caller composition",
-      "multi-carrier planner cannot choose canonical activation",
-      "ingress aliases normalize to the same host kernel and cannot alter source/carrier/byte path",
-      "cohost/native/presentation layers are orthogonal and cannot authorize activation"
+      "Project host ROM delegates after acceptance and cannot select transport semantics",
+      "legacy raw runCommand and resume require explicit compatibility evidence",
+      "deployed/plugin ACTIVE self-identifies as noncanonical compatibility",
+      "canonical runtime surface rejects legacy ACTIVE",
+      "materialized runtime revalidates the canonical handoff and readbacks its receipt"
     ],
     "local": [
       "every relayed object remains source-head/path/blob bound",
-      "local write/reopen samehash required",
+      "local write/reopen identity is required",
       "identity mismatch blocks instead of carrier fallback",
-      "pending intent resumes only after ACTIVE readback"
+      "canonical handoff is persisted and reopened before runtime invocation",
+      "pending intent resumes only after canonical ACTIVE readback"
     ]
   },
   "qualification": {
-    "selection_cases": 1024,
+    "selection_cases": 4096,
     "adversarial_cases": 100000,
     "unique_minimum_required": true,
     "unsafe_active_required": 0,
@@ -80,7 +86,17 @@
     "cartesian_exclusion_mutants": 29,
     "cartesian_all_exclusion_mutants_killed": true,
     "canonical_authority_mutations": 100000,
-    "canonical_authority_survivors_required": 0
+    "canonical_authority_survivors_required": 0,
+    "semantic_lattice": "2^12",
+    "semantic_lattice_mechanisms": 12,
+    "semantic_lattice_valid_candidates_required": 1,
+    "semantic_lattice_winner_mask": 4095,
+    "runtime_closure_mutations": 100000,
+    "runtime_closure_unsafe_canonical_active_required": 0,
+    "runtime_closure_dead_path_required": 0,
+    "runtime_closure_oracle_mismatch_required": 0,
+    "executable_activation_related_files": 24,
+    "canonical_active_issuer_count_required": 1
   },
   "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
   "history_lineage": "contracts/bootstrap-channel-lineage.json",
@@ -89,18 +105,41 @@
     "pr_history": "artifacts/qualification/c59-pr1-68-history-audit.json",
     "cartesian": "artifacts/qualification/c59-cartesian-closure.json",
     "host_primitive": "artifacts/qualification/c59-host-connector-container-witness.json",
-    "semantic_lattice": "artifacts/qualification/c59-composition-selection-1k.json",
+    "semantic_lattice": "artifacts/qualification/c59-semantic-lattice-selection-4k.json",
     "adversarial": "artifacts/qualification/c59-composition-falsification-100k.json",
-    "canonical_authority": "artifacts/qualification/c59-canonical-authority-falsification-100k.json"
+    "canonical_authority": "artifacts/qualification/c59-canonical-authority-falsification-100k.json",
+    "runtime_closure": "artifacts/qualification/c59-runtime-closure-falsification-100k.json",
+    "executable_surface": "artifacts/qualification/c59-executable-surface-audit.json"
   },
   "authority_gate": {
     "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
-    "validator": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+    "pre_runtime_validator": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+    "shared_runtime_validator": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
     "schema": "ikant-le-c59-canonical-composition-handoff/v1",
     "canonical_activation_authority_required": true,
+    "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
+    "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
     "legacy_compatibility_authority": false,
     "legacy_fastboot_handoff_accepted": false,
     "local_direct_accepted": false,
     "verified_opaque_relay_required": true
+  },
+  "executable_surface_registry": "contracts/session-chat-executable-surface-registry.json",
+  "minimum_semantic_lattice": "contracts/session-chat-semantic-lattice.json",
+  "project_host_rom": "contracts/project-host-rom.json",
+  "runtime_closure": {
+    "canonical_authority": "C59_CANONICAL",
+    "issuer": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "shared_runtime_predicate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
+    "materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
+    "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
+    "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
+    "canonical_surface": "SESSION_CHAT_LOCAL_RUNTIME",
+    "raw_runtime_entry_role": "LEGACY_COMPATIBILITY_INTERNAL",
+    "resume_role": "LEGACY_COMPATIBILITY_INTERNAL",
+    "deployed_role": "EXCLUDED_PROFILE_COMPATIBILITY",
+    "legacy_active_may_equal_canonical_active": false,
+    "canonical_active_requires_persisted_handoff_receipt": true,
+    "canonical_surface_rejects_legacy_active": true
   }
 }

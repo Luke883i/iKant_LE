@@ -85,10 +85,43 @@ test('C59 canonical authority owner supersedes legacy fastboot handoff authority
  const b=read('BOOTSTRAP.json'),k=read('contracts/session-chat-local-host-kernel.json');
  const a=k.action_program.find(x=>x.id==='300');
  assert.equal(a.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
- assert.equal(a.authority_gate,'src/session-chat-composition.mjs#validateCanonicalCompositionHandoff');
+ assert.equal(a.authority_gate,'src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff');
  assert.equal(a.legacy_handoff_may_authorize,false);
  assert.equal(b.session_chat_composition.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
  assert.equal(b.session_chat_composition.legacy_fastboot_handoff_authority,false);
  assert.equal(b.for_ai_agent_first_entrypoint.canonical_composition.legacy_fastboot_reentry_role,'LEGACY_COMPATIBILITY_ONLY');
  assert.equal(b.for_ai_agent_first_entrypoint.canonical_composition.legacy_fastboot_handoff_may_authorize,false);
+});
+
+test('C59 runtime closure uses the 12-mechanism minimum lattice and one canonical ACTIVE issuer',()=>{
+ const c=read('contracts/session-chat-composition-channel.json');
+ const l=read('artifacts/qualification/c59-semantic-lattice-selection-4k.json');
+ const f=read('artifacts/qualification/c59-runtime-closure-falsification-100k.json');
+ const x=read('artifacts/qualification/c59-executable-surface-audit.json');
+ assert.equal(c.mechanisms.length,12);
+ assert.equal(c.qualification.selection_cases,4096);
+ assert.equal(l.cases,4096);assert.equal(l.mechanism_count,12);assert.equal(l.valid_candidates,1);assert.equal(l.winner_mask,4095);assert.equal(l.oracle_candidate_mismatches,0);assert.equal(l.all_deletion_mutants_killed,true);assert.equal(l.status,'PASS');
+ assert.equal(f.cases,100000);assert.equal(f.implementation_ready,true);assert.equal(f.candidate_oracle_mismatches,0);assert.equal(f.unsafe_canonical_active,0);assert.equal(f.canonical_dead_path,0);assert.ok(f.legacy_active_noncanonical>0);assert.equal(f.status,'PASS');
+ assert.equal(x.activation_related_files,24);assert.equal(x.canonical_active_issuer_count,1);assert.equal(x.canonical_active_issuer,'src/runtime-command.mjs#runCanonicalSessionChat');assert.deepEqual(x.errors,[]);assert.equal(x.status,'PASS');
+});
+
+test('C59 enforcement predicate and ACTIVE readback live inside the materialized runtime root',()=>{
+ const b=read('BOOTSTRAP.json'),members=new Set(b.post_accept_fastboot.runtime_root.members.map(x=>x.path));
+ for(const p of ['src/bootstrap-semantic.mjs','src/runtime-command.mjs','src/runtime.mjs','src/state.mjs'])assert.ok(members.has(p),p);
+ assert.equal(b.session_chat_composition.shared_runtime_predicate,'src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff');
+ assert.equal(b.session_chat_composition.canonical_materializer,'src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap');
+ assert.equal(b.session_chat_composition.canonical_runtime_entry,'src/runtime-command.mjs#runCanonicalSessionChat');
+ assert.equal(b.session_chat_composition.canonical_active_readback,'src/runtime-command.mjs#canonicalActiveReadback');
+ assert.equal(b.session_chat_composition.canonical_authority,'C59_CANONICAL');
+ assert.equal(b.session_chat_composition.legacy_active_is_canonical,false);
+});
+
+test('C59 Project ROM and executable registry are repository-owned inputs to composition',()=>{
+ const b=read('BOOTSTRAP.json'),c=read('contracts/session-chat-composition-channel.json'),r=read('contracts/session-chat-executable-surface-registry.json');
+ assert.equal(b.session_chat_composition.project_host_rom,'contracts/project-host-rom.json');
+ assert.equal(c.project_host_rom,'contracts/project-host-rom.json');
+ assert.equal(c.executable_surface_registry,'contracts/session-chat-executable-surface-registry.json');
+ assert.equal(c.minimum_semantic_lattice,'contracts/session-chat-semantic-lattice.json');
+ assert.equal(r.invariants.unregistered_activation_surface_allowed,false);
+ assert.equal(r.discovery.exact_set_required,true);
 });
