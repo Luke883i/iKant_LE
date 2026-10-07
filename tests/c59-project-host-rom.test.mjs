@@ -38,6 +38,6 @@ test('C59 frozen BOOTSTRAP names the runtime composition owner consumed after th
  const b=json('BOOTSTRAP.json');
  assert.equal(b.session_chat_composition.canonical,true);
  assert.equal(b.session_chat_composition.owner_module,'src/session-chat-composition.mjs#issueCanonicalSessionChatComposition');
- assert.equal(b.session_chat_composition.authority_gate,'src/session-chat-composition.mjs#validateCanonicalCompositionHandoff');
+ assert.equal(b.session_chat_composition.authority_gate,'src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff');
  assert.equal(b.session_chat_composition.legacy_fastboot_handoff_authority,false);
 });
