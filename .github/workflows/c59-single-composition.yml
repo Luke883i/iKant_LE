@@ -1,6 +1,8 @@
 name: C59 single composition channel
 
 on:
+  push:
+    branches: ['c61-cold-producer-closure']
   pull_request:
     paths:
       - 'BOOTSTRAP.json'
@@ -38,6 +40,7 @@ on:
       - 'tests/c59-runtime-dominator.test.mjs'
       - 'tests/c59-project-host-rom.test.mjs'
       - 'tests/c59-orientation-closure.test.mjs'
+      - 'tests/c61-cold-producer.test.mjs'
       - 'scripts/c58-composition-audit-10k.mjs'
       - 'scripts/c58-session-chat-local-prompt-falsify.mjs'
       - 'scripts/c59-pr-history-audit.mjs'
@@ -49,6 +52,8 @@ on:
       - 'scripts/c59-runtime-closure-falsify-100k.mjs'
       - 'scripts/render-project-host-rom.mjs'
       - 'scripts/c59-project-rom-adversarial-100.mjs'
+      - 'scripts/c61-cold-producer-falsify.mjs'
+      - 'contracts/cold-producer-closure.json'
       - 'artifacts/qualification/c59-*'
       - '.github/workflows/c59-single-composition.yml'
 
@@ -81,6 +86,14 @@ jobs:
       - name: C59 orientation closure
         if: always()
         run: node --test --test-concurrency=1 tests/c59-orientation-closure.test.mjs
+      - name: C61 cold producer scratch closure
+        if: always()
+        run: node --test --test-concurrency=1 tests/c61-cold-producer.test.mjs
+      - name: C61 cold producer 1M falsification
+        if: always()
+        run: |
+          node scripts/c61-cold-producer-falsify.mjs > /tmp/c61-cold-producer.json
+          diff -u artifacts/qualification/c61-cold-producer-1m.json /tmp/c61-cold-producer.json
       - name: C59 10k composition audit
         run: node scripts/c58-composition-audit-10k.mjs
       - name: C59 10k prompt mutations
