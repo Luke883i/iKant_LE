@@ -460,7 +460,7 @@
       "schema": "ikant-le-runtime-root/v1",
       "source_head_binding": "PREACCEPT_HANDOFF.source_head",
       "member_count": 51,
-      "source_bytes": 544456,
+      "source_bytes": 545050,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
         "blob_sha1": "c5085ffcab72fe0ce06319d5ea5c49d27685b181"
@@ -477,8 +477,8 @@
           "index": 1,
           "path": "runtime-root/shard-001.json",
           "member_count": 4,
-          "source_bytes": 69280,
-          "blob_sha1": "5f04e321623592a0025b8ef54a5085d243e5ed21"
+          "source_bytes": 69516,
+          "blob_sha1": "a3457692c27a124f53bbb30a402fb2201c8ff375"
         },
         {
           "index": 2,
@@ -498,8 +498,8 @@
           "index": 4,
           "path": "runtime-root/shard-004.json",
           "member_count": 12,
-          "source_bytes": 113274,
-          "blob_sha1": "1448c21545301802b905009c4eab097134b71167"
+          "source_bytes": 113632,
+          "blob_sha1": "8ca513616ccdaf2e0e299efbf1e7d7b41d7b2e47"
         },
         {
           "index": 5,
@@ -537,8 +537,8 @@
         },
         {
           "path": "src/runtime-command.mjs",
-          "blob_sha1": "9e6d1cac634937934164a9d3fc15cece916c9343",
-          "bytes": 46936,
+          "blob_sha1": "b7089bf34935e2a9d675a8202673348cf8ad5212",
+          "bytes": 47172,
           "shard": 1
         },
         {
@@ -663,8 +663,8 @@
         },
         {
           "path": "ikant.mjs",
-          "blob_sha1": "f6f5cf2b0be518e25d1b23e71d8462a6e40bba4d",
-          "bytes": 2484,
+          "blob_sha1": "391102cdfd0a1d765c173d1af93f72a1a5cb60d6",
+          "bytes": 2842,
           "shard": 4
         },
         {
@@ -824,7 +824,7 @@
           "shard": 3
         }
       ],
-      "runtime_root_sha256": "a35aac7fd78f6b093112f3ac0467e34b6658034d6dedf02f80ec829b0234c7a8"
+      "runtime_root_sha256": "0af91b93b86cf5fe5620d9105d6ce23d01fddc70c5bebc290173c9e10824df1c"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
