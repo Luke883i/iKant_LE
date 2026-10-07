@@ -13,6 +13,7 @@ on:
       - 'package.json'
       - 'scripts/c58-host-bootstrap-falsify.c'
       - 'scripts/c58-session-chat-local-prompt-falsify.mjs'
+      - 'scripts/c58-composition-audit-10k.mjs'
       - 'plugins/ikant-le-session-chat/server/server.mjs'
       - 'contracts/session-chat-local-host-kernel.json'
       - 'docs/SESSION_CHAT_LOCAL_PROMPT.md'
@@ -45,6 +46,8 @@ jobs:
           fi
       - name: Focused executable boundary tests
         run: node --test --test-concurrency=1 tests/c42-bootstrap-ontological-closure.test.mjs tests/c57-host-binding-aware-meta.test.mjs tests/c58-runtime-lifecycle-gate.test.mjs
+      - name: Ten-thousand composition cleanup mutations
+        run: node scripts/c58-composition-audit-10k.mjs > /tmp/c58-composition-10k.json
       - name: Exhaustive local-prompt semantic mutants
         run: node scripts/c58-session-chat-local-prompt-falsify.mjs > /tmp/c58-prompt.json
       - name: Ten-million local parser mutations
@@ -65,6 +68,7 @@ jobs:
         with:
           name: c58-runtime-lifecycle-evidence
           path: |
+            /tmp/c58-composition-10k.json
             /tmp/c58-prompt.json
             /tmp/c58-local-10m.json
             /tmp/c58-global-10m.json
