@@ -46,6 +46,21 @@ export function deploySessionChatRuntime({workspace=WORKSPACE,deploymentRoot,sou
  const attestation=signReceipt(material);atomicJson(path.join(root,'deployment.json'),attestation);return attestation;
 }
 
+export function ensureSessionChatDeployment({workspace=WORKSPACE,deploymentRoot}={}){
+ const root=path.resolve(String(deploymentRoot||''));if(!deploymentRoot)throw new Error('deploymentRoot required');
+ const observedHead=gitHead(workspace),sourceDescriptor=runtimeRootDescriptor(workspace),dv=validateRuntimeRootDescriptor(sourceDescriptor);if(!dv.ok)throw new Error('deployment runtime descriptor invalid:'+dv.errors.join(','));
+ let created=false;
+ if(!fs.existsSync(path.join(root,'deployment.json'))){
+  if(fs.existsSync(root)){const entries=fs.readdirSync(root);if(entries.length)throw new Error('deployment root exists without attestation');fs.rmdirSync(root);}
+  const deploymentId='auto-'+observedHead.slice(0,12)+'-'+sourceDescriptor.runtime_root_sha256.slice(0,12);
+  deploySessionChatRuntime({workspace,deploymentRoot:root,sourceHead:observedHead,deploymentId});created=true;
+ }
+ const dep=readSessionChatDeployment(root);
+ if(dep.deployment.source_head!==observedHead)throw new Error('deployment source drift');
+ if(dep.descriptor.runtime_root_sha256!==sourceDescriptor.runtime_root_sha256)throw new Error('deployment runtime root drift');
+ return{...dep,created,ensured:true,authority:0};
+}
+
 export function readSessionChatDeployment(deploymentRoot){
  const root=path.resolve(String(deploymentRoot||'')),file=path.join(root,'deployment.json');const dep=JSON.parse(fs.readFileSync(file,'utf8'));if(dep.schema!=='ikant-le-session-chat-deployment/v1'||dep.authority!==0||digestObject(dep)!==dep.receipt_sha256)throw new Error('deployment attestation invalid');if(!HEX40.test(String(dep.source_head||''))||!HEX64.test(String(dep.runtime_root_sha256||'')))throw new Error('deployment identity invalid');
  const transfer=JSON.parse(fs.readFileSync(path.join(root,'deployment-transfer.json'),'utf8'));if(transfer.schema!=='ikant-le-deployment-store-transfer/v1'||transfer.authority!==0||digestObject(transfer)!==transfer.receipt_sha256||transfer.receipt_sha256!==dep.deployment_transfer_receipt_sha256||transfer.source_head!==dep.source_head||transfer.runtime_root_sha256!==dep.runtime_root_sha256)throw new Error('deployment transfer invalid');
