@@ -13,6 +13,8 @@ export const ACTIVATION_SLO_MS=120000;
 export const ACTIVATION_EXECUTOR_SCHEMA='ikant-le-activation-executor/v1';
 export const ACTIVATION_BYTE_PATHS=Object.freeze(['LOCAL_DIRECT','VERIFIED_OPAQUE_RELAY']);
 export const CHAT_BOOTSTRAP_EVIDENCE_V2='ikant-le-chat-bootstrap-evidence/v2';
+export const CANONICAL_COMPOSITION_HANDOFF_SCHEMA='ikant-le-c59-canonical-composition-handoff/v1';
+export const CANONICAL_COMPOSITION_AUTHORITY='C59_CANONICAL';
 const sha256=b=>crypto.createHash('sha256').update(b).digest('hex');
 const FLEX_TRANSFER_SCHEMA='ikant-le-source-bound-transfer/v2';
 const FLEX_TRANSPORTS=new Set(['GITHUB_API_BASE64','GITHUB_GIT_BLOB_API','PINNED_PERMALINK','PINNED_GITHUB_ZIP','HOST_FILE_BRIDGE','WARM_CACHE_EXACT']);
@@ -58,6 +60,38 @@ export function validateActivationExecutorReceipt(receipt,{sourceHead,runtimeRoo
  const unavailable=e.every(x=>['capability_probe','acquisition_complete'].includes(x));
  return bad(e,unavailable?'HOST_UNAVAILABLE':'BLOCKED_INTEGRITY',{integrity_time_gate_required:false});
 }
+
+export function validateCanonicalCompositionHandoff(value,{sourceHead=null,runtimeRootSha256=null,runtimeRootDescriptor=null,orientationObjects=null}={}){
+ const h=value||{},e=[];
+ if(h.schema!==CANONICAL_COMPOSITION_HANDOFF_SCHEMA)e.push('schema');
+ if(h.owner!=='SESSION_CHAT_COMPOSITION_CHANNEL'||h.action!=='EXECUTE_PRE_RUNTIME_BOOTSTRAP')e.push('owner_action');
+ if(h.source_plane!=='GITHUB_API'||h.transport!=='GITHUB_API_BASE64'||h.byte_path!=='VERIFIED_OPAQUE_RELAY')e.push('canonical_path');
+ if(h.sink_plane!=='SESSION_LOCAL_FILESYSTEM'||h.execution_plane!=='SESSION_LOCAL_NODE')e.push('local_plane');
+ if(h.container_github_network_required!==false||h.model_selects_carrier!==false||h.model_selects_fallback!==false||h.chat_is_retry_memory!==false)e.push('negative_controls');
+ if(h.canonical_activation_authority!==true||h.legacy_compatibility_authority!==false||h.authority!==0)e.push('authority');
+ if(!HEX40.test(String(h.source_head||''))||!HEX64.test(String(h.runtime_root_sha256||''))||!HEX64.test(String(h.direct_handoff_receipt_sha256||'')))e.push('binding');
+ if(sourceHead!==null&&h.source_head!==sourceHead)e.push('source_binding');
+ if(runtimeRootSha256!==null&&h.runtime_root_sha256!==runtimeRootSha256)e.push('root_binding');
+ const d=h.direct_handoff||{},input=d.execution_input||{},pre=input.preaccept_handoff||{},x=input.activation_executor||{};
+ if(d.schema!=='ikant-le-direct-executor-handoff/v1'||d.owner!=='PRE_RUNTIME_HOST_ADAPTER'||d.action!=='EXECUTE_PRE_RUNTIME_BOOTSTRAP'||d.active_claim!==false||d.authority!==0)e.push('direct_identity');
+ if(d.receipt_sha256!==h.direct_handoff_receipt_sha256)e.push('direct_receipt_binding');
+ if(d.source_head!==h.source_head||d.runtime_root_sha256!==h.runtime_root_sha256)e.push('direct_identity_binding');
+ if(!HEX64.test(String(d.execution_input_sha256||''))||d.execution_input_sha256!==sha256(Buffer.from(JSON.stringify(input))))e.push('direct_execution_binding');
+ const directMaterial=structuredClone(d);delete directMaterial.receipt_sha256;delete directMaterial.execution_input;
+ if(!HEX64.test(String(d.receipt_sha256||''))||d.receipt_sha256!==sha256(Buffer.from(JSON.stringify(directMaterial))))e.push('direct_receipt_digest');
+ if(pre.schema!=='ikant-le-preaccept-handoff/v2'||pre.repository!=='Luke883i/iKant_LE'||pre.source_head!==h.source_head||pre.terms_presented!==true||pre.frozen!==true||pre.breached!==false||pre.authority!==0)e.push('preaccept');
+ if(!HEX64.test(String(d.preaccept_handoff_sha256||''))||d.preaccept_handoff_sha256!==sha256(Buffer.from(JSON.stringify(pre))))e.push('preaccept_binding');
+ if(input.human_input!=='I ACCEPT')e.push('acceptance');
+ if(!HEX64.test(String(d.activation_executor_receipt_sha256||''))||d.activation_executor_receipt_sha256!==x.receipt_sha256)e.push('executor_binding');
+ const orientation=orientationObjects??pre.orientation_objects??[];
+ const xv=validateActivationExecutorReceipt(x,{sourceHead:h.source_head,runtimeRootSha256:h.runtime_root_sha256,runtimeRootDescriptor,orientationObjects:orientation});
+ if(!xv.ok)e.push(...xv.errors.map(y=>'executor:'+y));
+ if(x.byte_path!=='VERIFIED_OPAQUE_RELAY'||x.model_mediated_bytes!==true||x.model_role!=='OPAQUE_TRANSPORT_ONLY'||x.model_rewrite_allowed!==false||x.semantic_equivalence_allowed!==false||x.source_arrival_samehash_required!==true||x.source_arrival_samehash_verified!==true||x.opaque_relay_roundtrip_verified!==true||x.retry_count!==0||x.retry_semantics!=='IDEMPOTENT_BY_OBJECT_IDENTITY'||x.execution_plane!=='SESSION_LOCAL_NODE'||x.content_addressed!==true||x.acquisition_complete!==true)e.push('canonical_executor');
+ for(const forbidden of ['channel_ledger','fastboot_step','fastboot_convergence','attempt_receipt_sha256','selected_carrier','transfer_mode'])if(forbidden in h||forbidden in d)e.push('legacy_field:'+forbidden);
+ if(!HEX64.test(String(h.receipt_sha256||''))||digestWithout(h)!==h.receipt_sha256)e.push('receipt_digest');
+ return{ok:e.length===0,errors:[...new Set(e)],source_head:h.source_head||null,runtime_root_sha256:h.runtime_root_sha256||null,activation_executor:x,preaccept_handoff:pre,receipt_sha256:h.receipt_sha256||null,authority_class:e.length?null:CANONICAL_COMPOSITION_AUTHORITY};
+}
+
 function validateOrientationReadback(workspace,rows){const e=[];for(const x of rows||[]){let b;try{b=fs.readFileSync(path.join(workspace,x.path));}catch{e.push('missing:'+x.path);continue;}if(gitBlobSha1(b)!==x.blob_sha1||b.length!==x.bytes)e.push('identity:'+x.path);}return e.length?bad(e):{ok:true,orientation_object_set_sha256:orientationObjectSetDigest(rows)};}
 
 export function validateTransferRemoteHistory(receipt,{sourceHead,runtimeRootSha256,runtimeRootDescriptor=null,maxReads=8,maxRounds=1,flexMaxReads=40,flexMaxRounds=1,deadlineMs=CHAT_BOOTSTRAP_DEADLINE_MS}={}){

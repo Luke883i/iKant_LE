@@ -1,9 +1,9 @@
 export { transitionPure,bootstrapMode,bootstrapDecisionPure,nodeDispatchReceiptPure } from './runtime-core.mjs';
-export { runCommand,resumeActivation } from './runtime-command.mjs';
+export { runCommand,resumeActivation,runCanonicalSessionChat,canonicalActiveReadback } from './runtime-command.mjs';
 export { referencesCanonicalRepository,compileFirstContactPlan,FIRST_CONTACT_CAPSULE,FIRST_CONTACT_FORBIDDEN,REPOSITORY_TRANSPORT,SOURCE_HEAD_BINDING } from './first-contact.mjs';
 export { readLifeConsciousnessKernel,gateDesignSatisfied,profileDesignSatisfied,assessDesign,validateGateReceipt,profileEvidenceSatisfied,safetySatisfied,qualifyRuntime,ALL_GATES as LIFE_CONSCIOUSNESS_GATES } from './life-consciousness.mjs';
 
-export { CHAT_BOOTSTRAP_DEADLINE_MS,ACTIVATION_SLO_MS,ACTIVATION_EXECUTOR_SCHEMA,CHAT_BOOTSTRAP_EVIDENCE_V2,validateActivationExecutorReceipt,validateSourceBoundTransfer,validateLocalMaterializationReceipt,readLocalMaterializationReceipt,validateChatBootstrapEvidence,totalDeadlineOk,validateAcceptanceOriginReceipt,validateTransferRemoteHistory,validateActivationContinuationReceipt } from './bootstrap-semantic.mjs';
+export { CHAT_BOOTSTRAP_DEADLINE_MS,ACTIVATION_SLO_MS,ACTIVATION_EXECUTOR_SCHEMA,CHAT_BOOTSTRAP_EVIDENCE_V2,CANONICAL_COMPOSITION_HANDOFF_SCHEMA,CANONICAL_COMPOSITION_AUTHORITY,validateActivationExecutorReceipt,validateCanonicalCompositionHandoff,validateSourceBoundTransfer,validateLocalMaterializationReceipt,readLocalMaterializationReceipt,validateChatBootstrapEvidence,totalDeadlineOk,validateAcceptanceOriginReceipt,validateTransferRemoteHistory,validateActivationContinuationReceipt } from './bootstrap-semantic.mjs';
 export { classifyRuntimeAvailability,validateRuntimeAvailabilityDecision,availabilityFromBootstrapFailure,classifyTurnRelease,ACTIVATION_SERVICE_TIERS,deriveActivationServiceTier,validateActivationServiceTier,assessLimitedTurnClosure,validateLimitedTurnClosure } from './runtime-availability.mjs';
 export { DEADLINE_RESULT,isDeadlineTerminal,classifyDeadlineEvidence,admissionEpochRecoverable,canUseManualRecovery,canResumeActivation } from './deadline-integrity.mjs';
 
