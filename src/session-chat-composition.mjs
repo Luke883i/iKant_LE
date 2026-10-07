@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import {validateDirectExecutorHandoff} from './bootstrap-intent-adapter.mjs';
+import {validateDirectExecutorHandoff,directActivationExecutorHandoff} from './bootstrap-intent-adapter.mjs';
 
 export const CANONICAL_COMPOSITION_HANDOFF_SCHEMA='ikant-le-c59-canonical-composition-handoff/v1';
 const sha256=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
@@ -62,6 +62,11 @@ export function issueCanonicalCompositionHandoff(directHandoff){
  const out={...material,receipt_sha256:sha256(material)},v=validateCanonicalCompositionHandoff({...material,receipt_sha256:sha256(material)});
  if(!v.ok)throw new Error('canonical composition handoff invalid: '+v.errors.join(','));
  return out;
+}
+
+export function issueCanonicalSessionChatComposition({preacceptHandoff,activationExecutor,humanInput,acceptanceObservedMonotonicMs}={}){
+ const direct=directActivationExecutorHandoff({preacceptHandoff,activationExecutor,humanInput,acceptanceObservedMonotonicMs});
+ return issueCanonicalCompositionHandoff(direct.handoff);
 }
 
 export function canonicalCompositionExecutionInput(handoff){
