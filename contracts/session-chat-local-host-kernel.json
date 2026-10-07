@@ -1,0 +1,142 @@
+{
+  "schema": "ikant-le-session-chat-local-host-kernel/v2",
+  "slice": "C58.SESSION_CHAT_LOCAL_ACTION_KERNEL",
+  "authority": 0,
+  "repository": {
+    "full_name": "Luke883i/iKant_LE",
+    "url": "https://github.com/Luke883i/iKant_LE",
+    "branch": "main",
+    "source_head_binding": "GITHUB_API_EXACT_MAIN_HEAD_ONCE"
+  },
+  "trigger": {
+    "event": "ANY_FIRST_USER_INPUT",
+    "action": "START_FROM_REPO",
+    "before_substantive_response": true,
+    "preserve_pending_intent": "BYTE_EXACT"
+  },
+  "action_program": [
+    {
+      "id": "000",
+      "name": "START_FROM_REPO",
+      "owner": "HOST_ADAPTER",
+      "effect": "BEGIN_CANONICAL_REPOSITORY_BOOTSTRAP"
+    },
+    {
+      "id": "100",
+      "name": "BIND_SOURCE",
+      "owner": "REPOSITORY_TRANSPORT",
+      "transport": "GITHUB_API_ONLY",
+      "output": "SOURCE_HEAD"
+    },
+    {
+      "id": "110",
+      "name": "READ_ORIENTATION",
+      "owner": "REPOSITORY_TRANSPORT",
+      "paths": [
+        "README.md",
+        "BOOTSTRAP.json",
+        "ADMISSION.json",
+        "AGENTS.md",
+        "TERMS.md"
+      ],
+      "exact_ref": "SOURCE_HEAD"
+    },
+    {
+      "id": "120",
+      "name": "PRESENT_TERMS",
+      "owner": "TERMS.md",
+      "effect": "PRESENT_EXACT_TERMS"
+    },
+    {
+      "id": "130",
+      "name": "FREEZE",
+      "owner": "HOST_ADAPTER",
+      "effect": "FREEZE_PREACCEPT_ACQUISITION"
+    },
+    {
+      "id": "140",
+      "name": "WAIT_ACCEPTANCE",
+      "owner": "ADMISSION",
+      "exact_input": "I ACCEPT",
+      "type": "STOP"
+    },
+    {
+      "id": "200",
+      "name": "ACCEPT",
+      "owner": "ADMISSION",
+      "effect": "REUSE_FROZEN_SOURCE_AND_PENDING_INTENT"
+    },
+    {
+      "id": "300",
+      "name": "ACTIVATE_FIRST",
+      "owner": "REPOSITORY_OWNER_LOOP",
+      "one_next": true,
+      "one_action": true,
+      "model_selects_carrier": false
+    },
+    {
+      "id": "310",
+      "name": "MATERIALIZE_LOCAL",
+      "owner": "LOCAL_EXECUTOR_V1",
+      "allowed_only_after_acceptance": true,
+      "content_addressed_runtime_root": true,
+      "readback_required": true
+    },
+    {
+      "id": "400",
+      "name": "RUNTIME_ROUTE",
+      "owner": "LOCAL_RUNTIME",
+      "allowed_only_after_active": true
+    },
+    {
+      "id": "900",
+      "name": "EXIT",
+      "owner": "LOCAL_RUNTIME",
+      "exact_input": "EXIT IKANT"
+    },
+    {
+      "id": "990",
+      "name": "EDGE_STOP",
+      "owner": "CURRENT_EDGE",
+      "scope": "CURRENT_EDGE_ONLY",
+      "type": "STOP"
+    }
+  ],
+  "preaccept": {
+    "transport": "GITHUB_API_ONLY",
+    "materialize_local": false,
+    "generic_discovery": false
+  },
+  "postaccept": {
+    "mode": "ACTIVATE_FIRST",
+    "runtime_root_exact_source": true,
+    "probe_required": true,
+    "active_readback_required": true,
+    "resume_pending_after_active_only": true
+  },
+  "negative_controls": {
+    "repository_symbol_is_host_capability": false,
+    "tool_presence_is_success": false,
+    "tool_absence_is_carrier_unavailable": false,
+    "unknown_is_false": false,
+    "chat_is_ledger": false,
+    "model_may_invent_receipts": false,
+    "model_may_emulate_owner_from_source": false,
+    "future_blocker_search": false,
+    "substitute_ikant_output": false
+  },
+  "prompt_form": {
+    "style": "COBOL_LIKE_NATURAL_LANGUAGE",
+    "flat_sections": true,
+    "indentation": false,
+    "named_actions": true,
+    "named_stops": true,
+    "single_assignment_semantics": true
+  },
+  "qualification": {
+    "adversarial_cases": 10000,
+    "mutation_families": 32,
+    "all_families_must_be_covered": true,
+    "surviving_harmful_mutants_required": 0
+  }
+}

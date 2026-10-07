@@ -5,13 +5,37 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import {deploySessionChatRuntime,readSessionChatDeployment,openDeployedSession,acceptDeployedSession,runDeployedSessionTurn} from '../src/session-chat-deployment.mjs';
+import {deploySessionChatRuntime,ensureSessionChatDeployment,readSessionChatDeployment,openDeployedSession,acceptDeployedSession,runDeployedSessionTurn} from '../src/session-chat-deployment.mjs';
 import {validateAcceptanceOriginReceipt} from '../src/bootstrap-semantic.mjs';
 import {availabilityFromBootstrapFailure} from '../src/runtime-availability.mjs';
 
 const root=path.resolve(new URL('..',import.meta.url).pathname);
 const temp=()=>fs.mkdtempSync(path.join(os.tmpdir(),'ikant-le-c20-'));
 const sha=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+
+test('C58 ensure-on-start creates once, reopens exactly and is idempotent',{concurrency:false},()=>{
+ const d=temp(),deployment=path.join(d,'deploy');try{
+  const first=ensureSessionChatDeployment({deploymentRoot:deployment});
+  assert.equal(first.created,true);assert.equal(first.ensured,true);
+  assert.match(first.deployment.deployment_id,/^auto-[a-f0-9]{12}-[a-f0-9]{12}$/);
+  const second=ensureSessionChatDeployment({deploymentRoot:deployment});
+  assert.equal(second.created,false);assert.equal(second.ensured,true);
+  assert.equal(second.deployment.receipt_sha256,first.deployment.receipt_sha256);
+  assert.equal(second.deployment.source_head,first.deployment.source_head);
+  assert.equal(second.descriptor.runtime_root_sha256,first.descriptor.runtime_root_sha256);
+ }finally{fs.rmSync(d,{recursive:true,force:true});}
+});
+
+test('C58 ensure-on-start fails closed on nonempty unattested deployment root',{concurrency:false},()=>{
+ const d=temp(),deployment=path.join(d,'deploy');try{fs.mkdirSync(deployment,{recursive:true});fs.writeFileSync(path.join(deployment,'junk'),'x');assert.throws(()=>ensureSessionChatDeployment({deploymentRoot:deployment}),/deployment root exists without attestation/);}finally{fs.rmSync(d,{recursive:true,force:true});}
+});
+
+test('C58 deployment source binding rejects dirty distributed bytes',{concurrency:false},()=>{
+ const file=path.join(root,'README.md'),before=fs.readFileSync(file);const d=temp();try{
+  fs.appendFileSync(file,'\nC58-DIRTY-SOURCE-PROBE\n');
+  assert.throws(()=>ensureSessionChatDeployment({deploymentRoot:path.join(d,'deploy')}),/deployment source worktree drift/);
+ }finally{fs.writeFileSync(file,before);fs.rmSync(d,{recursive:true,force:true});}
+});
 
 test('C20 deploy-once store attests exact candidate HEAD and reference runtime',{concurrency:false},()=>{
  const d=temp();try{const dep=deploySessionChatRuntime({deploymentRoot:path.join(d,'deploy'),deploymentId:'D-C20'});const head=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();assert.equal(dep.source_head,head);assert.equal(dep.repository_transfer_per_chat,false);assert.equal(dep.reference_root_reopen_verified,true);assert.equal(dep.physical_chatgpt_registration_proven,false);assert.equal(readSessionChatDeployment(path.join(d,'deploy')).deployment.receipt_sha256,dep.receipt_sha256);}finally{fs.rmSync(d,{recursive:true,force:true});}

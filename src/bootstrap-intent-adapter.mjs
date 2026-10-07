@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import {compileFirstContactPlan} from './first-contact.mjs';
+import {classifyLifecycleIntent} from './contract.mjs';
 import {validateActivationExecutorReceipt} from './bootstrap-semantic.mjs';
 import {runtimeRootDescriptor,validateRuntimeRootDescriptor} from './runtime-root-verified.mjs';
 import {validateControlPlaneOwnership} from './control-plane-ownership.mjs';
@@ -10,25 +11,14 @@ export const DIRECT_EXECUTOR_HANDOFF_SCHEMA='ikant-le-direct-executor-handoff/v1
 export const BOOTSTRAP_READINESS_SCHEMA='ikant-le-bootstrap-readiness/v1';
 
 const digest=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
-const normalize=value=>String(value??'').normalize('NFKC').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').toLowerCase().replace(/[_.,;:!?()[\]{}'"]+/g,' ').replace(/\s+/g,' ').trim();
-const NEGATION=/(^|\s)(non|no|not|don t|dont|do not)(\s|$)/;
-
 export function classifyHumanIntent(input){
- const raw=String(input??''),n=normalize(raw);let kind='OTHER';
- const start=/(^|\s)(inizializza|inizializzare|avvia|avviare|attiva|attivare|start|initialize|activate)\s+(?:i\s*kant|ikant)(\s|$)/.test(n);
- const exit=/(^|\s)(chiudi|disattiva|stop|exit|release)\s+(?:i\s*kant|ikant)(\s|$)/.test(n)||/(^|\s)esci\s+da\s+(?:i\s*kant|ikant)(\s|$)/.test(n);
- if(!NEGATION.test(n)){if(start)kind='ACTIVATE_IKANT';else if(exit)kind='EXIT_IKANT';}
- return{schema:HUMAN_INTENT_SCHEMA,kind,raw_sha256:crypto.createHash('sha256').update(raw).digest('hex'),authority:0};
+ const x=classifyLifecycleIntent(input);
+ return{schema:HUMAN_INTENT_SCHEMA,kind:x.kind,raw_sha256:x.raw_sha256,authority:0};
 }
 
 export function compileIntentAwareFirstContact(input){
- const intent=classifyHumanIntent(input);
- if(intent.kind==='ACTIVATE_IKANT'){
-  const plan=compileFirstContactPlan('iKant_LE');
-  return{next:{...plan,pending_intent:String(input??''),preserve_pending_intent:true},intent};
- }
- if(intent.kind==='EXIT_IKANT')return{next:{schema:'ikant-le-human-intent-next/v1',recognized:true,terminal:'OWNER_DELEGATION_REQUIRED',action:'DELEGATE_EXIT_TO_CURRENT_OWNER',authority:0},intent};
- return{next:compileFirstContactPlan(input),intent};
+ const intent=classifyHumanIntent(input),plan=compileFirstContactPlan('iKant_LE'),pendingIntent=String(input??'');
+ return{next:{...plan,pending_intent:pendingIntent,preserve_pending_intent:true,first_input_bootstrap:true},intent};
 }
 
 export function issueAcceptanceObservation({humanInput,sourceHead,termsObject,observedMonotonicMs}={}){
@@ -56,9 +46,10 @@ export function validateDirectExecutorHandoff(h){const e=[];if(h?.schema!==DIREC
 export function deriveExitDelegation({controlPlaneOwnership=null,runtimeActive=false}={}){if(controlPlaneOwnership!==null){const e=validateControlPlaneOwnership(controlPlaneOwnership);if(e.length)throw new Error('control-plane ownership invalid:'+e.join(','));if(controlPlaneOwnership.state==='IKANT_OWNED')return{schema:'ikant-le-exit-next/v1',owner:'CONTROL_PLANE_OWNERSHIP',action:'RELEASE_TO_HOST',active_claim:false,authority:0};}if(runtimeActive===true)return{schema:'ikant-le-exit-next/v1',owner:'CANONICAL_RUNTIME',action:'EXIT IKANT',active_claim:false,authority:0};return{schema:'ikant-le-exit-next/v1',owner:'HOST_ADAPTER',action:'EXIT_COMPLETE',active_claim:false,authority:0};}
 export function projectBootstrapReadiness({next=null,handoff=null,intent=null,ownerPublicLine=null}={}){
  let state='WAITING_OWNER',publicLine=ownerPublicLine||'iKant · VERIFICA';
- if(intent?.kind==='EXIT_IKANT'){state='EXIT_REQUESTED';publicLine='iKant · CHIUDI';}
+ if(next?.terminal==='CANONICAL_PREACCEPT'){state='ORIENTATION_REQUIRED';publicLine='iKant · PREPARA';}
+ else if(next?.terminal==='HOST_ONLY'){state='HOST_ONLY';publicLine='';}
+ else if(intent?.kind==='EXIT_IKANT'){state='EXIT_REQUESTED';publicLine='iKant · CHIUDI';}
  else if(handoff?.action==='EXECUTE_PRE_RUNTIME_BOOTSTRAP'){state='MATERIALIZATION_READY';publicLine='iKant · MATERIALIZZA';}
- else if(next?.terminal==='CANONICAL_PREACCEPT'){state='ORIENTATION_REQUIRED';publicLine='iKant · PREPARA';}
  else if(ownerPublicLine){state='OWNER_GUIDANCE';publicLine=ownerPublicLine;}
  if(publicLine.length>32)throw new Error('compressed bootstrap line too long');
  return{schema:BOOTSTRAP_READINESS_SCHEMA,state,public_line:publicLine,persisted:false,authority:0};

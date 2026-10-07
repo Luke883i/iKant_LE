@@ -1,18 +1,16 @@
 # iKant_LE SESSION_CHAT reference app
 
-This package is the **deploy-once** C20 profile. It does not weaken the one-shot C15/C17/C18/C19 path.
+This package is the **C58 ensure-bound SESSION_CHAT profile** built on the C20 deployed-session substrate. Startup ensures or reopens one exact local deployment before the model-visible open binding exists; it does not weaken the one-shot C15/C17/C18/C19 path.
 
-## Deploy once
+## Start the local binding
 
 ```bash
-export IKANT_LE_DEPLOYMENT_ROOT=/var/lib/ikant-le/session-chat
-printf '{"deployment_id":"release-1"}' | node scripts/session-chat-runtime-cli.mjs deploy
 cd plugins/ikant-le-session-chat/server
 npm install --ignore-scripts --no-audit --no-fund
 PORT=8788 IKANT_LE_DEPLOYMENT_ROOT=/var/lib/ikant-le/session-chat npm start
 ```
 
-The deployment copies and verifies only the canonical orientation capsule plus the 8 runtime-root transport objects, materializes a reference root, reopens every member, and stores a source-bound deployment attestation.
+Server startup performs one deterministic `ensure`: if the deployment is absent it creates the exact current source-bound deployment; if it exists it reopens and verifies it against the current repository HEAD and runtime-root. Source/root drift or a corrupt partial deployment fails closed before the MCP tool is exposed. Explicit `deploy` remains available for operators that want to provision the store separately.
 
 ## Connect ChatGPT
 
@@ -26,7 +24,7 @@ Per chat the app performs **no repository transfer**. It binds the host session 
 4. invokes the canonical iKant_LE runtime;
 5. requires live probe, writer/persistence, final deadline PASS, ACTIVE commit and ledger readback.
 
-Only `ikant_le_open` is model-visible. Acceptance and substantive ACTIVE turns are app-only.
+Only `ikant_le_open` is model-visible. Acceptance and substantive ACTIVE turns are app-only. The server refuses to start unless the configured deployment can be fully reopened and validated, so a visible connected binding is never backed by a missing or corrupt deployment. Use `docs/SESSION_CHAT_LOCAL_PROMPT.md` as the session-side cold-start instruction; it reduces the model role to the binary HOST_ONLY vs IKANT_OPEN route. `npm run prompt:session-chat-local` prints the exact canonical bytes; add `-- --receipt` to print its version/hash receipt.
 
 ## Claim boundary
 
