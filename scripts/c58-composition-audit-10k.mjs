@@ -8,7 +8,7 @@ const firstInputs=['ciao','audit della sessione','EXIT IKANT','I ACCEPT','studia
 const compiled=firstInputs.map(input=>({input,x:compileIntentAwareFirstContact(input)}));
 const expectedActions=['START_FROM_REPO','BIND_SOURCE','READ_ORIENTATION','PRESENT_TERMS','FREEZE','WAIT_ACCEPTANCE','ACCEPT','ACTIVATE_FIRST','MATERIALIZE_LOCAL','RUNTIME_ROUTE','EXIT','EDGE_STOP'];
 const baseline={
- kernel_v3:K.schema==='ikant-le-session-chat-local-host-kernel/v3',
+ kernel_v4:K.schema==='ikant-le-session-chat-local-host-kernel/v4',
  first_input_exec:compiled.every(({input,x})=>x.next?.terminal==='CANONICAL_PREACCEPT'&&x.next?.pending_intent===input&&x.next?.preserve_pending_intent===true),
  action_program:JSON.stringify(K.action_program?.map(x=>x.name))===JSON.stringify(expectedActions),
  api_only_preaccept:K.preaccept?.transport==='GITHUB_API_ONLY'&&K.preaccept?.materialize_local===false,
