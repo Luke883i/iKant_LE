@@ -487,7 +487,7 @@
       "source_bytes": 549996,
       "loader": {
         "path": "src/runtime-root-verified.mjs",
-        "blob_sha1": "0f624077551efdc2bdb786d7d7b00da3290776a3"
+        "blob_sha1": "ef630b2de59acce6e6887977d287cf67bb2e434c"
       },
       "shards": [
         {
@@ -848,7 +848,7 @@
           "shard": 3
         }
       ],
-      "runtime_root_sha256": "d4afa0489aa494ac409831c81b164a6da2517826e1f659a4a0b878a0316dd38c"
+      "runtime_root_sha256": "ca55ce4701cb1a77dd320e878fe9bfe5ce90fff805aab7eae5ec75a769915b69"
     },
     "max_post_accept_remote_reads": 8,
     "deadline_ms": 120000,
@@ -1051,8 +1051,8 @@
       "schema": "ikant-le-pre-runtime-kernel/v2",
       "contract": "contracts/pre-runtime-kernel.json",
       "path": "src/runtime-root-verified.mjs",
-      "blob_sha1": "0f624077551efdc2bdb786d7d7b00da3290776a3",
-      "bytes": 57655,
+      "blob_sha1": "ef630b2de59acce6e6887977d287cf67bb2e434c",
+      "bytes": 57835,
       "direct_known_path": true,
       "stdlib_only": true,
       "reuses_runtime_root_loader": true,
