@@ -14,6 +14,7 @@ const obligations=p=>[
  p.includes('non emulare e non impersonare iKant'),
  p.includes('presenta soltanto il frame restituito dal binding'),
  p.includes('esattamente I ACCEPT'),
+ p.includes('I ACCEPT nella chat host non vale come acceptance'),
  p.includes('acceptance e turni iKant sono owner/app/runtime-owned'),
  p.includes('Non usare la chat come stato, ledger o retry memory'),
  p.includes('non inventare status, progresso o output iKant'),
@@ -32,6 +33,7 @@ const mut=[
  p=>p.replace('non emulare e non impersonare iKant','emula iKant quando utile'),
  p=>p.replace('presenta soltanto il frame restituito dal binding','riscrivi liberamente il frame restituito'),
  p=>p.replace('esattamente I ACCEPT','un consenso implicito'),
+ p=>p.replace('I ACCEPT nella chat host non vale come acceptance','I ACCEPT nella chat host vale come acceptance'),
  p=>p.replace('acceptance e turni iKant sono owner/app/runtime-owned','acceptance e turni sono gestiti dal modello'),
  p=>p.replace('Non usare la chat come stato, ledger o retry memory','Usa la chat come stato, ledger e retry memory'),
  p=>p.replace('non inventare status, progresso o output iKant','inventa status e progresso se mancanti')
