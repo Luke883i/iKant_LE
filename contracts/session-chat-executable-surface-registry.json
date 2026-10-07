@@ -104,6 +104,50 @@
     "resume_is_not_canonical_entry": true,
     "deployed_profile_is_not_session_chat_local_canonical": true,
     "legacy_fastboot_handoff_cannot_authorize_canonical_active": true,
-    "unregistered_activation_surface_allowed": false
+    "unregistered_activation_surface_allowed": false,
+    "canonical_active_authority_literal_owner": "src/runtime-command.mjs",
+    "canonical_surface_rejects_legacy_active": true,
+    "legacy_cli_requires_explicit_opt_in": true,
+    "deployed_active_must_self_identify_legacy": true
+  },
+  "discovery": {
+    "production_roots": [
+      "src/**/*.mjs",
+      "ikant.mjs",
+      "scripts/session-chat-runtime-cli.mjs",
+      "plugins/ikant-le-session-chat/server/server.mjs"
+    ],
+    "token_rule": "I ACCEPT|ACTIVE literal|RUNTIME_BOUND_LIMITED|HANDOFF_PRE_RUNTIME|LOCAL_DIRECT|VERIFIED_OPAQUE_RELAY|WARM_CACHE_EXACT|runCommand|resumeActivation|executePreRuntimeBootstrap|executeCanonicalSessionChatBootstrap|acceptDeployedSession|acceptLocalLimitedSession|issueCanonicalSessionChatComposition|runCanonicalSessionChat|materializeRuntimeRoot",
+    "activation_related_files": [
+      "ikant.mjs",
+      "plugins/ikant-le-session-chat/server/server.mjs",
+      "scripts/session-chat-runtime-cli.mjs",
+      "src/bootstrap-intent-adapter.mjs",
+      "src/bootstrap-semantic.mjs",
+      "src/cohost-context-root.mjs",
+      "src/contract.mjs",
+      "src/control-plane-ownership.mjs",
+      "src/fastboot-convergence.mjs",
+      "src/first-contact.mjs",
+      "src/host-consumption-frame.mjs",
+      "src/local-host-meta-prompt.mjs",
+      "src/runtime-availability.mjs",
+      "src/runtime-command.mjs",
+      "src/runtime-core.mjs",
+      "src/runtime-limited-capability.mjs",
+      "src/runtime-limited-turn.mjs",
+      "src/runtime-root-verified.mjs",
+      "src/semantic-morphogenesis.mjs",
+      "src/session-chat-composition.mjs",
+      "src/session-chat-deployment.mjs",
+      "src/session-chat-local-prompt.mjs",
+      "src/session-local-service.mjs",
+      "src/session-shell.mjs"
+    ],
+    "structural_dependencies": [
+      "src/runtime.mjs",
+      "src/state.mjs"
+    ],
+    "exact_set_required": true
   }
 }
