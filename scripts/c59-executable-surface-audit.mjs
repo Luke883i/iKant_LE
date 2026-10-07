@@ -22,8 +22,8 @@ const discovered=production.filter(p=>activationRe.test(fs.readFileSync(path.joi
 const declared=[...(R.discovery?.activation_related_files||[])].sort();
 const errors=[];
 if(JSON.stringify(discovered)!==JSON.stringify(declared))errors.push('activation_related_file_set');
-const issuers=(R.surfaces||[]).filter(x=>x.may_issue_canonical_active===true);
-if(issuers.length!==1||issuers[0]?.ref!=='src/runtime-command.mjs#runCanonicalSessionChat')errors.push('canonical_issuer');
+const issuers=(R.surfaces||[]).filter(x=>x.may_issue_canonical_active===true);const materializer=(R.surfaces||[]).find(x=>x.id==='PRE_RUNTIME_MATERIALIZER');
+if(issuers.length!==1||issuers[0]?.ref!=='src/runtime-command.mjs#runCanonicalSessionChat')errors.push('canonical_issuer');if(materializer?.ref!=='src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap'||materializer?.classification!=='CANONICAL_INTERNAL_EDGE')errors.push('canonical_materializer_registry');
 const src=p=>fs.readFileSync(path.join(ROOT,p),'utf8');
 const runtime=src('src/runtime-command.mjs'),semantic=src('src/bootstrap-semantic.mjs'),pre=src('src/runtime-root-verified.mjs'),entry=src('src/local-host-meta-prompt.mjs'),cli=src('ikant.mjs'),deployed=src('src/session-chat-deployment.mjs');
 if(!semantic.includes("export function validateCanonicalCompositionHandoff")||!semantic.includes("CANONICAL_COMPOSITION_AUTHORITY='C59_CANONICAL'"))errors.push('shared_runtime_predicate');

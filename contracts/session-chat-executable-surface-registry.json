@@ -85,7 +85,7 @@
     {
       "id": "PRE_RUNTIME_MATERIALIZER",
       "kind": "materializer",
-      "ref": "src/runtime-root-verified.mjs#executePreRuntimeBootstrap",
+      "ref": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
       "classification": "CANONICAL_INTERNAL_EDGE",
       "may_issue_canonical_active": false
     }

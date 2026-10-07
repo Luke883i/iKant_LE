@@ -63,8 +63,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: C58/C59 focused runtime tests
-        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs tests/c59-single-composition.test.mjs tests/c59-canonical-authority-gate.test.mjs tests/c59-runtime-dominator.test.mjs tests/c59-project-host-rom.test.mjs tests/c59-orientation-closure.test.mjs
+      - name: C58/C59 lifecycle/prompt boundary
+        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs
+      - name: C59 composition contract closure
+        if: always()
+        run: node --test --test-concurrency=1 tests/c59-single-composition.test.mjs
+      - name: C59 canonical authority gate
+        if: always()
+        run: node --test --test-concurrency=1 tests/c59-canonical-authority-gate.test.mjs
+      - name: C59 materialized runtime dominator
+        if: always()
+        run: node --test --test-concurrency=1 tests/c59-runtime-dominator.test.mjs
+      - name: C59 Project ROM parity
+        if: always()
+        run: node --test --test-concurrency=1 tests/c59-project-host-rom.test.mjs
+      - name: C59 orientation closure
+        if: always()
+        run: node --test --test-concurrency=1 tests/c59-orientation-closure.test.mjs
       - name: C59 10k composition audit
         run: node scripts/c58-composition-audit-10k.mjs
       - name: C59 10k prompt mutations
