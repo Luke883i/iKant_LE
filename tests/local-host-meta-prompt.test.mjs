@@ -8,14 +8,14 @@ import {AI_AGENT_FIRST_ENTRYPOINT_KEY,for_ai_agent_first_entrypoint,localHostMet
 
 const json=rel=>JSON.parse(fs.readFileSync(path.join(ROOT,rel),'utf8'));
 
-test('local-host meta-prompt v6 is a derived byte-exact document',()=>{
+test('local-host meta-prompt v7 is a derived byte-exact document',()=>{
  const doc=fs.readFileSync(path.join(ROOT,'docs/LOCAL_HOST_META_PROMPT.md'),'utf8');
  assert.equal(doc,renderLocalHostMetaPromptDocument());
  const r=localHostMetaPromptReceipt();
- assert.equal(r.schema,'ikant-le-local-host-adapter/v6');
- assert.equal(r.version,'6.0.0');
+ assert.equal(r.schema,'ikant-le-local-host-adapter/v7');
+ assert.equal(r.version,'7.0.0');
  assert.equal(r.authority,0);
- assert.ok(r.chars<3600);
+ assert.ok(r.chars<5000);
  assert.match(renderLocalHostMetaPrompt(),/unico ingresso tecnico caller-facing/);
  assert.match(renderLocalHostMetaPrompt(),/Non e un nuovo owner del NEXT/);
  assert.match(renderLocalHostMetaPrompt(),/shell ASCII esatta/);

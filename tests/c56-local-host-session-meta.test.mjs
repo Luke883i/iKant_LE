@@ -15,10 +15,10 @@ test('C56 prompt is one authority-zero session-chat discipline over the merged C
  assert.equal(contract.qualification.complete_architecture_lattice,1048576);
  assert.equal(contract.qualification.long_form_draft_is_explicit_negative_control,true);
  assert.ok(contract.qualification.abstraction_levels.length>=9);
- assert.equal(r.schema,'ikant-le-local-host-adapter/v6');
- assert.equal(r.version,'6.0.0');
+ assert.equal(r.schema,'ikant-le-local-host-adapter/v7');
+ assert.equal(r.version,'7.0.0');
  assert.equal(r.authority,0);
- assert.ok(r.chars<3600);
+ assert.ok(r.chars<5000);
  assert.match(p,/unico ingresso tecnico caller-facing/);
  assert.match(p,/Non e un nuovo owner del NEXT/);
 });

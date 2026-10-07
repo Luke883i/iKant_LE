@@ -11,7 +11,7 @@ test('C55 contract and prompt remain authority-zero',()=>{
  const p=renderLocalHostMetaPrompt(),e=readAiAgentFirstEntrypoint(),r=localHostMetaPromptReceipt();
  assert.equal(contract.irreducible_mechanisms.length,17);
  assert.equal(contract.qualification.full_architecture_lattice,131072);
- assert.equal(r.schema,'ikant-le-local-host-adapter/v6');
+ assert.equal(r.schema,'ikant-le-local-host-adapter/v7');
  assert.equal(r.authority,0);
  assert.match(p,/unico ingresso tecnico caller-facing/);
  assert.match(p,/Non e un nuovo owner del NEXT/);
