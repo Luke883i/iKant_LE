@@ -6,6 +6,7 @@ on:
       - 'BOOTSTRAP.json'
       - 'README.md'
       - 'AGENTS.md'
+      - 'TERMS.md'
       - 'ikant.mjs'
       - 'contracts/session-chat-local-host-kernel.json'
       - 'contracts/session-chat-composition-channel.json'
@@ -24,6 +25,7 @@ on:
       - 'src/session-chat-local-prompt.mjs'
       - 'src/session-chat-composition.mjs'
       - 'src/session-chat-deployment.mjs'
+      - 'plugins/ikant-le-session-chat/server/server.mjs'
       - 'runtime-root/**'
       - 'docs/SESSION_CHAT_LOCAL_PROMPT.md'
       - 'docs/PROJECT_META_PROMPT_COBOL.md'
@@ -35,6 +37,7 @@ on:
       - 'tests/c59-canonical-authority-gate.test.mjs'
       - 'tests/c59-runtime-dominator.test.mjs'
       - 'tests/c59-project-host-rom.test.mjs'
+      - 'tests/c59-orientation-closure.test.mjs'
       - 'scripts/c58-composition-audit-10k.mjs'
       - 'scripts/c58-session-chat-local-prompt-falsify.mjs'
       - 'scripts/c59-pr-history-audit.mjs'
@@ -61,7 +64,7 @@ jobs:
         with:
           node-version: '20'
       - name: C58/C59 focused runtime tests
-        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs tests/c59-single-composition.test.mjs tests/c59-canonical-authority-gate.test.mjs tests/c59-runtime-dominator.test.mjs tests/c59-project-host-rom.test.mjs
+        run: node --test --test-concurrency=1 tests/c58-runtime-lifecycle-gate.test.mjs tests/c59-single-composition.test.mjs tests/c59-canonical-authority-gate.test.mjs tests/c59-runtime-dominator.test.mjs tests/c59-project-host-rom.test.mjs tests/c59-orientation-closure.test.mjs
       - name: C59 10k composition audit
         run: node scripts/c58-composition-audit-10k.mjs
       - name: C59 10k prompt mutations
