@@ -1,5 +1,7 @@
 import crypto from 'node:crypto';
 import {validateDirectExecutorHandoff,directActivationExecutorHandoff} from './bootstrap-intent-adapter.mjs';
+import {validateActivationExecutorReceipt} from './bootstrap-semantic.mjs';
+import {runtimeRootDescriptor} from './runtime-root-verified.mjs';
 
 export const CANONICAL_COMPOSITION_HANDOFF_SCHEMA='ikant-le-c59-canonical-composition-handoff/v1';
 const sha256=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
@@ -21,7 +23,11 @@ export function validateCanonicalCompositionHandoff(value){
  if(!dv.ok)e.push(...dv.errors.map(x=>'direct:'+x));
  if(d?.receipt_sha256!==h.direct_handoff_receipt_sha256)e.push('direct_receipt_binding');
  if(d?.source_head!==h.source_head||d?.runtime_root_sha256!==h.runtime_root_sha256)e.push('direct_identity_binding');
- const x=d?.execution_input?.activation_executor;
+ const x=d?.execution_input?.activation_executor,pre=d?.execution_input?.preaccept_handoff,descriptor=runtimeRootDescriptor();
+ const xv=validateActivationExecutorReceipt(x,{sourceHead:h.source_head,runtimeRootSha256:h.runtime_root_sha256,runtimeRootDescriptor:descriptor,orientationObjects:pre?.orientation_objects||[]});
+ if(!xv.ok)e.push(...xv.errors.map(y=>'executor:'+y));
+ if(pre?.schema!=='ikant-le-preaccept-handoff/v2'||pre?.repository!=='Luke883i/iKant_LE'||pre?.source_head!==h.source_head||pre?.terms_presented!==true||pre?.frozen!==true||pre?.breached!==false||pre?.authority!==0)e.push('preaccept');
+ if(d?.execution_input?.human_input!=='I ACCEPT')e.push('acceptance');
  if(x?.byte_path!=='VERIFIED_OPAQUE_RELAY')e.push('relay_required');
  if(x?.model_mediated_bytes!==true||x?.model_role!=='OPAQUE_TRANSPORT_ONLY')e.push('opaque_transport');
  if(x?.model_rewrite_allowed!==false||x?.semantic_equivalence_allowed!==false)e.push('rewrite');

@@ -25,6 +25,7 @@ on:
       - 'scripts/c59-composition-falsify.mjs'
       - 'scripts/c59-pr-history-audit.mjs'
       - 'scripts/c59-cartesian-closure.mjs'
+      - 'scripts/c59-canonical-authority-falsify.mjs'
       - 'scripts/c59-render-pr-lineage.mjs'
       - 'artifacts/qualification/c59-*'
       - '.github/workflows/c59-single-composition.yml'
@@ -67,6 +68,10 @@ jobs:
         run: |
           node scripts/c59-render-pr-lineage.mjs > /tmp/c59-lineage.md
           diff -u docs/C59_PR1_68_LINEAGE_AUDIT.md /tmp/c59-lineage.md
+      - name: C59 canonical authority 100k mutations
+        run: |
+          node scripts/c59-canonical-authority-falsify.mjs > /tmp/c59-authority.json
+          diff -u artifacts/qualification/c59-canonical-authority-falsification-100k.json /tmp/c59-authority.json
       - name: Runtime root unchanged and valid
         run: npm run runtime-root:verify
       - name: Repository check

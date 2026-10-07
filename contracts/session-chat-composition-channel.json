@@ -78,7 +78,9 @@
     "cartesian_normalized_canonical_classes": 1,
     "cartesian_rejected_vectors": 1166392,
     "cartesian_exclusion_mutants": 29,
-    "cartesian_all_exclusion_mutants_killed": true
+    "cartesian_all_exclusion_mutants_killed": true,
+    "canonical_authority_mutations": 100000,
+    "canonical_authority_survivors_required": 0
   },
   "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
   "history_lineage": "contracts/bootstrap-channel-lineage.json",
@@ -88,6 +90,17 @@
     "cartesian": "artifacts/qualification/c59-cartesian-closure.json",
     "host_primitive": "artifacts/qualification/c59-host-connector-container-witness.json",
     "semantic_lattice": "artifacts/qualification/c59-composition-selection-1k.json",
-    "adversarial": "artifacts/qualification/c59-composition-falsification-100k.json"
+    "adversarial": "artifacts/qualification/c59-composition-falsification-100k.json",
+    "canonical_authority": "artifacts/qualification/c59-canonical-authority-falsification-100k.json"
+  },
+  "authority_gate": {
+    "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "validator": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+    "schema": "ikant-le-c59-canonical-composition-handoff/v1",
+    "canonical_activation_authority_required": true,
+    "legacy_compatibility_authority": false,
+    "legacy_fastboot_handoff_accepted": false,
+    "local_direct_accepted": false,
+    "verified_opaque_relay_required": true
   }
 }
