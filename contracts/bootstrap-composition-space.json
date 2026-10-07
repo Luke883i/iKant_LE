@@ -25,7 +25,7 @@
         "prs": [
           66
         ],
-        "normalize": "HOST_KERNEL_EQUIV"
+        "normalize": "EXCLUDED"
       },
       {
         "id": "ADAPTER_BOUND_ENTRYPOINT",

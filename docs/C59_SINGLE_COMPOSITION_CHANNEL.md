@@ -71,9 +71,9 @@ The lineage contains 52 distinct bootstrap/host-ingress atoms. Every atom has a 
 
 `contracts/bootstrap-composition-space.json` derives ten finite axes from the historical trajectory: ingress adapter, source plane, carrier, byte path, sink, executor, planner, retry state, product profile and activation proof.
 
-The exhaustive product contains **1,166,400 raw vectors**. Eight raw vectors are declared aliases only: four caller adapters times the historical `COLD_API -> GITHUB_API_BASE64` alias. After normalization they collapse to **one canonical equivalence class**. The remaining **1,166,392 vectors are rejected**.
+The exhaustive product contains **1,166,400 raw vectors**. Six raw vectors are declared aliases only: three caller/kernel adapters times the historical `COLD_API -> GITHUB_API_BASE64` alias. The reference app `APP_BOUND_IKANT_LE_OPEN` is excluded because it enters the deployed compatibility profile rather than canonical `SESSION_CHAT_LOCAL`. After normalization they collapse to **one canonical equivalence class**. The remaining **1,166,394 vectors are rejected**.
 
-All 29 single-value exclusion-widening mutants create unsafe alternatives and are therefore killed. This means each excluded historical value is causally necessary to keep outside the canonical quotient.
+All 30 single-value exclusion-widening mutants create unsafe alternatives and are therefore killed. This means each excluded historical value is causally necessary to keep outside the canonical quotient.
 
 The single normalized vector is:
 

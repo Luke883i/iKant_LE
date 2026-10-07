@@ -128,8 +128,8 @@
     {
       "id": "APP_BOUND_IKANT_LE_OPEN",
       "kind": "ingress_adapter",
-      "status": "ABSORBED_INGRESS_ADAPTER",
-      "reason": "host-visible app binding may enter the canonical kernel but cannot alter source/carrier/byte path"
+      "status": "EXCLUDED_LEGACY_PROFILE",
+      "reason": "reference app ikant_le_open enters the legacy deployed compatibility profile; it is not the canonical SESSION_CHAT_LOCAL composition ingress"
     },
     {
       "id": "ADAPTER_BOUND_ENTRYPOINT",
@@ -253,7 +253,7 @@
     "historical_atoms_must_have_terminal_classification": true,
     "cartesian_space": "contracts/bootstrap-composition-space.json",
     "raw_cartesian_vectors": 1166400,
-    "raw_canonical_alias_vectors": 8,
+    "raw_canonical_alias_vectors": 6,
     "normalized_canonical_classes": 1,
     "legacy_aliases_may_not_create_second_composition": true,
     "ingress_adapters_may_not_change_composition": true

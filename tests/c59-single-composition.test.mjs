@@ -65,11 +65,11 @@ test('C59 Cartesian quotient has one and only one canonical composition class',(
  const a=read('artifacts/qualification/c59-cartesian-closure.json'),s=read('contracts/bootstrap-composition-space.json');
  assert.equal(Object.keys(s.axes).length,10);
  assert.equal(a.raw_vectors,1166400);
- assert.equal(a.raw_canonical_alias_vectors,8);
+ assert.equal(a.raw_canonical_alias_vectors,6);
  assert.equal(a.normalized_canonical_classes,1);
- assert.equal(a.rejected_vectors,1166392);
+ assert.equal(a.rejected_vectors,1166394);
  assert.equal(a.excluded_value_accepted,0);
- assert.equal(a.exclusion_mutants,29);
+ assert.equal(a.exclusion_mutants,30);
  assert.equal(a.all_exclusion_mutants_killed,true);
  assert.equal(a.status,'PASS');
 });

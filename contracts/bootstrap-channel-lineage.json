@@ -212,8 +212,7 @@
     },
     {
       "id": "APP_BOUND_IKANT_LE_OPEN",
-      "class": "INGRESS_ADAPTER_ALIAS",
-      "normalizes_to": "SESSION_CHAT_LOCAL_HOST_KERNEL"
+      "class": "EXCLUDED_LEGACY_PROFILE"
     },
     {
       "id": "ADAPTER_BOUND_ENTRYPOINT",
