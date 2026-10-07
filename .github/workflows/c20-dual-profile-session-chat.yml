@@ -28,10 +28,9 @@ jobs:
       - run: npm run falsify:c20
       - name: Install pinned MCP reference dependencies
         run: npm --prefix plugins/ikant-le-session-chat/server install --ignore-scripts --no-audit --no-fund
-      - name: Deploy reference runtime and smoke MCP server
+      - name: Auto-ensure reference runtime and smoke MCP server
         run: |
           export IKANT_LE_DEPLOYMENT_ROOT="$RUNNER_TEMP/ikant-le-deployment"
-          printf '{"deployment_id":"CI-C20"}' | node scripts/session-chat-runtime-cli.mjs deploy > "$RUNNER_TEMP/deploy.json"
           PORT=8788 IKANT_LE_DEPLOYMENT_ROOT="$IKANT_LE_DEPLOYMENT_ROOT" npm --prefix plugins/ikant-le-session-chat/server start > "$RUNNER_TEMP/mcp.log" 2>&1 &
           pid=$!
           for i in $(seq 1 20); do
@@ -39,4 +38,7 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:8788/
+          test -f "$IKANT_LE_DEPLOYMENT_ROOT/deployment.json"
+          printf '{}' | IKANT_LE_DEPLOYMENT_ROOT="$IKANT_LE_DEPLOYMENT_ROOT" node scripts/session-chat-runtime-cli.mjs ensure > "$RUNNER_TEMP/ensure.json"
+          node -e "const x=require(process.env.IKANT_LE_DEPLOYMENT_ROOT+'/deployment.json');if(!x.reference_root_reopen_verified||x.authority!==0)process.exit(1)"
           kill "$pid"
