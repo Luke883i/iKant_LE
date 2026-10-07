@@ -56,7 +56,10 @@
       "initialized",
       "status",
       "epoch"
-    ]
+    ],
+    "inline_exact_orientation_payloads_for_canonical": true,
+    "orientation_local_files_required": false,
+    "runtime_reverification_mode": "INLINE_BYTES_TO_GIT_OBJECT_IDENTITY"
   },
   "automatic_after_acceptance": [
     "ACCEPTANCE_ORIGIN_COMMIT",

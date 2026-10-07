@@ -136,7 +136,8 @@
   "preaccept": {
     "transport": "GITHUB_API_ONLY",
     "materialize_local": false,
-    "generic_discovery": false
+    "generic_discovery": false,
+    "frozen_byte_evidence": true
   },
   "postaccept": {
     "mode": "SINGLE_COMPOSITION_CHANNEL",
@@ -160,7 +161,11 @@
     "canonical_authority": "C59_CANONICAL",
     "legacy_active_is_canonical": false,
     "relay_manifest_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayManifest",
-    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor"
+    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor",
+    "pre_acquisition_object_authority": "FROZEN_BOOTSTRAP_REMOTE_PATHS",
+    "runtime_transport_object_count": 8,
+    "orientation_runtime_file_count": 0,
+    "orientation_projection": ".ikant/orientation-projection.json"
   },
   "negative_controls": {
     "repository_symbol_is_host_capability": false,
