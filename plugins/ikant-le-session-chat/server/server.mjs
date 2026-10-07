@@ -9,9 +9,9 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {z} from 'zod';
 import {validateHostConsumptionFrame} from '../../../src/host-consumption-frame.mjs';
-import {readSessionChatDeployment} from '../../../src/session-chat-deployment.mjs';
+import {ensureSessionChatDeployment} from '../../../src/session-chat-deployment.mjs';
 const here=dirname(fileURLToPath(import.meta.url)),repoRoot=resolve(process.env.IKANT_LE_REPO_ROOT||resolve(here,'../../..')),deploymentRoot=resolve(process.env.IKANT_LE_DEPLOYMENT_ROOT||resolve(repoRoot,'.ikant-le-deployed')),cli=resolve(repoRoot,'scripts/session-chat-runtime-cli.mjs'),widget=readFileSync(resolve(here,'public/ikant-le-app.html'),'utf8'),URI='ui://ikant-le/session-chat/v1.html';
-readSessionChatDeployment(deploymentRoot);
+ensureSessionChatDeployment({workspace:repoRoot,deploymentRoot});
 function session(ctx={}){const id=String(ctx?._meta?.['openai/session']||'');if(!id)throw new Error('ChatGPT session metadata unavailable');return id;}
 function runtime(op,payload){return new Promise((ok,bad)=>{const child=spawn(process.execPath,[cli,op],{cwd:repoRoot,env:{...process.env,IKANT_LE_REPO_ROOT:repoRoot},stdio:['pipe','pipe','pipe']});let out='',err='';child.stdout.setEncoding('utf8');child.stderr.setEncoding('utf8');child.stdout.on('data',x=>{out+=x;if(out.length>8*1024*1024)child.kill();});child.stderr.on('data',x=>err+=x);child.on('error',bad);child.on('close',code=>{if(code!==0)return bad(new Error(err.slice(-4000)||'runtime bridge failed'));try{ok(JSON.parse(out));}catch(e){bad(e);}});child.stdin.end(JSON.stringify(payload));});}
 function digest(b){return createHash('sha256').update(b).digest('hex');}
