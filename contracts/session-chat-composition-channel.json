@@ -1,0 +1,71 @@
+{
+  "schema": "ikant-le-single-composition-channel/v1",
+  "slice": "C59.SINGLE_COMPOSITION_CHANNEL",
+  "authority": 0,
+  "objective": "One deterministic SESSION_CHAT_LOCAL composition from pinned GitHub API source to local runtime ACTIVE readback; every live legacy channel is either absorbed or explicitly excluded from canonical activation.",
+  "canonical_path": [
+    "SOURCE_HEAD",
+    "ORIENTATION",
+    "I_ACCEPT",
+    "GITHUB_API_BASE64",
+    "VERIFIED_OPAQUE_RELAY",
+    "SESSION_LOCAL_FILESYSTEM",
+    "LOCAL_EXECUTOR_V1",
+    "MATERIALIZE_REOPEN",
+    "EXECUTED_PROVENANCE",
+    "LIVE_PROBE",
+    "WRITER_READBACK",
+    "ACTIVE_READBACK"
+  ],
+  "canonical_transport": {
+    "source_plane": "GITHUB_API",
+    "source_encoding": "BASE64",
+    "transport": "GITHUB_API_BASE64",
+    "byte_path": "VERIFIED_OPAQUE_RELAY",
+    "sink": "SESSION_LOCAL_FILESYSTEM",
+    "execution_plane": "SESSION_LOCAL_NODE",
+    "container_github_network_required": false,
+    "model_role": "OPAQUE_TRANSPORT_ONLY",
+    "model_selects_carrier": false,
+    "model_selects_fallback": false
+  },
+  "mechanisms": [
+    "K0_SINGLE_CANONICAL_KERNEL",
+    "K1_PINNED_SOURCE_REUSE",
+    "K2_CONNECTOR_BASE64_SOURCE_WITHOUT_CONTAINER_GITHUB_NETWORK",
+    "K3_VERIFIED_OPAQUE_RELAY",
+    "K4_CLOSED_OBJECT_SET",
+    "K5_LOCAL_WRITE_REOPEN_SAMEHASH",
+    "K6_TYPED_OWNER_HANDOFF_NO_CHAT_LEDGER",
+    "K7_CLOSED_LEGACY_CENSUS",
+    "K8_EXECUTED_RUNTIME_PROOF",
+    "K9_ACTIVE_READBACK_BEFORE_PENDING_INTENT"
+  ],
+  "dod": {
+    "global": [
+      "exactly one canonical path can authorize activation",
+      "container GitHub connectivity is not a dependency",
+      "ACTIVE requires physical local execution/readback"
+    ],
+    "intermediate": [
+      "all live legacy channels classified absorbed or excluded",
+      "one canonical prompt/kernel owns caller composition",
+      "multi-carrier planner cannot choose canonical activation"
+    ],
+    "local": [
+      "every relayed object remains source-head/path/blob bound",
+      "local write/reopen samehash required",
+      "identity mismatch blocks instead of carrier fallback",
+      "pending intent resumes only after ACTIVE readback"
+    ]
+  },
+  "qualification": {
+    "selection_cases": 1024,
+    "adversarial_cases": 100000,
+    "unique_minimum_required": true,
+    "unsafe_active_required": 0,
+    "oracle_mismatch_required": 0,
+    "all_deletion_mutants_killed": true
+  },
+  "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json"
+}
