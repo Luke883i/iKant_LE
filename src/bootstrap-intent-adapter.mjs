@@ -9,6 +9,7 @@ export const HUMAN_INTENT_SCHEMA='ikant-le-human-intent/v1';
 export const ACCEPTANCE_OBSERVATION_SCHEMA='ikant-le-acceptance-observation/v1';
 export const DIRECT_EXECUTOR_HANDOFF_SCHEMA='ikant-le-direct-executor-handoff/v1';
 export const BOOTSTRAP_READINESS_SCHEMA='ikant-le-bootstrap-readiness/v1';
+export const CANONICAL_ACTIVATION_PENDING_INTENT='inizializza iKant_LE';
 
 const digest=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
 export function classifyHumanIntent(input){
@@ -20,7 +21,7 @@ export function compileIntentAwareFirstContact(input){
  const intent=classifyHumanIntent(input);
  if(intent.kind==='ACTIVATE_IKANT'){
   const plan=compileFirstContactPlan('iKant_LE');
-  return{next:{...plan,pending_intent:String(input??''),preserve_pending_intent:true},intent};
+  return{next:{...plan,pending_intent:CANONICAL_ACTIVATION_PENDING_INTENT,preserve_pending_intent:true},intent};
  }
  if(intent.kind==='EXIT_IKANT')return{next:{schema:'ikant-le-human-intent-next/v1',recognized:true,terminal:'OWNER_DELEGATION_REQUIRED',action:'DELEGATE_EXIT_TO_CURRENT_OWNER',authority:0},intent};
  return{next:{schema:'ikant-le-human-intent-next/v1',recognized:false,terminal:'HOST_ONLY',action:'NO_IKANT_ACTION',authority:0},intent};
