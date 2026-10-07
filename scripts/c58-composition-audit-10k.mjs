@@ -21,7 +21,7 @@ const baseline={
  no_shadow:/La chat non è ledger, runtime state o retry memory/.test(prompt)&&K.negative_controls?.chat_is_ledger===false,
  ensure_deployment:/ensureSessionChatDeployment/.test(deploy)&&/ensureSessionChatDeployment\(\{workspace:repoRoot,deploymentRoot\}\)/.test(server),
  runtime_app_boundary:(server.match(/visibility:\['model','app'\]/g)||[]).length===2&&(server.match(/visibility:\['app'\]/g)||[]).length>=2,
- readme_kernel:/canonical action kernel/.test(root)&&/first user input/.test(root)
+ readme_kernel:/SESSION_CHAT_LOCAL_PROMPT\.md/.test(root)&&/first input/.test(root)
 };
 const failures=Object.entries(baseline).filter(([,v])=>!v).map(([k])=>k),dims=Object.keys(baseline),counts=Object.fromEntries(dims.map(x=>[x,0]));let state=0xC58C0DE>>>0;const rnd=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state};
 for(let i=0;i<10000;i++){const chosen=new Set([i%dims.length]);for(let j=0;j<1+(rnd()%5);j++)chosen.add((rnd()>>>8)%dims.length);for(const k of chosen)counts[dims[k]]++;}
