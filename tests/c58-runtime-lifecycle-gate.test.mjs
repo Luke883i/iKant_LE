@@ -31,13 +31,14 @@ test('C58 reference app exposes the model binding only after deployment ensure/p
  const preflight=server.indexOf('ensureSessionChatDeployment({workspace:repoRoot,deploymentRoot})'),register=server.indexOf("registerAppTool(s,'ikant_le_open'");
  assert.ok(preflight>=0&&register>preflight);assert.match(server,/dedicated explicit user request/);assert.match(server,/never for audits, questions, repository analysis/);
  assert.match(server,/visibility:\['model','app'\]/);assert.ok((server.match(/visibility:\['app'\]/g)||[]).length>=2);
+ const kernel=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-local-host-kernel.json'),'utf8'));assert.deepEqual(kernel.new_irreducible_primitives,['DEDICATED_LIFECYCLE_GATE','READY_BOUND_OPEN']);assert.equal(kernel.inherited_required_primitives.length,2);
 });
 
 test('C58 SESSION_CHAT_LOCAL prompt is a compact binary router, not a bootstrap planner',()=>{
  const p=renderSessionChatLocalPrompt(),r=sessionChatLocalPromptReceipt();
- assert.equal(r.schema,'ikant-le-session-chat-local-prompt/v1');assert.equal(r.version,'1.0.0');assert.equal(r.authority,0);assert.ok(r.chars<1600);
+ assert.equal(r.schema,'ikant-le-session-chat-local-prompt/v1');assert.equal(r.version,'1.1.0');assert.equal(r.authority,0);assert.ok(r.chars<1600);
  assert.match(p,/comando lifecycle dedicato/);assert.match(p,/messaggi misti restano host-only/);assert.match(p,/esattamente una volta un solo binding local-host/);assert.match(p,/Se il binding manca o fallisce, resta host/);
- assert.match(p,/presenta soltanto il frame restituito/);assert.match(p,/esattamente I ACCEPT/);
+ assert.match(p,/presenta soltanto il frame restituito/);assert.match(p,/esattamente I ACCEPT/);assert.match(p,/altrimenti non chiamare open e resta host/);
  assert.doesNotMatch(p,/for_ai_agent_first_entrypoint/);assert.doesNotMatch(p,/https:\/\/github\.com/);assert.doesNotMatch(p,/src\//);assert.doesNotMatch(p,/contracts\//);
  assert.equal(fs.readFileSync(path.join(ROOT,'docs/SESSION_CHAT_LOCAL_PROMPT.md'),'utf8'),renderSessionChatLocalPromptDocument());
 });

@@ -3,12 +3,6 @@
   "slice": "C58.SESSION_CHAT_LOCAL_HOST_KERNEL",
   "authority": 0,
   "objective": "Reduce the model role to one binary host-routing decision while all bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
-  "irreducible_primitives": [
-    "DEDICATED_LIFECYCLE_GATE",
-    "READY_VISIBLE_OPEN_BINDING",
-    "ONE_MODEL_OPEN_EDGE",
-    "OWNER_HANDOFF_NO_SUBSTITUTE"
-  ],
   "routing": {
     "model_role": "BINARY_HOST_ONLY_OR_IKANT_OPEN",
     "dedicated_lifecycle_only": true,
@@ -21,7 +15,7 @@
     "model_creates_retry_memory": false
   },
   "binding": {
-    "required": "CURRENT_SESSION_MODEL_VISIBLE_CALLABLE_IKANT_OPEN_BINDING",
+    "required": "READY_BOUND_CURRENT_SESSION_MODEL_VISIBLE_CALLABLE_IKANT_OPEN",
     "server_start_requires_valid_deployment_reopen": true,
     "repository_symbol_is_binding": false,
     "tool_name_in_prompt_required": false,
@@ -50,8 +44,31 @@
     "global_model_cases": 10000000,
     "full_model_cases": 1000000000,
     "full_decision_bits": 40,
-    "architecture_lattice": 16,
-    "unique_minimum_required": true,
-    "full_sample_without_replacement": true
-  }
+    "full_sample_without_replacement": true,
+    "total_system_architecture_lattice": 16,
+    "new_delta_architecture_lattice": 4,
+    "new_delta_unique_minimum_required": true
+  },
+  "system_irreducible_lattice": [
+    "DEDICATED_LIFECYCLE_GATE",
+    "READY_BOUND_OPEN",
+    "ONE_MODEL_OPEN_EDGE",
+    "OWNER_HANDOFF_NO_SUBSTITUTE"
+  ],
+  "new_irreducible_primitives": [
+    "DEDICATED_LIFECYCLE_GATE",
+    "READY_BOUND_OPEN"
+  ],
+  "inherited_required_primitives": [
+    {
+      "id": "ONE_MODEL_OPEN_EDGE",
+      "owner": "C20_REFERENCE_APP",
+      "evidence": "only open is model-visible; acceptance and turns are app-only"
+    },
+    {
+      "id": "OWNER_HANDOFF_NO_SUBSTITUTE",
+      "owner": "C20_C54_RUNTIME_HOST_FRAME",
+      "evidence": "acceptance/runtime and exact host-frame presentation are already owner-enforced"
+    }
+  ]
 }

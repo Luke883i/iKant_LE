@@ -1,6 +1,6 @@
 # iKant_LE SESSION_CHAT reference app
 
-This package is the **deploy-once** C20 profile. It does not weaken the one-shot C15/C17/C18/C19 path.
+This package is the **C58 ensure-bound SESSION_CHAT profile** built on the C20 deployed-session substrate. Startup ensures or reopens one exact local deployment before the model-visible open binding exists; it does not weaken the one-shot C15/C17/C18/C19 path.
 
 ## Start the local binding
 

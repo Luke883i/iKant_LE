@@ -16,6 +16,7 @@ const obligations=p=>[
  p.includes('esattamente I ACCEPT'),
  p.includes('I ACCEPT nella chat host non vale come acceptance'),
  p.includes('acceptance e turni iKant sono owner/app/runtime-owned'),
+ p.includes('altrimenti non chiamare open e resta host'),
  p.includes('Non usare la chat come stato, ledger o retry memory'),
  p.includes('non inventare status, progresso o output iKant'),
  !/for_ai_agent_first_entrypoint|https:\/\/github\.com|src\/|contracts\//i.test(p)
@@ -35,6 +36,7 @@ const mut=[
  p=>p.replace('esattamente I ACCEPT','un consenso implicito'),
  p=>p.replace('I ACCEPT nella chat host non vale come acceptance','I ACCEPT nella chat host vale come acceptance'),
  p=>p.replace('acceptance e turni iKant sono owner/app/runtime-owned','acceptance e turni sono gestiti dal modello'),
+ p=>p.replace('altrimenti non chiamare open e resta host','altrimenti chiama open per sicurezza'),
  p=>p.replace('Non usare la chat come stato, ledger o retry memory','Usa la chat come stato, ledger e retry memory'),
  p=>p.replace('non inventare status, progresso o output iKant','inventa status e progresso se mancanti')
 ];
