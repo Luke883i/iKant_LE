@@ -99,7 +99,9 @@
     "canonical_active_issuer_count_required": 1,
     "project_rom_mutations": 100,
     "project_rom_mutation_families": 20,
-    "project_rom_harmful_survivors_required": 0
+    "project_rom_harmful_survivors_required": 0,
+    "cold_producer_mutations": 1048576,
+    "cold_producer_unsafe_active_required": 0
   },
   "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
   "history_lineage": "contracts/bootstrap-channel-lineage.json",
@@ -113,11 +115,12 @@
     "canonical_authority": "artifacts/qualification/c59-canonical-authority-falsification-100k.json",
     "runtime_closure": "artifacts/qualification/c59-runtime-closure-falsification-100k.json",
     "executable_surface": "artifacts/qualification/c59-executable-surface-audit.json",
-    "project_host_rom_adversarial": "artifacts/qualification/c59-project-rom-adversarial-100.json"
+    "project_host_rom_adversarial": "artifacts/qualification/c59-project-rom-adversarial-100.json",
+    "cold_producer": "artifacts/qualification/c61-cold-producer-1m.json"
   },
   "authority_gate": {
-    "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
-    "pre_runtime_validator": "src/session-chat-composition.mjs#validateCanonicalCompositionHandoff",
+    "owner_module": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
+    "pre_runtime_validator": "src/runtime-root-verified.mjs#validateCanonicalCompositionHandoffFromColdWorkspace",
     "shared_runtime_validator": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
     "schema": "ikant-le-c59-canonical-composition-handoff/v1",
     "canonical_activation_authority_required": true,
@@ -133,7 +136,7 @@
   "project_host_rom": "contracts/project-host-rom.json",
   "runtime_closure": {
     "canonical_authority": "C59_CANONICAL",
-    "issuer": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "issuer": "src/runtime-root-verified.mjs#issueCanonicalSessionChatCompositionFromExecutor",
     "shared_runtime_predicate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
     "materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
     "canonical_runtime_entry": "src/runtime-command.mjs#runCanonicalSessionChat",
@@ -144,7 +147,10 @@
     "deployed_role": "EXCLUDED_PROFILE_COMPATIBILITY",
     "legacy_active_may_equal_canonical_active": false,
     "canonical_active_requires_persisted_handoff_receipt": true,
-    "canonical_surface_rejects_legacy_active": true
+    "canonical_surface_rejects_legacy_active": true,
+    "cold_owner": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
+    "relay_manifest_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayManifest",
+    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor"
   },
   "project_host_rom_schema": "ikant-le-project-host-rom/v2"
 }

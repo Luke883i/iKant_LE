@@ -79,10 +79,20 @@
       "container_github_network_required": false,
       "model_selects_carrier": false,
       "model_selects_fallback": false,
-      "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+      "owner_module": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
       "authority_gate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
       "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
-      "legacy_handoff_may_authorize": false
+      "legacy_handoff_may_authorize": false,
+      "cold_seed": {
+        "objects": [
+          "BOOTSTRAP.json",
+          "src/runtime-root-verified.mjs"
+        ],
+        "owner_named": true,
+        "post_accept_only": true,
+        "write_reopen_samehash_required": true,
+        "semantic_reconstruction_forbidden": true
+      }
     },
     {
       "id": "310",
@@ -140,7 +150,7 @@
     "probe_required": true,
     "active_readback_required": true,
     "resume_pending_after_active_only": true,
-    "canonical_owner": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
+    "canonical_owner": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
     "canonical_handoff_schema": "ikant-le-c59-canonical-composition-handoff/v1",
     "legacy_fastboot_handoff_authority": false,
     "canonical_materializer": "src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap",
@@ -148,7 +158,9 @@
     "canonical_active_readback": "src/runtime-command.mjs#canonicalActiveReadback",
     "shared_runtime_predicate": "src/bootstrap-semantic.mjs#validateCanonicalCompositionHandoff",
     "canonical_authority": "C59_CANONICAL",
-    "legacy_active_is_canonical": false
+    "legacy_active_is_canonical": false,
+    "relay_manifest_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayManifest",
+    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor"
   },
   "negative_controls": {
     "repository_symbol_is_host_capability": false,

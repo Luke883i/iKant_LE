@@ -22,8 +22,8 @@
     {
       "id": "C59_COMPOSITION_OWNER",
       "kind": "authority_owner",
-      "ref": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
-      "classification": "CANONICAL_AUTHORITY_ISSUER",
+      "ref": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
+      "classification": "CANONICAL_COLD_PRODUCER",
       "may_issue_canonical_active": false
     },
     {
@@ -117,7 +117,7 @@
       "scripts/session-chat-runtime-cli.mjs",
       "plugins/ikant-le-session-chat/server/server.mjs"
     ],
-    "token_rule": "I ACCEPT|ACTIVE literal|RUNTIME_BOUND_LIMITED|HANDOFF_PRE_RUNTIME|LOCAL_DIRECT|VERIFIED_OPAQUE_RELAY|WARM_CACHE_EXACT|runCommand|resumeActivation|executePreRuntimeBootstrap|executeCanonicalSessionChatBootstrap|acceptDeployedSession|acceptLocalLimitedSession|issueCanonicalSessionChatComposition|runCanonicalSessionChat|materializeRuntimeRoot",
+    "token_rule": "I ACCEPT|ACTIVE literal|RUNTIME_BOUND_LIMITED|HANDOFF_PRE_RUNTIME|LOCAL_DIRECT|VERIFIED_OPAQUE_RELAY|WARM_CACHE_EXACT|runCommand|resumeActivation|executePreRuntimeBootstrap|executeCanonicalSessionChatBootstrap|acceptDeployedSession|acceptLocalLimitedSession|issueCanonicalSessionChatComposition|runCanonicalSessionChat|materializeRuntimeRoot|executeCanonicalColdBootstrap|issueCanonicalActivationExecutor|issueCanonicalRelayManifest",
     "activation_related_files": [
       "ikant.mjs",
       "plugins/ikant-le-session-chat/server/server.mjs",
