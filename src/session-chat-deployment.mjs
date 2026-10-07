@@ -22,6 +22,7 @@ function exactCopy(src,dst){const b=fs.readFileSync(src);fs.mkdirSync(path.dirna
 function hostPromise(store){return JSON.parse(fs.readFileSync(path.join(store,'contracts','ikant-le.json'),'utf8')).ontological_promise;}
 function withHostFrame(result,dep,sessionId){return{...result,host_frame:buildHostConsumptionFrame({result,sourceHead:dep.deployment.source_head,runtimeRootSha256:dep.descriptor.runtime_root_sha256,sessionRef:sessionKey(sessionId),ontologicalPromise:hostPromise(dep.store)})};}
 function gitHead(workspace){const x=execFileSync('git',['rev-parse','HEAD'],{cwd:workspace,encoding:'utf8'}).trim().toLowerCase();if(!HEX40.test(x))throw new Error('deployment git HEAD unavailable');return x;}
+function assertDeploymentSourceExact(workspace){const paths=[...ORIENTATION,...REMOTE,...HOST_PROJECTION],dirty=execFileSync('git',['status','--porcelain=v1','--untracked-files=all','--',...paths],{cwd:workspace,encoding:'utf8'}).trim();if(dirty)throw new Error('deployment source worktree drift');return true;}
 function expectedTransportObjects(store,d){return [{path:d.loader.path,blob_sha1:d.loader.blob_sha1},...d.shards.map(s=>({path:s.path,blob_sha1:s.blob_sha1}))].map(x=>{const b=fs.readFileSync(path.join(store,x.path));if(gitBlobSha1(b)!==x.blob_sha1)throw new Error('deployment transport object identity mismatch:'+x.path);return{...x,sha256:sha256(b),bytes:b.length};});}
 function verifyMaterializedRoot(root,d){for(const m of d.members){const b=fs.readFileSync(path.join(root,m.path));if(b.length!==m.bytes||gitBlobSha1(b)!==m.blob_sha1)throw new Error('deployed runtime member readback mismatch:'+m.path);}return true;}
 function termsInfo(store){const bytes=fs.readFileSync(path.join(store,'TERMS.md'));return{text:bytes.toString('utf8'),digest:sha256(bytes)};}
@@ -34,7 +35,7 @@ function readLastEvent(runtimeDir){const f=path.join(runtimeDir,'.ikant','ledger
 
 export function deploySessionChatRuntime({workspace=WORKSPACE,deploymentRoot,sourceHead=null,deploymentId=null}={}){
  const root=path.resolve(String(deploymentRoot||''));if(!deploymentRoot)throw new Error('deploymentRoot required');if(fs.existsSync(root))throw new Error('deployment root exists');
- const observedHead=gitHead(workspace),pin=String(sourceHead||observedHead).toLowerCase();if(pin!==observedHead||!HEX40.test(pin))throw new Error('deployment source pin mismatch');
+ const observedHead=gitHead(workspace);assertDeploymentSourceExact(workspace);const pin=String(sourceHead||observedHead).toLowerCase();if(pin!==observedHead||!HEX40.test(pin))throw new Error('deployment source pin mismatch');
  const sourceDescriptor=runtimeRootDescriptor(workspace),dv=validateRuntimeRootDescriptor(sourceDescriptor);if(!dv.ok)throw new Error('deployment runtime descriptor invalid:'+dv.errors.join(','));
  const store=path.join(root,'store');fs.mkdirSync(store,{recursive:true});for(const rel of [...ORIENTATION,...REMOTE,...HOST_PROJECTION])exactCopy(path.join(workspace,rel),path.join(store,rel));
  const d=runtimeRootDescriptor(store),v=validateRuntimeRootDescriptor(d);if(!v.ok||d.runtime_root_sha256!==sourceDescriptor.runtime_root_sha256)throw new Error('deployment store descriptor drift');
@@ -48,7 +49,7 @@ export function deploySessionChatRuntime({workspace=WORKSPACE,deploymentRoot,sou
 
 export function ensureSessionChatDeployment({workspace=WORKSPACE,deploymentRoot}={}){
  const root=path.resolve(String(deploymentRoot||''));if(!deploymentRoot)throw new Error('deploymentRoot required');
- const observedHead=gitHead(workspace),sourceDescriptor=runtimeRootDescriptor(workspace),dv=validateRuntimeRootDescriptor(sourceDescriptor);if(!dv.ok)throw new Error('deployment runtime descriptor invalid:'+dv.errors.join(','));
+ const observedHead=gitHead(workspace);assertDeploymentSourceExact(workspace);const sourceDescriptor=runtimeRootDescriptor(workspace),dv=validateRuntimeRootDescriptor(sourceDescriptor);if(!dv.ok)throw new Error('deployment runtime descriptor invalid:'+dv.errors.join(','));
  let created=false;
  if(!fs.existsSync(path.join(root,'deployment.json'))){
   if(fs.existsSync(root)){const entries=fs.readdirSync(root);if(entries.length)throw new Error('deployment root exists without attestation');fs.rmdirSync(root);}

@@ -30,6 +30,13 @@ test('C58 ensure-on-start fails closed on nonempty unattested deployment root',{
  const d=temp(),deployment=path.join(d,'deploy');try{fs.mkdirSync(deployment,{recursive:true});fs.writeFileSync(path.join(deployment,'junk'),'x');assert.throws(()=>ensureSessionChatDeployment({deploymentRoot:deployment}),/deployment root exists without attestation/);}finally{fs.rmSync(d,{recursive:true,force:true});}
 });
 
+test('C58 deployment source binding rejects dirty distributed bytes',{concurrency:false},()=>{
+ const file=path.join(root,'README.md'),before=fs.readFileSync(file);const d=temp();try{
+  fs.appendFileSync(file,'\nC58-DIRTY-SOURCE-PROBE\n');
+  assert.throws(()=>ensureSessionChatDeployment({deploymentRoot:path.join(d,'deploy')}),/deployment source worktree drift/);
+ }finally{fs.writeFileSync(file,before);fs.rmSync(d,{recursive:true,force:true});}
+});
+
 test('C20 deploy-once store attests exact candidate HEAD and reference runtime',{concurrency:false},()=>{
  const d=temp();try{const dep=deploySessionChatRuntime({deploymentRoot:path.join(d,'deploy'),deploymentId:'D-C20'});const head=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();assert.equal(dep.source_head,head);assert.equal(dep.repository_transfer_per_chat,false);assert.equal(dep.reference_root_reopen_verified,true);assert.equal(dep.physical_chatgpt_registration_proven,false);assert.equal(readSessionChatDeployment(path.join(d,'deploy')).deployment.receipt_sha256,dep.receipt_sha256);}finally{fs.rmSync(d,{recursive:true,force:true});}
 });
