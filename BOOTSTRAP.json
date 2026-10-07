@@ -292,6 +292,15 @@
       "new_state_writer": false,
       "new_truth_owner": false,
       "authority": 0
+    },
+    "canonical_composition": {
+      "owner_contract": "contracts/session-chat-composition-channel.json",
+      "source_plane": "GITHUB_API",
+      "transport": "GITHUB_API_BASE64",
+      "byte_path": "VERIFIED_OPAQUE_RELAY",
+      "container_github_network_required": false,
+      "model_selects_carrier": false,
+      "model_selects_fallback": false
     }
   },
   "canonical_repository": "Luke883i/iKant_LE",
@@ -955,7 +964,11 @@
       "model_rewrite_allowed": false,
       "semantic_equivalence_allowed": false,
       "source_arrival_samehash_required": true,
-      "opaque_relay_roundtrip_required": true
+      "opaque_relay_roundtrip_required": true,
+      "canonical_session_chat_transport": "GITHUB_API_BASE64",
+      "canonical_session_chat_byte_path": "VERIFIED_OPAQUE_RELAY",
+      "container_github_network_required": false,
+      "alternative_carriers_canonical": false
     },
     "materialization_receipts": [
       "ikant-le-runtime-root-materialization/v2",
@@ -1061,7 +1074,22 @@
       "HOST_FILE_BRIDGE"
     ],
     "human_file_handoff_last_resort": true,
-    "human_file_handoff_priority_law": "MACHINE_EXECUTE_THEN_MACHINE_PROBE_THEN_HUMAN_FILE_EXECUTE_THEN_HUMAN_FILE_PROBE"
+    "human_file_handoff_priority_law": "MACHINE_EXECUTE_THEN_MACHINE_PROBE_THEN_HUMAN_FILE_EXECUTE_THEN_HUMAN_FILE_PROBE",
+    "composition_object_paths": [
+      "README.md",
+      "BOOTSTRAP.json",
+      "ADMISSION.json",
+      "AGENTS.md",
+      "TERMS.md",
+      "src/runtime-root-verified.mjs",
+      "runtime-root/shard-000.json",
+      "runtime-root/shard-001.json",
+      "runtime-root/shard-002.json",
+      "runtime-root/shard-003.json",
+      "runtime-root/shard-004.json",
+      "runtime-root/shard-005.json",
+      "runtime-root/shard-006.json"
+    ]
   },
   "post_acceptance": [
     "ACTIVATE_FIRST",
@@ -1169,5 +1197,26 @@
       "native_delivery_requires_external_host_receipt": true,
       "authority": 0
     }
+  },
+  "session_chat_composition": {
+    "schema": "ikant-le-session-chat-composition/v1",
+    "canonical": true,
+    "owner_contract": "contracts/session-chat-composition-channel.json",
+    "caller_kernel": "contracts/session-chat-local-host-kernel.json",
+    "live_channel_census": "contracts/session-chat-composition-census.json",
+    "source_plane": "GITHUB_API",
+    "source_encoding": "BASE64",
+    "cold_transport": "GITHUB_API_BASE64",
+    "byte_path": "VERIFIED_OPAQUE_RELAY",
+    "sink_plane": "SESSION_LOCAL_FILESYSTEM",
+    "execution_plane": "SESSION_LOCAL_NODE",
+    "container_github_network_required": false,
+    "model_role": "OPAQUE_TRANSPORT_ONLY",
+    "model_selects_carrier": false,
+    "model_selects_fallback": false,
+    "complete_object_set_required": true,
+    "local_write_reopen_samehash_required": true,
+    "active_readback_required": true,
+    "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json"
   }
 }
