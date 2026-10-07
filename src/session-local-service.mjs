@@ -25,7 +25,7 @@ export function validatePreRuntimeHandoff(h){
  const e=[],d=runtimeRootDescriptor(ROOT),dv=validateRuntimeRootDescriptor(d);if(!dv.ok)e.push(...dv.errors.map(x=>'descriptor:'+x));
  if(!h||h.schema!=='ikant-le-pre-runtime-handoff/v2')e.push('schema');if(h?.authority!==0)e.push('authority');if(!HEX40.test(String(h?.source_head||'')))e.push('source_head');if(h?.runtime_root_sha256!==d?.runtime_root_sha256)e.push('runtime_root_digest');if(h?.runtime_owner!=='src/session-local-service.mjs')e.push('runtime_owner');if(h?.first_unclosed_edge!=='ACTIVE_READBACK'||h?.active!==false)e.push('active_boundary');
  const ingress=h?.acceptance_ingress;if(!ingress||ingress.human_input!=='I ACCEPT'||ingress.authority!==0||!Number.isFinite(ingress.observed_monotonic_ms))e.push('acceptance_ingress');
- const boot=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8')),ph=h?.preaccept_handoff,pv=validatePreacceptKernelInput(ph,{workspace:ROOT,sourceHead:h?.source_head,boot});
+ const ph=h?.preaccept_handoff,pv=validatePreacceptKernelInput(ph,{workspace:ROOT,sourceHead:h?.source_head});
  if(!pv.ok)e.push(...pv.errors.map(x=>'preaccept:'+x));if(sha256(Buffer.from(JSON.stringify(ph||{})))!==h?.preaccept_handoff_sha256)e.push('preaccept_digest');
  const ax=h?.activation_executor,av=validateActivationExecutorReceipt(ax,{workspace:ROOT,sourceHead:h?.source_head,descriptor:d,orientation:pv.orientation||[],requireSourceObjectReadback:false});
  if(!av.ok)e.push(...av.errors.map(x=>'executor:'+x));if(ax?.receipt_sha256!==h?.activation_executor_receipt_sha256)e.push('executor_receipt_binding');
