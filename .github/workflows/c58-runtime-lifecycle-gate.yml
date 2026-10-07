@@ -1,0 +1,47 @@
+name: C58 executable lifecycle gate
+on:
+  pull_request:
+    paths:
+      - 'src/contract.mjs'
+      - 'src/bootstrap-intent-adapter.mjs'
+      - 'src/runtime-command.mjs'
+      - 'src/runtime.mjs'
+      - 'BOOTSTRAP.json'
+      - 'runtime-root/**'
+      - 'tests/c58-runtime-lifecycle-gate.test.mjs'
+      - 'scripts/c58-runtime-lifecycle-gate-falsify.mjs'
+      - 'package.json'
+      - '.github/workflows/c58-runtime-lifecycle-gate.yml'
+permissions:
+  contents: write
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Regenerate content-addressed runtime root
+        run: npm run runtime-root:regen
+      - name: Commit generated runtime root when needed
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          if ! git diff --quiet -- BOOTSTRAP.json runtime-root; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add BOOTSTRAP.json runtime-root
+            git commit -m "C58: regenerate runtime root"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
+      - name: Focused executable boundary tests
+        run: node --test --test-concurrency=1 tests/c42-bootstrap-ontological-closure.test.mjs tests/c57-host-binding-aware-meta.test.mjs tests/c58-runtime-lifecycle-gate.test.mjs
+      - name: One-million deterministic semantic mutations
+        run: npm run falsify:c58
+      - name: Runtime root verify
+        run: npm run runtime-root:verify
+      - name: Canonical repository check
+        run: npm run check

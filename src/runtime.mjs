@@ -1,5 +1,5 @@
 export { transitionPure,bootstrapMode,bootstrapDecisionPure,nodeDispatchReceiptPure } from './runtime-core.mjs';
-export { runCommand,resumeActivation } from './runtime-command.mjs';
+export { runCommand,resumeActivation,RUNTIME_ROUTE_DECLINED_SCHEMA } from './runtime-command.mjs';
 export { referencesCanonicalRepository,compileFirstContactPlan,FIRST_CONTACT_CAPSULE,FIRST_CONTACT_FORBIDDEN,REPOSITORY_TRANSPORT,SOURCE_HEAD_BINDING } from './first-contact.mjs';
 export { readLifeConsciousnessKernel,gateDesignSatisfied,profileDesignSatisfied,assessDesign,validateGateReceipt,profileEvidenceSatisfied,safetySatisfied,qualifyRuntime,ALL_GATES as LIFE_CONSCIOUSNESS_GATES } from './life-consciousness.mjs';
 
@@ -11,7 +11,7 @@ export { DEADLINE_RESULT,isDeadlineTerminal,classifyDeadlineEvidence,admissionEp
 export { FASTBOOT_CONVERGENCE_SCHEMA,FASTBOOT_ATTEMPT_SCHEMA,FASTBOOT_CARRIERS,FASTBOOT_CAPABILITY_FIELDS,FASTBOOT_CAPABILITY_RECEIPT_SCHEMA,FASTBOOT_CHANNEL_LEDGER_SCHEMA,FASTBOOT_STEP_SCHEMA,FASTBOOT_OBSERVATION_TRANSITION_SCHEMA,FASTBOOT_BYTE_BRIDGE_SCHEMA,LOCAL_SESSION_ACTIVATION_MODALITY,FASTBOOT_CHANNEL_STATES,fastbootReceiptDigest,selectFastbootCarrier,validateFastbootAttempt,validateFastbootConvergence,issueFastbootCapabilityReceipt,validateFastbootCapabilityReceipt,buildFastbootChannelLedger,validateFastbootChannelLedger,deriveFastbootAttemptedClasses,deriveFastbootStep,validateFastbootStep,recordFastbootFailure,advanceFastbootObservation,validateFastbootObservationTransition,issueFastbootByteBridgeReceipt,validateFastbootByteBridgeReceipt } from './fastboot-convergence.mjs';
 
 
-export { assessOntologicalPromise, validateOntologicalPromiseAssessment, ONTOLOGICAL_PROMISE_ASSESSMENT_SCHEMA } from './contract.mjs';
+export { assessOntologicalPromise, validateOntologicalPromiseAssessment, ONTOLOGICAL_PROMISE_ASSESSMENT_SCHEMA, classifyLifecycleIntent,classifyPreactiveRoute,LIFECYCLE_INTENT_SCHEMA,PREACTIVE_ROUTE_SCHEMA } from './contract.mjs';
 
 export { processLimitedRuntimeTurn } from './runtime-limited-turn.mjs';
 export { issueLimitedRuntimeCapability,validateLimitedRuntimeCapability } from './runtime-limited-capability.mjs';
