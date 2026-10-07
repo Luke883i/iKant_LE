@@ -2,57 +2,105 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define M0 1u
 #define M1 2u
 #define M2 4u
 #define M3 8u
-static uint32_t perm30(uint32_t x){return (uint32_t)(((uint64_t)x*2654435761u)&0x3fffffffu);}
+#define ALL 15u
+#define B(n) (1ULL<<(n))
+#define MASK40 ((1ULL<<40)-1ULL)
+
+typedef struct { unsigned open:1; unsigned active:1; } outcome;
+
+static uint64_t perm40(uint64_t x){return (x*0x9e3779b97ULL+0x7f4a7c15dULL)&MASK40;}
+static uint32_t perm30(uint32_t x){return (uint32_t)(((uint64_t)x*2654435761u+1013904223u)&0x3fffffffu);}
+static int bit(uint64_t w,int n){return (int)((w>>n)&1ULL);}
+
+static int dedicated(uint64_t w){
+ const int start=bit(w,0),exit=bit(w,1),neg=bit(w,2),quoted=bit(w,3),code=bit(w,4),mixed=bit(w,5),repo=bit(w,6),question=bit(w,7),repeated=bit(w,8);
+ return start&&!exit&&!neg&&!quoted&&!code&&!mixed&&!repo&&!question&&!repeated;
+}
+static int positive_start(uint64_t w){return bit(w,0)&&!bit(w,1)&&!bit(w,2)&&!bit(w,3)&&!bit(w,4);}
+static int base_ready(uint64_t w){return bit(w,10)&&bit(w,11)&&!bit(w,19);}
+static int full_ready(uint64_t w){
+ return bit(w,10)&&bit(w,11)&&bit(w,12)&&bit(w,13)&&bit(w,14)&&bit(w,15)&&!bit(w,19)&&!bit(w,37)&&!bit(w,38)&&!bit(w,39);
+}
+static int surface_ok(uint64_t w){return bit(w,16)&&!bit(w,17)&&!bit(w,18)&&!bit(w,33);}
+static int base_handoff(uint64_t w){return bit(w,22)&&bit(w,24);}
+static int handoff_ok(uint64_t w){
+ return bit(w,20)&&bit(w,21)&&bit(w,22)&&bit(w,23)&&bit(w,24)&&bit(w,25)&&(!bit(w,26)||bit(w,27))&&!bit(w,28)&&!bit(w,29)&&!bit(w,30)&&!bit(w,31)&&!bit(w,32)&&!bit(w,34)&&!bit(w,35)&&!bit(w,36);
+}
+static outcome oracle(uint64_t w){
+ const int o=dedicated(w)&&full_ready(w)&&surface_ok(w);
+ outcome x={(unsigned)o,(unsigned)(o&&handoff_ok(w))};return x;
+}
+static outcome candidate(uint64_t w,unsigned mask){
+ const int route=(mask&M0)?dedicated(w):positive_start(w);
+ const int ready=(mask&M1)?full_ready(w):base_ready(w);
+ const int surface=(mask&M2)?surface_ok(w):1;
+ const int o=route&&ready&&surface;
+ const int h=(mask&M3)?handoff_ok(w):base_handoff(w);
+ outcome x={(unsigned)o,(unsigned)(o&&h)};return x;
+}
+static int same(outcome a,outcome b){return a.open==b.open&&a.active==b.active;}
+
+static uint64_t safe_world(void){
+ uint64_t w=0;
+ w|=B(0); /* dedicated start */
+ for(int n=10;n<=16;n++)w|=B(n); /* visible/callable/deploy/preflight/open-visible */
+ w|=B(20)|B(21)|B(22)|B(23)|B(24)|B(25)|B(27); /* valid owner handoff */
+ return w;
+}
+static void architecture_lattice(int *valid,int *minimum,int *minimum_count){
+ uint64_t w[4];const uint64_t s=safe_world();
+ w[0]=s|B(5);          /* mixed activation needs M0 */
+ w[1]=s&~B(13);        /* invalid deployment needs M1 */
+ w[2]=s|B(17);         /* model-visible accept needs M2 */
+ w[3]=s|B(28);         /* fallback after open needs M3 */
+ *valid=0;*minimum=99;*minimum_count=0;
+ for(unsigned m=0;m<16;m++){
+  int ok=1;for(int i=0;i<4;i++)if(!same(candidate(w[i],m),oracle(w[i]))){ok=0;break;}
+  if(!ok)continue;(*valid)++;int c=__builtin_popcount(m);
+  if(c<*minimum){*minimum=c;*minimum_count=1;}else if(c==*minimum)(*minimum_count)++;
+ }
+}
+
 int main(int argc,char**argv){
  uint64_t cases=1000000000ULL;const char*mode="full";
- for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--cases")&&i+1<argc)cases=strtoull(argv[++i],0,10);else if(!strcmp(argv[i],"--mode")&&i+1<argc)mode=argv[++i];}
- if(cases>1073741824ULL){fprintf(stderr,"cases exceed 2^30 decision space\n");return 2;}
- uint64_t current_mismatch=0,final_mismatch=0,unsafe_current=0,del[4]={0,0,0,0},required_worlds=0;
- uint32_t required_union=0;
- for(uint64_t i=0;i<cases;i++){
-  uint32_t w=perm30((uint32_t)i);
-  if(!strcmp(mode,"global"))w=(w&0x3ffffc00u)|1u;
-  const int start=(w>>0)&1,exit=(w>>1)&1,neg=(w>>2)&1,quoted=(w>>3)&1,code=(w>>4)&1,mixed=(w>>5)&1,repo=(w>>6)&1,host_clause=(w>>7)&1;
-  const int visible=(w>>10)&1,callable=(w>>11)&1,deploy_valid=(w>>12)&1,preflight=(w>>13)&1,open_only=(w>>14)&1,tool_error=(w>>15)&1,frame_valid=(w>>16)&1;
-  const int artifact_required=(w>>22)&1,artifact_present=(w>>23)&1,fallback=(w>>24)&1,multistep=(w>>25)&1,rewrite=(w>>26)&1,stale=(w>>27)&1,new_task=(w>>28)&1,native_claim=(w>>29)&1;
-  const int accept_app_only=(w>>19)&1;
-  const int positive_start=start&&!neg&&!quoted&&!code&&!exit;
-  const int pure=positive_start&&!mixed&&!repo&&!host_clause;
-  const int ready=visible&&callable&&deploy_valid&&preflight;
-  const int oracle_open=pure&&ready&&!tool_error;
-  uint32_t req=0;
-  if(positive_start&&!pure)req|=M0;
-  if(pure&&visible&&callable&&(!deploy_valid||!preflight))req|=M1;
-  if((!open_only)||(!accept_app_only)||multistep)req|=M2;
-  if(fallback||rewrite||native_claim||(!frame_valid&&oracle_open)||(artifact_required&&!artifact_present&&oracle_open)||stale||new_task)req|=M3;
-  if(req){required_worlds++;required_union|=req;for(int b=0;b<4;b++)if(req&(1u<<b))del[b]++;}
-  const int cur_open=positive_start&&visible&&callable&&!tool_error;
-  int cur_bad=(cur_open!=oracle_open);
-  if((!open_only)||(!accept_app_only)||multistep)cur_bad=1;
-  if((fallback||rewrite||native_claim)&&cur_open)cur_bad=1;
-  if(cur_bad){current_mismatch++;if(cur_open&&!oracle_open)unsafe_current++;}
-  const int final_open=oracle_open;
-  int final_bad=(final_open!=oracle_open);
-  if(!open_only||!accept_app_only)final_bad=1;
-  if(final_bad)final_mismatch++;
+ for(int i=1;i<argc;i++){
+  if(!strcmp(argv[i],"--cases")&&i+1<argc)cases=strtoull(argv[++i],0,10);
+  else if(!strcmp(argv[i],"--mode")&&i+1<argc)mode=argv[++i];
  }
- const int unique_minimum=(required_union==(M0|M1|M2|M3))&&del[0]&&del[1]&&del[2]&&del[3]&&final_mismatch==0;
+ if(!strcmp(mode,"global")&&cases>(1ULL<<30)){fprintf(stderr,"global cases exceed 2^30 unique space\n");return 2;}
+ if(!strcmp(mode,"full")&&cases>(1ULL<<40)){fprintf(stderr,"full cases exceed 2^40 decision space\n");return 2;}
+
+ uint64_t final_mismatch=0,baseline_mismatch=0,baseline_unsafe=0,del[4]={0,0,0,0};
+ for(uint64_t i=0;i<cases;i++){
+  uint64_t w=!strcmp(mode,"global")?(((uint64_t)perm30((uint32_t)i)<<10)|1ULL):perm40(i);
+  outcome o=oracle(w),f=candidate(w,ALL),b=candidate(w,M2|M3);
+  if(!same(f,o))final_mismatch++;
+  if(!same(b,o)){baseline_mismatch++;if((b.open&&!o.open)||(b.active&&!o.active))baseline_unsafe++;}
+  if(positive_start(w)&&!dedicated(w)&&full_ready(w)&&surface_ok(w))del[0]++;
+  if(dedicated(w)&&base_ready(w)&&!full_ready(w)&&surface_ok(w))del[1]++;
+  if(dedicated(w)&&full_ready(w)&&!surface_ok(w))del[2]++;
+  if(dedicated(w)&&full_ready(w)&&surface_ok(w)&&base_handoff(w)!=handoff_ok(w))del[3]++;
+ }
+ int valid=0,min=0,minCount=0;architecture_lattice(&valid,&min,&minCount);
+ const int unique=(valid==1&&min==4&&minCount==1&&del[0]&&del[1]&&del[2]&&del[3]&&final_mismatch==0);
  printf("{\n");
- printf("  \"schema\": \"ikant-le-c58-host-bootstrap-falsification/v1\",\n");
+ printf("  \"schema\": \"ikant-le-c58-host-bootstrap-falsification/v2\",\n");
  printf("  \"mode\": \"%s\",\n",mode);
  printf("  \"cases\": %llu,\n",(unsigned long long)cases);
- printf("  \"decision_bits\": 30,\n  \"decision_space\": 1073741824,\n");
- printf("  \"sample_without_replacement\": %s,\n",strcmp(mode,"global")?"true":"false");
- printf("  \"current_pr67_mismatches\": %llu,\n",(unsigned long long)current_mismatch);
- printf("  \"current_pr67_unsafe_open_promotions\": %llu,\n",(unsigned long long)unsafe_current);
+ printf("  \"decision_bits\": 40,\n  \"decision_space\": 1099511627776,\n");
+ printf("  \"sample_without_replacement\": true,\n");
+ printf("  \"baseline_pr67_initial_mask\": 12,\n");
+ printf("  \"baseline_mismatches\": %llu,\n",(unsigned long long)baseline_mismatch);
+ printf("  \"baseline_unsafe_promotions\": %llu,\n",(unsigned long long)baseline_unsafe);
  printf("  \"final_candidate_mismatches\": %llu,\n",(unsigned long long)final_mismatch);
- printf("  \"worlds_requiring_at_least_one_mechanism\": %llu,\n",(unsigned long long)required_worlds);
- printf("  \"deletion_witnesses\": {\"DEDICATED_LIFECYCLE_GATE\": %llu, \"READY_VISIBLE_OPEN_BINDING\": %llu, \"ONE_MODEL_OPEN_EDGE\": %llu, \"OWNER_HANDOFF_NO_SUBSTITUTE\": %llu},\n",(unsigned long long)del[0],(unsigned long long)del[1],(unsigned long long)del[2],(unsigned long long)del[3]);
- printf("  \"architecture_lattice\": 16,\n  \"required_union_mask\": %u,\n  \"unique_minimum_all_four\": %s,\n",(unsigned)required_union,unique_minimum?"true":"false");
- printf("  \"status\": \"%s\"\n}\n",unique_minimum?"PASS":"FAIL");
- return unique_minimum?0:1;
+ printf("  \"deletion_witness_counts\": {\"DEDICATED_LIFECYCLE_GATE\": %llu, \"READY_VISIBLE_OPEN_BINDING\": %llu, \"ONE_MODEL_OPEN_EDGE\": %llu, \"OWNER_HANDOFF_NO_SUBSTITUTE\": %llu},\n",(unsigned long long)del[0],(unsigned long long)del[1],(unsigned long long)del[2],(unsigned long long)del[3]);
+ printf("  \"architecture_lattice\": {\"total\": 16, \"valid\": %d, \"minimum_cost\": %d, \"minimum_count\": %d, \"unique_minimum_all_four\": %s},\n",valid,min,minCount,unique?"true":"false");
+ printf("  \"claim_boundary\": {\"semantic_model_is_physical_host_proof\": false, \"natural_language_route_is_model_mediated\": true, \"tool_input_is_not_attested_raw_user_turn\": true},\n");
+ printf("  \"status\": \"%s\"\n}\n",unique?"PASS":"FAIL");
+ return unique?0:1;
 }
