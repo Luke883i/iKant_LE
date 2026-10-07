@@ -39,7 +39,7 @@ npm run qualify:canonical
 
 `qualify:canonical` verifies the deterministic runtime-root, then regression/check and C21-C28 hardening. `qualify:current` is a compatibility alias; legacy C20 remains non-canonical. Mutation PASS is bounded engineering evidence, not physical-host or world-truth proof.
 
-Host adapter: `docs/LOCAL_HOST_META_PROMPT.md` is generated, authority-zero and projects canonical `LOCAL_EXECUTOR_V1`; verified model byte transport is allowed only as opaque authority-zero samehash-gated relay; runtime authority remains local.
+Host adapters are intentionally split by host reality. For a connected `SESSION_CHAT_LOCAL` reference app, `docs/SESSION_CHAT_LOCAL_PROMPT.md` is the canonical cold-start kernel: it reduces the model to `HOST_ONLY` vs one `IKANT_OPEN` edge, while deployment, Terms acceptance and runtime turns are host/app/runtime-owned. `docs/LOCAL_HOST_META_PROMPT.md` remains the generic tool-neutral compatibility/diagnostic adapter for hosts that expose the repository entrypoint directly; it is not the preferred SESSION_CHAT cold start. Both are authority-zero and cannot create a missing host capability.
 
 
 C28: six repository-owned activation edges with `LOCAL_INGRESS` as the single ingress owner; N0-N8 is diagnostic-only and external platform facts remain explicit. See `docs/C28_FULL_IKANT_ABSORPTION.md`.
