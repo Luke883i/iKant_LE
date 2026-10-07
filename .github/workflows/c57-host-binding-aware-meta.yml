@@ -1,4 +1,4 @@
-name: C57 host binding aware meta-prompt
+name: C57 scope-safe host binding
 on:
   pull_request:
     paths:
@@ -31,11 +31,11 @@ jobs:
           node --check scripts/c57-host-binding-meta-falsify.mjs
       - name: Focused inherited prompt tests
         run: node --test --test-concurrency=1 tests/local-host-meta-prompt.test.mjs tests/c44-methodological-bootstrap.test.mjs tests/c55-local-host-post-meta.test.mjs tests/c56-local-host-session-meta.test.mjs tests/c57-host-binding-aware-meta.test.mjs
-      - name: Ten-thousand binding mutations and complete 2^7 lattice
-        run: node scripts/c57-host-binding-meta-falsify.mjs --cases 10000 > /tmp/c57.json
+      - name: Scope-binding semantic falsification and complete 2^4 lattice
+        run: node scripts/c57-host-binding-meta-falsify.mjs --cases 100000 > /tmp/c57.json
       - name: Assert C57 semantic evidence
         run: |
-          node -e "const x=require('/tmp/c57.json');if(x.status!=='PASS'||x.cases!==10000||x.candidate_oracle_mismatches!==0||x.unsafe_promotions!==0||x.false_rejects!==0||x.architecture_lattice?.total!==128||x.architecture_lattice?.unique_minimum!==true||x.architecture_lattice?.minimum_cost!==7||x.all_deletion_mutants_killed!==true)process.exit(1)"
+          node -e "const x=require('/tmp/c57.json');if(x.status!=='PASS'||x.cases!==100000||x.candidate_oracle_mismatches!==0||x.unsafe_promotions!==0||x.false_rejects!==0||x.architecture_lattice?.total!==16||x.architecture_lattice?.unique_minimum!==true||x.architecture_lattice?.minimum_cost!==4||x.all_deletion_mutants_killed!==true||x.all_prompt_polarity_mutants_killed!==true)process.exit(1)"
       - name: Canonical repository qualification
         run: npm run check
       - name: Runtime root unchanged

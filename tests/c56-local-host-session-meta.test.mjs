@@ -18,7 +18,7 @@ test('C56 prompt is one authority-zero session-chat discipline over the merged C
  assert.equal(r.schema,'ikant-le-local-host-adapter/v7');
  assert.equal(r.version,'7.0.0');
  assert.equal(r.authority,0);
- assert.ok(r.chars<8000);
+ assert.ok(r.chars<5000);
  assert.match(p,/unico ingresso tecnico caller-facing/);
  assert.match(p,/Non e un nuovo owner del NEXT/);
 });

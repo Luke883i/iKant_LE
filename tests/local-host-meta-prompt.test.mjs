@@ -15,7 +15,7 @@ test('local-host meta-prompt v7 is a derived byte-exact document',()=>{
  assert.equal(r.schema,'ikant-le-local-host-adapter/v7');
  assert.equal(r.version,'7.0.0');
  assert.equal(r.authority,0);
- assert.ok(r.chars<8000);
+ assert.ok(r.chars<5000);
  assert.match(renderLocalHostMetaPrompt(),/unico ingresso tecnico caller-facing/);
  assert.match(renderLocalHostMetaPrompt(),/Non e un nuovo owner del NEXT/);
  assert.match(renderLocalHostMetaPrompt(),/shell ASCII esatta/);
