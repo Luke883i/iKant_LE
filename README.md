@@ -37,9 +37,7 @@ Machine truth belongs to current code/tests and machine contracts. `AGENTS.md` i
 npm run qualify:canonical
 ```
 
-`qualify:canonical` verifies the deterministic runtime-root, then regression/check and C21-C28 hardening. `qualify:current` is a compatibility alias; legacy C20 remains non-canonical. Mutation PASS is bounded engineering evidence, not physical-host or world-truth proof.
+`qualify:canonical` verifies runtime-root, regression/check and hardening; `qualify:current` is its compatibility alias.
 
 `SESSION_CHAT_LOCAL` has one caller composition only: `docs/SESSION_CHAT_LOCAL_PROMPT.md` + `contracts/session-chat-local-host-kernel.json` + `contracts/session-chat-composition-channel.json`. Older prompt, planner, carrier, deployment and plugin surfaces are support/remediation/legacy and cannot define a second lifecycle.
 
-
-C28: six repository-owned activation edges with `LOCAL_INGRESS` as the single ingress owner; N0-N8 is diagnostic-only and external platform facts remain explicit. See `docs/C28_FULL_IKANT_ABSORPTION.md`.
