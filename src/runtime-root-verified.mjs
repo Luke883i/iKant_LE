@@ -68,6 +68,38 @@ export async function executePreRuntimeBootstrap({workspace=WORKSPACE,sink,sourc
 
 
 
+
+function validateCanonicalPreRuntimeEnvelope(h,{workspace=WORKSPACE,sourceHead}={}){
+ const e=[],boot=loadBootstrap(workspace),d=runtimeRootDescriptor(workspace),direct=h?.direct_handoff||{},input=direct.execution_input||{},pre=input.preaccept_handoff||{},executor=input.activation_executor||{};
+ if(h?.schema!=='ikant-le-c59-canonical-composition-handoff/v1'||h?.owner!=='SESSION_CHAT_COMPOSITION_CHANNEL'||h?.action!=='EXECUTE_PRE_RUNTIME_BOOTSTRAP')e.push('schema_owner_action');
+ if(h?.source_plane!=='GITHUB_API'||h?.transport!=='GITHUB_API_BASE64'||h?.byte_path!=='VERIFIED_OPAQUE_RELAY'||h?.sink_plane!=='SESSION_LOCAL_FILESYSTEM'||h?.execution_plane!=='SESSION_LOCAL_NODE')e.push('canonical_path');
+ if(h?.container_github_network_required!==false||h?.model_selects_carrier!==false||h?.model_selects_fallback!==false||h?.chat_is_retry_memory!==false||h?.canonical_activation_authority!==true||h?.legacy_compatibility_authority!==false||h?.authority!==0)e.push('authority');
+ if(h?.source_head!==sourceHead||h?.runtime_root_sha256!==d?.runtime_root_sha256)e.push('identity');
+ const hm=structuredClone(h||{}),actual=hm.receipt_sha256;delete hm.receipt_sha256;if(!HEX64.test(String(actual||''))||sha256(Buffer.from(JSON.stringify(hm)))!==actual)e.push('receipt');
+ if(direct?.receipt_sha256!==h?.direct_handoff_receipt_sha256)e.push('direct_binding');
+ if(input?.human_input!=='I ACCEPT')e.push('acceptance');
+ const hv=validatePreacceptKernelInput(pre,{workspace,sourceHead,boot});if(!hv.ok)e.push(...hv.errors.map(x=>'preaccept:'+x));
+ const ev=validateActivationExecutorReceipt(executor,{workspace,sourceHead,descriptor:d,orientation:hv.orientation||[]});if(!ev.ok)e.push(...ev.errors.map(x=>'executor:'+x));
+ if(executor?.byte_path!=='VERIFIED_OPAQUE_RELAY'||executor?.model_mediated_bytes!==true||executor?.model_role!=='OPAQUE_TRANSPORT_ONLY'||executor?.model_rewrite_allowed!==false||executor?.semantic_equivalence_allowed!==false||executor?.source_arrival_samehash_verified!==true||executor?.opaque_relay_roundtrip_verified!==true||executor?.retry_count!==0)e.push('relay');
+ return{ok:e.length===0,errors:[...new Set(e)],descriptor:d,preaccept:pre,executor,orientation:hv.orientation||[]};
+}
+
+export async function executeCanonicalSessionChatBootstrap({workspace=WORKSPACE,sink,sourceHead,canonicalCompositionHandoff,hostEngine='IKANT_LE_C59_CANONICAL',hostSurface='SESSION_CHAT_LOCAL_RUNTIME'}={}){
+ if(!sink)throw new Error('canonical runtime sink required');
+ const v=validateCanonicalPreRuntimeEnvelope(canonicalCompositionHandoff,{workspace,sourceHead});if(!v.ok)throw new Error('canonical composition pre-runtime envelope invalid: '+v.errors.join(','));
+ const mat=materializeRuntimeRoot({workspace,sink,sourceHead,orientationObjects:v.orientation,activationExecutorReceiptSha256:v.executor.receipt_sha256});
+ const runtimeDir=path.resolve(sink),handoffPath=path.join(runtimeDir,'.ikant','canonical-composition-handoff.json');
+ atomicJson(handoffPath,canonicalCompositionHandoff);
+ const reopened=JSON.parse(fs.readFileSync(handoffPath,'utf8'));if(JSON.stringify(reopened)!==JSON.stringify(canonicalCompositionHandoff))throw new Error('canonical composition handoff reopen mismatch');
+ const mod=await import(pathToFileURL(path.join(runtimeDir,'src/runtime.mjs')).href+'?c59='+encodeURIComponent(canonicalCompositionHandoff.receipt_sha256));
+ if(typeof mod.runCanonicalSessionChat!=='function'||typeof mod.canonicalActiveReadback!=='function')throw new Error('materialized runtime lacks C59 canonical entry/readback');
+ const out=mod.runCanonicalSessionChat('I ACCEPT',{canonicalCompositionHandoff:reopened,hostEngine,hostSurface});
+ const readback=mod.canonicalActiveReadback({expectedReceiptSha256:canonicalCompositionHandoff.receipt_sha256});
+ if(out?.code!==0||readback?.ok!==true||readback?.state!=='ACTIVE'||readback?.composition_authority!=='C59_CANONICAL')throw new Error('canonical SESSION_CHAT_LOCAL failed ACTIVE authority readback');
+ const material={schema:'ikant-le-c59-canonical-bootstrap-result/v1',source_head:sourceHead,runtime_root_sha256:v.descriptor.runtime_root_sha256,canonical_composition_receipt_sha256:canonicalCompositionHandoff.receipt_sha256,materialization_receipt_sha256:mat.receipt_sha256,canonical_active_readback:readback,active:true,authority:0};
+ return{...material,receipt_sha256:sha256(Buffer.from(JSON.stringify(material))),runtime:out};
+}
+
 export function validateCohostHydrationUpgradeReceipt(x,{bindNucleus=null,bootstrapResult=null,contextReadback=null}={}){
  const e=[];if(!x||x.schema!==COHOST_HYDRATION_UPGRADE_SCHEMA)e.push('schema');
  for(const k of ['bind_nucleus_receipt_sha256','session_locator_sha256','source_head','runtime_root_sha256','materialization_receipt_sha256','runtime_owner_receipt_sha256','context_manifest_receipt_sha256']){const v=String(x?.[k]||'');if(k==='source_head'?!HEX40.test(v):!HEX64.test(v))e.push(k);}

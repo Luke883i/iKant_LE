@@ -15,9 +15,9 @@ Any first message referencing `Luke883i/iKant_LE` enters first contact before ge
 
 `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`
 
-Present Terms and freeze acquisition. Only a later exact `I ACCEPT` passes the gate. **ACTIVATE_FIRST** then uses `LOCAL_EXECUTOR_V1`: frozen source identities -> typed `LOCAL_DIRECT` or `VERIFIED_OPAQUE_RELAY` ingress -> identity/samehash verification -> atomic materialize/reopen -> executed provenance/probe -> ACTIVE readback. Relay is opaque, exact and authority-zero; unchanged decision/evidence cannot retry. The 120 s target is SLO telemetry, never integrity.
+Present Terms and freeze acquisition. Only a later exact `I ACCEPT` passes the gate. **ACTIVATE_FIRST** has one canonical `SESSION_CHAT_LOCAL` composition: the already-pinned GitHub API source plane emits base64, `VERIFIED_OPAQUE_RELAY` carries exact bytes into the session-local filesystem, and `LOCAL_EXECUTOR_V1` performs materialize/reopen before executed provenance, live probe, writer readback and ACTIVE readback. GitHub DNS/egress from the container is not a dependency. The live-channel census in `contracts/session-chat-composition-census.json` absorbs internal owners and explicitly excludes every legacy carrier/prompt/deployment path from canonical activation. The 120 s target is SLO telemetry, never integrity.
 
-`first contact -> head pin -> orientation -> Terms/freeze -> I ACCEPT -> LOCAL_INGRESS -> materialize/readback -> executed provenance/probe -> ACTIVE readback`
+`first contact -> head pin -> orientation -> Terms/freeze -> I ACCEPT -> GitHub API base64 -> verified opaque relay -> local write/reopen -> materialize -> executed provenance/probe -> ACTIVE readback`
 
 ## Runtime shape
 
@@ -37,9 +37,7 @@ Machine truth belongs to current code/tests and machine contracts. `AGENTS.md` i
 npm run qualify:canonical
 ```
 
-`qualify:canonical` verifies the deterministic runtime-root, then regression/check and C21-C28 hardening. `qualify:current` is a compatibility alias; legacy C20 remains non-canonical. Mutation PASS is bounded engineering evidence, not physical-host or world-truth proof.
+`qualify:canonical` verifies runtime-root, regression/check and hardening; `qualify:current` is its compatibility alias.
 
-Host adapters are intentionally split by host reality. `SESSION_CHAT_LOCAL`: use `docs/SESSION_CHAT_LOCAL_PROMPT.md`; first input starts repo-bound pre-accept, exact `I ACCEPT` permits local materialization, then runtime owns turns.
+`SESSION_CHAT_LOCAL` has one caller composition only: `docs/SESSION_CHAT_LOCAL_PROMPT.md` + `contracts/session-chat-local-host-kernel.json` + `contracts/session-chat-composition-channel.json`. Older prompt, planner, carrier, deployment and plugin surfaces are support/remediation/legacy and cannot define a second lifecycle.
 
-
-C28: six repository-owned activation edges with `LOCAL_INGRESS` as the single ingress owner; N0-N8 is diagnostic-only and external platform facts remain explicit. See `docs/C28_FULL_IKANT_ABSORPTION.md`.

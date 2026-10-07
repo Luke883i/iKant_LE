@@ -1,0 +1,72 @@
+{
+  "schema": "ikant-le-project-host-rom/v1",
+  "authority": 0,
+  "role": "COLD_START_ROM_ONLY",
+  "repository": "https://github.com/Luke883i/iKant_LE",
+  "branch": "main",
+  "registers": [
+    "PENDING_INTENT",
+    "SOURCE_HEAD",
+    "FROZEN_ORIENTATION"
+  ],
+  "first_contact": {
+    "preserve_first_input_byte_for_byte": true,
+    "first_input_is_not_acceptance": true,
+    "substantive_reply_before_coldstart_forbidden": true
+  },
+  "preaccept": {
+    "source_plane": "GITHUB_API_ONLY",
+    "resolve_branch_head_once": true,
+    "pin_all_reads_to_source_head": true,
+    "direct_paths": [
+      "README.md",
+      "BOOTSTRAP.json",
+      "ADMISSION.json",
+      "AGENTS.md",
+      "TERMS.md"
+    ],
+    "repository_search_forbidden": true,
+    "tree_discovery_forbidden": true,
+    "history_forbidden": true,
+    "issue_pr_inspection_forbidden": true,
+    "clone_fetch_archive_forbidden": true,
+    "local_materialization_forbidden": true,
+    "present_terms_verbatim": true,
+    "freeze_after_terms": true,
+    "exact_acceptance": "I ACCEPT",
+    "nonmatching_input_advances": false
+  },
+  "postaccept": {
+    "reread_main_forbidden": true,
+    "second_human_gate_forbidden": true,
+    "composition_descriptor": "FROZEN_ORIENTATION.BOOTSTRAP.session_chat_composition",
+    "invoke_only_repository_named_owner": true,
+    "host_capability_must_be_observed_callable": true,
+    "model_selects_carrier": false,
+    "model_selects_fallback": false,
+    "model_selects_retry": false,
+    "model_selects_byte_path": false,
+    "model_reconstructs_owner_semantics": false,
+    "chat_is_ledger": false,
+    "untyped_evidence_forbidden": true,
+    "owner_edge_failure": "STOP_CURRENT_EDGE_ONLY"
+  },
+  "runtime": {
+    "route_only_after_owner_validated_canonical_active_readback": true,
+    "pending_intent_resume_only_when_repository_authorizes": true,
+    "exact_exit": "EXIT IKANT",
+    "host_release_only_after_owner_validated_release": true
+  },
+  "precedence": {
+    "project_rom_after_delegation": "NON_AUTHORITATIVE",
+    "frozen_repository_owner_wins": true,
+    "higher_host_constraints_win": true,
+    "second_ikant_implementation_forbidden": true
+  },
+  "forbidden_literal_policy": {
+    "transport_ids_in_rom_forbidden": true,
+    "byte_path_ids_in_rom_forbidden": true,
+    "legacy_carrier_ids_in_rom_forbidden": true,
+    "runtime_module_paths_in_rom_forbidden": true
+  }
+}

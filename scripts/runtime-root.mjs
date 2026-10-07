@@ -21,17 +21,26 @@ function build(){
  descriptor.runtime_root_sha256=sha256(Buffer.from(canon(descriptor)));return{boot,descriptor,rendered};
 }
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+function preKernelBinding(boot,descriptor,loaderBytes){
+ const k=boot.post_accept_fastboot?.pre_runtime_kernel;
+ if(k?.reuses_runtime_root_loader!==true)return{applicable:false,match:true};
+ return{applicable:true,match:k.path===descriptor.loader.path&&k.blob_sha1===descriptor.loader.blob_sha1&&k.bytes===loaderBytes.length};
+}
+function syncPreKernel(boot,descriptor,loaderBytes){
+ const k=boot.post_accept_fastboot?.pre_runtime_kernel;
+ if(k?.reuses_runtime_root_loader===true){k.path=descriptor.loader.path;k.blob_sha1=descriptor.loader.blob_sha1;k.bytes=loaderBytes.length;}
+}
 const mode=process.argv[2]||'verify';if(!['verify','regen'].includes(mode)){console.error('usage: node scripts/runtime-root.mjs [verify|regen]');process.exit(2)}
 try{
- const x=build();
+ const x=build(),loaderBytes=fs.readFileSync(path.join(ROOT,x.descriptor.loader.path));
  if(mode==='verify'){
-  const current=x.boot.post_accept_fastboot.runtime_root,shardMismatch=x.rendered.filter(s=>!fs.readFileSync(path.join(ROOT,s.path)).equals(s.bytes)).map(s=>s.path);
-  if(shardMismatch.length||!equal(current,x.descriptor)){console.error(JSON.stringify({status:'FAIL',shard_mismatch:shardMismatch,descriptor_match:equal(current,x.descriptor),expected_runtime_root_sha256:x.descriptor.runtime_root_sha256,current_runtime_root_sha256:current.runtime_root_sha256}));process.exit(1)}
+  const current=x.boot.post_accept_fastboot.runtime_root,pk=preKernelBinding(x.boot,x.descriptor,loaderBytes),shardMismatch=x.rendered.filter(s=>!fs.readFileSync(path.join(ROOT,s.path)).equals(s.bytes)).map(s=>s.path);
+  if(shardMismatch.length||!equal(current,x.descriptor)||!pk.match){console.error(JSON.stringify({status:'FAIL',shard_mismatch:shardMismatch,descriptor_match:equal(current,x.descriptor),pre_runtime_kernel_binding_match:pk.match,expected_runtime_root_sha256:x.descriptor.runtime_root_sha256,current_runtime_root_sha256:current.runtime_root_sha256}));process.exit(1)}
   console.log(JSON.stringify({status:'PASS',member_count:x.descriptor.member_count,source_bytes:x.descriptor.source_bytes,runtime_root_sha256:x.descriptor.runtime_root_sha256}));
  }else{
   for(const s of x.rendered)fs.writeFileSync(path.join(ROOT,s.path),s.bytes);
-  x.boot.post_accept_fastboot.runtime_root=x.descriptor;fs.writeFileSync(path.join(ROOT,'BOOTSTRAP.json'),JSON.stringify(x.boot,null,2)+'\n');
-  const y=build();if(!equal(y.boot.post_accept_fastboot.runtime_root,y.descriptor)||y.rendered.some(s=>!fs.readFileSync(path.join(ROOT,s.path)).equals(s.bytes)))throw new Error('post-regeneration verification failed');
+  x.boot.post_accept_fastboot.runtime_root=x.descriptor;syncPreKernel(x.boot,x.descriptor,loaderBytes);fs.writeFileSync(path.join(ROOT,'BOOTSTRAP.json'),JSON.stringify(x.boot,null,2)+'\n');
+  const y=build(),yLoader=fs.readFileSync(path.join(ROOT,y.descriptor.loader.path)),ypk=preKernelBinding(y.boot,y.descriptor,yLoader);if(!equal(y.boot.post_accept_fastboot.runtime_root,y.descriptor)||!ypk.match||y.rendered.some(s=>!fs.readFileSync(path.join(ROOT,s.path)).equals(s.bytes)))throw new Error('post-regeneration verification failed');
   console.log(JSON.stringify({status:'REGENERATED',member_count:y.descriptor.member_count,source_bytes:y.descriptor.source_bytes,runtime_root_sha256:y.descriptor.runtime_root_sha256}));
  }
 }catch(e){console.error(String(e?.stack||e));process.exit(1)}
