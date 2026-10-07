@@ -96,7 +96,10 @@
     "runtime_closure_dead_path_required": 0,
     "runtime_closure_oracle_mismatch_required": 0,
     "executable_activation_related_files": 24,
-    "canonical_active_issuer_count_required": 1
+    "canonical_active_issuer_count_required": 1,
+    "project_rom_mutations": 100,
+    "project_rom_mutation_families": 20,
+    "project_rom_harmful_survivors_required": 0
   },
   "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
   "history_lineage": "contracts/bootstrap-channel-lineage.json",
@@ -109,7 +112,8 @@
     "adversarial": "artifacts/qualification/c59-composition-falsification-100k.json",
     "canonical_authority": "artifacts/qualification/c59-canonical-authority-falsification-100k.json",
     "runtime_closure": "artifacts/qualification/c59-runtime-closure-falsification-100k.json",
-    "executable_surface": "artifacts/qualification/c59-executable-surface-audit.json"
+    "executable_surface": "artifacts/qualification/c59-executable-surface-audit.json",
+    "project_host_rom_adversarial": "artifacts/qualification/c59-project-rom-adversarial-100.json"
   },
   "authority_gate": {
     "owner_module": "src/session-chat-composition.mjs#issueCanonicalSessionChatComposition",
@@ -141,5 +145,6 @@
     "legacy_active_may_equal_canonical_active": false,
     "canonical_active_requires_persisted_handoff_receipt": true,
     "canonical_surface_rejects_legacy_active": true
-  }
+  },
+  "project_host_rom_schema": "ikant-le-project-host-rom/v2"
 }

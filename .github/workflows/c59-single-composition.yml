@@ -48,6 +48,7 @@ on:
       - 'scripts/c59-semantic-lattice-select.mjs'
       - 'scripts/c59-runtime-closure-falsify-100k.mjs'
       - 'scripts/render-project-host-rom.mjs'
+      - 'scripts/c59-project-rom-adversarial-100.mjs'
       - 'artifacts/qualification/c59-*'
       - '.github/workflows/c59-single-composition.yml'
 
@@ -88,6 +89,10 @@ jobs:
         run: |
           node scripts/render-project-host-rom.mjs > /tmp/c59-project-rom.md
           diff -u docs/PROJECT_META_PROMPT_COBOL.md /tmp/c59-project-rom.md
+      - name: C59 Project ROM 100 adversarial mutations
+        run: |
+          node scripts/c59-project-rom-adversarial-100.mjs > /tmp/c59-project-rom-100.json
+          diff -u artifacts/qualification/c59-project-rom-adversarial-100.json /tmp/c59-project-rom-100.json
       - name: C59 PR1-68 history closure
         run: |
           node scripts/c59-pr-history-audit.mjs > /tmp/c59-history.json
