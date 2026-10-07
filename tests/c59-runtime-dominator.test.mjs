@@ -64,5 +64,8 @@ test('C59 explicit legacy compatibility may remain ACTIVE but can never satisfy 
   assert.equal(readback.composition_authority,'LEGACY_COMPATIBILITY');
   assert.equal(readback.ok,false);
   assert.equal(readback.canonical_composition_receipt_sha256,null);
+  const blocked=runCommand('ciao',{hostSurface:'SESSION_CHAT_LOCAL_RUNTIME'});
+  assert.equal(blocked.code,1);
+  assert.match(blocked.stdout,/rejected legacy ACTIVE state/);
  }finally{cleanSourceState();}
 });
