@@ -2,9 +2,9 @@
   "schema": "ikant-le-session-chat-local-host-kernel/v1",
   "slice": "C58.SESSION_CHAT_LOCAL_HOST_KERNEL",
   "authority": 0,
-  "objective": "Reduce the model role to one binary host-routing decision while all bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
+  "objective": "Reduce the model role to deterministic lifecycle routing HOST_ONLY/OPEN/EXIT while bootstrap, acceptance, state and runtime effects remain host/app/runtime owned.",
   "routing": {
-    "model_role": "BINARY_HOST_ONLY_OR_IKANT_OPEN",
+    "model_role": "HOST_ONLY_OR_IKANT_OPEN_OR_IKANT_EXIT",
     "dedicated_lifecycle_only": true,
     "mixed_request_activates": false,
     "quoted_or_negated_activates": false,
@@ -15,7 +15,7 @@
     "model_creates_retry_memory": false
   },
   "binding": {
-    "required": "READY_BOUND_CURRENT_SESSION_MODEL_VISIBLE_CALLABLE_IKANT_OPEN",
+    "required": "READY_BOUND_CURRENT_SESSION_MODEL_VISIBLE_CALLABLE_IKANT_LIFECYCLE_SURFACE",
     "server_start_requires_valid_deployment_reopen": true,
     "repository_symbol_is_binding": false,
     "tool_name_in_prompt_required": false,
@@ -25,7 +25,8 @@
   },
   "app_surface": {
     "model_visible_actions": [
-      "OPEN"
+      "OPEN",
+      "EXIT"
     ],
     "acceptance_owner": "APP_ONLY",
     "runtime_turn_owner": "APP_ONLY_OR_RUNTIME_ROUTE",
@@ -70,5 +71,12 @@
       "owner": "C20_C54_RUNTIME_HOST_FRAME",
       "evidence": "acceptance/runtime and exact host-frame presentation are already owner-enforced"
     }
-  ]
+  ],
+  "prompt_form": {
+    "style": "COBOL_LIKE_NATURAL_LANGUAGE",
+    "flat_sections": true,
+    "indentation": false,
+    "explicit_conditions": true,
+    "hidden_control_flow": false
+  }
 }

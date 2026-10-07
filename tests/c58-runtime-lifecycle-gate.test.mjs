@@ -36,9 +36,11 @@ test('C58 reference app exposes the model binding only after deployment ensure/p
 
 test('C58 SESSION_CHAT_LOCAL prompt is a compact binary router, not a bootstrap planner',()=>{
  const p=renderSessionChatLocalPrompt(),r=sessionChatLocalPromptReceipt();
- assert.equal(r.schema,'ikant-le-session-chat-local-prompt/v1');assert.equal(r.version,'1.1.0');assert.equal(r.authority,0);assert.ok(r.chars<1600);
- assert.match(p,/comando lifecycle dedicato/);assert.match(p,/messaggi misti restano host-only/);assert.match(p,/esattamente una volta un solo binding local-host/);assert.match(p,/Se il binding manca o fallisce, resta host/);
- assert.match(p,/presenta soltanto il frame restituito/);assert.match(p,/esattamente I ACCEPT/);assert.match(p,/altrimenti non chiamare open e resta host/);
+ assert.equal(r.schema,'ikant-le-session-chat-local-prompt/v1');assert.equal(r.version,'1.2.0';assert.equal(r.authority,0);assert.ok(r.chars<2200);
+ assert.match(p,/IDENTITA\./);assert.match(p,/PERIMETRO\./);assert.match(p,/OPEN\./);assert.match(p,/EXIT\./);assert.match(p,/HANDOFF\./);assert.match(p,/TERMS\./);assert.match(p,/RUNTIME\./);assert.match(p,/CONTROLLI NEGATIVI\./);assert.match(p,/STOP\./);
+ assert.match(p,/comando lifecycle dedicato, esplicito, non negato e non citato/);assert.match(p,/classificalo HOST_ONLY/);assert.match(p,/invocalo esattamente una volta/);assert.match(p,/ALTRIMENTI resta host/);
+ assert.match(p,/usa soltanto il frame validato restituito dal binding/);assert.match(p,/esattamente I ACCEPT/);assert.match(p,/Non usare OPEN come fallback/);
+ for(const line of p.split('\n'))assert.equal(/^\s/.test(line),false,'prompt indentation forbidden: '+JSON.stringify(line));
  assert.doesNotMatch(p,/for_ai_agent_first_entrypoint/);assert.doesNotMatch(p,/https:\/\/github\.com/);assert.doesNotMatch(p,/src\//);assert.doesNotMatch(p,/contracts\//);
  assert.equal(fs.readFileSync(path.join(ROOT,'docs/SESSION_CHAT_LOCAL_PROMPT.md'),'utf8'),renderSessionChatLocalPromptDocument());
 });
