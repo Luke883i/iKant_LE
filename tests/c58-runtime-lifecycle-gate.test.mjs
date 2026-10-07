@@ -8,7 +8,7 @@ import {renderSessionChatLocalPrompt,renderSessionChatLocalPromptDocument,sessio
 
 test('C58 dedicated lifecycle gate accepts only a dedicated lifecycle turn',()=>{
  for(const x of ['avvia iKant','apri iKant','open iKant_LE','inizializza localmente iKant','per favore attiva iKant in questa sessione','initialize iKant_LE']){const k=classifyLifecycleIntent(x);assert.equal(k.kind,'ACTIVATE_IKANT',x);assert.equal(k.dedicated,true,x);assert.equal(classifyPreactiveRoute(x).route,'IKANT_ADMISSION',x);}
- for(const x of ['studia iKant_LE','audit di Luke883i/iKant_LE','non avviare iKant','"avvia iKant" e un esempio','\`start ikant\`','avvia iKant e fai audit','non fare audit, avvia iKant','avvia iKant e poi chiudi iKant']){assert.equal(classifyLifecycleIntent(x).kind,'OTHER',x);assert.equal(classifyPreactiveRoute(x).route,'HOST',x);}
+ for(const x of ['studia iKant_LE','audit di Luke883i/iKant_LE','non avviare iKant','"avvia iKant" e un esempio',"'avvia iKant'",'\`start ikant\`','(avvia iKant)','avvia iKant e fai audit','non fare audit, avvia iKant','avvia iKant e poi chiudi iKant']){assert.equal(classifyLifecycleIntent(x).kind,'OTHER',x);assert.equal(classifyPreactiveRoute(x).route,'HOST',x);}
  for(const x of ['chiudi iKant','exit ikant','esci da iKant'])assert.equal(classifyLifecycleIntent(x).kind,'EXIT_IKANT',x);
 });
 
@@ -30,7 +30,7 @@ test('C58 reference app exposes the model binding only after deployment ensure/p
  const server=fs.readFileSync(path.join(ROOT,'plugins/ikant-le-session-chat/server/server.mjs'),'utf8');
  const preflight=server.indexOf('ensureSessionChatDeployment({workspace:repoRoot,deploymentRoot})'),register=server.indexOf("registerAppTool(s,'ikant_le_open'");
  assert.ok(preflight>=0&&register>preflight);assert.match(server,/dedicated explicit user request/);assert.match(server,/never for audits, questions, repository analysis/);
- assert.match(server,/visibility:\['model','app'\]/);assert.ok((server.match(/visibility:\['app'\]/g)||[]).length>=2);
+ assert.equal((server.match(/visibility:\['model','app'\]/g)||[]).length,2);assert.match(server,/ikant_le_exit/);assert.match(server,/input:'EXIT IKANT'/);assert.ok((server.match(/visibility:\['app'\]/g)||[]).length>=2);
  const kernel=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-local-host-kernel.json'),'utf8'));assert.deepEqual(kernel.new_irreducible_primitives,['DEDICATED_LIFECYCLE_GATE','READY_BOUND_OPEN']);assert.equal(kernel.inherited_required_primitives.length,2);
 });
 
