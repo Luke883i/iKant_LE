@@ -52,17 +52,24 @@ static uint64_t safe_world(void){
  w|=B(20)|B(21)|B(22)|B(23)|B(24)|B(25)|B(27); /* valid owner handoff */
  return w;
 }
-static void architecture_lattice(int *valid,int *minimum,int *minimum_count){
+static void architecture_lattice(int *valid,int *minimum,int *minimum_count,int *dvalid,int *dminimum,int *dminimum_count){
  uint64_t w[4];const uint64_t s=safe_world();
- w[0]=s|B(5);          /* mixed activation needs M0 */
- w[1]=s&~B(13);        /* invalid deployment needs M1 */
- w[2]=s|B(17);         /* model-visible accept needs M2 */
- w[3]=s|B(28);         /* fallback after open needs M3 */
+ w[0]=s|B(5);          /* mixed activation needs new M0 */
+ w[1]=s&~B(13);        /* invalid deployment needs new M1 */
+ w[2]=s|B(17);         /* model-visible accept needs inherited M2 */
+ w[3]=s|B(28);         /* fallback after open needs inherited M3 */
  *valid=0;*minimum=99;*minimum_count=0;
  for(unsigned m=0;m<16;m++){
   int ok=1;for(int i=0;i<4;i++)if(!same(candidate(w[i],m),oracle(w[i]))){ok=0;break;}
   if(!ok)continue;(*valid)++;int c=__builtin_popcount(m);
   if(c<*minimum){*minimum=c;*minimum_count=1;}else if(c==*minimum)(*minimum_count)++;
+ }
+ *dvalid=0;*dminimum=99;*dminimum_count=0;
+ for(unsigned d=0;d<4;d++){
+  unsigned m=M2|M3|(d&1?M0:0)|(d&2?M1:0);
+  int ok=1;for(int i=0;i<2;i++)if(!same(candidate(w[i],m),oracle(w[i]))){ok=0;break;}
+  if(!ok)continue;(*dvalid)++;int c=__builtin_popcount(d);
+  if(c<*dminimum){*dminimum=c;*dminimum_count=1;}else if(c==*dminimum)(*dminimum_count)++;
  }
 }
 
@@ -86,9 +93,9 @@ int main(int argc,char**argv){
   if(dedicated(w)&&full_ready(w)&&!surface_ok(w))del[2]++;
   if(dedicated(w)&&full_ready(w)&&surface_ok(w)&&base_handoff(w)!=handoff_ok(w))del[3]++;
  }
- int valid=0,min=0,minCount=0;architecture_lattice(&valid,&min,&minCount);
+ int valid=0,min=0,minCount=0,dvalid=0,dmin=0,dminCount=0;architecture_lattice(&valid,&min,&minCount,&dvalid,&dmin,&dminCount);
  const int global_mode=!strcmp(mode,"global");const int deletion_scope_ok=global_mode?(del[1]&&del[2]&&del[3]):(del[0]&&del[1]&&del[2]&&del[3]);
- const int unique=(valid==1&&min==4&&minCount==1&&deletion_scope_ok&&final_mismatch==0);
+ const int unique=(valid==1&&min==4&&minCount==1&&dvalid==1&&dmin==2&&dminCount==1&&deletion_scope_ok&&final_mismatch==0);
  printf("{\n");
  printf("  \"schema\": \"ikant-le-c58-host-bootstrap-falsification/v2\",\n");
  printf("  \"mode\": \"%s\",\n",mode);
@@ -101,7 +108,8 @@ int main(int argc,char**argv){
  printf("  \"final_candidate_mismatches\": %llu,\n",(unsigned long long)final_mismatch);
  printf("  \"deletion_scope\": \"%s\",\n",global_mode?"M1_M2_M3_GLOBAL":"M0_M1_M2_M3_FULL");
  printf("  \"deletion_witness_counts\": {\"DEDICATED_LIFECYCLE_GATE\": %llu, \"READY_VISIBLE_OPEN_BINDING\": %llu, \"ONE_MODEL_OPEN_EDGE\": %llu, \"OWNER_HANDOFF_NO_SUBSTITUTE\": %llu},\n",(unsigned long long)del[0],(unsigned long long)del[1],(unsigned long long)del[2],(unsigned long long)del[3]);
- printf("  \"architecture_lattice\": {\"total\": 16, \"valid\": %d, \"minimum_cost\": %d, \"minimum_count\": %d, \"unique_minimum_all_four\": %s},\n",valid,min,minCount,unique?"true":"false");
+ printf("  \"system_architecture_lattice\": {\"total\": 16, \"valid\": %d, \"minimum_cost\": %d, \"minimum_count\": %d, \"unique_minimum_all_four\": %s},\n",valid,min,minCount,(valid==1&&min==4&&minCount==1)?"true":"false");
+ printf("  \"new_delta_lattice\": {\"total\": 4, \"valid\": %d, \"minimum_new_cost\": %d, \"minimum_count\": %d, \"unique_minimum_two_new\": %s},\n",dvalid,dmin,dminCount,(dvalid==1&&dmin==2&&dminCount==1)?"true":"false");
  printf("  \"claim_boundary\": {\"semantic_model_is_physical_host_proof\": false, \"natural_language_route_is_model_mediated\": true, \"tool_input_is_not_attested_raw_user_turn\": true},\n");
  printf("  \"status\": \"%s\"\n}\n",unique?"PASS":"FAIL");
  return unique?0:1;
