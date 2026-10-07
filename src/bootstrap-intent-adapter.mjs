@@ -9,7 +9,6 @@ export const HUMAN_INTENT_SCHEMA='ikant-le-human-intent/v1';
 export const ACCEPTANCE_OBSERVATION_SCHEMA='ikant-le-acceptance-observation/v1';
 export const DIRECT_EXECUTOR_HANDOFF_SCHEMA='ikant-le-direct-executor-handoff/v1';
 export const BOOTSTRAP_READINESS_SCHEMA='ikant-le-bootstrap-readiness/v1';
-export const CANONICAL_ACTIVATION_PENDING_INTENT='inizializza iKant_LE';
 
 const digest=x=>crypto.createHash('sha256').update(Buffer.from(JSON.stringify(x))).digest('hex');
 export function classifyHumanIntent(input){
@@ -18,13 +17,8 @@ export function classifyHumanIntent(input){
 }
 
 export function compileIntentAwareFirstContact(input){
- const intent=classifyHumanIntent(input);
- if(intent.kind==='ACTIVATE_IKANT'){
-  const plan=compileFirstContactPlan('iKant_LE');
-  return{next:{...plan,pending_intent:CANONICAL_ACTIVATION_PENDING_INTENT,preserve_pending_intent:true},intent};
- }
- if(intent.kind==='EXIT_IKANT')return{next:{schema:'ikant-le-human-intent-next/v1',recognized:true,terminal:'OWNER_DELEGATION_REQUIRED',action:'DELEGATE_EXIT_TO_CURRENT_OWNER',authority:0},intent};
- return{next:{schema:'ikant-le-human-intent-next/v1',recognized:false,terminal:'HOST_ONLY',action:'NO_IKANT_ACTION',authority:0},intent};
+ const intent=classifyHumanIntent(input),plan=compileFirstContactPlan('iKant_LE'),pendingIntent=String(input??'');
+ return{next:{...plan,pending_intent:pendingIntent,preserve_pending_intent:true,first_input_bootstrap:true},intent};
 }
 
 export function issueAcceptanceObservation({humanInput,sourceHead,termsObject,observedMonotonicMs}={}){
@@ -52,11 +46,10 @@ export function validateDirectExecutorHandoff(h){const e=[];if(h?.schema!==DIREC
 export function deriveExitDelegation({controlPlaneOwnership=null,runtimeActive=false}={}){if(controlPlaneOwnership!==null){const e=validateControlPlaneOwnership(controlPlaneOwnership);if(e.length)throw new Error('control-plane ownership invalid:'+e.join(','));if(controlPlaneOwnership.state==='IKANT_OWNED')return{schema:'ikant-le-exit-next/v1',owner:'CONTROL_PLANE_OWNERSHIP',action:'RELEASE_TO_HOST',active_claim:false,authority:0};}if(runtimeActive===true)return{schema:'ikant-le-exit-next/v1',owner:'CANONICAL_RUNTIME',action:'EXIT IKANT',active_claim:false,authority:0};return{schema:'ikant-le-exit-next/v1',owner:'HOST_ADAPTER',action:'EXIT_COMPLETE',active_claim:false,authority:0};}
 export function projectBootstrapReadiness({next=null,handoff=null,intent=null,ownerPublicLine=null}={}){
  let state='WAITING_OWNER',publicLine=ownerPublicLine||'iKant · VERIFICA';
- if(next?.terminal==='HOST_ONLY'){state='HOST_ONLY';publicLine='';}
- else
- if(intent?.kind==='EXIT_IKANT'){state='EXIT_REQUESTED';publicLine='iKant · CHIUDI';}
+ if(next?.terminal==='CANONICAL_PREACCEPT'){state='ORIENTATION_REQUIRED';publicLine='iKant · PREPARA';}
+ else if(next?.terminal==='HOST_ONLY'){state='HOST_ONLY';publicLine='';}
+ else if(intent?.kind==='EXIT_IKANT'){state='EXIT_REQUESTED';publicLine='iKant · CHIUDI';}
  else if(handoff?.action==='EXECUTE_PRE_RUNTIME_BOOTSTRAP'){state='MATERIALIZATION_READY';publicLine='iKant · MATERIALIZZA';}
- else if(next?.terminal==='CANONICAL_PREACCEPT'){state='ORIENTATION_REQUIRED';publicLine='iKant · PREPARA';}
  else if(ownerPublicLine){state='OWNER_GUIDANCE';publicLine=ownerPublicLine;}
  if(publicLine.length>32)throw new Error('compressed bootstrap line too long');
  return{schema:BOOTSTRAP_READINESS_SCHEMA,state,public_line:publicLine,persisted:false,authority:0};

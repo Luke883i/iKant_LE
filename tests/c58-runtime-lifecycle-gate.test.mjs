@@ -4,6 +4,17 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {ROOT} from '../src/contract.mjs';
 import {renderSessionChatLocalPrompt,renderSessionChatLocalPromptDocument,sessionChatLocalPromptReceipt} from '../src/session-chat-local-prompt.mjs';
+import {compileIntentAwareFirstContact} from '../src/bootstrap-intent-adapter.mjs';
+
+test('C58 executable first contact starts from repo for any first user input',()=>{
+ for(const input of ['ciao','audit della sessione','EXIT IKANT','I ACCEPT','inizializza iKant']){
+  const x=compileIntentAwareFirstContact(input);
+  assert.equal(x.next.terminal,'CANONICAL_PREACCEPT',input);
+  assert.equal(x.next.pending_intent,input,input);
+  assert.equal(x.next.preserve_pending_intent,true,input);
+  assert.equal(x.next.first_input_bootstrap,true,input);
+ }
+});
 
 test('C58 v2 is an action kernel bound to the canonical repository',()=>{
  const p=renderSessionChatLocalPrompt(),r=sessionChatLocalPromptReceipt();
