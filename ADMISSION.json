@@ -62,13 +62,8 @@
     "runtime_reverification_mode": "INLINE_BYTES_TO_GIT_OBJECT_IDENTITY"
   },
   "automatic_after_acceptance": [
-    "ACCEPTANCE_ORIGIN_COMMIT",
-    "ACTIVATE_FIRST",
-    "PARALLEL_RUNTIME_CAPSULE",
-    "IMPORT_PREACCEPT_HANDOFF",
-    "AUTO_PROBE",
-    "AUTO_INITIALIZE",
-    "RESUME_PENDING_INTENT_IF_ANY"
+    "PRESENT_STANDARD_IKANT_INTRO",
+    "AWAIT_EXPLICIT_MODE_SELECTION"
   ],
   "exploration_before_active": false,
   "qualification_before_active": false,
@@ -87,7 +82,8 @@
     "canonical_owner": "LOCAL_RUNTIME_ACCEPT_INGEST",
     "canonical_clock_required": false,
     "canonical_event_id_required": true,
-    "legacy_host_origin_receipts_compatibility_only": true
+    "legacy_host_origin_receipts_compatibility_only": true,
+    "canonical_only": true
   },
   "recoverable_read_only_preaccept_overread_enabled": true,
   "recoverable_read_only_actions": [
@@ -111,5 +107,30 @@
   "read_only_remediation_receipt_schema": "ikant-le-preaccept-remediation/v1",
   "read_only_remediation_preserves_history": true,
   "read_only_remediation_requires_reacquisition": true,
-  "read_only_remediation_retroactive_authorization": false
+  "read_only_remediation_retroactive_authorization": false,
+  "default_onboarding": {
+    "schema": "ikant-le-c72-unified-mode-admission/v1",
+    "human_gate": "I ACCEPT",
+    "after_gate": "PRESENT_INTRO_AND_AWAIT_MODE",
+    "modes": [
+      "CANONICAL",
+      "EXPERIMENTAL"
+    ],
+    "single_consent_for_all_modes": true,
+    "explicit_mode_required": true,
+    "canonical_owner_only_after_choice": true,
+    "experimental_second_consent": false,
+    "native_origin_required_for_canonical_only": true,
+    "legacy_auto_activate": "COMPATIBILITY_ONLY",
+    "authority": 0
+  },
+  "automatic_after_acceptance_legacy_compatibility": [
+    "ACCEPTANCE_ORIGIN_COMMIT",
+    "ACTIVATE_FIRST",
+    "PARALLEL_RUNTIME_CAPSULE",
+    "IMPORT_PREACCEPT_HANDOFF",
+    "AUTO_PROBE",
+    "AUTO_INITIALIZE",
+    "RESUME_PENDING_INTENT_IF_ANY"
+  ]
 }

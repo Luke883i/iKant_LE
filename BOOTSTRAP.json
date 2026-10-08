@@ -1308,5 +1308,27 @@
     "orientation_runtime_file_count": 0,
     "orientation_projection": ".ikant/orientation-projection.json",
     "relay_manifest_role": "VERIFICATION_PROJECTION_OF_FROZEN_BOOTSTRAP"
+  },
+  "user_onboarding_c72": {
+    "schema": "ikant-le-c72-unified-onboarding/v1",
+    "default_for_new_chat": true,
+    "terms_gate": "I ACCEPT",
+    "mode_choices": [
+      "CANONICAL",
+      "EXPERIMENTAL"
+    ],
+    "after_gate": [
+      "STANDARD_INTRO",
+      "MODE_SELECTION"
+    ],
+    "mode_choice_is_second_consent": false,
+    "canonical_owner_after_selection_only": true,
+    "canonical_message_ingress_requires_host_native_event": true,
+    "experimental_c69_requires_no_second_consent_on_unified_path": true,
+    "host_owned_not_active_until_proof": true,
+    "compatibility_old_auto_activation_only": true,
+    "module": "host/c72-unified-mode-admission.mjs",
+    "contract": "contracts/c72-unified-mode-admission.json",
+    "authority": 0
   }
 }

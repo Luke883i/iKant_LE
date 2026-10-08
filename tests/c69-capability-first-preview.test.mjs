@@ -29,7 +29,7 @@ test('C69 text-only preview is consumable without pretending canonical iKant is 
  assert.equal(x.github_host_origin_attested,false);
  assert.equal(x.native_delivery_attested,false);
  assert.equal(x.persistent,false);
- assert.equal(x.consent_basis,'EXACT_MODEL_OBSERVED_EXPERIMENTAL_TEXT');
+ assert.equal(x.consent_basis,'LEGACY_EXACT_MODEL_OBSERVED_EXPERIMENTAL_TEXT');
  assert.deepEqual(x.permitted_operations,['REPOSITORY_STUDY','EXPERIMENTAL_DESIGN','DRAFT_USER_REQUESTED_OUTPUT']);
  assert.ok(C69_EXPERIMENTAL_TERMS.includes('No native message identity'));
 });
