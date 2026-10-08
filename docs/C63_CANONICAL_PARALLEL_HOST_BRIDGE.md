@@ -269,3 +269,45 @@ The post-observation falsification test physically modifies the staged
 integrity and revokes the effective service tier. A separate hostile
 callback strings test confirms that an arbitrary textual assertion
 cannot cause a false integrity classification.
+
+## C67 — Canonical-manifest-bound local recovery, no carrier retry
+
+The owner C61 `issueCanonicalRelayManifest` already binds the exact eight
+objects and authorizes transport to the existing C63 staging sink. C67 narrows
+its recovery to the **seven distinct shard writes after that manifest**:
+
+- Each C63 Node worker opens its distinct target with `wx` (no competing
+  writer). If the target already exists, it may be adopted only if a byte-
+  for-byte reopen AND Git blob digest equal the owner-pinned source; otherwise
+  the existing integrity gate blocks all promotion.
+- For physical `EINTR` / `EAGAIN` from local write **only**, and only when
+  there is still no target file, the worker rereads the destination directory
+  and can try exactly one more `wx` write. A second failure stops. This is
+  a bounded repeat of the SAME owner-manifest relay action, not an owner-
+  unapproved retry of GitHub acquisition, admission or cold bootstrap.
+- Workers return an object-scoped local reopen observation
+  (`NEW_WRITE` / `IDENTICAL_REOPEN` / `TRANSIENT_LOCAL_RETRY`) and bounded
+  write attempt count. Existing C61 independently rereads all staged shards,
+  issues canonical relay observations, and alone activates through C59.
+- Successful C63 output includes
+  `local_worker_recovery:ikant-le-c67-local-worker-recovery/v1`, with
+  `carrier_retry_count:0` and `acceptance_reentry_count:0`. This is
+  zero-authority transport telemetry, never an owner-issued ACTIVE receipt.
+- The model must not select `runnerCount` to explore multiple bootstraps,
+  repeat source requests, choose alternate carriers or synthesize a retry
+  permission. Positive broad retry remains NOT IMPLEMENTED, pending a
+  future explicit C61 owner-authorized changed-evidence receipt.
+
+C67 falsification: exact staged-object reuse, corrupted target rejection,
+Node fanout at minimum and maximum allowed runner count, EINTR/EAGAIN single
+local reattempt under a deterministic fault shim, and ban on third write.
+The prompt renderer and on-disk document must match byte-for-byte. The
+project-level adapter is in `docs/C67_PROJECT_CHATGPT_ADAPTER.md` and is
+copyable; committing it does not update a user's ChatGPT Project settings.
+
+### Physical-host DoD that this PR does not claim
+
+An independently callable GitHub connector-to-Node session bridge, real
+host-observed acceptance monotonic timestamp, runtime routing, persistent
+co-host binding, and native DOCX same-turn delivery require separate host
+witnesses. CI cannot convert an absent host edge into an ACTIVE proof.
