@@ -29,8 +29,8 @@
     },
     {
       "path": "src/session-local-service.mjs",
-      "bytes": 22806,
-      "sha256": "c33e82c40e63529c68e9b5623efa5f7232b62f2ecdb8b90eb419b80e6dabc491"
+      "bytes": 22794,
+      "sha256": "368897bfd79f7de250ebcad7c87a43651f0804f34c0489fd11c5639ec7b25695"
     },
     {
       "path": "scripts/c52-physical-closure-saturate.py",
@@ -66,5 +66,5 @@
   "content_addressed": true,
   "manifest_excludes_self": true,
   "authority": 0,
-  "receipt_sha256": "c1c1e332c5a434cc5cfc57cacd1c14026a64c521314babc3926da93b8335ba95"
+  "receipt_sha256": "cfe0c3d5cfbfe3d92cf4a2f53af6863da3a1df8fdcc75fb8c65a1976a898a083"
 }
