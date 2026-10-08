@@ -11,7 +11,7 @@ const blob=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0'
 const sha=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const source=()=>({path:'README.md',blob_sha1:blob(readme),content_base64:readme.toString('base64')});
 const baseline=()=>({sourceHead:SOURCE_HEAD,
-  offer:issueC69ExperimentalOffer({sourceHead:SOURCE_HEAD}),
+  offer:structuredClone(issueC69ExperimentalOffer({sourceHead:SOURCE_HEAD})),
   observedConsent:'I ACCEPT EXPERIMENTAL',sourceObject:source(),
   messages:['Analizza due soluzioni possibili e indica i limiti.','Quali alternative restano verificabili?']});
 const reseal=o=>{const {offer_sha256,...body}=o;return {...body,offer_sha256:sha(body)};};
