@@ -36,7 +36,7 @@ test('C25 orientation identity mismatch fails before acceptance state import',()
 test('C25 local executor materialization re-verifies orientation and reopens bytes',{concurrency:false},()=>{
  const parent=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c25-')),sink=path.join(parent,'root');
  try{
-  const r=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),orientationObjects:orientationObjects(),activationExecutorReceiptSha256:'b'.repeat(64)});
+  const pre=bootstrapHandoffV2('inizializza','a'.repeat(40)),r=materializeRuntimeRoot({workspace:ROOT,sink,sourceHead:'a'.repeat(40),orientationObjects:pre.orientation_objects,preacceptHandoff:pre,activationExecutorReceiptSha256:'b'.repeat(64)});
   assert.equal(r.schema,'ikant-le-runtime-root-materialization/v2');
   assert.equal(r.reopen_verified,true);
   assert.equal(r.reverified_orientation_objects.length,readOrientationCapsule().paths.length);

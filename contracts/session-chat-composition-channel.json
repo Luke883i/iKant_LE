@@ -29,7 +29,9 @@
     "container_github_network_required": false,
     "model_role": "OPAQUE_TRANSPORT_ONLY",
     "model_selects_carrier": false,
-    "model_selects_fallback": false
+    "model_selects_fallback": false,
+    "pre_acquisition_object_authority": "FROZEN_BOOTSTRAP_REMOTE_PATHS",
+    "runtime_transport_object_count": 8
   },
   "mechanisms": [
     "K0_PINNED_SOURCE",
@@ -66,7 +68,8 @@
       "local write/reopen identity is required",
       "identity mismatch blocks instead of carrier fallback",
       "canonical handoff is persisted and reopened before runtime invocation",
-      "pending intent resumes only after canonical ACTIVE readback"
+      "pending intent resumes only after canonical ACTIVE readback",
+      "orientation source documents are evidence only and are not materialized into the runtime sink"
     ]
   },
   "qualification": {
@@ -101,7 +104,11 @@
     "project_rom_mutation_families": 20,
     "project_rom_harmful_survivors_required": 0,
     "cold_producer_mutations": 1048576,
-    "cold_producer_unsafe_active_required": 0
+    "cold_producer_unsafe_active_required": 0,
+    "evidence_runtime_cut_candidates": 1000,
+    "evidence_runtime_cut_mutations": 10000,
+    "evidence_runtime_cut_runtime_objects": 8,
+    "evidence_runtime_cut_orientation_runtime_files": 0
   },
   "host_witness": "artifacts/qualification/c59-host-connector-container-witness.json",
   "history_lineage": "contracts/bootstrap-channel-lineage.json",
@@ -116,7 +123,8 @@
     "runtime_closure": "artifacts/qualification/c59-runtime-closure-falsification-100k.json",
     "executable_surface": "artifacts/qualification/c59-executable-surface-audit.json",
     "project_host_rom_adversarial": "artifacts/qualification/c59-project-rom-adversarial-100.json",
-    "cold_producer": "artifacts/qualification/c61-cold-producer-1m.json"
+    "cold_producer": "artifacts/qualification/c61-cold-producer-1m.json",
+    "evidence_runtime_cut": "artifacts/qualification/c62-evidence-runtime-cut-10k.json"
   },
   "authority_gate": {
     "owner_module": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
@@ -150,7 +158,8 @@
     "canonical_surface_rejects_legacy_active": true,
     "cold_owner": "src/runtime-root-verified.mjs#executeCanonicalColdBootstrap",
     "relay_manifest_owner": "src/runtime-root-verified.mjs#issueCanonicalRelayManifest",
-    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor"
+    "activation_executor_issuer": "src/runtime-root-verified.mjs#issueCanonicalActivationExecutor",
+    "orientation_projection": ".ikant/orientation-projection.json"
   },
   "project_host_rom_schema": "ikant-le-project-host-rom/v2"
 }

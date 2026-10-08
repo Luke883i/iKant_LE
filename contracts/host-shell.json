@@ -27,7 +27,7 @@
     "post_accept_remote_rounds_max": 1,
     "parallel_runtime_fetch": true,
     "exact_source_head": true,
-    "reuse_preaccept_bytes": false,
+    "reuse_preaccept_bytes": true,
     "preaccept_handoff": "ikant-le-preaccept-handoff/v2",
     "generic_discovery_before_active": false,
     "tests_before_active": false,
@@ -103,7 +103,11 @@
     "session_closure_projection": "ikant-le-session-closure-projection/v1",
     "diagnostic_stage_persisted": false,
     "failure_memory_scope": "CARRIER_LOCAL_CHANNEL_EVIDENCE",
-    "unrelated_channel_evidence_requalifies_failed_carrier": false
+    "unrelated_channel_evidence_requalifies_failed_carrier": false,
+    "orientation_source_files_materialized": false,
+    "orientation_runtime_projection": ".ikant/orientation-projection.json",
+    "pre_acquisition_object_authority": "FROZEN_BOOTSTRAP_REMOTE_PATHS",
+    "runtime_transport_object_count": 8
   },
   "automatic_after_acceptance": [
     "LOCAL_EXECUTOR_CAPABILITY_PROBE",
@@ -247,7 +251,9 @@
     "pre_runtime_digest_required": false,
     "pre_runtime_clock_required": false,
     "may_promote_acceptance": false,
-    "authority": 0
+    "authority": 0,
+    "orientation_inline_payloads_for_canonical": true,
+    "orientation_local_file_reverification_required": false
   },
   "host_profiles": {
     "SESSION_CHAT": {

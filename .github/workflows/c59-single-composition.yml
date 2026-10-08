@@ -52,6 +52,10 @@ on:
       - 'scripts/c59-project-rom-adversarial-100.mjs'
       - 'scripts/c61-cold-producer-falsify.mjs'
       - 'contracts/cold-producer-closure.json'
+      - 'artifacts/qualification/c62-evidence-runtime-cut-10k.json'
+      - 'scripts/c62-evidence-runtime-cut-falsify.mjs'
+      - 'tests/c62-evidence-runtime-cut.test.mjs'
+      - 'contracts/evidence-runtime-cut.json'
       - 'artifacts/qualification/c59-*'
       - '.github/workflows/c59-single-composition.yml'
 
@@ -92,6 +96,14 @@ jobs:
         run: |
           node scripts/c61-cold-producer-falsify.mjs > /tmp/c61-cold-producer.json
           diff -u artifacts/qualification/c61-cold-producer-1m.json /tmp/c61-cold-producer.json
+      - name: C62 evidence/runtime cut E2E
+        if: always()
+        run: node --test --test-concurrency=1 tests/c62-evidence-runtime-cut.test.mjs
+      - name: C62 evidence/runtime cut 10k falsification
+        if: always()
+        run: |
+          node scripts/c62-evidence-runtime-cut-falsify.mjs > /tmp/c62-evidence-runtime-cut.json
+          diff -u artifacts/qualification/c62-evidence-runtime-cut-10k.json /tmp/c62-evidence-runtime-cut.json
       - name: C59 10k composition audit
         run: node scripts/c58-composition-audit-10k.mjs
       - name: C59 10k prompt mutations
