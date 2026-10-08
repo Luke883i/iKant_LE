@@ -12,6 +12,8 @@ This accepts the common Terms. It does NOT activate iKant. After acceptance, the
 
 CANONICAL: Complete activation requires a real host-native ingress event and original identity, the repository's canonical composition owner, exact source materialization and readback, executed Node 20+ provenance and probe, a durable single writer, and canonical ACTIVE readback. This mode is not recommended within unverified ChatGPT Projects integrations. A text acceptance or selection must never be promoted to ACTIVE or used to create a past event identity.
 
+After an explicit CANONICAL choice, and only if the original native-event ingress was already available, activation continues by delegating to the canonical `SESSION_CHAT_LOCAL` composition owner. Alternative Git blobs, raw files, ZIP archives, cached or model-authored artifacts are compatibility or remediation surfaces only and cannot confer canonical activation authority.
+
 EXPERIMENTAL: Recommended for internal testing. This lower-assurance mode can provide host-owned repository analysis and, when physically available, real Node kernel execution and bounded draft responses. Text acceptance is not anti-replay or native event identity. Selection is not execution; no ownership of future ChatGPT messages, cross-message persistent state, native delivery, or owner-sealed decisions is promised. There is no second experimental consent in this unified path.
 
 ## Safety and disclosure
