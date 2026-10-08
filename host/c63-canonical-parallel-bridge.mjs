@@ -8,6 +8,7 @@ import {performance} from 'node:perf_hooks';
 const HEX40=/^[a-f0-9]{40}$/;
 const SAFE=/^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))(?!.*\\)[A-Za-z0-9._/-]+$/;
 const blob=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+const sha256=b=>crypto.createHash('sha256').update(b).digest('hex');
 function decode(b64){
   if(typeof b64!=='string')throw Error('base64 required');
   const s=b64.replace(/[\r\n]/g,'');
@@ -93,6 +94,89 @@ async function fanout(root,rows,bytes,limit){
   if(results.length!==rows.length)throw Error('worker barrier incomplete');
   return results;
 }
+
+/**
+ * C65: Normalize only the existing pinned GitHub API file-read response.
+ * readPinnedFile is a callable HOST edge, not a Node network fallback.
+ * This closure cannot attest that the host supplied a genuine connector.
+ */
+export function createC65PinnedGitHubSource(readPinnedFile){
+  if(typeof readPinnedFile!=='function')throw Error('callable GitHub API host read required');
+  return async function fetchPinnedObject(request){
+    const {sourceHead,path:rel,blob_sha1:expected}=request||{};
+    if(!HEX40.test(String(sourceHead||''))||!SAFE.test(String(rel||''))||!HEX40.test(String(expected||'')))throw Error('pinned source request invalid');
+    const args=Object.freeze({repository_full_name:'Luke883i/iKant_LE',path:rel,ref:sourceHead,encoding:'base64'});
+    const got=await readPinnedFile(args);
+    const value=got?.result??got;
+    const pinnedUrl='https://github.com/Luke883i/iKant_LE/blob/'+sourceHead+'/'+rel;
+    if(value?.sha!==expected||value?.encoding!=='base64'||value?.display_url!==pinnedUrl)throw Error('GitHub API identity/ref mismatch: '+rel);
+    const bytes=decode(value?.content);
+    if(blob(bytes)!==expected)throw Error('GitHub API decoded blob mismatch: '+rel);
+    return {path:rel,blob_sha1:expected,content_base64:bytes.toString('base64'),
+      source_object_identity:pinnedUrl+'#'+expected};
+  };
+}
+
+/**
+ * A projection of actual C61 relay observations and local readbacks.
+ * The digest is a change detector, NOT an owner seal or native-host proof.
+ */
+function projectC65SourceSink({owner,workspace,sourceHead,preacceptHandoff,manifest,observations,ownerResult}){
+  if(manifest?.object_count!==8||observations?.length!==8)throw Error('C65 expected 8 owner observations');
+  const objects=manifest.objects.map(m=>{
+    const o=observations.find(x=>x.object_path===m.path);
+    const v=owner.validateCanonicalRelayObservation(o,{workspace,sourceHead,preacceptHandoff,relayManifest:manifest});
+    if(!o||!v.ok||o.source_sha256!==o.local_readback_sha256||o.source_blob_sha1!==m.blob_sha1||o.local_blob_sha1!==m.blob_sha1)throw Error('C65 owner relay observation invalid: '+m.path);
+    return {path:m.path,source_blob_sha1:m.blob_sha1,source_sha256:o.source_sha256,
+      local_readback_sha256:o.local_readback_sha256,
+      owner_observation_receipt_sha256:o.receipt_sha256,
+      source_object_identity_claim:o.source_object_identity,
+      local_object_id:o.local_object_id};
+  });
+  const body={schema:'ikant-le-c65-source-sink-projection/v1',source_head:sourceHead,
+    runtime_root_sha256:manifest.runtime_root_sha256,
+    owner_manifest_receipt_sha256:manifest.receipt_sha256,
+    owner_result_receipt_sha256:ownerResult.receipt_sha256,
+    object_count:objects.length,objects,
+    local_reopen_verified:true,github_host_fetch_proven:false,
+    host_native_delivery_proven:false,active_authority_claim:false,authority:0};
+  return {...body,projection_sha256:sha256(Buffer.from(JSON.stringify(body)))};
+}
+
+export function validateC65SourceSinkProjection(value,{sourceHead,preacceptHandoff}={}){
+  const errors=[];
+  let expected=null;
+  try{
+    const x={sourceHead,humanInput:'I ACCEPT',preacceptHandoff,
+      acceptanceObservedMonotonicMs:performance.now()};
+    expected=inspectFrozen(x).rows;
+  }catch{errors.push('frozen_source');}
+  if(value?.schema!=='ikant-le-c65-source-sink-projection/v1'||value?.source_head!==sourceHead||
+    value?.object_count!==8||!Array.isArray(value?.objects)||value.objects.length!==8||
+    value?.authority!==0||value?.active_authority_claim!==false||
+    value?.github_host_fetch_proven!==false||value?.host_native_delivery_proven!==false||
+    value?.local_reopen_verified!==true)errors.push('projection_scope');
+  const hex64=x=>/^[0-9a-f]{64}$/.test(String(x||''));
+  if(!hex64(value?.owner_manifest_receipt_sha256)||!hex64(value?.owner_result_receipt_sha256)||
+    !hex64(value?.runtime_root_sha256))errors.push('owner_binding');
+  const rows=Array.isArray(value?.objects)?value.objects:[],seen=new Set();
+  for(let i=0;i<rows.length;i++){
+    const o=rows[i],ref=expected?.[i];
+    if(!o||!ref||seen.has(o.path)||o.path!==ref.path||o.source_blob_sha1!==ref.blob_sha1||
+       !hex64(o.source_sha256)||o.source_sha256!==o.local_readback_sha256||
+       !hex64(o.owner_observation_receipt_sha256)||
+       !String(o.source_object_identity_claim||'').trim()||
+       !String(o.local_object_id||'').trim())errors.push('object:'+i);
+    seen.add(o?.path);
+  }
+  if(!hex64(value?.projection_sha256))errors.push('digest_format');
+  else {
+    const {projection_sha256,...body}=value;
+    if(sha256(Buffer.from(JSON.stringify(body)))!==projection_sha256)errors.push('projection_digest');
+  }
+  return {ok:errors.length===0,errors:[...new Set(errors)]};
+}
+
 /**
  * Host transports *pinned GitHub API* source bytes to this zero-authority sink adapter.
  * The existing C61/C59 owner alone derives receipts, materializes and claims ACTIVE.
@@ -134,11 +218,15 @@ export async function executeC63HostBridge(x){
       acceptanceObservedMonotonicMs:x.acceptanceObservedMonotonicMs
     });
     if(result.active!==true||result.canonical_active_readback?.ok!==true)throw Error('canonical ACTIVE readback missing');
+    const sourceSinkProjection=projectC65SourceSink({owner,workspace:cold,sourceHead:x.sourceHead,
+      preacceptHandoff:x.preacceptHandoff,manifest,observations,ownerResult:result});
+    const checked=validateC65SourceSinkProjection(sourceSinkProjection,{sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff});
+    if(!checked.ok)throw Error('C65 source-sink projection invalid: '+checked.errors.join(','));
     return{schema:'ikant-le-c63-host-byte-bridge/v1',source_head:x.sourceHead,
       runtime_root_sha256:result.runtime_root_sha256,source_plane:'GITHUB_API',byte_path:'VERIFIED_OPAQUE_RELAY',
       runner_kind:'NODE_WORKER_THREADS',runner_count:Math.min(x.runnerCount??4,7),verified_object_count:8,
       owner_active_readback:result.canonical_active_readback,owner_result_receipt_sha256:result.receipt_sha256,
-      authority:0};
+      source_sink_projection:sourceSinkProjection,authority:0};
   }finally{fs.rmSync(stage,{recursive:true,force:true});}
 }
 
