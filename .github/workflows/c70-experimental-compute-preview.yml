@@ -15,6 +15,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: write
 jobs:
   source-lab:
     runs-on: ubuntu-latest
@@ -28,6 +29,20 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm run runtime-root:verify
-      - run: node --test --test-concurrency=1 tests/c69-capability-first-preview.test.mjs tests/c70-experimental-compute-preview.test.mjs
+      - name: C70 bounded tests with diagnostic capture
+        run: |
+          set +e
+          node --test --test-concurrency=1 tests/c69-capability-first-preview.test.mjs tests/c70-experimental-compute-preview.test.mjs > /tmp/c70-test-output.txt 2>&1
+          rc=$?
+          cat /tmp/c70-test-output.txt
+          exit "$rc"
+      - name: Post C70 test diagnostics to the same PR
+        if: failure() && github.event_name == 'pull_request' && matrix.node == '22'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          tail -n 100 /tmp/c70-test-output.txt > /tmp/c70-scoped-diagnostics.txt
+          gh pr comment "$PR_NUMBER" --body-file /tmp/c70-scoped-diagnostics.txt
       - run: node --test --test-concurrency=1 tests/c31-runtime-limited-turn.test.mjs tests/c58-runtime-lifecycle-gate.test.mjs
       - run: npm run check
