@@ -6,7 +6,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
-import {executeC63HostBridge,executeC63AtAcceptance,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
+import {executeC63HostBridge,executeC63AtAcceptance,createC65PinnedGitHubSource,validateC65SourceSinkProjection,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEAD='a'.repeat(40);
@@ -54,6 +54,10 @@ test('C63 parallel Node worker samehash -> owner C61/C59 canonical ACTIVE, runti
     assert.equal(result.runner_kind,'NODE_WORKER_THREADS');
     assert.equal(result.runner_count,4);
     assert.equal(result.verified_object_count,8);
+    assert.equal(result.source_sink_projection.object_count,8);
+    assert.equal(result.source_sink_projection.github_host_fetch_proven,false);
+    assert.equal(result.source_sink_projection.host_native_delivery_proven,false);
+    assert.deepEqual(validateC65SourceSinkProjection(result.source_sink_projection,{sourceHead:HEAD,preacceptHandoff:fixture().preacceptHandoff}),{ok:true,errors:[]});
     assert.equal(result.owner_active_readback.ok,true);
     assert.equal(result.owner_active_readback.state,'ACTIVE');
     assert.equal(result.owner_active_readback.composition_authority,'C59_CANONICAL');
@@ -146,4 +150,85 @@ test('C64 bad or missing pinned provider object never materializes runtime; all 
       assert.equal(fs.existsSync(path.join(root,'runtime')),false);
     }finally{fs.rmSync(root,{recursive:true,force:true});}
   }
+});
+
+test('C65 pinned GitHub response adapter => 8/8 actual C61 local reopen projection => C59 readback',async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c65-source-sink-'));
+  try{
+    const f=fixture(),byPath=new Map(f.sourceObjects.map(x=>[x.path,x])),reads=[];
+    const read=async args=>{
+      reads.push(args);
+      assert.deepEqual(Object.keys(args).sort(),['encoding','path','ref','repository_full_name']);
+      assert.equal(args.ref,HEAD);
+      assert.equal(args.encoding,'base64');
+      assert.equal(args.repository_full_name,'Luke883i/iKant_LE');
+      const obj=byPath.get(args.path);
+      const content=obj.content_base64.match(/.{1,61}/g).join('\n');
+      return {result:{sha:obj.blob_sha1,encoding:'base64',content,
+        display_url:'https://github.com/Luke883i/iKant_LE/blob/'+HEAD+'/'+args.path}};
+    };
+    const result=await executeC63AtAcceptance({
+      humanInput:'I ACCEPT',sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,fetchPinnedObject:createC65PinnedGitHubSource(read),runnerCount:4
+    });
+    assert.equal(reads.length,8);
+    const p=result.source_sink_projection;
+    assert.equal(p.owner_result_receipt_sha256,result.owner_result_receipt_sha256);
+    assert.equal(p.runtime_root_sha256,result.runtime_root_sha256);
+    assert.equal(p.local_reopen_verified,true);
+    assert.equal(p.github_host_fetch_proven,false);
+    assert.equal(p.host_native_delivery_proven,false);
+    assert.equal(p.object_count,8);
+    assert.equal(new Set(p.objects.map(x=>x.path)).size,8);
+    assert.ok(p.objects.every(x=>x.source_sha256===x.local_readback_sha256));
+    assert.ok(p.objects.every(x=>x.source_object_identity_claim.includes('/blob/'+HEAD+'/')));
+    assert.deepEqual(validateC65SourceSinkProjection(p,{sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff}),{ok:true,errors:[]});
+    assert.equal(result.owner_active_readback.ok,true);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C65 rejects GitHub API response tamper and ambiguous encoding before any owner invocation',async()=>{
+  const f=fixture(),original=f.sourceObjects[0],request={sourceHead:HEAD,path:original.path,blob_sha1:original.blob_sha1};
+  const good={sha:original.blob_sha1,encoding:'base64',content:original.content_base64,
+    display_url:'https://github.com/Luke883i/iKant_LE/blob/'+HEAD+'/'+original.path};
+  assert.throws(()=>createC65PinnedGitHubSource(null),/callable/);
+  for(const mutation of [
+    x=>{x.sha='b'.repeat(40);},
+    x=>{x.encoding='utf-8';},
+    x=>{x.display_url='https://github.com/Luke883i/iKant_LE/blob/main/'+original.path;},
+    x=>{x.content='eA==';},
+    x=>{x.content=undefined;},
+    x=>{x.content+='A';}
+  ]){
+    const row={...good};mutation(row);
+    await assert.rejects(()=>createC65PinnedGitHubSource(async()=>({result:row}))(request));
+  }
+  const read=createC65PinnedGitHubSource(async()=>({result:good}));
+  await assert.rejects(()=>read({...request,path:'../escape'}),/pinned source request/);
+  await assert.rejects(()=>read({...request,sourceHead:'main'}),/pinned source request/);
+});
+
+test('C65 projection never manufactures native-origin or ACTIVE proof; adversarial tampering rejected',async()=>{
+  const f=fixture(),root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c65-negative-'));
+  try{
+    const out=await executeC63HostBridge({...f,sessionRoot:root});
+    const p=out.source_sink_projection,validate=x=>validateC65SourceSinkProjection(x,{sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff}).ok;
+    assert.equal(validate(p),true);
+    for(const m of [
+      x=>{x.objects[3].source_sha256='0'.repeat(64);},
+      x=>{x.objects[0].source_blob_sha1='0'.repeat(40);},
+      x=>{x.objects.pop();},
+      x=>{x.objects[1].path=x.objects[0].path;},
+      x=>{x.github_host_fetch_proven=true;},
+      x=>{x.host_native_delivery_proven=true;},
+      x=>{x.active_authority_claim=true;},
+      x=>{x.owner_manifest_receipt_sha256='bad';},
+      x=>{x.projection_sha256='0'.repeat(64);}
+    ]){const copy=structuredClone(p);m(copy);assert.equal(validate(copy),false);}
+    const fake=structuredClone(p);
+    fake.github_host_fetch_proven=true;
+    delete fake.projection_sha256;
+    fake.projection_sha256=crypto.createHash('sha256').update(JSON.stringify(fake)).digest('hex');
+    assert.equal(validate(fake),false,'rehashed host claim must remain forbidden');
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
