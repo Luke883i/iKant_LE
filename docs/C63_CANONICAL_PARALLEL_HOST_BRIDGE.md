@@ -311,3 +311,61 @@ An independently callable GitHub connector-to-Node session bridge, real
 host-observed acceptance monotonic timestamp, runtime routing, persistent
 co-host binding, and native DOCX same-turn delivery require separate host
 witnesses. CI cannot convert an absent host edge into an ACTIVE proof.
+
+## C68 — Native human-message event ingress, proof-boundary closure
+
+The original post-C67 failure was before C63: after an exact human `I ACCEPT`,
+the model reported no host-callable event identity interface. This is **not**
+a failure returned by C63/C61/C59, and an absent host receipt is UNKNOWN
+rather than proof that all host capabilities are absent.
+
+`registerC68AcceptanceIngress({registerHostMessage,sourceHead,
+preacceptHandoff,sessionRoot,fetchPinnedObject,runnerCount})` is a
+zero-authority **host integration seam**, NOT a ChatGPT-provided tool.
+Its `registerHostMessage(listener)` must be called *before* the user
+sends the exact acceptance message, using a real current-host listener.
+It must return a revocation function. The listener receives a real
+host-supplied record `{role:'user',content:'I ACCEPT',event_id:<opaque
+native message identity>}`. C68 preserves that opaque event ID as a
+`host_event_id_claim` and invokes C64/C66 synchronously on the callback,
+with no model-supplied timestamp and no second acceptance epoch.
+The canonical clock is captured inside C64 at this callback.
+C63/C61/C59 remain the only bootstrap authorities.
+
+C68 deliberately **does not** issue `ikant-le-acceptance-origin-ticket/v1`
+or any event ID owned by the materialized runtime. Per frozen
+`BOOTSTRAP.activation_executor_reentry`, a materialized-runtime event ID
+is *not* required before materialization. `ADMISSION.acceptance_origin`
+separately requires host-owned event identity; a model-written string,
+test fixture or local callback registration alone cannot attest it.
+Even a fake callback that reaches local fixture ACTIVE is NOT evidence
+that ChatGPT furnished a native acceptance event.
+
+The API returns a typed `HOST_EDGE_NOT_CALLABLE`,
+`HOST_REGISTRATION_FAILED`, `HOST_REGISTRATION_UNVERIFIED`,
+`CALLBACK_REGISTERED`, `HOST_EVENT_ID_UNVERIFIED` or
+`CANONICAL_OWNER_RETURNED` projection. All cases explicitly have
+`host_native_event_attested:false`, `origin_ticket_issued:false`,
+`runtime_event_id_issued:false` and authority zero. Positive
+`CANONICAL_OWNER_RETURNED` includes the actual result of unchanged
+C64/C66, never a replacement for the owner's ACTIVE readback.
+
+The listener ignores non-user or non-exact input, refuses an event
+delivered synchronously *during* registration before the hook is armed,
+consumes the first exact acceptance event at most once, refuses
+replays, and cannot be invoked after `close`. If no host listener is
+callable, C68 stops *at that edge*; it does not try a browser, raw
+GitHub URL, ZIP, warm cache, alternative owner, shadow lifecycle, or
+retroactive `performance.now()`.
+
+### C68 qualification limits
+
+Tests use a simulated message hook, mock event ID and local Node
+filesystem; they prove **integration mechanics**, exact-once execution,
+readback and failure behavior. They do not attest genuine
+native ChatGPT event origination, callable hooks in future sessions,
+native DOCX delivery or persistent co-host context.
+The authoritative native ingress proof must come from the host itself,
+not a GitHub CI test, URL, doc or the model. The new Project adapter is
+`docs/C68_PROJECT_CHATGPT_ADAPTER.md`; updating a repository file
+does not automatically update ChatGPT Project settings.

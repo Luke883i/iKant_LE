@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
 import vm from 'node:vm';
-import {executeC63HostBridge,executeC63AtAcceptance,executeC66QualifiedAtAcceptance,createC65PinnedGitHubSource,validateC65SourceSinkProjection,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
+import {executeC63HostBridge,executeC63AtAcceptance,executeC66QualifiedAtAcceptance,registerC68AcceptanceIngress,createC65PinnedGitHubSource,validateC65SourceSinkProjection,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEAD='a'.repeat(40);
@@ -455,7 +455,8 @@ test('C67 canonical prompt render parity and anti-shadow-planner project adapter
   return import(pathToFileURL(m).href).then(mod=>{
     const doc=fs.readFileSync(path.join(ROOT,'docs/SESSION_CHAT_LOCAL_PROMPT.md'),'utf8');
     assert.equal(doc,mod.renderSessionChatLocalPromptDocument());
-    assert.equal(mod.SESSION_CHAT_LOCAL_PROMPT_VERSION,'5.0.0');
+    assert.equal(mod.SESSION_CHAT_LOCAL_PROMPT_VERSION,'6.0.0');
+    assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 360 INGRESS_ORIGIN_C68'),true);
     assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 320 PROOF_LOOP'),true);
     assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 330 RETRY_LOCAL_C67'),true);
     const project=fs.readFileSync(path.join(ROOT,'docs/C67_PROJECT_CHATGPT_ADAPTER.md'),'utf8');
@@ -516,4 +517,99 @@ test('C67 transient local write resumes once after fresh sink probe, never third
       }
     }finally{fs.rmSync(root,{recursive:true,force:true});}
   }
+});
+
+test('C68 missing native ingress capability is typed and no acceptance origin is invented',()=>{
+  const f=fixture();
+  let sourceReads=0;
+  const attempt=()=>registerC68AcceptanceIngress({
+    sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff,
+    fetchPinnedObject:async()=>{sourceReads++;throw Error('must not fetch');}
+  });
+  const out=attempt();
+  assert.equal(out.schema,'ikant-le-c68-host-ingress-projection/v1');
+  assert.equal(out.status,'HOST_EDGE_NOT_CALLABLE');
+  assert.equal(out.first_unclosed_edge,'HOST_MESSAGE_INGRESS');
+  assert.equal(out.host_native_event_attested,false);
+  assert.equal(out.origin_ticket_issued,false);
+  assert.equal(out.runtime_event_id_issued,false);
+  assert.equal(sourceReads,0);
+  for(const injection of [
+    {humanInput:'I ACCEPT'}, {acceptanceObservedMonotonicMs:performance.now()},
+    {sourceObjects:f.sourceObjects}, {nativeEventId:'fabricated'}
+  ])assert.throws(()=>registerC68AcceptanceIngress({...injection}),/caller-injected acceptance origin/);
+});
+
+test('C68 registered hook refuses synchronous replay and missing original event id',async()=>{
+  const f=fixture();let listener,reads=0;
+  const early=[];
+  const out=registerC68AcceptanceIngress({
+    sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff,
+    fetchPinnedObject:async()=>{reads++;throw Error('not a source fetch');},
+    registerHostMessage:fn=>{
+      listener=fn;
+      early.push(fn({role:'user',content:'I ACCEPT',event_id:'historical-replay'}));
+      return ()=>{};
+    }
+  });
+  assert.equal(out.status,'CALLBACK_REGISTERED');
+  assert.equal(out.host_native_event_attested,false);
+  assert.equal(out.origin_ticket_issued,false);
+  assert.equal((await early[0]).status,'NOT_ARMED');
+  assert.equal((await listener({role:'assistant',content:'I ACCEPT',event_id:'not-user'})).status,'NOT_EXACT_HUMAN_ACCEPTANCE');
+  assert.equal((await listener({role:'user',content:'I ACCEPT ',event_id:'whitespace'})).status,'NOT_EXACT_HUMAN_ACCEPTANCE');
+  const missing=await listener({role:'user',content:'I ACCEPT'});
+  assert.equal(missing.status,'HOST_EVENT_ID_UNVERIFIED');
+  assert.equal(missing.first_unclosed_edge,'HOST_ACCEPTANCE_EVENT_IDENTITY');
+  assert.equal(missing.host_native_event_attested,false);
+  assert.equal((await listener({role:'user',content:'I ACCEPT',event_id:'retrospective'})).status,'ACCEPTANCE_ALREADY_CONSUMED');
+  assert.equal(reads,0);
+  out.close();
+  assert.equal((await listener({role:'user',content:'I ACCEPT',event_id:'after-close'})).status,'NOT_ARMED');
+});
+
+test('C68 actual callback in registered fixture invokes C64/C66 exactly once, no new owner',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(z=>[z.path,z]));
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c68-native-hook-fixture-'));
+  let listener,registered=0,unregistered=0,fetches=0;
+  try{
+    const reg=registerC68AcceptanceIngress({
+      sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff,sessionRoot:root,
+      runnerCount:4,fetchPinnedObject:async req=>{fetches++;return {...byPath.get(req.path)};},
+      registerHostMessage:fn=>{registered++;listener=fn;return ()=>{unregistered++;};}
+    });
+    assert.equal(reg.status,'CALLBACK_REGISTERED');
+    assert.equal(reg.registration_only,true);
+    const pending=listener({role:'user',content:'I ACCEPT',event_id:'native-hook-fixture-001'});
+    const simultaneous=await listener({role:'user',content:'I ACCEPT',event_id:'native-hook-fixture-002'});
+    assert.equal(simultaneous.status,'ACCEPTANCE_ALREADY_CONSUMED');
+    const result=await pending;
+    assert.equal(result.status,'CANONICAL_OWNER_RETURNED');
+    assert.equal(result.host_native_event_attested,false);
+    assert.equal(result.origin_ticket_issued,false);
+    assert.equal(result.runtime_event_id_issued,false);
+    assert.equal(result.host_event_id_claim,'native-hook-fixture-001');
+    assert.equal(result.event_identity_issuer,'HOST_NATIVE_MESSAGE_LAYER_UNVERIFIED');
+    assert.equal(result.canonical_result.outcome,'ACTIVE');
+    assert.equal(result.canonical_result.active_readback_verified,true);
+    assert.equal(result.canonical_result.canonical_result.owner_active_readback.composition_authority,'C59_CANONICAL');
+    assert.equal(fetches,8);
+    assert.equal(registered,1);
+    reg.close();
+    assert.equal(unregistered,1);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C68 registration failures remain first-edge capability unknown, no hidden fallback',()=>{
+  const f=fixture();let tries=0;
+  const base={sourceHead:HEAD,preacceptHandoff:f.preacceptHandoff,
+    fetchPinnedObject:async()=>{throw Error('unexpected source fetch');}};
+  const thrower=registerC68AcceptanceIngress({...base,registerHostMessage:()=>{tries++;throw Error('host hook inaccessible');}});
+  assert.equal(thrower.status,'HOST_REGISTRATION_FAILED');
+  assert.equal(thrower.first_unclosed_edge,'HOST_MESSAGE_INGRESS');
+  assert.equal(thrower.host_native_event_attested,false);
+  const noDisposer=registerC68AcceptanceIngress({...base,registerHostMessage:()=>{tries++;return {subscribed:true};}});
+  assert.equal(noDisposer.status,'HOST_REGISTRATION_UNVERIFIED');
+  assert.equal(noDisposer.first_unclosed_edge,'HOST_MESSAGE_INGRESS');
+  assert.equal(tries,2);
 });
