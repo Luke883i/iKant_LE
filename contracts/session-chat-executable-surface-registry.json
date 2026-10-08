@@ -148,6 +148,11 @@
       "src/runtime.mjs",
       "src/state.mjs"
     ],
-    "exact_set_required": true
+    "exact_set_required": true,
+    "excluded_experimental_non_activation_files": [
+      "src/c70-experimental-compute-preview.mjs",
+      "src/c71-experimental-host-draft.mjs"
+    ],
+    "exclusion_rule": "These two host-owned C69-based preview modules are observed, bounded, and barred from canonical owner/ACTIVE issuance; C70's I ACCEPT occurs only in its denial list. If source no longer meets fail-closed checks the surface audit fails."
   }
 }
