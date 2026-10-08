@@ -68,7 +68,8 @@ export function buildC73ProjectCapsule({selection=null,ownerResult=null,hostFram
     cr.composition_authority!=='C59_CANONICAL'||cr.authority!==0||
     !h64.test(String(cr.canonical_composition_receipt_sha256||''))||
     !h64.test(String(cr.runtime_root_sha256||''))||
-    cr.source_head!==selection.source_head)
+    cr.source_head!==selection.source_head||
+    (hostFrame!==null&&cr.runtime_root_sha256!==hostFrame.runtime_root_sha256))
    return stop('CANONICAL_OWNER_ACTIVE_READBACK_REQUIRED','CANONICAL_REQUESTED_NOT_ACTIVE');
  const r=ownerResult,f=hostFrame;
  if(!r||!f)return stop('CANONICAL_OWNER_FRAME_REQUIRED','CANONICAL_REQUESTED_NOT_ACTIVE');
