@@ -18,7 +18,7 @@ Historical artifacts never self-promote. Maintained narrative SOTs are README, A
 
 Change the smallest affected neighborhood. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
 
-Bootstrap is structurally bounded: pin source before orientation; post-accept invoke the provider-neutral local activation executor, which acquires only the declared content-addressed runtime objects through LOCAL_DIRECT or a VERIFIED_OPAQUE_RELAY with no rewrite/semantic-equivalence and source-arrival samehash, re-verifies orientation identities, then uses the existing materializer/reopen and runtime-owned provenance/probe/init path. Search/history/docs study/tests/qualification are not bootstrap gates; the 120 s target is observability/SLO, not an integrity predicate.
+Canonical `SESSION_CHAT_LOCAL` pins main, presents Terms and, after exact `I ACCEPT`, uses only GitHub API base64 -> `VERIFIED_OPAQUE_RELAY` -> C61 cold owner -> C59 materializer/ACTIVE readback. `LOCAL_DIRECT`, warm/file/ZIP and Fastboot selection remain noncanonical compatibility. C63 parallel Node staging cannot invent host capabilities or authority. Tests do not gate activation; 120 s is an SLO, not an integrity rule.
 
 ## Development trajectory
 

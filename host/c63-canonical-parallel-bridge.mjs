@@ -1,0 +1,143 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {Worker} from 'node:worker_threads';
+import {pathToFileURL} from 'node:url';
+import {performance} from 'node:perf_hooks';
+
+const HEX40=/^[a-f0-9]{40}$/;
+const SAFE=/^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))(?!.*\\)[A-Za-z0-9._/-]+$/;
+const blob=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+function decode(b64){
+  if(typeof b64!=='string')throw Error('base64 required');
+  const s=b64.replace(/[\r\n]/g,'');
+  if(!s||s.length%4||!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(s))throw Error('invalid base64');
+  const b=Buffer.from(s,'base64');
+  if(b.toString('base64')!==s)throw Error('noncanonical base64');
+  return b;
+}
+function inspect(x){
+  if(x?.humanInput!=='I ACCEPT'||!HEX40.test(String(x.sourceHead))||x.preacceptHandoff?.source_head!==x.sourceHead)throw Error('acceptance/source binding');
+  const h=x.preacceptHandoff;
+  if(h?.schema!=='ikant-le-preaccept-handoff/v2'||h.terms_presented!==true||h.frozen!==true||h.breached!==false)throw Error('frozen admission');
+  if(!Number.isFinite(x.acceptanceObservedMonotonicMs)||x.acceptanceObservedMonotonicMs<0||x.acceptanceObservedMonotonicMs>performance.now())throw Error('monotonic acceptance');
+  if(!Number.isInteger(x.runnerCount??4)||(x.runnerCount??4)<1||(x.runnerCount??4)>7)throw Error('runner count');
+  const frozen=h.orientation_payloads?.find(y=>y.path==='BOOTSTRAP.json');
+  const id=h.orientation_objects?.find(y=>y.path==='BOOTSTRAP.json');
+  if(typeof frozen?.content_utf8!=='string'||!id)throw Error('missing frozen bootstrap');
+  const bootBytes=Buffer.from(frozen.content_utf8,'utf8');
+  if(id.bytes!==bootBytes.length||blob(bootBytes)!==id.blob_sha1)throw Error('bootstrap samehash');
+  const boot=JSON.parse(frozen.content_utf8);
+  const descriptor=boot.post_accept_fastboot?.runtime_root;
+  const rows=[descriptor?.loader,...(descriptor?.shards||[])];
+  if(rows.length!==8||rows.some(y=>!SAFE.test(String(y?.path))||!HEX40.test(String(y?.blob_sha1)))||new Set(rows.map(y=>y.path)).size!==8)throw Error('bad runtime8 descriptor');
+  if(JSON.stringify(boot.post_accept_fastboot?.remote_paths)!==JSON.stringify(rows.map(y=>y.path)))throw Error('runtime8 frozen set mismatch');
+  if(!Array.isArray(x.sourceObjects)||x.sourceObjects.length!==8)throw Error('runtime8 incomplete');
+  const bytes=new Map();
+  for(const y of x.sourceObjects){
+    if(!y||bytes.has(y.path)||!rows.some(z=>z.path===y.path)||!String(y.source_object_identity||'').trim())throw Error('invalid path/identity/duplicate');
+    const b=decode(y.content_base64),expected=rows.find(z=>z.path===y.path);
+    if(blob(b)!==expected.blob_sha1||y.blob_sha1!==expected.blob_sha1)throw Error('source blob mismatch: '+y.path);
+    bytes.set(y.path,{data:b,identity:y.source_object_identity});
+  }
+  return{bootBytes,rows,bytes};
+}
+function write(root,rel,bytes,sha){
+  if(!SAFE.test(rel)||blob(bytes)!==sha)throw Error('write source identity');
+  const file=path.join(root,rel);
+  fs.mkdirSync(path.dirname(file),{recursive:true});
+  fs.writeFileSync(file,bytes,{flag:'wx',mode:0o600});
+  const reopened=fs.readFileSync(file);
+  if(!reopened.equals(bytes)||blob(reopened)!==sha)throw Error('local samehash: '+rel);
+}
+function writeWorker(){
+  const {parentPort,workerData:w}=require('node:worker_threads');
+  const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+  const sha=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+  try{
+    const b=Buffer.from(w.base64,'base64');
+    if(sha(b)!==w.sha)throw Error('worker input mismatch');
+    const target=path.join(w.root,w.path);
+    fs.mkdirSync(path.dirname(target),{recursive:true});
+    fs.writeFileSync(target,b,{flag:'wx',mode:0o600});
+    const reopen=fs.readFileSync(target);
+    if(!reopen.equals(b)||sha(reopen)!==w.sha)throw Error('worker reopen mismatch');
+    parentPort.postMessage({ok:true,path:w.path});
+  }catch(e){parentPort.postMessage({error:String(e.message||e)});}
+}
+const WORKER='('+writeWorker.toString()+')()';
+function oneWorker(root,row,source){
+  return new Promise((resolve,reject)=>{
+    const w=new Worker(WORKER,{eval:true,workerData:{root,path:row.path,sha:row.blob_sha1,base64:source.data.toString('base64')}});
+    let received=false;
+    w.once('message',m=>{received=true;m.ok?resolve(m):reject(Error(m.error));});
+    w.once('error',reject);
+    w.once('exit',code=>{if(!received)reject(Error('worker missing receipt: '+code));});
+  });
+}
+async function fanout(root,rows,bytes,limit){
+  let cursor=0,halt=false;
+  const results=[];
+  const pump=async()=>{while(!halt&&cursor<rows.length){
+    const row=rows[cursor++];
+    try{results.push(await oneWorker(root,row,bytes.get(row.path)));}
+    catch(e){halt=true;throw e;}
+  }};
+  const done=await Promise.allSettled(Array.from({length:Math.min(limit,rows.length)},pump));
+  const error=done.find(y=>y.status==='rejected');
+  if(error)throw error.reason;
+  if(results.length!==rows.length)throw Error('worker barrier incomplete');
+  return results;
+}
+/**
+ * Host transports *pinned GitHub API* source bytes to this zero-authority sink adapter.
+ * The existing C61/C59 owner alone derives receipts, materializes and claims ACTIVE.
+ * No host-native routing, persistence, UI or delivery claim is implied.
+ */
+export async function executeC63HostBridge(x){
+  const v=inspect(x);
+  if(typeof x.sessionRoot!=='string'||!path.isAbsolute(x.sessionRoot))throw Error('absolute session root required');
+  const root=path.resolve(x.sessionRoot);
+  if(!fs.existsSync(root)||!fs.statSync(root).isDirectory())throw Error('existing session root required');
+  for(let d=root;;d=path.dirname(d)){
+    if(fs.lstatSync(d).isSymbolicLink())throw Error('symlink root forbidden');
+    if(d===path.dirname(d))break;
+  }
+  if(fs.existsSync(path.join(root,'runtime')))throw Error('runtime sink exists');
+  const stage=fs.mkdtempSync(path.join(root,'.c63-stage-')),cold=path.join(stage,'cold');
+  fs.mkdirSync(cold);
+  try{
+    write(cold,'BOOTSTRAP.json',v.bootBytes,blob(v.bootBytes));
+    const loader=v.rows[0];
+    write(cold,loader.path,v.bytes.get(loader.path).data,loader.blob_sha1);
+    const owner=await import(pathToFileURL(path.join(cold,loader.path)).href);
+    const manifest=owner.issueCanonicalRelayManifest({
+      workspace:cold,sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,
+      humanInput:x.humanInput,acceptanceObservedMonotonicMs:x.acceptanceObservedMonotonicMs,
+      observedMonotonicMs:performance.now()
+    });
+    if(manifest.object_count!==8||JSON.stringify(manifest.objects.map(z=>z.path))!==JSON.stringify(v.rows.map(z=>z.path)))throw Error('owner manifest divergence');
+    await fanout(cold,v.rows.slice(1),v.bytes,x.runnerCount??4);
+    const observations=manifest.objects.map(row=>owner.issueCanonicalRelayObservation({
+      workspace:cold,sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,relayManifest:manifest,
+      objectPath:row.path,sourceBytes:v.bytes.get(row.path).data,
+      sourceObjectIdentity:v.bytes.get(row.path).identity,localObjectId:'c63-stage:'+row.path,
+      observedMonotonicMs:performance.now()
+    }));
+    const result=await owner.executeCanonicalColdBootstrap({
+      workspace:cold,sink:path.join(root,'runtime'),sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,
+      relayManifest:manifest,relayObservations:observations,humanInput:x.humanInput,
+      acceptanceObservedMonotonicMs:x.acceptanceObservedMonotonicMs
+    });
+    if(result.active!==true||result.canonical_active_readback?.ok!==true)throw Error('canonical ACTIVE readback missing');
+    return{schema:'ikant-le-c63-host-byte-bridge/v1',source_head:x.sourceHead,
+      runtime_root_sha256:result.runtime_root_sha256,source_plane:'GITHUB_API',byte_path:'VERIFIED_OPAQUE_RELAY',
+      runner_kind:'NODE_WORKER_THREADS',runner_count:Math.min(x.runnerCount??4,7),verified_object_count:8,
+      owner_active_readback:result.canonical_active_readback,owner_result_receipt_sha256:result.receipt_sha256,
+      authority:0};
+  }finally{fs.rmSync(stage,{recursive:true,force:true});}
+}
+export function validateC63Input(x){
+  try{return{ok:true,objects:inspect(x).bytes.size};}
+  catch(e){return{ok:false,error:String(e.message||e)};}
+}
