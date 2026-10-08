@@ -45,5 +45,5 @@ const out={
  tests:checks,
  status:Object.values(checks).every(Boolean)?'PASS':'FAIL'
 };
-process.stdout.write(JSON.stringify(out,null,2)+'\\n');
+process.stdout.write(JSON.stringify(out,null,2)+'\n');
 if(out.status!=='PASS')process.exitCode=1;
