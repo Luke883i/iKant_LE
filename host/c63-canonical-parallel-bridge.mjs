@@ -381,6 +381,73 @@ export async function executeC66QualifiedAtAcceptance(x={}){
   }
 }
 
+
+/**
+ * C68: expose the existing C64/C66 entrypoint to a REAL host message ingress.
+ * The host MUST register the listener before the user sends I ACCEPT.
+ * Local callback registration is not evidence of a native ChatGPT edge.
+ * This adapter never issues an acceptance-origin ticket or runtime event id.
+ */
+const C68_SCHEMA='ikant-le-c68-host-ingress-projection/v1';
+function c68Projection(status,extra={}){
+  return Object.freeze({schema:C68_SCHEMA,status,authority:0,
+    canonical_owner_unchanged:true,origin_ticket_issued:false,
+    host_native_event_attested:false,runtime_event_id_issued:false,...extra});
+}
+export function registerC68AcceptanceIngress(x={}){
+  if(Object.hasOwn(x,'humanInput')||Object.hasOwn(x,'acceptanceObservedMonotonicMs')||
+     Object.hasOwn(x,'sourceObjects')||Object.hasOwn(x,'nativeEventId'))
+    throw Error('C68 caller-injected acceptance origin forbidden');
+  // A source function or local Node executor is not a human-message ingress.
+  if(typeof x.registerHostMessage!=='function')
+    return c68Projection('HOST_EDGE_NOT_CALLABLE',{first_unclosed_edge:'HOST_MESSAGE_INGRESS',
+      required_host_capability:'REGISTER_PREACCEPT_NATIVE_USER_MESSAGE_LISTENER'});
+  let armed=false,consumed=false;
+  const onMessage=(event)=>{
+    if(!armed)return Promise.resolve(c68Projection('NOT_ARMED'));
+    if(consumed)return Promise.resolve(c68Projection('ACCEPTANCE_ALREADY_CONSUMED'));
+    if(event?.role!=='user'||event?.content!=='I ACCEPT')
+      return Promise.resolve(c68Projection('NOT_EXACT_HUMAN_ACCEPTANCE'));
+    // Do not turn a plain transcript string into a canonical event identity.
+    consumed=true;
+    if(typeof event.event_id!=='string'||!event.event_id.trim())
+      return Promise.resolve(c68Projection('HOST_EVENT_ID_UNVERIFIED',{
+        first_unclosed_edge:'HOST_ACCEPTANCE_EVENT_IDENTITY',
+        required_host_capability:'NATIVE_MESSAGE_ID_AT_ORIGINAL_INGRESS'}));
+    // There must be no async scheduling before C64 captures its monotonic
+    // acceptance observation. C64 remains the sole acceptance clock writer.
+    const start=performance.now();
+    return executeC66QualifiedAtAcceptance({
+      sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,
+      sessionRoot:x.sessionRoot,runnerCount:x.runnerCount,
+      fetchPinnedObject:x.fetchPinnedObject,onOwnerMilestone:x.onOwnerMilestone,
+      humanInput:event.content
+    }).then(result=>c68Projection('CANONICAL_OWNER_RETURNED',{
+      source_head:x.sourceHead,host_event_id_claim:event.event_id,
+      hook_callback_monotonic_ms:start,
+      event_identity_issuer:'HOST_NATIVE_MESSAGE_LAYER_UNVERIFIED',
+      canonical_result:result,
+      first_unclosed_edge:result.first_unclosed_edge??null
+    }));
+  };
+  let unregister;
+  try{unregister=x.registerHostMessage(onMessage);}
+  catch{return c68Projection('HOST_REGISTRATION_FAILED',{
+    first_unclosed_edge:'HOST_MESSAGE_INGRESS',required_host_capability:'CALLABLE_HOST_MESSAGE_REGISTRATION'});}
+  if(typeof unregister!=='function')
+    return c68Projection('HOST_REGISTRATION_UNVERIFIED',{
+      first_unclosed_edge:'HOST_MESSAGE_INGRESS',required_host_capability:'REVOCABLE_HOST_MESSAGE_LISTENER'});
+  armed=true;
+  return Object.freeze({
+    ...c68Projection('CALLBACK_REGISTERED',{
+      // A registration receipt says nothing about the native origin of events.
+      registration_only:true,first_unclosed_edge:'HOST_ACCEPTANCE_EVENT_IDENTITY',
+      required_host_capability:'ORIGINAL_HOST_MESSAGE_EVENT_IDENTITY'
+    }),
+    close:()=>{armed=false;unregister();}
+  });
+}
+
 export function validateC63Input(x){
   try{return{ok:true,objects:inspect(x).bytes.size};}
   catch(e){return{ok:false,error:String(e.message||e)};}
