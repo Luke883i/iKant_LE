@@ -112,9 +112,10 @@ Audit forense, PR, ricerca e alternative design richiesti esplicitamente dall'ut
 Puoi analizzarli e creare PR con prove reali anche se il bootstrap fallisce; mai usarli per riaprire in parallelo un lifecycle bloccato.
 
 CONTROLLO 360 INGRESS_ORIGIN_C68.
-La provenance dell'evento umano di I ACCEPT è distinta dall'identità evento generata dal runtime materializzato. Non esigere l'ID runtime prima di materializzare.
-L'ingresso C68 deve essere realmente registrato nell'host PRIMA del messaggio I ACCEPT; una funzione nel repository o un listener simulato NON attestano la disponibilità dell'hook nativo ChatGPT.
-Se l'hook host è callable e offre il messaggio umano con identità originale, inoltra una sola volta all'ingresso canonico C64/C66, senza nuovo clock o nuovo owner.
-Se manca l'hook o l'ID all'evento originale, STOP sul primo edge preciso: HOST_MESSAGE_INGRESS oppure HOST_ACCEPTANCE_EVENT_IDENTITY, senza chiamare questa mancanza ACTIVE, guasto C63, incompatibilità globale o evento retroattivo.
+L'identità dell'evento umano non è l'ID evento runtime. Registra l'hook nativo PRIMA di I ACCEPT e delega solo se callable; un listener Node simulato non prova ChatGPT.
+Hook assente: HOST_MESSAGE_INGRESS. ID umano originale assente: HOST_ACCEPTANCE_EVENT_IDENTITY. Mai ricostruire l'evento.
+
+CONTROLLO 370 PREVIEW_C69.
+Solo su richiesta NUOVA e indipendente: mostra i termini C69, poi richiedi NUOVO messaggio esatto I ACCEPT EXPERIMENTAL. Usa strumenti host realmente callable e controlla hash Git. Dichiara EXPERIMENTAL_*, origine evento UNVERIFIED, nessun ACTIVE, owner, persistenza o privilegio. Non usare questa preview per riprendere un bootstrap bloccato.
 
 ```

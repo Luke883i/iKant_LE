@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'host/c63-canonical-parallel-bridge.mjs'
+      - 'host/c69-capability-first-preview.mjs'
+      - 'tests/c69-capability-first-preview.test.mjs'
       - 'tests/c63-canonical-parallel-bridge.test.mjs'
       - 'docs/C63_CANONICAL_PARALLEL_HOST_BRIDGE.md'
       - '.github/workflows/c63-canonical-parallel-host-bridge.yml'
@@ -33,7 +35,7 @@ jobs:
       - name: Check immutable canonical runtime root
         run: npm run runtime-root:verify
       - name: C63 parallel cold path, negative source evidence, turn and EXIT
-        run: node --test --test-concurrency=1 tests/c63-canonical-parallel-bridge.test.mjs
+        run: node --test --test-concurrency=1 tests/c63-canonical-parallel-bridge.test.mjs tests/c69-capability-first-preview.test.mjs
       - name: C61/C62 cold-owner regressions
         run: node --test --test-concurrency=1 tests/c61-cold-producer.test.mjs tests/c62-evidence-runtime-cut.test.mjs
       - name: Constitutional consistency

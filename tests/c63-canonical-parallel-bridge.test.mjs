@@ -455,8 +455,9 @@ test('C67 canonical prompt render parity and anti-shadow-planner project adapter
   return import(pathToFileURL(m).href).then(mod=>{
     const doc=fs.readFileSync(path.join(ROOT,'docs/SESSION_CHAT_LOCAL_PROMPT.md'),'utf8');
     assert.equal(doc,mod.renderSessionChatLocalPromptDocument());
-    assert.equal(mod.SESSION_CHAT_LOCAL_PROMPT_VERSION,'6.0.0');
+    assert.equal(mod.SESSION_CHAT_LOCAL_PROMPT_VERSION,'7.0.0');
     assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 360 INGRESS_ORIGIN_C68'),true);
+    assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 370 PREVIEW_C69'),true);
     assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 320 PROOF_LOOP'),true);
     assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 330 RETRY_LOCAL_C67'),true);
     const project=fs.readFileSync(path.join(ROOT,'docs/C67_PROJECT_CHATGPT_ADAPTER.md'),'utf8');
