@@ -314,12 +314,17 @@ test('C66 integrity contradiction revokes a previously reached prefix',async()=>
     const out=await executeC66QualifiedAtAcceptance({
       sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
       sessionRoot:root,fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
-      onOwnerMilestone:m=>{if(m.edge==='SOURCE_SNAPSHOT')throw Error('identity mismatch deliberately injected');}
+      onOwnerMilestone:m=>{if(m.edge==='LOCAL_INGRESS'){
+        const stage=fs.readdirSync(root).find(x=>x.startsWith('.c63-stage-'));
+        assert.ok(stage,'C63 physical staging must exist');
+        fs.appendFileSync(path.join(root,stage,'cold','runtime-root','shard-000.json'),'X');
+      }}
     });
     assert.equal(out.outcome,'BLOCKED_INTEGRITY');
     assert.equal(out.strongest_valid_prefix,null);
     assert.equal(out.fault_overlay,'BLOCKED_INTEGRITY');
-    assert.equal(out.owner_evidence.length,1);
+    assert.equal(out.owner_evidence.length,2);
+    assert.equal(out.failure_class,'INTEGRITY_CONTRADICTION');
     assert.equal(out.active,false);
     assert.deepEqual(out.available_capabilities,[]);
     assert.equal(fs.existsSync(path.join(root,'runtime')),false);
@@ -338,4 +343,22 @@ test('C66 cannot inject owner milestones and never substitutes retry or legacy A
   assert.equal(result.strongest_valid_prefix,null);
   assert.equal(result.owner_evidence.length,0);
   assert.equal(result.retry_gate.disposition,'STOP_AWAIT_OWNER_AUTHORIZED_CHANGED_EVIDENCE');
+});
+
+test('C66 forged error strings from host observers cannot manufacture an integrity verdict',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c66-false-integrity-'));
+  try{
+    const out=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
+      onOwnerMilestone:m=>{if(m.edge==='SOURCE_SNAPSHOT')throw Error('identity mismatch forged by host callback');}
+    });
+    assert.equal(out.outcome,'NON_ACTIVE');
+    assert.equal(out.failure_class,'UNCLASSIFIED_FAILURE');
+    assert.equal(out.strongest_valid_prefix,'REPO_STUDY_ONLY');
+    assert.equal(out.first_unclosed_edge,'LOCAL_INGRESS');
+    assert.equal(out.active,false);
+    assert.equal(out.retry_gate.automatic_attempts,0);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });

@@ -252,3 +252,20 @@ owner-authorized receipt and independently validated changed evidence.
    tests must remain green on Node 20 and Node 22.
 8. Full ChatGPT host delivery, cohost continuity, native acceptance witness and
    repeated legitimate retry are **external/unverified** in this PR.
+
+### C66 adversarial classification hardening
+
+`BLOCKED_INTEGRITY` is **not** derived from an error message or a model /
+host callback's prose. C66 attaches an unforgeable-in-module symbol to
+integrity errors emitted by its own blob, source-ref and local reread
+identity checks. A post-owner-observation re-open of all eight staged
+objects detects a physical integrity contradiction before continuing
+to C61/C59. A host observer throwing the text `identity mismatch`
+does **not** establish an integrity breach. The read-only observer cannot
+inject an owner milestone or a retry authorization.
+
+The post-observation falsification test physically modifies the staged
+`shard-000.json` file after C61 readback and verifies that C66 blocks
+integrity and revokes the effective service tier. A separate hostile
+callback strings test confirms that an arbitrary textual assertion
+cannot cause a false integrity classification.
