@@ -40,8 +40,17 @@ function validateSources(){
  }
  for(const p of codePaths){
   const source=read(p).toString('utf8');
-  if(/\bimport\s*\(/.test(source)||/\brequire\s*\(/.test(source))
-   throw Error('DYNAMIC_MODULE_LOAD_NOT_QUALIFIED:'+p);
+  if(/\brequire\s*\(/.test(source))throw Error('DYNAMIC_MODULE_LOAD_NOT_QUALIFIED:'+p);
+  const dynamicPattern=/\bimport\s*\(\s*['"](\.[^'"]+)['"]\s*\)/g;
+  const dynamic=[...source.matchAll(dynamicPattern)].map(x=>relative(p,x[1]));
+  if(p==='host/c77-first-turn.mjs'){
+   const expected=['host/c72-unified-mode-admission.mjs','host/c69-capability-first-preview.mjs',
+     'src/c71-experimental-host-draft.mjs','host/c73-project-capsule.mjs'];
+   if(dynamic.length!==expected.length||dynamic.some((x,i)=>x!==expected[i]))
+    throw Error('C77_POST_VERIFICATION_IMPORT_DRIFT');
+  }else if(dynamic.length)throw Error('UNDECLARED_DYNAMIC_IMPORT:'+p);
+  if(/\bimport\s*\(/.test(source.replace(dynamicPattern,'')))
+   throw Error('UNBOUNDED_DYNAMIC_IMPORT:'+p);
   for(const match of source.matchAll(importRe)){
    const dep=relative(p,match[1]);
    if(!allPaths.has(dep))throw Error('UNCLOSED_STATIC_IMPORT:'+p+':'+dep);
