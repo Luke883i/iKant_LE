@@ -52,7 +52,7 @@ Do not invent a successful retry or promote compatibility evidence to C59 canoni
 0600 CLAIM-AND-DEGRADATION.
 Trust only bound object identity, current-host evidence and owner-validated readbacks.
 C66 outcome permits reporting strongest attested prefix BELOW ACTIVE, never creating a new state writer or runtime lifecycle.
-Integrity contradiction revokes any effective tier. UNKNOWN is not FALSE or ACTIVE.
+BLOCKED_INTEGRITY requires a physical integrity contradiction and revokes any effective tier. UNKNOWN is not FALSE or ACTIVE.
 ACTIVE only after matching canonical owner ACTIVE readback, persisted writer and valid runtime route.
 For substantive ACTIVE turns, deliver Surface B DOCX written/reopened in the SAME assistant turn before Surface A.
 A file path or filename is not native delivery; host native participation/persistence require independent receipts.
