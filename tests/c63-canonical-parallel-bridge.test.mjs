@@ -6,7 +6,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
-import {executeC63HostBridge,executeC63AtAcceptance,createC65PinnedGitHubSource,validateC65SourceSinkProjection,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
+import {executeC63HostBridge,executeC63AtAcceptance,executeC66QualifiedAtAcceptance,createC65PinnedGitHubSource,validateC65SourceSinkProjection,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEAD='a'.repeat(40);
@@ -230,5 +230,135 @@ test('C65 projection never manufactures native-origin or ACTIVE proof; adversari
     delete fake.projection_sha256;
     fake.projection_sha256=crypto.createHash('sha256').update(JSON.stringify(fake)).digest('hex');
     assert.equal(validate(fake),false,'rehashed host claim must remain forbidden');
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C66 owner-qualified ACTIVE delegates to the original canonical C63/C61/C59 path',async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c66-active-'));
+  try{
+    const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o])),observed=[];
+    const response=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,runnerCount:3,
+      fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
+      onOwnerMilestone:m=>observed.push(m.edge)
+    });
+    assert.equal(response.outcome,'ACTIVE');
+    assert.equal(response.active,true);
+    assert.equal(response.active_readback_verified,true);
+    assert.equal(response.strongest_valid_prefix,'ACTIVE');
+    assert.equal(response.first_unclosed_edge,null);
+    assert.deepEqual(observed,['SOURCE_SNAPSHOT','LOCAL_INGRESS']);
+    assert.equal(response.owner_evidence.length,2);
+    assert.equal(response.owner_evidence[1].observation_receipts_sha256.length,8);
+    assert.equal(response.canonical_result.owner_active_readback.composition_authority,'C59_CANONICAL');
+    assert.equal(response.canonical_result.runner_kind,'NODE_WORKER_THREADS');
+    assert.equal(response.canonical_result.runner_count,3);
+    assert.equal(response.retry_gate.automatic_attempts,0);
+    assert.equal(response.authority,0);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C66 missing GitHub source yields no fabricated certified tier and no retries',async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c66-no-source-'));
+  let requests=0;
+  try{
+    const f=fixture(),out=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,fetchPinnedObject:async()=>{requests++;throw Error('GitHub API unavailable');}
+    });
+    assert.equal(requests,8,'one concurrent fetch per frozen object; no hidden retries');
+    assert.equal(out.outcome,'NON_ACTIVE');
+    assert.equal(out.active,false);
+    assert.equal(out.active_readback_verified,false);
+    assert.equal(out.strongest_valid_prefix,null);
+    assert.equal(out.first_unclosed_edge,'SOURCE_SNAPSHOT');
+    assert.deepEqual(out.available_capabilities,[]);
+    assert.deepEqual(out.owner_evidence,[]);
+    assert.equal(out.retry_gate.owner_authorized_retry_observed,false);
+    assert.equal(out.retry_gate.automatic_attempts,0);
+    assert.equal(fs.existsSync(path.join(root,'runtime')),false);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C66 owner milestone boundaries certify only the strongest physically reached prefix',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  for(const [edge,tier,first,count] of [
+    ['SOURCE_SNAPSHOT','REPO_STUDY_ONLY','LOCAL_INGRESS',1],
+    ['LOCAL_INGRESS','ACTIVATION_LIMITED_1','LOCAL_MATERIALIZATION',2]
+  ]){
+    const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c66-prefix-'));
+    try{
+      const result=await executeC66QualifiedAtAcceptance({
+        sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+        sessionRoot:root,fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
+        onOwnerMilestone:observed=>{if(observed.edge===edge)throw Error('test controlled interruption');}
+      });
+      assert.equal(result.outcome,'NON_ACTIVE');
+      assert.equal(result.active,false);
+      assert.equal(result.active_readback_verified,false);
+      assert.equal(result.strongest_valid_prefix,tier);
+      assert.equal(result.first_unclosed_edge,first);
+      assert.equal(result.owner_evidence.length,count);
+      assert.equal(result.canonical_result,null);
+      assert.equal(result.retry_gate.automatic_attempts,0);
+      assert.equal(fs.existsSync(path.join(root,'runtime')),false);
+    }finally{fs.rmSync(root,{recursive:true,force:true});}
+  }
+});
+
+test('C66 integrity contradiction revokes a previously reached prefix',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c66-integrity-'));
+  try{
+    const out=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
+      onOwnerMilestone:m=>{if(m.edge==='LOCAL_INGRESS'){
+        const stage=fs.readdirSync(root).find(x=>x.startsWith('.c63-stage-'));
+        assert.ok(stage,'C63 physical staging must exist');
+        fs.appendFileSync(path.join(root,stage,'cold','runtime-root','shard-000.json'),'X');
+      }}
+    });
+    assert.equal(out.outcome,'BLOCKED_INTEGRITY');
+    assert.equal(out.strongest_valid_prefix,null);
+    assert.equal(out.fault_overlay,'BLOCKED_INTEGRITY');
+    assert.equal(out.owner_evidence.length,2);
+    assert.equal(out.failure_class,'INTEGRITY_CONTRADICTION');
+    assert.equal(out.active,false);
+    assert.deepEqual(out.available_capabilities,[]);
+    assert.equal(fs.existsSync(path.join(root,'runtime')),false);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C66 cannot inject owner milestones and never substitutes retry or legacy ACTIVE',async()=>{
+  const f=fixture();
+  const result=await executeC66QualifiedAtAcceptance({
+    sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+    _ownerEvidenceSink:()=>{throw Error('should not be called');},
+    fetchPinnedObject:async()=>{throw Error('should not be fetched');}
+  });
+  assert.equal(result.active,false);
+  assert.equal(result.outcome,'NON_ACTIVE');
+  assert.equal(result.strongest_valid_prefix,null);
+  assert.equal(result.owner_evidence.length,0);
+  assert.equal(result.retry_gate.disposition,'STOP_AWAIT_OWNER_AUTHORIZED_CHANGED_EVIDENCE');
+});
+
+test('C66 forged error strings from host observers cannot manufacture an integrity verdict',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c66-false-integrity-'));
+  try{
+    const out=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
+      onOwnerMilestone:m=>{if(m.edge==='SOURCE_SNAPSHOT')throw Error('identity mismatch forged by host callback');}
+    });
+    assert.equal(out.outcome,'NON_ACTIVE');
+    assert.equal(out.failure_class,'UNCLASSIFIED_FAILURE');
+    assert.equal(out.strongest_valid_prefix,'REPO_STUDY_ONLY');
+    assert.equal(out.first_unclosed_edge,'LOCAL_INGRESS');
+    assert.equal(out.active,false);
+    assert.equal(out.retry_gate.automatic_attempts,0);
   }finally{fs.rmSync(root,{recursive:true,force:true});}
 });

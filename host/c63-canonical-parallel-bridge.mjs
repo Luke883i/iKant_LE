@@ -4,11 +4,14 @@ import crypto from 'node:crypto';
 import {Worker} from 'node:worker_threads';
 import {pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
+import {deriveActivationServiceTier,validateActivationServiceTier} from '../src/runtime-availability.mjs';
 
 const HEX40=/^[a-f0-9]{40}$/;
 const SAFE=/^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))(?!.*\\)[A-Za-z0-9._/-]+$/;
 const blob=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
 const sha256=b=>crypto.createHash('sha256').update(b).digest('hex');
+const C66_FAILURE_KIND=Symbol('C66_TYPED_PHYSICAL_FAILURE');
+function c66TypedFailure(kind,message='C66 physically classified failure'){const e=new Error(message);e[C66_FAILURE_KIND]=kind;return e;}
 function decode(b64){
   if(typeof b64!=='string')throw Error('base64 required');
   const s=b64.replace(/[\r\n]/g,'');
@@ -42,18 +45,18 @@ function inspect(x){
   for(const y of x.sourceObjects){
     if(!y||bytes.has(y.path)||!rows.some(z=>z.path===y.path)||!String(y.source_object_identity||'').trim())throw Error('invalid path/identity/duplicate');
     const b=decode(y.content_base64),expected=rows.find(z=>z.path===y.path);
-    if(blob(b)!==expected.blob_sha1||y.blob_sha1!==expected.blob_sha1)throw Error('source blob mismatch: '+y.path);
+    if(blob(b)!==expected.blob_sha1||y.blob_sha1!==expected.blob_sha1)throw c66TypedFailure('INTEGRITY_CONTRADICTION','source blob mismatch: '+y.path);
     bytes.set(y.path,{data:b,identity:y.source_object_identity});
   }
   return{bootBytes,rows,bytes};
 }
 function write(root,rel,bytes,sha){
-  if(!SAFE.test(rel)||blob(bytes)!==sha)throw Error('write source identity');
+  if(!SAFE.test(rel)||blob(bytes)!==sha)throw c66TypedFailure('INTEGRITY_CONTRADICTION');
   const file=path.join(root,rel);
   fs.mkdirSync(path.dirname(file),{recursive:true});
   fs.writeFileSync(file,bytes,{flag:'wx',mode:0o600});
   const reopened=fs.readFileSync(file);
-  if(!reopened.equals(bytes)||blob(reopened)!==sha)throw Error('local samehash: '+rel);
+  if(!reopened.equals(bytes)||blob(reopened)!==sha)throw c66TypedFailure('INTEGRITY_CONTRADICTION');
 }
 function writeWorker(){
   const {parentPort,workerData:w}=require('node:worker_threads');
@@ -68,14 +71,14 @@ function writeWorker(){
     const reopen=fs.readFileSync(target);
     if(!reopen.equals(b)||sha(reopen)!==w.sha)throw Error('worker reopen mismatch');
     parentPort.postMessage({ok:true,path:w.path});
-  }catch(e){parentPort.postMessage({error:String(e.message||e)});}
+  }catch(e){const message=String(e.message||e);parentPort.postMessage({error:message,integrity:/^worker (input|reopen) mismatch$/.test(message)});}
 }
 const WORKER='('+writeWorker.toString()+')()';
 function oneWorker(root,row,source){
   return new Promise((resolve,reject)=>{
     const w=new Worker(WORKER,{eval:true,workerData:{root,path:row.path,sha:row.blob_sha1,base64:source.data.toString('base64')}});
     let received=false;
-    w.once('message',m=>{received=true;m.ok?resolve(m):reject(Error(m.error));});
+    w.once('message',m=>{received=true;m.ok?resolve(m):reject(m.integrity?c66TypedFailure('INTEGRITY_CONTRADICTION'):new Error('worker execution failed'));});
     w.once('error',reject);
     w.once('exit',code=>{if(!received)reject(Error('worker missing receipt: '+code));});
   });
@@ -109,9 +112,9 @@ export function createC65PinnedGitHubSource(readPinnedFile){
     const got=await readPinnedFile(args);
     const value=got?.result??got;
     const pinnedUrl='https://github.com/Luke883i/iKant_LE/blob/'+sourceHead+'/'+rel;
-    if(value?.sha!==expected||value?.encoding!=='base64'||value?.display_url!==pinnedUrl)throw Error('GitHub API identity/ref mismatch: '+rel);
+    if(value?.sha!==expected||value?.encoding!=='base64'||value?.display_url!==pinnedUrl)throw c66TypedFailure('INTEGRITY_CONTRADICTION');
     const bytes=decode(value?.content);
-    if(blob(bytes)!==expected)throw Error('GitHub API decoded blob mismatch: '+rel);
+    if(blob(bytes)!==expected)throw c66TypedFailure('INTEGRITY_CONTRADICTION');
     return {path:rel,blob_sha1:expected,content_base64:bytes.toString('base64'),
       source_object_identity:pinnedUrl+'#'+expected};
   };
@@ -205,6 +208,7 @@ export async function executeC63HostBridge(x){
       observedMonotonicMs:performance.now()
     });
     if(manifest.object_count!==8||JSON.stringify(manifest.objects.map(z=>z.path))!==JSON.stringify(v.rows.map(z=>z.path)))throw Error('owner manifest divergence');
+    if(x._ownerEvidenceSink) x._ownerEvidenceSink(Object.freeze({edge:'SOURCE_SNAPSHOT',owner_receipt_sha256:manifest.receipt_sha256}));
     await fanout(cold,v.rows.slice(1),v.bytes,x.runnerCount??4);
     const observations=manifest.objects.map(row=>owner.issueCanonicalRelayObservation({
       workspace:cold,sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,relayManifest:manifest,
@@ -212,6 +216,11 @@ export async function executeC63HostBridge(x){
       sourceObjectIdentity:v.bytes.get(row.path).identity,localObjectId:'c63-stage:'+row.path,
       observedMonotonicMs:performance.now()
     }));
+    if(x._ownerEvidenceSink) x._ownerEvidenceSink(Object.freeze({edge:'LOCAL_INGRESS',owner_receipt_sha256:manifest.receipt_sha256,
+      observation_receipts_sha256:Object.freeze(observations.map(z=>z.receipt_sha256))}));
+    // A host observer can interrupt but cannot erase a physical post-observation mismatch.
+    for(const row of manifest.objects){const opened=fs.readFileSync(path.join(cold,row.path));
+      if(blob(opened)!==row.blob_sha1)throw c66TypedFailure('INTEGRITY_CONTRADICTION');}
     const result=await owner.executeCanonicalColdBootstrap({
       workspace:cold,sink:path.join(root,'runtime'),sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,
       relayManifest:manifest,relayObservations:observations,humanInput:x.humanInput,
@@ -246,11 +255,11 @@ export async function executeC63AtAcceptance(x={}){
     acceptanceObservedMonotonicMs};
   const {rows}=inspectFrozen(base);
   const settled=await Promise.allSettled(rows.map(async row=>{
-    const response=await x.fetchPinnedObject(Object.freeze({
-      sourceHead:x.sourceHead,path:row.path,blob_sha1:row.blob_sha1
-    }));
-    if(!response||response.path!==row.path||response.blob_sha1!==row.blob_sha1)throw Error('pinned source response mismatch: '+row.path);
-    if(typeof response.content_base64!=='string'||!String(response.source_object_identity||'').trim())throw Error('source bytes/identity absent: '+row.path);
+    let response;
+    try {response=await x.fetchPinnedObject(Object.freeze({sourceHead:x.sourceHead,path:row.path,blob_sha1:row.blob_sha1}));}
+    catch(error){throw error?.[C66_FAILURE_KIND]?error:c66TypedFailure('SOURCE_OR_INGRESS_UNAVAILABLE');}
+    if(!response||response.path!==row.path||response.blob_sha1!==row.blob_sha1)throw c66TypedFailure('INTEGRITY_CONTRADICTION');
+    if(typeof response.content_base64!=='string'||!String(response.source_object_identity||'').trim())throw c66TypedFailure('SOURCE_OR_INGRESS_UNAVAILABLE');
     return {path:row.path,blob_sha1:row.blob_sha1,
       content_base64:response.content_base64,source_object_identity:response.source_object_identity};
   }));
@@ -260,8 +269,82 @@ export async function executeC63AtAcceptance(x={}){
     sourceHead:x.sourceHead,humanInput:x.humanInput,
     preacceptHandoff:x.preacceptHandoff,sessionRoot:x.sessionRoot,
     runnerCount:x.runnerCount,acceptanceObservedMonotonicMs,
-    sourceObjects:settled.map(r=>r.value)
+    sourceObjects:settled.map(r=>r.value),_ownerEvidenceSink:x._ownerEvidenceSink
   });
+}
+
+
+/**
+ * C66: failed canonical activation is an evidence-backed *projection*, never a
+ * second ACTIVE issuer, runtime status writer, or automatic carrier retry.
+ * The only positive milestones are emitted at C61 owner-controlled boundaries.
+ */
+const C66_HEX64=/^[a-f0-9]{64}$/;
+function c66FailureClass(error){
+  return error?.[C66_FAILURE_KIND]||'UNCLASSIFIED_FAILURE';
+}
+function c66Project({evidence,blockedIntegrity=false,active=false}){
+  const ownerManifest=evidence.find(x=>x.edge==='SOURCE_SNAPSHOT');
+  const ingress=evidence.find(x=>x.edge==='LOCAL_INGRESS');
+  const inputs={accepted:true,source_snapshot:!!ownerManifest,
+    local_ingress:!!ownerManifest&&!!ingress,
+    materialized_reopened:active,executed_provenance:active,runtime_bound:active,
+    writer:active,active_readback:active,blocked_integrity:blockedIntegrity};
+  const tier=deriveActivationServiceTier(inputs),v=validateActivationServiceTier(tier);
+  if(!v.ok)throw Error('repository availability projection invalid: '+v.errors.join(','));
+  return tier;
+}
+function c66ValidateMilestone(evidence,m){
+  if(m?.edge==='SOURCE_SNAPSHOT'&&evidence.length===0&&C66_HEX64.test(String(m.owner_receipt_sha256||'')))return true;
+  if(m?.edge==='LOCAL_INGRESS'&&evidence.length===1&&evidence[0].edge==='SOURCE_SNAPSHOT'&&
+    m.owner_receipt_sha256===evidence[0].owner_receipt_sha256&&
+    Array.isArray(m.observation_receipts_sha256)&&m.observation_receipts_sha256.length===8&&
+    new Set(m.observation_receipts_sha256).size===8&&m.observation_receipts_sha256.every(x=>C66_HEX64.test(String(x))))return true;
+  return false;
+}
+function c66RetryGate(){
+  return {automatic_attempts:0,same_evidence_retry_forbidden:true,
+    owner_authorized_retry_observed:false,disposition:'STOP_AWAIT_OWNER_AUTHORIZED_CHANGED_EVIDENCE'};
+}
+
+/**
+ * C66 preferred evidence-qualified host entry. Must be invoked only at
+ * the actual acceptance ingress, with a host-observed event. Host-provided
+ * observer may interrupt execution, never inject or promote a milestone.
+ */
+export async function executeC66QualifiedAtAcceptance(x={}){
+  const evidence=[];
+  const onEvidence=m=>{
+    if(!c66ValidateMilestone(evidence,m))throw c66TypedFailure('INTEGRITY_CONTRADICTION');
+    const safe=Object.freeze({edge:m.edge,owner_receipt_sha256:m.owner_receipt_sha256,
+      ...(m.edge==='LOCAL_INGRESS'?{observation_receipts_sha256:Object.freeze([...m.observation_receipts_sha256])}:{})});
+    evidence.push(safe);
+    if(typeof x.onOwnerMilestone==='function')x.onOwnerMilestone(safe);
+  };
+  try{
+    if(Object.hasOwn(x,'_ownerEvidenceSink'))throw Error('owner milestone injection forbidden');
+    const {onOwnerMilestone,...args}=x;
+    const result=await executeC63AtAcceptance({...args,_ownerEvidenceSink:onEvidence});
+    if(result?.owner_active_readback?.ok!==true||result.owner_active_readback.state!=='ACTIVE'||
+      result.owner_active_readback.composition_authority!=='C59_CANONICAL')throw Error('canonical ACTIVE readback missing');
+    const tier=c66Project({evidence,active:true});
+    return {schema:'ikant-le-c66-qualified-activation/v1',outcome:'ACTIVE',
+      source_head:x.sourceHead,active:true,active_readback_verified:true,
+      strongest_valid_prefix:tier.strongest_valid_prefix,first_unclosed_edge:null,
+      available_capabilities:tier.capabilities,owner_evidence:evidence,
+      retry_gate:c66RetryGate(),canonical_result:result,authority:0};
+  }catch(error){
+    const failure_class=c66FailureClass(error),blocked=failure_class==='INTEGRITY_CONTRADICTION';
+    const tier=c66Project({evidence,blockedIntegrity:blocked});
+    return {schema:'ikant-le-c66-qualified-activation/v1',outcome:blocked?'BLOCKED_INTEGRITY':'NON_ACTIVE',
+      source_head:typeof x?.sourceHead==='string'?x.sourceHead:null,
+      active:false,active_readback_verified:false,verified_host_acceptance:false,
+      verified_native_github_ingress:false,host_native_delivery_proven:false,
+      strongest_valid_prefix:tier.tier,first_unclosed_edge:tier.first_unclosed_edge,
+      fault_overlay:tier.fault_overlay,available_capabilities:tier.capabilities,
+      owner_evidence:evidence,failure_class,retry_gate:c66RetryGate(),
+      canonical_result:null,authority:0};
+  }
 }
 
 export function validateC63Input(x){
