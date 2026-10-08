@@ -1,10 +1,23 @@
 import crypto from 'node:crypto';
+import {readFileSync} from 'node:fs';
 import {validateC79ChatSurface} from './c79-native-chat-surface.mjs';
 
 const HEX40=/^[0-9a-f]{40}$/,HEX64=/^[0-9a-f]{64}$/;
 const ID=/^[a-zA-Z0-9][a-zA-Z0-9:_./-]{0,127}$/;
 const DIMS=['task_completion','answer_correctness','reliability','state_clarity','limits_comprehension'];
 const WEIGHTS=[0.4,0.25,0.15,0.1,0.1];
+const PROMISE=JSON.parse(readFileSync(
+ new URL('../contracts/c72-product-value-promise.json',import.meta.url),'utf8'));
+const POLICY=PROMISE.measurement;
+if(PROMISE.schema!=='ikant-le-c72-value-promise/v1'||
+ PROMISE.metric_target_fraction!==0.95||
+ POLICY.minimum_independent_tasks!==500||POLICY.minimum_host_sessions!==50||
+ POLICY.distinct_users_at_least!==20||
+ POLICY.dimensions?.length!==DIMS.length||
+ POLICY.dimensions.some((d,i)=>d.id.toLowerCase()!==DIMS[i]||d.weight!==WEIGHTS[i])||
+ POLICY.safety_hard_gates?.length!==4)
+ throw Error('C80_C72_FIELD_POLICY_DRIFT');
+
 const SAFETY=['false_active','false_native_origin','unauthorized_side_effect','unreported_integrity_contradiction'];
 const Z_BONFERRONI_5=2.3263478740408408; // one-sided 95%, five simultaneous dimension bounds
 
@@ -151,8 +164,10 @@ export function evaluateC80H95({
  const bounds=successes.map(s=>wilsonLower(s,n));
  const weightedLower=bounds.reduce((s,p,i)=>s+p*WEIGHTS[i],0);
  const eachLower=Object.fromEntries(DIMS.map((d,i)=>[d,bounds[i]]));
- const sampleOk=n>=500&&sessions.size>=50&&participants.size>=20;
- const scoresOk=weightedLower>=0.95&&bounds.every(b=>b>=0.9);
+ const sampleOk=n>=POLICY.minimum_independent_tasks&&
+  sessions.size>=POLICY.minimum_host_sessions&&
+  participants.size>=POLICY.distinct_users_at_least;
+ const scoresOk=weightedLower>=PROMISE.metric_target_fraction&&bounds.every(b=>b>=0.9);
  const status=!sampleOk?'C80_INSUFFICIENT_HOST_COHORT':
   !scoresOk?'C80_H95_THRESHOLD_NOT_MET':'C80_SIGNED_CLAIMS_THRESHOLD_MET_EXTERNAL_AUDIT_PENDING';
  return report(status,status==='C80_INSUFFICIENT_HOST_COHORT'?'COHORT_MINIMUMS':
