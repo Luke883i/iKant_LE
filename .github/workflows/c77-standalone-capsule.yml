@@ -1,0 +1,31 @@
+name: C77 standalone experimental cognitive capsule
+on:
+  pull_request:
+    paths:
+      - 'host/c77-*'
+      - 'scripts/c77-*'
+      - 'tests/c77-*'
+      - 'docs/C77_*'
+      - '.github/workflows/c77-standalone-capsule.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  standalone-capsule:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20','22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test --test-concurrency=1 tests/c77-standalone-capsule.test.mjs
+      - run: node --test --test-concurrency=1 tests/c71-experimental-host-draft.test.mjs tests/c74-postmerge-bootstrap.test.mjs
+      - run: npm run runtime-root:verify
+      - run: npm run check
