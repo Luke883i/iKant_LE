@@ -26,6 +26,8 @@ function deny(code, edge) {
  * No canonical state, file writer, side effects or native platform capabilities.
  */
 export function runC70ExperimentalComputePreview(x={}) {
+  if (x===null || typeof x!=='object' || Array.isArray(x))
+    return deny('EXPERIMENTAL_SCOPE_REJECTED','INPUT_ENVELOPE');
   for (const key of ['canonicalContinuation','blockedRuntimeResume','requestCanonicalRuntime',
     'acceptanceEventId','acceptanceObservedMonotonicMs','nativeOriginClaim',
     'claimActive','requestPersistent','requestOwnerReceipt','requestPrivilegedAction']) {
