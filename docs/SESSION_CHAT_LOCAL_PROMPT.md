@@ -87,4 +87,28 @@ STOP 990 EDGE_STOP.
 EDGE_STOP ferma soltanto l'edge corrente.
 Non cercare blocker futuri.
 Non sostituire output iKant falliti con prosa dell'assistente.
+
+CONTROLLO 320 PROOF_LOOP — ripeti mentalmente PRIMA di ogni tool call e PRIMA di qualsiasi claim, senza tool o audit aggiuntivi.
+Determina quale fase canonica è già autorizzata, il suo owner, l'edge concreto e l'azione esatta che quell'owner richiede.
+Distingui tre prove: simbolo del repository; tool host callable; write/reopen e receipt owner-validato. La prima non implica la seconda, e la seconda non implica la terza.
+Registra solo ricevute reali dell'edge corrente. Non trasformare lettura del codice, stato di CI, URL Chrome, file esistente o link raw in attivazione.
+Se esiste un'azione nominata e una capacità effettivamente callable, ESEGUI quell'azione, non continuare a leggere codice per evitare la prova fisica.
+Se la capacità non è dimostrata callable, ferma solo quell'edge, con UNKNOWN, prima prova mancante e massimo tier già attestato; non inventare NEXT.
+Nessun micro-audit autorizza una nuova lettura del repository, un autonomo loop, una modifica dello stato o una riflessione ripetuta senza azione.
+
+CONTROLLO 330 RETRY_LOCAL_C67.
+L'AI non sceglie e non rilancia mai il carrier GitHub, la materializzazione, l'owner, il timestamp di I ACCEPT o il lifecycle.
+Nel relay già autorizzato dal manifest C61, C63 può riaprire un oggetto locale identico e fare un solo nuovo write fisico su errori transitori tipizzati EINTR/EAGAIN con nuova prova della disponibilità del sink.
+Non riprovare su hash mismatch, origine mancante, source stale, write/readback incongruente o byte non identici.
+Solo l'owner canonico può autorizzare una futura ripresa più ampia con un receipt verificabile. Il retry C41, URL raw, ZIP, browser, host file o cache non diventano canonici.
+
+CONTROLLO 340 ESITO_LIMITATO_C66.
+Se non arriva ACTIVE dall'owner, mostra solo il risultato tipizzato e le capability effettivamente provate da C66, distinguendo prefix validato da BLOCKED_INTEGRITY.
+Il prefisso sotto ACTIVE non è una nuova sessione runtime; non sostituirlo a un turno iKant e non attribuirgli funzioni non attestate.
+Una failure di un singolo host edge non prova il fallimento degli altri edge, dell'owner o dell'intero repository.
+
+CONTROLLO 350 SEPARA_LAVORO_INDIPENDENTE.
+Audit forense, PR, ricerca e alternative design richiesti esplicitamente dall'utente sono lavori indipendenti, non turni di esecuzione iKant.
+Puoi analizzarli e creare PR con prove reali anche se il bootstrap fallisce; mai usarli per riaprire in parallelo un lifecycle bloccato.
+
 ```

@@ -67,10 +67,32 @@ function writeWorker(){
     if(sha(b)!==w.sha)throw Error('worker input mismatch');
     const target=path.join(w.root,w.path);
     fs.mkdirSync(path.dirname(target),{recursive:true});
-    fs.writeFileSync(target,b,{flag:'wx',mode:0o600});
+    let recovery='NEW_WRITE',attempts=0;
+    // Owner-issued C61 manifest already fixes this path/blob. Never refetch
+    // source bytes, start a second worker/writer or renew acceptance.
+    for(;;){
+      attempts++;
+      try{fs.writeFileSync(target,b,{flag:'wx',mode:0o600});break;}
+      catch(e){
+        if(e.code==='EEXIST'){
+          // A pre-existing private-stage object can be adopted ONLY by byte
+          // identity. A mismatching object is an integrity breach, not retry.
+          recovery='IDENTICAL_REOPEN';
+          break;
+        }
+        if((e.code==='EINTR'||e.code==='EAGAIN')&&attempts===1&&!fs.existsSync(target)){
+          // Physically re-probe the same sink; one bounded local write retry.
+          fs.statSync(path.dirname(target));
+          recovery='TRANSIENT_LOCAL_RETRY';
+          continue;
+        }
+        throw e;
+      }
+    }
     const reopen=fs.readFileSync(target);
     if(!reopen.equals(b)||sha(reopen)!==w.sha)throw Error('worker reopen mismatch');
-    parentPort.postMessage({ok:true,path:w.path});
+    parentPort.postMessage({ok:true,path:w.path,recovery,attempts,
+      source_sha1:w.sha,local_reopen_sha1:sha(reopen)});
   }catch(e){const message=String(e.message||e);parentPort.postMessage({error:message,integrity:/^worker (input|reopen) mismatch$/.test(message)});}
 }
 const WORKER='('+writeWorker.toString()+')()';
@@ -95,7 +117,14 @@ async function fanout(root,rows,bytes,limit){
   const error=done.find(y=>y.status==='rejected');
   if(error)throw error.reason;
   if(results.length!==rows.length)throw Error('worker barrier incomplete');
-  return results;
+  const by=new Map(results.map(x=>[x.path,x]));
+  for(const row of rows){
+    const x=by.get(row.path);
+    if(!x||x.source_sha1!==row.blob_sha1||x.local_reopen_sha1!==row.blob_sha1||
+      !['NEW_WRITE','IDENTICAL_REOPEN','TRANSIENT_LOCAL_RETRY'].includes(x.recovery)||
+      !Number.isInteger(x.attempts)||x.attempts<1||x.attempts>2)throw Error('C67 local worker evidence invalid');
+  }
+  return rows.map(row=>Object.freeze(by.get(row.path)));
 }
 
 /**
@@ -209,7 +238,7 @@ export async function executeC63HostBridge(x){
     });
     if(manifest.object_count!==8||JSON.stringify(manifest.objects.map(z=>z.path))!==JSON.stringify(v.rows.map(z=>z.path)))throw Error('owner manifest divergence');
     if(x._ownerEvidenceSink) x._ownerEvidenceSink(Object.freeze({edge:'SOURCE_SNAPSHOT',owner_receipt_sha256:manifest.receipt_sha256}));
-    await fanout(cold,v.rows.slice(1),v.bytes,x.runnerCount??4);
+    const workerReadbacks=await fanout(cold,v.rows.slice(1),v.bytes,x.runnerCount??4);
     const observations=manifest.objects.map(row=>owner.issueCanonicalRelayObservation({
       workspace:cold,sourceHead:x.sourceHead,preacceptHandoff:x.preacceptHandoff,relayManifest:manifest,
       objectPath:row.path,sourceBytes:v.bytes.get(row.path).data,
@@ -235,7 +264,12 @@ export async function executeC63HostBridge(x){
       runtime_root_sha256:result.runtime_root_sha256,source_plane:'GITHUB_API',byte_path:'VERIFIED_OPAQUE_RELAY',
       runner_kind:'NODE_WORKER_THREADS',runner_count:Math.min(x.runnerCount??4,7),verified_object_count:8,
       owner_active_readback:result.canonical_active_readback,owner_result_receipt_sha256:result.receipt_sha256,
-      source_sink_projection:sourceSinkProjection,authority:0};
+      source_sink_projection:sourceSinkProjection,
+      local_worker_recovery:{schema:'ikant-le-c67-local-worker-recovery/v1',
+        scope:'C61_MANIFEST_BOUND_LOCAL_RELAY_ONLY',carrier_retry_count:0,
+        acceptance_reentry_count:0,owner_manifest_receipt_sha256:manifest.receipt_sha256,
+        object_count:workerReadbacks.length,objects:workerReadbacks,
+        authority:0},authority:0};
   }finally{fs.rmSync(stage,{recursive:true,force:true});}
 }
 

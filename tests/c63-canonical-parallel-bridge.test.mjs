@@ -6,6 +6,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
+import vm from 'node:vm';
 import {executeC63HostBridge,executeC63AtAcceptance,executeC66QualifiedAtAcceptance,createC65PinnedGitHubSource,validateC65SourceSinkProjection,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -361,4 +362,158 @@ test('C66 forged error strings from host observers cannot manufacture an integri
     assert.equal(out.active,false);
     assert.equal(out.retry_gate.automatic_attempts,0);
   }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C67 same-manifest stage idempotence adopts only identical bytes with one worker writer',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  const target=f.sourceObjects[3];
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c67-identical-'));
+  try{
+    const output=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,runnerCount:4,
+      fetchPinnedObject:async ({path})=>({...byPath.get(path)}),
+      onOwnerMilestone:m=>{
+        if(m.edge!=='SOURCE_SNAPSHOT')return;
+        const stage=fs.readdirSync(root).find(x=>x.startsWith('.c63-stage-'));
+        assert.ok(stage);
+        const dest=path.join(root,stage,'cold',target.path);
+        fs.mkdirSync(path.dirname(dest),{recursive:true});
+        fs.writeFileSync(dest,Buffer.from(target.content_base64,'base64'),{flag:'wx'});
+      }
+    });
+    assert.equal(output.outcome,'ACTIVE');
+    assert.equal(output.active_readback_verified,true);
+    assert.equal(output.canonical_result.owner_active_readback.composition_authority,'C59_CANONICAL');
+    const local=output.canonical_result.local_worker_recovery;
+    assert.equal(local.schema,'ikant-le-c67-local-worker-recovery/v1');
+    assert.equal(local.scope,'C61_MANIFEST_BOUND_LOCAL_RELAY_ONLY');
+    assert.equal(local.carrier_retry_count,0);
+    assert.equal(local.acceptance_reentry_count,0);
+    assert.equal(local.object_count,7);
+    assert.equal(local.objects.length,7);
+    const adopted=local.objects.find(o=>o.path===target.path);
+    assert.equal(adopted.recovery,'IDENTICAL_REOPEN');
+    assert.equal(adopted.attempts,1);
+    assert.equal(adopted.source_sha1,adopted.local_reopen_sha1);
+    assert.equal(local.objects.filter(o=>o.recovery==='IDENTICAL_REOPEN').length,1);
+    assert.equal(local.objects.filter(o=>o.recovery==='NEW_WRITE').length,6);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C67 conflicting staged object fails integrity, revokes prefix and never retries the carrier',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  const target=f.sourceObjects[4];
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c67-conflict-'));
+  let fetches=0;
+  try{
+    const out=await executeC66QualifiedAtAcceptance({
+      sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,runnerCount:7,
+      fetchPinnedObject:async ({path})=>{fetches++;return {...byPath.get(path)};},
+      onOwnerMilestone:m=>{
+        if(m.edge!=='SOURCE_SNAPSHOT')return;
+        const stage=fs.readdirSync(root).find(x=>x.startsWith('.c63-stage-'));
+        const dest=path.join(root,stage,'cold',target.path);
+        fs.mkdirSync(path.dirname(dest),{recursive:true});
+        fs.writeFileSync(dest,Buffer.from('BAD'),{flag:'wx'});
+      }
+    });
+    assert.equal(out.outcome,'BLOCKED_INTEGRITY');
+    assert.equal(out.strongest_valid_prefix,null);
+    assert.equal(out.active,false);
+    assert.equal(out.active_readback_verified,false);
+    assert.equal(out.retry_gate.automatic_attempts,0);
+    assert.equal(out.owner_evidence.length,1);
+    assert.equal(fetches,8);
+    assert.equal(fs.existsSync(path.join(root,'runtime')),false);
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C67 bounded local fanout 1 and 7 workers converge on same canonical ACTIVE path',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  for(const runners of [1,7]){
+    const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c67-bound-'));
+    try{
+      const x=await executeC66QualifiedAtAcceptance({
+        sourceHead:HEAD,humanInput:'I ACCEPT',preacceptHandoff:f.preacceptHandoff,
+        sessionRoot:root,runnerCount:runners,
+        fetchPinnedObject:async ({path})=>({...byPath.get(path)})
+      });
+      assert.equal(x.outcome,'ACTIVE');
+      assert.equal(x.canonical_result.runner_count,runners);
+      assert.equal(x.canonical_result.local_worker_recovery.object_count,7);
+      assert.equal(x.canonical_result.local_worker_recovery.objects.every(q=>q.attempts===1),true);
+      assert.equal(x.retry_gate.automatic_attempts,0);
+    }finally{fs.rmSync(root,{recursive:true,force:true});}
+  }
+});
+
+test('C67 canonical prompt render parity and anti-shadow-planner project adapter contract',()=>{
+  const m=path.join(ROOT,'src/session-chat-local-prompt.mjs');
+  assert.equal(fs.existsSync(m),true);
+  return import(pathToFileURL(m).href).then(mod=>{
+    const doc=fs.readFileSync(path.join(ROOT,'docs/SESSION_CHAT_LOCAL_PROMPT.md'),'utf8');
+    assert.equal(doc,mod.renderSessionChatLocalPromptDocument());
+    assert.equal(mod.SESSION_CHAT_LOCAL_PROMPT_VERSION,'5.0.0');
+    assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 320 PROOF_LOOP'),true);
+    assert.equal(mod.renderSessionChatLocalPrompt().includes('CONTROLLO 330 RETRY_LOCAL_C67'),true);
+    const project=fs.readFileSync(path.join(ROOT,'docs/C67_PROJECT_CHATGPT_ADAPTER.md'),'utf8');
+    for(const token of ['IKANT-PROJECT-ADAPTER-C67','INDEPENDENT_REPOSITORY_WORK','0400 MICRO-AUDIT','ACTUAL owner-issued typed retry authorization'.replace('ACTUAL ','ACTUAL '),'BLOCKED_INTEGRITY','END PROGRAM.']){
+      if(token==='ACTUAL owner-issued typed retry authorization')continue;
+      assert.ok(project.includes(token),token);
+    }
+    assert.ok(project.includes('Broader retries require an ACTUAL owner-issued typed retry authorization'));
+    assert.ok(project.includes('No tree, history, PR, arbitrary file, clone, download, test or materialization before consent.'));
+  });
+});
+
+// Exercise the exact worker implementation with a deterministic physical
+// EINTR/EAGAIN fault shim. This is a local transport test, not host delivery.
+test('C67 transient local write resumes once after fresh sink probe, never third attempt',()=>{
+  const workerSource=fs.readFileSync(path.join(ROOT,'host/c63-canonical-parallel-bridge.mjs'),'utf8');
+  const begin=workerSource.indexOf('function writeWorker(){');
+  const finish=workerSource.indexOf("const WORKER='('",begin);
+  assert.ok(begin>0&&finish>begin,'worker body must be extracted from canonical C63 module');
+  const fn=workerSource.slice(begin,finish);
+  const payload=Buffer.from('C67 worker local transient recovery');
+  const sha=gitBlob(payload);
+  for(const [scenario,failCount,expected] of [
+    ['EAGAIN-once',1,'TRANSIENT_LOCAL_RETRY'],
+    ['EINTR-once',1,'TRANSIENT_LOCAL_RETRY'],
+    ['EAGAIN-twice',2,null]
+  ]){
+    const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c67-errno-'));
+    const responses=[];let writes=0;
+    try{
+      const fake={...fs,writeFileSync:(file,data,options)=>{
+        writes++;
+        if(writes<=failCount){const e=new Error(scenario);e.code=scenario.startsWith('EINTR')?'EINTR':'EAGAIN';throw e;}
+        return fs.writeFileSync(file,data,options);
+      }};
+      const requireShim=id=>{
+        if(id==='node:worker_threads')return {
+          parentPort:{postMessage:m=>responses.push(m)},
+          workerData:{root,path:'shard.json',sha,base64:payload.toString('base64')}
+        };
+        if(id==='node:fs')return fake;
+        if(id==='node:path')return path;
+        if(id==='node:crypto')return crypto;
+        throw Error('unexpected worker dependency '+id);
+      };
+      vm.runInNewContext(fn+'\nwriteWorker();',{require:requireShim,Buffer});
+      assert.equal(responses.length,1);
+      assert.equal(writes,2);
+      if(expected){
+        assert.equal(responses[0].ok,true);
+        assert.equal(responses[0].recovery,expected);
+        assert.equal(responses[0].attempts,2);
+        assert.equal(fs.readFileSync(path.join(root,'shard.json')).equals(payload),true);
+      }else{
+        assert.equal(responses[0].ok,undefined);
+        assert.equal(responses[0].integrity,false);
+        assert.equal(fs.existsSync(path.join(root,'shard.json')),false);
+      }
+    }finally{fs.rmSync(root,{recursive:true,force:true});}
+  }
 });
