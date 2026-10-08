@@ -14,7 +14,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  pull-requests: write
 jobs:
   postmerge-e2e:
     runs-on: ubuntu-latest
@@ -27,21 +26,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - name: Execute C74 with bounded diagnostic capture
-        run: |
-          set +e
-          node --test --test-concurrency=1 tests/c74-postmerge-bootstrap.test.mjs tests/c74-ontology-ledger.test.mjs tests/c73-project-capsule.test.mjs > /tmp/c74-test-log.txt 2>&1
-          rc=$?
-          cat /tmp/c74-test-log.txt
-          exit "$rc"
-      - name: Report bounded failing test evidence to PR
-        if: failure() && github.event_name == 'pull_request' && matrix.node == '22'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          tail -n 120 /tmp/c74-test-log.txt > /tmp/c74-test-tail.txt
-          gh pr comment "$PR_NUMBER" --body-file /tmp/c74-test-tail.txt
+      - run: node --test --test-concurrency=1 tests/c74-postmerge-bootstrap.test.mjs tests/c74-ontology-ledger.test.mjs tests/c73-project-capsule.test.mjs
       - run: node --test --test-concurrency=1 tests/c72-unified-mode-admission.test.mjs tests/c70-experimental-compute-preview.test.mjs tests/c71-experimental-host-draft.test.mjs tests/c32-session-shell.test.mjs
       - run: node scripts/c72-falsify-1m.mjs
       - run: npm run runtime-root:verify
