@@ -22,7 +22,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  pull-requests: write
 jobs:
   unified:
     runs-on: ubuntu-latest
@@ -40,18 +39,4 @@ jobs:
       - run: node scripts/c72-falsify-1m.mjs
       - run: node --test --test-concurrency=1 tests/c72-product-value.test.mjs
       - run: npm run runtime-root:verify
-      - name: Repository check with bounded diagnostics
-        run: |
-          set +e
-          npm run check > /tmp/c72-check.log 2>&1
-          result=$?
-          cat /tmp/c72-check.log
-          exit "$result"
-      - name: Report check error on PR
-        if: failure() && github.event_name == 'pull_request' && matrix.node == '22'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          tail -n 70 /tmp/c72-check.log > /tmp/c72-first-failure.txt
-          gh pr comment "$PR_NUMBER" --body-file /tmp/c72-first-failure.txt
+      - run: npm run check
