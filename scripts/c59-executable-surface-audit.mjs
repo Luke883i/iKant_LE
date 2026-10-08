@@ -18,9 +18,22 @@ function walk(dir){
  return out;
 }
 const production=[...walk(path.join(ROOT,'src')),'ikant.mjs','scripts/session-chat-runtime-cli.mjs','plugins/ikant-le-session-chat/server/server.mjs'].sort();
-const discovered=production.filter(p=>activationRe.test(fs.readFileSync(path.join(ROOT,p),'utf8'))).sort();
-const declared=[...(R.discovery?.activation_related_files||[])].sort();
 const errors=[];
+const experimental=R.discovery?.excluded_experimental_non_activation_files||[];
+const exceptions=new Set(experimental);
+if(exceptions.size!==experimental.length)errors.push('experimental_exclusion_duplicate');
+for(const p of exceptions){
+  if(!production.includes(p)) {errors.push('experimental_exclusion_not_in_production:'+p);continue;}
+  const code=fs.readFileSync(path.join(ROOT,p),'utf8');
+  // These are bounded host-owned computation/draft lanes. They cannot call the
+  // canonical issuer or pretend to possess its native event or writer.
+  if(!code.includes('active:false')||!code.includes('canonical_runtime:false')||
+     !code.includes('owner_receipt_issued:false')||
+     /(?:runCanonicalSessionChat|canonicalActiveReadback|issueCanonicalSessionChatComposition)\s*\(/.test(code))
+    errors.push('experimental_exclusion_authority:'+p);
+}
+const discovered=production.filter(p=>!exceptions.has(p)&&activationRe.test(fs.readFileSync(path.join(ROOT,p),'utf8'))).sort();
+const declared=[...(R.discovery?.activation_related_files||[])].sort();
 if(JSON.stringify(discovered)!==JSON.stringify(declared))errors.push('activation_related_file_set');
 const issuers=(R.surfaces||[]).filter(x=>x.may_issue_canonical_active===true);const materializer=(R.surfaces||[]).find(x=>x.id==='PRE_RUNTIME_MATERIALIZER');
 if(issuers.length!==1||issuers[0]?.ref!=='src/runtime-command.mjs#runCanonicalSessionChat')errors.push('canonical_issuer');if(materializer?.ref!=='src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap'||materializer?.classification!=='CANONICAL_INTERNAL_EDGE')errors.push('canonical_materializer_registry');

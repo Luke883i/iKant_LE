@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import {validateC72ModeSelection} from './c72-unified-mode-admission.mjs';
 
 export const C69_EXPERIMENTAL_CONSENT='I ACCEPT EXPERIMENTAL';
 export const C69_EXPERIMENTAL_TERMS=[
@@ -63,7 +64,13 @@ export function qualifyC69ExperimentalPreview(x={}){
   const {offer_sha256,...body}=offer;
   if(sha256(JSON.stringify(body))!==offer_sha256)
     return reject('EXPERIMENTAL_OFFER_INVALID','EXPERIMENTAL_TERMS');
-  if(observedConsent!==C69_EXPERIMENTAL_CONSENT)
+  const unifiedMode=x.unifiedSelection!==undefined&&
+    validateC72ModeSelection(x.unifiedSelection,{mode:'EXPERIMENTAL',sourceHead});
+  if(x.unifiedSelection!==undefined&&!unifiedMode)
+    return reject('EXPERIMENTAL_UNIFIED_SELECTION_INVALID','MODE_CHOICE');
+  if(unifiedMode&&observedConsent!==undefined)
+    return reject('EXPERIMENTAL_CONSENT_COLLISION','COMMON_GATE');
+  if(!unifiedMode&&observedConsent!==C69_EXPERIMENTAL_CONSENT)
     return reject('EXPERIMENTAL_CONSENT_REQUIRED','EXPERIMENTAL_CONSENT');
   if(!sourceObject||sourceObject.path!=='README.md'||
      !HEX40.test(String(sourceObject.blob_sha1||''))||
@@ -98,7 +105,7 @@ export function qualifyC69ExperimentalPreview(x={}){
     source_head:offer.source_head,object_path:'README.md',
     source_blob_sha1:sourceObject.blob_sha1,source_blob_identity_checked:true,
     local_samehash_verified:reopened,source_origin:'CALLER_SUPPLIED_BYTES_UNATTESTED',
-    consent_basis:'EXACT_MODEL_OBSERVED_EXPERIMENTAL_TEXT',
+    consent_basis:unifiedMode?'C72_COMMON_I_ACCEPT_WITH_EXPLICIT_MODE_SELECTION':'LEGACY_EXACT_MODEL_OBSERVED_EXPERIMENTAL_TEXT',
     consent_native_identity:'UNVERIFIED',first_unclosed_edge:null,
     active:false,canonical_runtime:false,native_event_attested:false,
     github_host_origin_attested:false,native_delivery_attested:false,
