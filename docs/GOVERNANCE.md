@@ -18,7 +18,7 @@ Historical artifacts never self-promote. Maintained narrative SOTs are README, A
 
 Change the smallest affected neighborhood. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
 
-Bootstrap is structurally bounded: pin source before orientation. For canonical `SESSION_CHAT_LOCAL` on C59-C63, post-accept acquires the frozen RUNTIME8 source objects only via pinned GitHub API base64 and `VERIFIED_OPAQUE_RELAY`, validates write/reopen and delegates to the existing C61 cold owner, C59 materializer and runtime readback. `LOCAL_DIRECT`, warm cache, multi-carrier Fastboot and legacy deployment are retained for explicitly classified compatibility/remediation, not a second canonical path. The authority-zero C63 host adapter can stage the same single canonical relay in parallel Node worker threads; it cannot create host-native routing, persistence, receipt or UI controls. Search/history/docs study/tests/qualification are not bootstrap gates; the 120 s target is observability/SLO, not an integrity predicate.
+Canonical `SESSION_CHAT_LOCAL` pins main, presents Terms and, after exact `I ACCEPT`, uses only GitHub API base64 -> `VERIFIED_OPAQUE_RELAY` -> C61 cold owner -> C59 materializer/ACTIVE readback. `LOCAL_DIRECT`, warm/file/ZIP and Fastboot selection remain noncanonical compatibility. C63 parallel Node staging cannot invent host capabilities or authority. Tests do not gate activation; 120 s is an SLO, not an integrity rule.
 
 ## Development trajectory
 
