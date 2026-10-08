@@ -128,3 +128,62 @@ captured monotonic acceptance evidence.
 C64 tests use local fixture sources and verify the same existing C61/C59
 owner succeeds with an 8/8 transfer; they are **repository-only**
 qualification, not evidence of a live ChatGPT activation.
+
+## C65 — Closed pinned GitHub-source adapter and owner-relay evidence projection
+
+The post-C64 caller no longer needs to hand-author `content_base64`,
+`blob_sha1`, GitHub ref and `source_object_identity` mappings. Bind one
+existing callable GitHub connector function to the zero-authority normalizer:
+
+```js
+import {executeC63AtAcceptance,createC65PinnedGitHubSource}
+  from './host/c63-canonical-parallel-bridge.mjs';
+
+const fetchPinnedObject=createC65PinnedGitHubSource(hostGitHubFetchFile);
+// Call executeC63AtAcceptance ONLY at the real I ACCEPT ingress event,
+// with the already frozen sourceHead, preacceptHandoff and sessionRoot:
+// await executeC63AtAcceptance({humanInput:'I ACCEPT',
+//   sourceHead,preacceptHandoff,sessionRoot,fetchPinnedObject});
+```
+
+`hostGitHubFetchFile` must be a **currently callable** host edge that accepts
+`{repository_full_name,path,ref,encoding:'base64'}` and returns either
+`{result:{sha,encoding,content,display_url}}` or the inner object.
+The adapter always requests `Luke883i/iKant_LE` at the frozen 40-hex SHA,
+requires `encoding:'base64'`, exact per-object blob SHA and exact pinned
+display URL, decodes and rehashes source bytes, and canonically re-encodes
+before returning them into the pre-existing C64 -> C63 route. There is no
+second HTTP client, download, raw permalink, ZIP, Chrome integration, byte
+carrier or retry authority.
+
+On successful C63/C61/C59 completion, `source_sink_projection` now contains
+eight canonical-owner-validated relay observations, each referencing the
+manifest, source Git blob, source SHA-256, local reread SHA-256, and existing
+owner observation receipt digest. The aggregate projection binds the owner's
+result receipt and source head and can be checked with
+`validateC65SourceSinkProjection(projection,{sourceHead,preacceptHandoff})`.
+That validator is a **zero-authority consistency projection**, not a second
+activation predicate. Canonical ACTIVE still belongs exclusively to the
+original C61/C59 owner readback.
+
+**Critical proof separation**: a host-supplied callback can fabricate a
+GitHub-shaped reply; a pinned display URL and Git SHA equality do not prove
+the reply really came from a native ChatGPT connector. Accordingly,
+`github_host_fetch_proven:false` and `host_native_delivery_proven:false`
+are mandatory, non-promotable fields. Only independently observed current-host
+tool invocations and native output-delivery receipts can close those edges.
+This slice makes the transport mapping executable and makes the per-object
+local identity readback inspectable; it does **not** claim current-chat E2E.
+
+### Falsification and DoD
+
+- 8/8 source callbacks must be pinned to the frozen head, canonical Base64,
+  source Git blob sha and exact response URL; corrupted input fails closed.
+- C64's real ingress-first clock capture remains the only accepted origin.
+- All eight owner relay observations must validate against physical staged
+  local reread and source bytes. Neither partial nor duplicate rows are valid.
+- Projection mutation (SHA, count, path, host-origin/native claim, owner ref or
+  digest) fails; self-rehash cannot turn an unsupported host-origin claim true.
+- C61/C59 alone produce the final ACTIVE readback and materialized runtime.
+- Fixture/CI checks on Node 20/22 prove implementation correctness; a
+  *separate* host-native witness remains mandatory for real ChatGPT closure.
