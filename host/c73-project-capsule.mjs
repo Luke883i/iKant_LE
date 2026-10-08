@@ -35,11 +35,11 @@ function plan(mode,voice,docs,modeStatus,firstEdge,action){
  * Read-only plan. Never creates a DOCX, URL, event, owner, transcript or memory.
  * Host physically delivers any artifact before publishing the sealed A text.
  */
-export function buildC73ProjectCapsule({selection=null,ownerResult=null,hostFrame=null,experimentalResult=null,hostUrls=null}={}){
+export function buildC73ProjectCapsule({selection=null,ownerResult=null,hostFrame=null,canonicalActiveReadback=null,experimentalResult=null,hostUrls=null}={}){
  if(!validateC72ModeSelection(selection))return stop('C72_MODE_SELECTION');
  if(hostUrls!==null)return stop('HOST_URLS_MUST_BE_NATIVE_DELIVERY_ACTIONS');
  if(selection.selected_mode==='EXPERIMENTAL'){
-  if(ownerResult!==null||hostFrame!==null)return stop('EXPERIMENTAL_CANNOT_INHERIT_CANONICAL_AUTHORITY');
+  if(ownerResult!==null||hostFrame!==null||canonicalActiveReadback!==null)return stop('EXPERIMENTAL_CANNOT_INHERIT_CANONICAL_AUTHORITY');
   const x=experimentalResult;
   if(!x||x.schema!=='ikant-le-c71-experimental-host-draft/v1'||
      x.status!=='EXPERIMENTAL_HOST_DRAFT'||x.authority!==0||
@@ -60,6 +60,16 @@ export function buildC73ProjectCapsule({selection=null,ownerResult=null,hostFram
     ]);
  }
  if(experimentalResult!==null)return stop('CANONICAL_EXPERIMENTAL_RESULT_COLLISION');
+ // A well-formed ACTIVE shell is not a canonical owner readback. This is still
+ // a structural check, never proof of native host event origin.
+ const cr=canonicalActiveReadback;
+ if(!cr||cr.schema!=='ikant-le-c59-canonical-active-readback/v1'||
+    cr.ok!==true||cr.state!=='ACTIVE'||cr.terminal!=='ACTIVE'||
+    cr.composition_authority!=='C59_CANONICAL'||cr.authority!==0||
+    !h64.test(String(cr.canonical_composition_receipt_sha256||''))||
+    !h64.test(String(cr.runtime_root_sha256||''))||
+    cr.source_head!==selection.source_head)
+   return stop('CANONICAL_OWNER_ACTIVE_READBACK_REQUIRED','CANONICAL_REQUESTED_NOT_ACTIVE');
  const r=ownerResult,f=hostFrame;
  if(!r||!f)return stop('CANONICAL_OWNER_FRAME_REQUIRED','CANONICAL_REQUESTED_NOT_ACTIVE');
  if(!validateHostConsumptionFrame(f).ok||!r.session_shell||
@@ -70,6 +80,7 @@ export function buildC73ProjectCapsule({selection=null,ownerResult=null,hostFram
     f.shell?.source!=='SESSION_SHELL'||
     f.shell?.session_shell_receipt_sha256!==r.session_shell.receipt_sha256||
     f.source_head!==selection.source_head||
+    f.runtime_root_sha256!==cr.runtime_root_sha256||
     !h64.test(String(f.runtime_root_sha256||''))||
     !h64.test(String(f.runtime_evidence?.node_dispatch_receipt_sha256||'')))
   return stop('CANONICAL_OWNER_FRAME_INVALID');
@@ -87,5 +98,5 @@ export function buildC73ProjectCapsule({selection=null,ownerResult=null,hostFram
     'C73_CANONICAL_FRAME_READY_NOT_HOST_DELIVERED','HOST_NATIVE_ARTIFACT_DELIVERY',
     [{action:'MATERIALIZE_AND_VERIFY_OWNER_DOCX_IN_HOST',name:art.name,sha256:art.sha256,bytes:art.bytes},
      {action:'EMIT_REAL_HOST_DOWNLOAD_LINK',name:art.name,url_must_not_be_invented:true},
-     {action:'PRESENT_SEALED_SURFACE_A_IN_ORDINARY_CHAT',text_must_equal_owner:true}]),owner_shell_exact_text:f.shell.text};
+     {action:'PRESENT_SEALED_SURFACE_A_IN_ORDINARY_CHAT',text_must_equal_owner:true} ]),owner_shell_exact_text:f.shell.text,canonical_active_readback_shape_valid:true,canonical_active_readback_receipt_sha256:cr.canonical_composition_receipt_sha256,owner_origin_independently_attested:false};
 }

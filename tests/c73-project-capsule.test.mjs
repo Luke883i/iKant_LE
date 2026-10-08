@@ -24,7 +24,11 @@ const activeFixture=()=>{
  const ownerResult={state:'ACTIVE',claim_class:'IKANT_ACTIVE',session_shell,stdout:renderSessionShell(session_shell),
   artifacts:[artifact],release:{release_sha256:'e'.repeat(64)},node_dispatch_receipt_sha256:'f'.repeat(64)};
  const hostFrame=buildHostConsumptionFrame({result:ownerResult,sourceHead:HEAD,runtimeRootSha256:H64,sessionRef:'fixture'});
- return {ownerResult,hostFrame};
+ const canonicalActiveReadback={schema:'ikant-le-c59-canonical-active-readback/v1',
+ ok:true,state:'ACTIVE',terminal:'ACTIVE',composition_authority:'C59_CANONICAL',
+ canonical_composition_receipt_sha256:'9'.repeat(64),source_head:HEAD,
+ runtime_root_sha256:H64,authority:0};
+ return {ownerResult,hostFrame,canonicalActiveReadback};
 };
 const experimentalResult=()=>({schema:'ikant-le-c71-experimental-host-draft/v1',
  status:'EXPERIMENTAL_HOST_DRAFT',authority:0,active:false,canonical_runtime:false,
@@ -55,6 +59,8 @@ test('C73 active fixture: owner shell voice in normal chat, verified DOCX needs 
  assert.equal(x.artifact_requirements[0].host_download_url,null);
  assert.equal(x.required_host_actions[1].url_must_not_be_invented,true);
  assert.equal(x.native_delivery_attested,false);
+ assert.equal(x.canonical_active_readback_shape_valid,true);
+ assert.equal(x.owner_origin_independently_attested,false);
  assert.equal(x.active,false);
  assert.equal(x.causal_order[0],'RUNTIME_DOCX_WRITE_AND_REOPEN');
  assert.equal(x.visual_order[2],'SURFACE_B_DOWNLOAD_REFERENCES');
@@ -69,6 +75,21 @@ test('C73 canonical selection alone cannot produce active chat or invented link'
  const y=buildC73ProjectCapsule({selection:modes().canonical,hostUrls:['sandbox:/mnt/data/fake.docx'],...activeFixture()});
  assert.equal(y.status,'C73_PRESENTATION_BLOCKED');
  assert.equal(y.first_unclosed_edge,'HOST_URLS_MUST_BE_NATIVE_DELIVERY_ACTIONS');
+});
+test('C74 C73 refuses a structural ACTIVE frame without separate C59 ACTIVE readback',()=>{
+ const m=modes().canonical,f=activeFixture();
+ const missing=buildC73ProjectCapsule({selection:m,ownerResult:f.ownerResult,hostFrame:f.hostFrame});
+ assert.equal(missing.status,'CANONICAL_REQUESTED_NOT_ACTIVE');
+ assert.equal(missing.first_unclosed_edge,'CANONICAL_OWNER_ACTIVE_READBACK_REQUIRED');
+ for(const change of [
+  {ok:false},{composition_authority:'MODEL_AUTHORED'},
+  {source_head:'0'.repeat(40)},{runtime_root_sha256:'0'.repeat(64)},
+  {canonical_composition_receipt_sha256:null},{state:'ORIENTING'}
+ ]){
+  const x=buildC73ProjectCapsule({selection:m,...f,canonicalActiveReadback:{...f.canonicalActiveReadback,...change}});
+  assert.equal(x.status,'CANONICAL_REQUESTED_NOT_ACTIVE');
+  assert.equal(x.active,false);
+ }
 });
 test('C73 rejects 100 presentation mutants without generating ACTIVE or fake DOCX URLs',()=>{
  let rejects=0;
