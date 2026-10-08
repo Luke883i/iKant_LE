@@ -13,6 +13,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: write
 jobs:
   native-chat-frame:
     runs-on: ubuntu-latest
@@ -27,7 +28,19 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Real C78 subprocess, C79 exact native-chat packet, 2000 mutants
-        run: node --test --test-concurrency=1 tests/c79-native-chat-surface.test.mjs
+        run: |
+          node --test --test-concurrency=1 tests/c79-native-chat-surface.test.mjs > /tmp/c79-test.log 2>&1
+          rc=$?
+          cat /tmp/c79-test.log
+          exit "$rc"
+      - name: Publish bounded test failure to PR for reproducible repair
+        if: failure() && github.event_name == 'pull_request' && matrix.node == '22'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          tail -n 120 /tmp/c79-test.log > /tmp/c79-tail.log
+          gh pr comment "$PR_NUMBER" --body-file /tmp/c79-tail.log
       - name: C78 original relay and 160 mutations
         run: node --test --test-concurrency=1 tests/c78-host-relay.test.mjs
       - run: npm run runtime-root:verify
