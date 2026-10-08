@@ -1,4 +1,4 @@
-import { qualifyC69ExperimentalPreview } from './c69-capability-first-preview.mjs';
+import { qualifyC69ExperimentalPreview } from '../host/c69-capability-first-preview.mjs';
 import { compileCognitiveTurn, updateExperience, validateCognitiveTurn } from './cognition-core.mjs';
 import { cognitiveFallbackSurface } from './cognition-surface.mjs';
 import { retroactPsyche } from './psyche.mjs';

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-import { issueC69ExperimentalOffer } from '../src/c69-capability-first-preview.mjs';
+import { issueC69ExperimentalOffer } from '../host/c69-capability-first-preview.mjs';
 import { runC70ExperimentalComputePreview } from '../src/c70-experimental-compute-preview.mjs';
 
 const SOURCE_HEAD='a'.repeat(40); // Caller-supplied fixture, NOT a native GitHub receipt.
