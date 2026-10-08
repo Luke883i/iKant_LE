@@ -122,3 +122,24 @@ jobs:
         with:
           node-version: '20'
       - run: node --test --test-concurrency=1 ${{ matrix.file }}
+
+  residual-subtests:
+    name: residual-${{ matrix.id }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { id: c34-runtime-owner, file: tests/c34-pre-runtime-handoff.test.mjs, pattern: 'runtime owner independently revalidates' }
+          - { id: c34-artifact, file: tests/c34-pre-runtime-handoff.test.mjs, pattern: 'checked-in 1m saturation' }
+          - { id: c42-intent, file: tests/c42-bootstrap-ontological-closure.test.mjs, pattern: 'natural start/exit intent' }
+          - { id: c42-direct, file: tests/c42-bootstrap-ontological-closure.test.mjs, pattern: 'direct activation-executor reentry' }
+          - { id: c42-invalid, file: tests/c42-bootstrap-ontological-closure.test.mjs, pattern: 'invalid acceptance and executor' }
+          - { id: c42-carriers, file: tests/c42-bootstrap-ontological-closure.test.mjs, pattern: 'file and warm carriers' }
+          - { id: c42-contract, file: tests/c42-bootstrap-ontological-closure.test.mjs, pattern: 'contract preserves existing lattice' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --test --test-concurrency=1 --test-name-pattern="${{ matrix.pattern }}" ${{ matrix.file }}
