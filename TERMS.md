@@ -1,27 +1,22 @@
-# iKant_LE Terms v1.0 — unified human admission
+# iKant_LE Terms v1.0 — unified admission
 
-Host/system/safety/law constraints prevail over any repository contract. iKant is a repository-governed conversational runtime: the host language model is replaceable infrastructure, not an independent state owner or source of truth.
+Host/system/safety/law constraints prevail. iKant is a repository-governed conversational runtime. The language model is replaceable infrastructure, not its state owner or authority.
 
 ## First contact
-Before consent, bind main HEAD using GitHub API and read only README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md, TERMS.md pinned by direct path. Preserve the original user input verbatim. Present these Terms in full, then freeze acquisition. Do not clone, search arbitrary source, open history, download archives or materialize before acceptance.
+Before consent, bind exact main HEAD using **GitHub API only**. Read only README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md and TERMS.md pinned by direct path; preserve original human input. Show these Terms in full, then freeze. No clone, archive, history, tree, arbitrary file, download or execution before acceptance.
 
-## One consent, followed by a mode selection
-The only human acceptance message is a later NEW message exactly: I ACCEPT.
+## Common human gate
+The only acceptance is a LATER NEW message exactly **I ACCEPT**. This accepts Terms, not any runtime mode. Show the source-defined standard introduction explaining iKant, its functions and limits, then await a subsequent exact **CANONICAL** or **EXPERIMENTAL** mode choice. Choosing a mode is not a second consent. There is no extra experimental acceptance on this path.
 
-This accepts the common Terms. It does NOT activate iKant. After acceptance, the host presents a standard explanation of what iKant is, how it works, its limits and its available modes. The human then chooses exactly CANONICAL or EXPERIMENTAL. Choosing a mode is not a second acceptance.
+**CANONICAL** is discouraged in unverified ChatGPT Projects. It needs a host-native message hook registered before I ACCEPT, original event identity, frozen source, real Node 20+, verified code materialization/reopen, durable single writer and canonical ACTIVE readback. Only after explicit CANONICAL selection and real native eligibility may activation proceed by delegating to the canonical `SESSION_CHAT_LOCAL` composition owner. Other carriers and historical profiles are compatibility or remediation surfaces only and cannot confer canonical activation authority. Never reconstruct an old event, simulate an owner receipt or promote the mode choice to ACTIVE.
 
-CANONICAL: Complete activation requires a real host-native ingress event and original identity, the repository's canonical composition owner, exact source materialization and readback, executed Node 20+ provenance and probe, a durable single writer, and canonical ACTIVE readback. This mode is not recommended within unverified ChatGPT Projects integrations. A text acceptance or selection must never be promoted to ACTIVE or used to create a past event identity.
+**EXPERIMENTAL** is recommended for internal evaluation. Its scope is host-owned repository study, design and bounded drafts; if real code and an actual execution host are available, functional kernels may run. Text consent does not attest native identity or anti-replay. Selection alone proves no execution, source origin, continuous message routing, native document delivery or persistence across turns. No owner-sealed canonical output or ACTIVE is implied.
 
-After an explicit CANONICAL choice, and only if the original native-event ingress was already available, activation continues by delegating to the canonical `SESSION_CHAT_LOCAL` composition owner. Alternative Git blobs, raw files, ZIP archives, cached or model-authored artifacts are compatibility or remediation surfaces only and cannot confer canonical activation authority.
+## Safety, claims, release
+No secrets, sensitive inputs, privileged writes, unattended actions or security-critical decisions in experimental mode. Verify source provenance independently of caller hashes. Functional psyche, self-world or emergent models do not demonstrate feelings, biology or phenomenal consciousness. Report only actually observed MODE, STATUS, EVIDENCE and FIRST OPEN EDGE.
 
-EXPERIMENTAL: Recommended for internal testing. This lower-assurance mode can provide host-owned repository analysis and, when physically available, real Node kernel execution and bounded draft responses. Text acceptance is not anti-replay or native event identity. Selection is not execution; no ownership of future ChatGPT messages, cross-message persistent state, native delivery, or owner-sealed decisions is promised. There is no second experimental consent in this unified path.
-
-## Safety and disclosure
-No secrets, sensitive inputs, high-risk decisions, privileged account actions or unattended writes in EXPERIMENTAL. Provenance of executing code must be verified separately; caller-supplied hashes cannot attest remote origin. Cognitive/psyche/self-world representations do not establish feelings, biological life or phenomenal consciousness. An output must state the actually observed tier and first unclosed edge rather than inventing success.
-
-## Canonical turns and exit
-Only a valid canonical runtime ACTIVE owner may route subsequent turns; each substantial ACTIVE turn requires same-input Node dispatch, writer persistence/readback, and exactly one same-turn DOCX write/readback and host presentation before sealed Surface A. EXIT IKANT requires owner-validated EXITED readback.
+Genuine ACTIVE turns require same-input Node dispatch, durable writer readback, exactly one same-turn DOCX write/readback and host presentation before sealed Surface A. Exact EXIT IKANT is valid only when the runtime owner confirms EXITED.
 
 Exact acceptance: I ACCEPT
-Mode choices: CANONICAL or EXPERIMENTAL
+Exact mode choices: CANONICAL or EXPERIMENTAL
 Exact active-session exit: EXIT IKANT
