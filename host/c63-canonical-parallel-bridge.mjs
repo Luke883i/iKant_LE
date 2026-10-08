@@ -11,7 +11,7 @@ const SAFE=/^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))(?!.*\\)[A-Za-z0-9._/-]+$/;
 const blob=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
 const sha256=b=>crypto.createHash('sha256').update(b).digest('hex');
 const C66_FAILURE_KIND=Symbol('C66_TYPED_PHYSICAL_FAILURE');
-function c66TypedFailure(kind){const e=new Error('C66 physically classified failure');e[C66_FAILURE_KIND]=kind;return e;}
+function c66TypedFailure(kind,message='C66 physically classified failure'){const e=new Error(message);e[C66_FAILURE_KIND]=kind;return e;}
 function decode(b64){
   if(typeof b64!=='string')throw Error('base64 required');
   const s=b64.replace(/[\r\n]/g,'');
@@ -45,7 +45,7 @@ function inspect(x){
   for(const y of x.sourceObjects){
     if(!y||bytes.has(y.path)||!rows.some(z=>z.path===y.path)||!String(y.source_object_identity||'').trim())throw Error('invalid path/identity/duplicate');
     const b=decode(y.content_base64),expected=rows.find(z=>z.path===y.path);
-    if(blob(b)!==expected.blob_sha1||y.blob_sha1!==expected.blob_sha1)throw c66TypedFailure('INTEGRITY_CONTRADICTION');
+    if(blob(b)!==expected.blob_sha1||y.blob_sha1!==expected.blob_sha1)throw c66TypedFailure('INTEGRITY_CONTRADICTION','source blob mismatch: '+y.path);
     bytes.set(y.path,{data:b,identity:y.source_object_identity});
   }
   return{bootBytes,rows,bytes};
