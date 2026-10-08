@@ -51,3 +51,11 @@ The files array must contain **all** manifest-listed files; the example is inten
 - 0 false canonical ACTIVE, 0 native source-origin receipts invented, 0 unbacked DOCX links.
 - GitHub CI can prove locally staged bytes and Node execution only. The **real ChatGPT host ingress, GitHub connector to Node transfer and actual normal-chat Surface A witness remain separately unverified** until an eligible ChatGPT runtime supplies them.
 - User-value H95 cannot be inferred from CI. Require independent native Project sessions and a lower confidence bound >=0.95 under a prespecified cohort.
+
+## Observed same-session connector → local Node file handoff (partial witness)
+
+In the engineering chat, the linked GitHub connector returned pinned `assets/brand/ikant-dark.svg` from main `bbeca19853b040424204f20f589628707737035c`, advertising blob SHA-1 `b05eb79cd84ae336d359ae5da38683dabfe08fa6`. The assistant passed the exact returned bytes to the separate local Node container, wrote and reopened a 1,266-byte file; Node recomputed the **same Git blob identity**, and SHA-256 `b0d84de368849183fe82396c767220698dd14e40325ff78a562909b4ff0f679f`. The verification exited zero.
+
+This physically closes *one* opaque connector-to-container transfer on this actual host. It does NOT prove automatic code transfer for the full C77 closure, native ChatGPT message event IDs, arbitrary future-message routing, the original binary CI artifact origin, or rendered Surface A/DOCX. Treat full-capsule transfer and UI display as separately open. No source-origin or privilege claim is promoted by this experiment.
+
+The child Node environment now forwards only an explicit minimal environment; model-supplied code is still not an OS sandbox. The host must obtain and independently validate source bytes before executing any externally supplied JS. Never use the adapter for secrets, privileged writes or security-critical use.

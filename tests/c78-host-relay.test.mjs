@@ -64,6 +64,8 @@ test('C78 physically stages connector-shaped byte packets in a new Node director
   assert.equal(x.input_sha256,sha(Buffer.from(t.request.human_input)));
   assert.equal(x.output_sha256,sha(Buffer.from(x.surface_a_chat.text)));
   assert.equal(x.surface_a_chat.kind,'ORDINARY_CHAT_UNSEALED_DRAFT');
+  assert.equal(x.first_unclosed_edge,'HOST_GITHUB_ORIGIN_AUTHENTICATION');
+  assert.equal(x.downstream_unverified_edge,'HOST_NATIVE_CHAT_SURFACE_A_DELIVERY');
   assert.deepEqual(x.surface_b_links,[]);
   assert.equal(x.host_native_chat_delivery_attested,false);
   assert.equal(x.active,false);

@@ -153,7 +153,8 @@ export class C78HostRelay {
   const launched=spawnSync(process.execPath,[path.join(this.root,'host/c77-first-turn.mjs'),
       '--expected-sha256',this._manifestDigest],
     {input:JSON.stringify(envelope),encoding:'utf8',timeout:30000,maxBuffer:1024*1024,
-      cwd:this.root,env:{...process.env,IKANT_C78_HOST_RELAY:'1'}});
+      cwd:this.root,env:{LANG:'C',HOME:this.root,TMPDIR:this.root,
+        PATH:process.env.PATH||'/usr/bin:/bin',NODE_OPTIONS:'',IKANT_C78_HOST_RELAY:'1'}});
   this._dispatches++;
   if(launched.error)return auditStop('NODE_EXECUTION_UNAVAILABLE',launched.error.message);
   let result;try{result=JSON.parse(launched.stdout?.trim()||'')}catch{
@@ -177,7 +178,8 @@ export class C78HostRelay {
    surface_a_chat:{kind:'ORDINARY_CHAT_UNSEALED_DRAFT',text:result.voice,
       source:result.voice_source},
    surface_b_links:[],turn_dispatched_count:this._dispatches,
-   first_unclosed_edge:'HOST_NATIVE_CHAT_SURFACE_A_DELIVERY',
+   first_unclosed_edge:'HOST_GITHUB_ORIGIN_AUTHENTICATION',
+   downstream_unverified_edge:'HOST_NATIVE_CHAT_SURFACE_A_DELIVERY',
    source_origin_attested:false,host_native_chat_delivery_attested:false,
    inter_turn_persistence_attested:false,host_docx_delivery_attested:false,
    active:false,canonical_runtime:false,native_event_attested:false,persistent:false,
