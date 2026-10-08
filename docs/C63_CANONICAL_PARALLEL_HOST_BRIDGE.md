@@ -187,3 +187,68 @@ local identity readback inspectable; it does **not** claim current-chat E2E.
 - C61/C59 alone produce the final ACTIVE readback and materialized runtime.
 - Fixture/CI checks on Node 20/22 prove implementation correctness; a
   *separate* host-native witness remains mandatory for real ChatGPT closure.
+
+## C66 — Evidence-qualified non-ACTIVE outcome (same canonical composition)
+
+`executeC66QualifiedAtAcceptance` is a **single-attempt authority-zero host
+projection** around the existing admission-bound C64 -> C65 -> C63 -> C61/C59
+entrypoint. Call it at a genuine newly observed `I ACCEPT`, with the frozen
+`sourceHead`, `preacceptHandoff`, `sessionRoot`, existing C65
+`fetchPinnedObject`, and optionally `runnerCount` (1..7, default 4).
+It does not create a new owner, lifecycle, carrier, planner or state writer.
+C63 already executes 8 source requests concurrently and bounded shard
+materialization on Node worker threads. No AI-worker or cloud-runner availability
+is implied by this in-process concurrency.
+
+The returned `ikant-le-c66-qualified-activation/v1` envelope is either
+`ACTIVE` (only if the unchanged canonical C61/C59 readback validates),
+`NON_ACTIVE`, or `BLOCKED_INTEGRITY`. The non-ACTIVE payload includes
+`strongest_valid_prefix`, `first_unclosed_edge`, bounded capabilities,
+actual owner milestones, a sanitized failure class, and a closed retry gate.
+The `strongest_valid_prefix` uses the **existing**
+`src/runtime-availability.mjs#deriveActivationServiceTier` and validator:
+- no actual owner evidence -> `null` (not even REPO_STUDY_ONLY is certified);
+- C61-issued canonical relay manifest -> `REPO_STUDY_ONLY`;
+- eight C61 relay observations, local source/sink readback -> `ACTIVATION_LIMITED_1`;
+- later levels need real materialization/owner proof and may NOT be derived from
+  a filename, staging existence, a model assertion, or the absence of errors;
+- an integrity contradiction revokes the effective tier, including earlier
+  prefixes, without erasing the recorded owner milestone trail.
+
+C66 never promotes a diagnostic projection into a persisted runtime state.
+The host cannot release iKant ACTIVE prose or pretend a DOCX was delivered from
+a limited tier. A limited runtime turn still needs its existing limited owner
+and all its own DOCX/readback gates; this host projection does not provide one.
+
+### Retry and parallel transport boundary
+
+C66 deliberately returns:
+`automatic_attempts:0`, `same_evidence_retry_forbidden:true`, and
+`STOP_AWAIT_OWNER_AUTHORIZED_CHANGED_EVIDENCE`. This is an executable **retry
+gate**, not an automatic replay: currently the canonical C61/C59 owner has no
+validated positive retry receipt for this host ingress. The model must not
+interpret a transient network exception as permission to rerun
+`executeC66QualifiedAtAcceptance` later with a fabricated acceptance
+timestamp. The first closed carrier remains pinned GitHub API Base64; raw URL,
+ZIP, Chrome, file handoff, legacy Fastboot and caller-chosen NEXT stay excluded.
+Parallel source acquisition and bounded Node workers are not alternate
+activation carriers. A genuine idempotent resume/retry would require a future
+owner-authorized receipt and independently validated changed evidence.
+
+### C66 acceptance and falsification criteria
+
+1. Five RAW5 source objects remain a frozen preaccept input; human event must
+   be real, and C64 keeps the original monotonic acceptance capture.
+2. An error before C61's first manifest cannot certify a runtime prefix.
+3. A host-observer interruption after *actual* C61 manifest preserves
+   `REPO_STUDY_ONLY` and stops at `LOCAL_INGRESS`.
+4. An interruption after all eight actual C61 observations preserves
+   `ACTIVATION_LIMITED_1` and stops at `LOCAL_MATERIALIZATION`.
+5. Integrity failure nullifies the effective prefix; no false ACTIVE.
+6. All failure responses state `active:false`,
+   `active_readback_verified:false`, zero automatic retry count, and
+   do not assert GitHub native or DOCX delivery witness.
+7. Existing C63/C65 source->sink, worker, C61/C59 and positive ACTIVE fixture
+   tests must remain green on Node 20 and Node 22.
+8. Full ChatGPT host delivery, cohost continuity, native acceptance witness and
+   repeated legitimate retry are **external/unverified** in this PR.
