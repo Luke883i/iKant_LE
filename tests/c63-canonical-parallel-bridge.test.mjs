@@ -6,7 +6,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {performance} from 'node:perf_hooks';
-import {executeC63HostBridge,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
+import {executeC63HostBridge,executeC63AtAcceptance,validateC63Input} from '../host/c63-canonical-parallel-bridge.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEAD='a'.repeat(40);
@@ -85,4 +85,65 @@ test('C63 source failure cannot write a runtime and workers cannot exceed bound'
     const y=fixture();y.runnerCount=0;
     await assert.rejects(()=>executeC63HostBridge({...y,sessionRoot:root}),/runner count/);
   }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C64 ingress binds acceptance before parallel pinned GitHub source acquisition and calls existing C61/C59',async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c64-ingress-'));
+  try{
+    const f=fixture(),source=new Map(f.sourceObjects.map(o=>[o.path,o])),requests=[];
+    const r=await executeC63AtAcceptance({
+      humanInput:'I ACCEPT',sourceHead:f.sourceHead,preacceptHandoff:f.preacceptHandoff,
+      sessionRoot:root,runnerCount:3,
+      fetchPinnedObject:async req=>{
+        requests.push(req);
+        assert.equal(req.sourceHead,f.sourceHead);
+        assert.equal(req.blob_sha1,source.get(req.path)?.blob_sha1);
+        assert.equal(fs.existsSync(path.join(root,'runtime')),false);
+        return {...source.get(req.path)};
+      }
+    });
+    assert.equal(requests.length,8);
+    assert.deepEqual(requests.map(x=>x.path),f.sourceObjects.map(x=>x.path));
+    assert.equal(r.verified_object_count,8);
+    assert.equal(r.owner_active_readback.ok,true);
+    assert.equal(r.owner_active_readback.composition_authority,'C59_CANONICAL');
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
+
+test('C64 rejects retroactive acceptance origin, caller-selected runtime objects and invalid gate',async()=>{
+  const f=fixture();let calls=0;
+  const src=async()=>{calls++;return f.sourceObjects[0];};
+  const base={humanInput:'I ACCEPT',sourceHead:f.sourceHead,preacceptHandoff:f.preacceptHandoff,fetchPinnedObject:src};
+  for(const change of [
+    {acceptanceObservedMonotonicMs:performance.now()},
+    {sourceObjects:f.sourceObjects},
+    {humanInput:'I ACCEPT '},
+    {fetchPinnedObject:null},
+    {sourceHead:'b'.repeat(40)}
+  ])await assert.rejects(()=>executeC63AtAcceptance({...base,...change}));
+  assert.equal(calls,0);
+});
+
+test('C64 bad or missing pinned provider object never materializes runtime; all fetches settle',async()=>{
+  const f=fixture(),byPath=new Map(f.sourceObjects.map(o=>[o.path,o]));
+  for(const bad of ['path','bytes','missing']){
+    const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c64-invalid-'));
+    let count=0;
+    try{
+      await assert.rejects(()=>executeC63AtAcceptance({
+        humanInput:'I ACCEPT',sourceHead:f.sourceHead,preacceptHandoff:f.preacceptHandoff,
+        sessionRoot:root,
+        fetchPinnedObject:async req=>{
+          count++;
+          if(req.path===f.sourceObjects[3].path&&bad==='missing')throw Error('source unavailable');
+          const obj={...byPath.get(req.path)};
+          if(req.path===f.sourceObjects[3].path&&bad==='path')obj.path='other/shard.json';
+          if(req.path===f.sourceObjects[3].path&&bad==='bytes')obj.content_base64='eA==';
+          return obj;
+        }
+      }));
+      assert.equal(count,8);
+      assert.equal(fs.existsSync(path.join(root,'runtime')),false);
+    }finally{fs.rmSync(root,{recursive:true,force:true});}
+  }
 });

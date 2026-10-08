@@ -16,7 +16,7 @@ function decode(b64){
   if(b.toString('base64')!==s)throw Error('noncanonical base64');
   return b;
 }
-function inspect(x){
+function inspectFrozen(x){
   if(x?.humanInput!=='I ACCEPT'||!HEX40.test(String(x.sourceHead))||x.preacceptHandoff?.source_head!==x.sourceHead)throw Error('acceptance/source binding');
   const h=x.preacceptHandoff;
   if(h?.schema!=='ikant-le-preaccept-handoff/v2'||h.terms_presented!==true||h.frozen!==true||h.breached!==false)throw Error('frozen admission');
@@ -32,6 +32,10 @@ function inspect(x){
   const rows=[descriptor?.loader,...(descriptor?.shards||[])];
   if(rows.length!==8||rows.some(y=>!SAFE.test(String(y?.path))||!HEX40.test(String(y?.blob_sha1)))||new Set(rows.map(y=>y.path)).size!==8)throw Error('bad runtime8 descriptor');
   if(JSON.stringify(boot.post_accept_fastboot?.remote_paths)!==JSON.stringify(rows.map(y=>y.path)))throw Error('runtime8 frozen set mismatch');
+  return{bootBytes,rows};
+}
+function inspect(x){
+  const {bootBytes,rows}=inspectFrozen(x);
   if(!Array.isArray(x.sourceObjects)||x.sourceObjects.length!==8)throw Error('runtime8 incomplete');
   const bytes=new Map();
   for(const y of x.sourceObjects){
@@ -137,6 +141,41 @@ export async function executeC63HostBridge(x){
       authority:0};
   }finally{fs.rmSync(stage,{recursive:true,force:true});}
 }
+
+/**
+ * C64 host ingress: call at the *observed* I ACCEPT event, before source fetch.
+ * A callback transports the existing pinned GitHub API base64 source objects;
+ * this adapter does not implement a second carrier, clock or runtime owner.
+ * The host must separately attest that humanInput is a real ingress event.
+ */
+export async function executeC63AtAcceptance(x={}){
+  if(!x||typeof x!=='object'||Object.hasOwn(x,'sourceObjects')||Object.hasOwn(x,'acceptanceObservedMonotonicMs'))throw Error('retrospective acceptance/source injection forbidden');
+  if(x.humanInput!=='I ACCEPT')throw Error('exact I ACCEPT required');
+  if(typeof x.fetchPinnedObject!=='function')throw Error('pinned GitHub API callback required');
+  const acceptanceObservedMonotonicMs=performance.now();
+  const base={sourceHead:x.sourceHead,humanInput:x.humanInput,
+    preacceptHandoff:x.preacceptHandoff,runnerCount:x.runnerCount,
+    acceptanceObservedMonotonicMs};
+  const {rows}=inspectFrozen(base);
+  const settled=await Promise.allSettled(rows.map(async row=>{
+    const response=await x.fetchPinnedObject(Object.freeze({
+      sourceHead:x.sourceHead,path:row.path,blob_sha1:row.blob_sha1
+    }));
+    if(!response||response.path!==row.path||response.blob_sha1!==row.blob_sha1)throw Error('pinned source response mismatch: '+row.path);
+    if(typeof response.content_base64!=='string'||!String(response.source_object_identity||'').trim())throw Error('source bytes/identity absent: '+row.path);
+    return {path:row.path,blob_sha1:row.blob_sha1,
+      content_base64:response.content_base64,source_object_identity:response.source_object_identity};
+  }));
+  const failure=settled.find(r=>r.status==='rejected');
+  if(failure)throw failure.reason;
+  return executeC63HostBridge({
+    sourceHead:x.sourceHead,humanInput:x.humanInput,
+    preacceptHandoff:x.preacceptHandoff,sessionRoot:x.sessionRoot,
+    runnerCount:x.runnerCount,acceptanceObservedMonotonicMs,
+    sourceObjects:settled.map(r=>r.value)
+  });
+}
+
 export function validateC63Input(x){
   try{return{ok:true,objects:inspect(x).bytes.size};}
   catch(e){return{ok:false,error:String(e.message||e)};}

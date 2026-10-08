@@ -96,3 +96,35 @@ registered an iKant participant, or presented a persistent native EXIT control.
 with C61/C62 tests, root integrity verification and repository checks.
 
 No universal latency or native delivery SLO is claimed from CI.
+
+## C64 — Admission-bound canonical C63 host ingress
+
+Use `executeC63AtAcceptance` from `host/c63-canonical-parallel-bridge.mjs`
+**at the real host-observed I ACCEPT event**, never after the event was missed.
+It captures `performance.now()` synchronously before inspecting the frozen
+RUNTIME8 descriptor or acquiring any source object. Caller-supplied
+`acceptanceObservedMonotonicMs` and preassembled `sourceObjects` are rejected
+by this ingress.
+
+The host supplies only `fetchPinnedObject({sourceHead,path,blob_sha1})`,
+backed by the existing pinned GitHub API base64 transport. The callback returns
+`{path,blob_sha1,content_base64,source_object_identity}`.
+The ingress derives exactly eight paths from frozen BOOTSTRAP, dispatches
+eight source requests concurrently, waits for *all* to settle, rejects missing
+or mismatched responses, then delegates to existing
+`executeC63HostBridge`. Source-object Git identity, exact bytes, worker
+writes, owner-issued receipts and canonical ACTIVE remain validated by the
+existing C63/C61/C59 path; no source fallback, lifecycle, writer or
+independent ACTIVE issuer is introduced.
+
+**Physical host boundary:** this adapter cannot independently prove the
+supplied `humanInput` was a native ChatGPT acceptance event, the callback
+came from the GitHub connector, or Surface B was delivered in the chat.
+Those claims require direct host receipts. It is forbidden to invoke this
+function later to synthesize an acceptance timestamp. Existing
+`executeC63HostBridge` remains available to hosts with genuine previously
+captured monotonic acceptance evidence.
+
+C64 tests use local fixture sources and verify the same existing C61/C59
+owner succeeds with an 8/8 transfer; they are **repository-only**
+qualification, not evidence of a live ChatGPT activation.
