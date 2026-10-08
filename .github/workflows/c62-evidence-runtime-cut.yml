@@ -19,6 +19,8 @@ on:
       - 'tests/bootstrap-fixture.mjs'
       - 'tests/c61-cold-producer.test.mjs'
       - 'tests/c62-evidence-runtime-cut.test.mjs'
+      - 'scripts/c62-object-mincut.mjs'
+      - 'artifacts/qualification/c62-object-mincut-8192.json'
       - 'scripts/c61-cold-producer-falsify.mjs'
       - 'scripts/c62-evidence-runtime-cut-falsify.mjs'
       - 'artifacts/qualification/c62-*'
@@ -143,3 +145,13 @@ jobs:
         with:
           node-version: '20'
       - run: node --test --test-concurrency=1 --test-name-pattern="${{ matrix.pattern }}" ${{ matrix.file }}
+
+  c62-object-mincut:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/c62-object-mincut.mjs > /tmp/c62-mincut.json
+      - run: diff -u artifacts/qualification/c62-object-mincut-8192.json /tmp/c62-mincut.json
