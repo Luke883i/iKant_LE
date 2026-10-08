@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
       - 'host/c63-canonical-parallel-bridge.mjs'
-      - 'src/c69-capability-first-preview.mjs'
+      - 'host/c69-capability-first-preview.mjs'
       - 'tests/c69-capability-first-preview.test.mjs'
       - 'tests/c63-canonical-parallel-bridge.test.mjs'
       - 'docs/C63_CANONICAL_PARALLEL_HOST_BRIDGE.md'

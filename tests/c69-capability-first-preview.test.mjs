@@ -6,7 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {C69_EXPERIMENTAL_CONSENT,C69_EXPERIMENTAL_TERMS,
- issueC69ExperimentalOffer,qualifyC69ExperimentalPreview} from '../src/c69-capability-first-preview.mjs';
+ issueC69ExperimentalOffer,qualifyC69ExperimentalPreview} from '../host/c69-capability-first-preview.mjs';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEAD='a'.repeat(40);
 const readme=fs.readFileSync(path.join(ROOT,'README.md'));
