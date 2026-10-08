@@ -19,7 +19,10 @@ export function validateC71CxCensus(x=CENSUS){
  for(let i=0;i<70;i++){
   const e=x.entries[i];
   if(e?.id!=='C'+(i+1)||!VALID_CLASSES.has(e.scope)||
-     !e.name||e.canonical_state_conferred!==false||
+     !e.name||!/(?:^src\/|^contracts\/|^host\/|^scripts\/)[a-zA-Z0-9_.\/-]+$/.test(String(e.implementation_anchor||''))||
+     e.implementation_anchor.includes('..')||e.anchor_is_execution_receipt!==false||
+     !fs.existsSync(new URL('../'+e.implementation_anchor,import.meta.url))||
+     e.canonical_state_conferred!==false||
      e.observed_in_C71!==(e.scope==='FUNCTIONAL_CODE_EXECUTED'||e.scope==='EXPERIMENTAL_GATE'))
    return false;
  }

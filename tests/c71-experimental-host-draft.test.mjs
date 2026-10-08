@@ -24,6 +24,8 @@ test('C71 inventory lists C1..C70 without promoting any canonical state',()=>{
  assert.equal(c.entries.filter(x=>x.scope==='FUNCTIONAL_CODE_EXECUTED').length,8);
  assert.equal(c.entries.filter(x=>x.scope==='EXPERIMENTAL_GATE').length,1);
  assert.ok(c.entries.every(x=>x.canonical_state_conferred===false));
+ assert.ok(c.entries.every(e=>e.anchor_is_execution_receipt===false));
+ assert.ok(c.entries.every(e=>fs.existsSync(new URL('../'+e.implementation_anchor,import.meta.url))));
 });
 test('C71 host draft is useful on safe turns but only as experimental host-owned text',()=>{
  const x=routeC71HostDraft(base());
