@@ -52,6 +52,13 @@ test('C81 runtime-only projection follows a genuine C77->C78->C79 Node result an
   assert.equal(p.voice_word_budget_applied,false);
   assert.equal(p.first_unclosed_edge,'HOST_PINNED_GITHUB_REF_ORIGIN');
   assert.equal(p.ui_placement,'PER_REPLY_TOP_NOT_STICKY_OVERLAY');
+  const forged=structuredClone(f.surfacePacket);
+  forged.surface_a_chat.voice_source='HOST_CANDIDATE_BOUNDED';
+  const {packet_sha256,...copy}=forged;
+  forged.packet_sha256=sha(JSON.stringify(copy));
+  const rejection=run({...f,sourceHead:f.head,currentHumanInput:f.input,surfacePacket:forged});
+  assert.equal(rejection.status,'C81_RUNTIME_NOT_EXECUTED_OR_UNVERIFIED');
+  assert.equal(rejection.runtime_computed_answer,null);
   const invalid=run({...f,sourceHead:f.head,currentHumanInput:'a replayed later user message'});
   assert.equal(invalid.status,'C81_RUNTIME_NOT_EXECUTED_OR_UNVERIFIED');
   assert.equal(invalid.runtime_computed_answer,null);
@@ -93,7 +100,7 @@ test('C81 exact 100000 Cartesian UI/runtime/source/input/failure mutations selec
      case 6:packet.bound_output_sha256='0'.repeat(64);break;
      case 7:packet.surface_a_chat.text+=' MODEL WRITTEN';break;
      case 8:packet.source_head='0'.repeat(40);break;
-     case 9:packet.actual_runtime_claim_requires_external_witness=false;break;
+     case 9:packet.surface_a_chat.voice_source='HOST_CANDIDATE_BOUNDED';break;
     }
     const {packet_sha256,...rest}=packet;
     packet.packet_sha256=sha(JSON.stringify(rest));

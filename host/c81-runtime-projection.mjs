@@ -48,6 +48,7 @@ export function projectC81RuntimeTurn({sourceReadback,surfacePacket,
     surfacePacket.next_unverified_edge!=='HOST_NATIVE_CHAT_SURFACE_A_DELIVERY'||
     surfacePacket.child_process_executed!==true||
     surfacePacket.actual_runtime_claim_requires_external_witness!==true||
+    !['C70_REPOSITORY_FALLBACK','C70_REPOSITORY_GUARD'].includes(surfacePacket.surface_a_chat?.voice_source)||
     surfacePacket.native_chat_delivery_attested!==false||
     surfacePacket.active!==false)
   return stop('C79_EXACT_RUNTIME_READBACK');

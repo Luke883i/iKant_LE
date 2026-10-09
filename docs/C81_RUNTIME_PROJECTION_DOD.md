@@ -23,3 +23,6 @@ SOURCE_READBACK x RUNTIME_PACKET x CURRENT_INPUT x UI_PLACEMENT x FALLBACK_POLIC
 - 100,000 deterministic distinct combinations are executed by Node; no unapproved combination is rendered as iKant; no false ACTIVE, persistence or host delivery.
 - Unmodified C81 Git proofs and C80 field evaluations; Node 20/22, npm check and root verification green.
 - Real-host acceptance separate: authenticated pinned main event, C77 bytes physically transferred, real CURRENT native user event identified, C78 executed *for each* actual message, C81 Surface A shown in normal ChatGPT response and witnessed. A genuine floating persistent native UI would require a real installed UI app; a Project Markdown cannot supply one.
+
+## C81-7 runtime authorship negative control
+A cryptographically self-consistent C79 packet may carry the C71 `HOST_CANDIDATE_BOUNDED` source. That means host-supplied/model-composed prose rather than the C70 repository-generated fallback/guard. The projection gate therefore rejects it even when every hash matches; the 100k grid contains that adversarial class and an explicit recomputed-checksum regression. This is a *runtime text authorship* check, not a native host execution signature.
