@@ -88,7 +88,7 @@ test('C84.1 real derivative with SHA-valid payload is accepted; forged derivativ
 test('C84.1 invalid Git tree proof and wrong current input stop rather than fabricate voice',async()=>{
  const f=prepare();
  try{
-  const invalid=structuredClone(args(f,'Confronta due alternative e indica una prova osservabile.'));
+  const invalid={...args(f,'Confronta due alternative e indica una prova osservabile.'),sourceProof:structuredClone(f.proof.proof)};
   invalid.sourceProof.treeObjects[0].sha1='0'.repeat(40);
   const a=await executeC84ExperimentalTurn(invalid);
   assert.equal(a.status,'C84_STOP');
