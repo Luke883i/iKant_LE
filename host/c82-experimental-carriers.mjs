@@ -60,10 +60,19 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
      const packet=await bounded(()=>c.getFile(p,{signal:controller.signal}),carrierTimeoutMs);
      const b=decode(packet?.contentBase64);
      if(b.length!==f.bytes||digest(b)!==f.sha256)throw Error('SHA256_OR_LENGTH_MISMATCH');
-     if(f.original_source_blob_sha1!==null){
+     // C77 emits one transformed C71 module and one generated build proof.
+     // Their payload SHA-256 is checked above; original SHA-1 refers to the
+     // pre-transformation repository source, not to the derivative bytes.
+     if(f.generated_derivative===true){
+      const c71=p==='src/c71-experimental-host-draft.mjs'&&
+        H40.test(String(f.original_source_blob_sha1));
+      const proof=p==='contracts/c77-cx-build-proof.json'&&
+        f.original_source_blob_sha1===null;
+      if(!c71&&!proof)throw Error('UNQUALIFIED_DERIVATIVE');
+     }else if(f.generated_derivative===false){
       if(!H40.test(String(f.original_source_blob_sha1))||
         gitBlob(b)!==f.original_source_blob_sha1)throw Error('GIT_BLOB_MISMATCH');
-     }else if(!f.generated_derivative)throw Error('MISSING_ORIGINAL_GIT_BLOB');
+     }else throw Error('DERIVATIVE_FLAG_INVALID');
      return {path:p,carrier:c.name,contentBase64:packet.contentBase64,
        sourceBlobSha1:f.original_source_blob_sha1};
    }));
