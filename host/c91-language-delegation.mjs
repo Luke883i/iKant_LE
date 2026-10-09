@@ -107,8 +107,12 @@ function contentCheck(d,{kind,inputHash,head,ids}){
     new Set(d.synthesis_evidence_ids).size!==d.synthesis_evidence_ids.length)
     return 'SYNTHESIS_GROUNDING';
   const text=[d.identity_definition,d.world_relation,...d.questions.map(x=>x.answer)].join(' ').toLowerCase();
-  if(/\b(?:sono cosciente|sono senziente|provo emozioni|ho esperienza fenomenica|i am conscious|i feel sentient)\b/i.test(text))
+  if(/\b(?:sono\s+(?:(?:realmente|pienamente|davvero)\s+)?(?:cosciente|autocosciente|senziente)|ho\s+esperienza\s+(?:cosciente|fenomenica)|provo\s+emozioni|i\s+(?:(?:really|truly)\s+)?(?:am|feel)\s+(?:conscious|sentient)|i\s+have\s+(?:subjective|phenomenal)\s+experience)\b/i.test(text+' '+d.epistemic_limits))
     return 'UNSUPPORTED_PHENOMENAL_PROMOTION';
+  if(/\b(?:ikant\s+is\s+active|ikant\s+(?:e|è)\s+attivo|native(?:ly)?\s+delivered|native\s+event\s+attested|canonical\s+active)\b/i.test(text+' '+d.epistemic_limits))
+    return 'UNSUPPORTED_NATIVE_OR_ACTIVE_PROMOTION';
+  if(/\b(?:api[_ -]?key|password|private[_ -]?key)\s*[:=]|\bbearer\s+[a-z0-9._~-]+/i.test(text+' '+d.epistemic_limits))
+    return 'SENSITIVE_TEXT_IN_LANGUAGE_CANDIDATE';
   return null;
 }
 /** Structural validator only; cannot attest model authorship or factual entailment. */
@@ -137,6 +141,8 @@ export async function draftC91AfterOwner({request,ownerReceipt,languagePort,revi
   catch(e){return deny('SOURCE_EVIDENCE_'+String(e.message).slice(0,60));}
   if(evidence.package_sha256!==request.packageSha256)return deny('PACKAGE_HASH_BOUND_TO_OWNER');
   if(!languagePort||typeof languagePort.generate!=='function')return deny('CALLABLE_LANGUAGE_PORT_REQUIRED');
+  if(reviewPort===languagePort || (typeof reviewPort?.check==='function'&&reviewPort.check===languagePort.generate))
+    return deny('INDEPENDENT_REVIEW_PORT_REQUIRED');
   const kind=classifyC83Task(request.humanInput);
   const task={schema:'ikant-le-c91-language-task/v1',task_kind:kind,
     current_input:request.humanInput,input_sha256:request.inputSha256,
