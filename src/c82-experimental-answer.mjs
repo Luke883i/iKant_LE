@@ -1,5 +1,6 @@
 import {identitySurface,guardedSurface,applyExpressiveEnvelope} from './cognition-surface.mjs';
 import {validateSurfaceA} from './contract.mjs';
+import {classifyC83Task} from './c83-semantic-router.mjs';
 
 /* Bounded repository-authored semantic routing. Neither a general language
  * model nor evidence of a correct solution for an arbitrary user problem. */
@@ -21,9 +22,7 @@ const TEXT={
  UNSUPPORTED:`Ho registrato un obiettivo espresso in linguaggio naturale, ma il compositore sperimentale disponibile non è un generatore di risposte aperte su qualsiasi materia. I moduli possono classificare la richiesta e produrre telemetria, mentre una soluzione concreta può richiedere documenti, osservazioni o calcolo aggiuntivo che non risultano qui eseguiti. Non presenterò una formula metodologica come risposta al merito: per questo compito la pertinenza sostanziale resta non dimostrata. Il passo verificabile successivo è determinare quali dati e quale procedura computazionale possono produrre una risposta specifica, con un controllo indipendente delle conclusioni.`
 };
 export function classifyC82Task(input){
- const s=String(input||'').normalize('NFC').slice(0,600);
- for(const [name,re] of FAMILIES)if(re.test(s))return name;
- return 'UNSUPPORTED';
+ return classifyC83Task(input);
 }
 export function composeC82ExperimentalAnswer(input,c){
  const guard=guardedSurface(input,c);
