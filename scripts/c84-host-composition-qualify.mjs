@@ -34,9 +34,12 @@ for(const c of policy.legacy_transport_registry)assert.match(c.scope,/EXPERIMENT
 const prompt=read('docs/SESSION_CHAT_LOCAL_PROMPT.md');
 assert.match(prompt,/AZIONE 210 C72_MODE_GATE/);
 assert.match(prompt,/AZIONE 300 ACTIVATE_FIRST/);
-assert.match(prompt,/EXPERIMENTAL: solo C72/);
+assert.ok(prompt.includes('EXPERIMENTAL: C77/C82 -> C78 -> C79 -> C81'));
+assert.match(prompt,/writer C78 unico/);
+assert.match(prompt,/non C59 ACTIVE/);
+assert.match(prompt,/CANONICAL: AZIONE 300 richiede ingresso nativo/);
 assert.match(read('docs/ARCHITECTURE.md'),/C72_INTRO -> MODE_SELECTION/);
 assert.match(read('docs/GOVERNANCE.md'),/Separate EXPERIMENTAL acquisition/);
-assert.match(read('README.md'),/C84 host composition policy/);
+assert.match(read('README.md'),/Prefer EXPERIMENTAL; CANONICAL requires native event evidence/);
 const output={schema:'ikant-le-c84-host-governance-audit/v1',source_head:history.source_head,merged_count:85,closed_unmerged_count:7,title_keyword_tags_overlap:tags,transport_classes:ids.length,authority:0,active:false,native_host_sessions_tested:0,status:'REPOSITORY_POLICY_CONCORDANCE_NOT_HOST_RUNTIME_PROOF'};
 console.log(JSON.stringify(output));
