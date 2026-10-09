@@ -49,7 +49,7 @@ function read(file){
  return entries;
 }
 /** One exclusive lock, append/fsync, reopen/hash. No ChatGPT durable storage implied. */
-export function appendC87Turn(file,{source_head,input_sha256,output_sha256,state={}}){
+export function appendC87Turn(file,{source_head,input_sha256,output_sha256,state={}},{atomicGuard=null}={}){
  if(typeof file!=='string'||!path.isAbsolute(file)||
   !H40.test(source_head||'')||!H64.test(input_sha256||'')||!H64.test(output_sha256||''))
   throw Error('C87_SOURCE_OR_PATH_INVALID');
@@ -60,6 +60,18 @@ export function appendC87Turn(file,{source_head,input_sha256,output_sha256,state
  try{
   fd=fs.openSync(lock,'wx',0o600);
   const prior=read(file);
+  // Compare nonce/epoch/prior hash under the SAME writer lock as append+fsync.
+  if(atomicGuard!==null){
+   if(!atomicGuard||typeof atomicGuard!=='object'||!H40.test(atomicGuard.source_head||'')||
+    typeof atomicGuard.nonce!=='string'||atomicGuard.nonce.length<12||
+    !H64.test(atomicGuard.expected_prior_hash||''))throw Error('C87_ATOMIC_GUARD_INVALID');
+   if(atomicGuard.expected_prior_hash!==(prior.at(-1)?.record_sha256||ZERO))
+    throw Error('C87_PRIOR_LEDGER_CHANGED');
+   if(prior.some(x=>x.source_head!==atomicGuard.source_head))
+    throw Error('C87_SOURCE_EPOCH_DRIFT');
+   if(prior.some(x=>x.state?.nonce===atomicGuard.nonce))
+    throw Error('C87_NONCE_REPLAY');
+  }
   const r=c87Event({sequence:prior.length+1,prev_hash:prior.at(-1)?.record_sha256||ZERO,
    source_head,input_sha256,output_sha256,state});
   const next=[...prior,r];
