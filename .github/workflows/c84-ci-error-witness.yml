@@ -5,19 +5,19 @@ on:
       - '.github/workflows/c84-ci-error-witness.yml'
 permissions:
   contents: read
-  issues: write
+  contents: write
 jobs:
   witness:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
       - name: Run original failing commands and disclose bounded diagnostics
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set +e
           npm test > /tmp/c84-npm-test.log 2>&1
@@ -49,4 +49,9 @@ jobs:
             echo
             echo 'Diagnostic only; does not waive any existing qualification.'
           } > /tmp/c84-error-witness.md
-          gh api -X POST "repos/$GITHUB_REPOSITORY/issues/93/comments" -F "body=@/tmp/c84-error-witness.md"
+          cp /tmp/c84-error-witness.md artifacts/qualification/c84-ci-witness.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/qualification/c84-ci-witness.md
+          git commit -m "C84 temporary diagnostic receipt from actual CI"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
