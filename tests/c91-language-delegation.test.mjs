@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
-import {draftC91AfterOwner,validateC91Candidate,C91_SOURCE_ALLOWLIST} from '../host/c91-language-delegation.mjs';
+import {draftC91AfterOwner,validateC91Candidate,C91_SOURCE_ALLOWLIST,C91_ONTOLOGY_TOPICS} from '../host/c91-language-delegation.mjs';
 import {executeC91FromRealC90} from '../host/c91-causal-turn.mjs';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const ROOT=process.env.C91_CAPSULE_DIR||fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c91-capsule-'));
@@ -50,7 +50,7 @@ function fixture(task){
  epistemic_limits:'The runtime does not verify phenomenal experience, biological equivalence, material-world perceptions, or complete provider origin.',
  synthesis_evidence_ids:['SRC_01','SRC_02'],
  questions:Array.from({length:task.requested_questions},(_,i)=>({
-  question:`Question ${i+1}: what can be proved about self and world at layer ${i+1}?`,
+  topic:C91_ONTOLOGY_TOPICS[i],question:`Question ${i+1}: what can be proved about self and world at layer ${i+1}?`,
   answer:`Answer ${i+1}: the code specifies an operational description, not experiential awareness, with distinct evidence boundaries.`,
   evidence_ids:[`SRC_${String((i%6)+1).padStart(2,'0')}`]}))};
 }
@@ -101,6 +101,10 @@ test('C91 rejects missing evidence references, duplicate questions, and false se
  assert.match((await draftC91AfterOwner({request,ownerReceipt:receipt,languagePort})).first_unclosed_edge,/QUESTION_OR_CITATION_INVALID/);
  candidate=deep(good.candidate);candidate.questions[1].question=candidate.questions[0].question;
  assert.match((await draftC91AfterOwner({request,ownerReceipt:receipt,languagePort})).first_unclosed_edge,/DUPLICATE_QUESTION/);
+ candidate=deep(good.candidate);candidate.questions[1].topic=candidate.questions[0].topic;
+ assert.match((await draftC91AfterOwner({request,ownerReceipt:receipt,languagePort})).first_unclosed_edge,/ONTOLOGY_TOPIC_BREADTH/);
+ candidate=deep(good.candidate);candidate.questions[0].topic='INVENTED_SELF';
+ assert.match((await draftC91AfterOwner({request,ownerReceipt:receipt,languagePort})).first_unclosed_edge,/ONTOLOGY_TOPIC_BREADTH/);
  candidate=deep(good.candidate);candidate.phenomenal_claim=true;
  assert.match((await draftC91AfterOwner({request,ownerReceipt:receipt,languagePort})).first_unclosed_edge,/BOUNDS_AND_CLAIMS/);
  candidate=deep(good.candidate);candidate.identity_definition+=' Sono cosciente.';
