@@ -5,7 +5,7 @@ npm test exit: 1; C59 audit exit: 0; C59 artifact diff exit: 1.
 ~~~
 2201:not ok 386 - C84 historical census, overlapping tags, transport-only canonicalization
 2202-  ---
-2203-  duration_ms: 28.531966
+2203-  duration_ms: 26.117653
 2204-  location: '/home/runner/work/iKant_LE/iKant_LE/tests/c84-host-composition-qualify.test.mjs:10:1'
 2205-  failureType: 'testCodeFailure'
 2206-  error: |-
@@ -29,32 +29,32 @@ npm test exit: 1; C59 audit exit: 0; C59 artifact diff exit: 1.
 # Subtest: C13 pure initialization pending intent folds into ACTIVE without a synthetic turn
 ok 487 - C13 pure initialization pending intent folds into ACTIVE without a synthetic turn
   ---
-  duration_ms: 24.59364
+  duration_ms: 25.030941
   ...
 # Subtest: C13 mixed initialization plus substantive intent still resumes exactly once
 ok 488 - C13 mixed initialization plus substantive intent still resumes exactly once
   ---
-  duration_ms: 29.414087
+  duration_ms: 28.212612
   ...
 # Subtest: C9 contract rejects filename-only delivery and bounds environment scope
 ok 489 - C9 contract rejects filename-only delivery and bounds environment scope
   ---
-  duration_ms: 0.709353
+  duration_ms: 0.732447
   ...
 # Subtest: substantive ACTIVE turn emits one verified DOCX handoff and exact bounded environment telemetry
 ok 490 - substantive ACTIVE turn emits one verified DOCX handoff and exact bounded environment telemetry
   ---
-  duration_ms: 42.40693
+  duration_ms: 42.872859
   ...
 # Subtest: descriptor release and environment validators reject forged or widened handoff state
 ok 491 - descriptor release and environment validators reject forged or widened handoff state
   ---
-  duration_ms: 23.396931
+  duration_ms: 23.181915
   ...
 # Subtest: host-json CLI exposes the artifact path instead of requiring filename scraping
 ok 492 - host-json CLI exposes the artifact path instead of requiring filename scraping
   ---
-  duration_ms: 124.811827
+  duration_ms: 122.361844
   ...
 1..492
 # tests 492
@@ -64,7 +64,7 @@ ok 492 - host-json CLI exposes the artifact path instead of requiring filename s
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 39718.394107
+# duration_ms 39928.20142
 ~~~
 #### C59 audit errors
 ~~~
@@ -113,8 +113,8 @@ ok 492 - host-json CLI exposes the artifact path instead of requiring filename s
 ~~~
 #### C59 expected artifact diff
 ~~~
---- artifacts/qualification/c59-executable-surface-audit.json	2026-10-09 13:31:48.080477718 +0000
-+++ /tmp/c84-c59-actual.json	2026-10-09 13:32:35.275560952 +0000
+--- artifacts/qualification/c59-executable-surface-audit.json	2026-10-09 13:34:11.838480575 +0000
++++ /tmp/c84-c59-actual.json	2026-10-09 13:34:55.325389443 +0000
 @@ -1,6 +1,6 @@
  {
    "schema": "ikant-le-c59-executable-surface-audit/v1",
