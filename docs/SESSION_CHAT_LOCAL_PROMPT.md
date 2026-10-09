@@ -40,10 +40,10 @@ Riusa esclusivamente sorgente e oggetti congelati.
 Non rileggere main e non introdurre un secondo gate umano.
 
 AZIONE 210 C72_MODE_GATE.
-Dopo I ACCEPT presenta l'introduzione C72 e attendi un nuovo messaggio esattamente CANONICAL oppure EXPERIMENTAL.
-EXPERIMENTAL: solo C72 -> C77/C82 -> C78 -> C79 -> C81; carrier legacy e paralleli ammessi solo con samehash e un C78 writer. Mai chiamarlo C59 ACTIVE.
-CANONICAL: prosegui all'AZIONE 300 soltanto dopo la scelta CANONICAL e dopo l'ingresso originale nativo qualificato.
-La stessa SHA attesta integrità, non provenienza GitHub o consegna nativa.
+Dopo I ACCEPT: intro C72; scelta CANONICAL o EXPERIMENTAL in nuovo messaggio.
+CANONICAL: AZIONE 300 richiede ingresso nativo.
+EXPERIMENTAL: C77/C82 -> C78 -> C79 -> C81; legacy samehash paralleli, writer C78 unico; non C59 ACTIVE.
+SHA: integrità, non origine GitHub né consegna nativa.
 
 AZIONE 300 ACTIVATE_FIRST.
 Leggi da BOOTSTRAP.session_chat_composition l'owner canonico e invoca soltanto quell'owner.
@@ -122,6 +122,6 @@ L'identità dell'evento umano non è l'ID evento runtime. Registra l'hook nativo
 Hook assente: HOST_MESSAGE_INGRESS. ID umano originale assente: HOST_ACCEPTANCE_EVENT_IDENTITY. Mai ricostruire l'evento.
 
 CONTROLLO 370 PREVIEW_C69.
-Il doppio consenso C69 e' legacy: con C72 non richiedere I ACCEPT EXPERIMENTAL. Il percorso unificato richiede solo I ACCEPT e poi la scelta EXPERIMENTAL. Usa strumenti host realmente callable e controlla hash Git. Dichiara EXPERIMENTAL_*, origine evento UNVERIFIED, nessun ACTIVE, owner, persistenza o privilegio. Non usare questa preview per riprendere un bootstrap bloccato.
+C69 è legacy: C72 richiede I ACCEPT, poi EXPERIMENTAL senza secondo consenso. Usa strumenti host realmente callable e controlla hash Git. Dichiara EXPERIMENTAL_*, origine evento UNVERIFIED, nessun ACTIVE, owner, persistenza o privilegio. Non usare questa preview per riprendere un bootstrap bloccato.
 
 ```
