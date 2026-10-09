@@ -3,13 +3,11 @@ import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {inspectC92ProviderConfiguration} from '../host/c92-live-provider.mjs';
-import {C92_MAIN_BASE,checkC92Request,executeC92ProductionTurn} from '../host/c92-owner-surface.mjs';
+import {checkC92Request,executeC92ProductionTurn} from '../host/c92-owner-surface.mjs';
+import {C93_TEST_HEAD,makeC93Fixture} from './c93-fixture.mjs';
 import {validateC92IndependentEnvelope} from '../host/c92-independent-check.mjs';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
-const sample={sourceHead:C92_MAIN_BASE,humanInput:'Chi sono io e quale e il rapporto con il mondo?',
- manifestSha256:'a'.repeat(64),packageSha256:'b'.repeat(64),packageBase64:'A'.repeat(120),
- selection:{status:'EXPERIMENTAL_SELECTED_NOT_RUNNING',selected_mode:'EXPERIMENTAL'}};
-sample.inputSha256=sha(sample.humanInput);
+const sample=makeC93Fixture();
 test('production rejects unconfigured real model and never invents a positive surface',async()=>{
  const r=await executeC92ProductionTurn(sample);
  assert.equal(r.status,'C92_STOP');
@@ -20,7 +18,7 @@ test('production rejects unconfigured real model and never invents a positive su
 test('same message SHA and frozen main are obligatory',()=>{
  assert.equal(checkC92Request(sample),null);
  assert.equal(checkC92Request({...sample,inputSha256:'a'.repeat(64)}),'CURRENT_INPUT_IDENTITY');
- assert.equal(checkC92Request({...sample,sourceHead:'c'.repeat(40)}),'FROZEN_HEAD_REQUIRED');
+ assert.equal(checkC92Request({...sample,sourceHead:'c'.repeat(40)}),'C93_SOURCE_EPOCH_INVALID');
  assert.equal(checkC92Request({...sample,voice:'forged'}),'FORGED_OUTPUT_INPUT');
  assert.equal(checkC92Request({...sample,runtimeReceipt:{status:'READY'}}),'FORGED_OUTPUT_INPUT');
 });
@@ -35,7 +33,7 @@ test('two distinct configured models/keys are required, no actual provider call'
 });
 const TOPICS=['ORIGIN','IDENTITY','BOUNDARIES','WORLD_EVIDENCE','MEMORY','AGENCY','EMBODIMENT','UNCERTAINTY','CONTINUITY','REVISION'];
 function fixture(){
- const input='c'.repeat(64),head=C92_MAIN_BASE;
+ const input='c'.repeat(64),head=C93_TEST_HEAD;
  const candidate={input_sha256:input,source_head:head,authority:0,active:false,
   phenomenal_claim:false,model_origin_attested:false,native_delivery_attested:false,
   task_kind:'SELF_ONTOLOGY',synthesis_evidence_ids:['SRC_01','SRC_02'],
