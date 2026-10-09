@@ -7,6 +7,7 @@ const b64=x=>typeof x==='string'&&x.length>0&&x.length%4===0&&/^[A-Za-z0-9+/]*={
 /** Byte-bound epoch preflight; C85 + actual C81 object-proof are STILL mandatory in C90.
  * This deliberately does not authenticate HEAD against GitHub or mint a runtime receipt. */
 export function checkC93SourceEpoch(q={}){
+ if(!q||typeof q!=='object'||Array.isArray(q))return stop('REQUEST_ENVELOPE');
  if(!H40.test(q.sourceHead||'')||!H64.test(q.packageSha256||'')||!H64.test(q.manifestSha256||''))return stop('HEAD_AND_DIGEST_SHAPE');
  if(!b64(q.packageBase64)||q.packageBase64.length>9_000_000)return stop('OPAQUE_PACKAGE_BYTES');
  const raw=Buffer.from(q.packageBase64,'base64');
@@ -17,7 +18,7 @@ export function checkC93SourceEpoch(q={}){
  const manifestBytes=Buffer.from(p.manifestBase64,'base64');
  if(manifestBytes.length>100000||sha(manifestBytes)!==q.manifestSha256)return stop('MANIFEST_SHA256');
  let m;try{m=JSON.parse(manifestBytes.toString('utf8'));}catch{return stop('MANIFEST_JSON');}
- if(m.source_head!==q.sourceHead||!Array.isArray(m.files)||m.files.length<20||m.files.length>50||
+ if(!m||typeof m!=='object'||Array.isArray(m)||m.source_head!==q.sourceHead||!Array.isArray(m.files)||m.files.length<20||m.files.length>50||
    !Array.isArray(p.files)||p.files.length!==m.files.length)return stop('MANIFEST_FILE_SET');
  if(!p.sourceProof||!b64(p.sourceProof.commitBase64)||!Array.isArray(p.sourceProof.treeObjects)||!p.sourceProof.treeObjects.length||
    !p.sourceProof.treeObjects.every(t=>t&&H40.test(t.sha1||'')&&b64(t.content_base64)))return stop('C81_RAW_PROOF_SHAPE');

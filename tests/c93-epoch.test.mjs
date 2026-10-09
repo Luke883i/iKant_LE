@@ -45,3 +45,11 @@ test('real local handoff file has byte reopen, but no Git or native proof',async
   assert.equal(inspectC93Handoff(p,'d'.repeat(40)).status,'C93_HANDOFF_STOP');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('malformed null request and null manifest stop without throwing',()=>{
+ assert.equal(checkC93SourceEpoch(null).status,'C93_SOURCE_STOP');
+ const q=makeC93Fixture();const p=JSON.parse(Buffer.from(q.packageBase64,'base64').toString('utf8'));
+ const b=Buffer.from('null');p.manifestBase64=b.toString('base64');p.expectedManifestSha256=q.manifestSha256=sha(b);
+ const raw=Buffer.from(JSON.stringify(p));q.packageBase64=raw.toString('base64');q.packageSha256=sha(raw);
+ assert.equal(checkC93SourceEpoch(q).status,'C93_SOURCE_STOP');
+});
