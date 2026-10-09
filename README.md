@@ -17,8 +17,6 @@ Any first message referencing `Luke883i/iKant_LE` enters first contact before ge
 
 Present Terms, freeze acquisition and await a later exact `I ACCEPT`. This common consent is followed by a standard iKant explanation and explicit `CANONICAL` or `EXPERIMENTAL` choice (not another consent). Prefer EXPERIMENTAL; CANONICAL requires native event evidence and is discouraged on unverified hosts. Legacy automatic activation is compatibility-only. Canonical mode retains one canonical `SESSION_CHAT_LOCAL` composition: pinned GitHub API/base64 -> `VERIFIED_OPAQUE_RELAY` -> local filesystem -> `LOCAL_EXECUTOR_V1` -> materialize/reopen -> executed provenance, Node probe, writer and ACTIVE readback. GitHub DNS/egress from the container is not a dependency. The census `contracts/session-chat-composition-census.json` excludes legacy carriers from canonical authority. The 120 s target is SLO telemetry, never an integrity gate.
 
-`first contact -> head pin -> orientation -> Terms/freeze -> I ACCEPT -> standard explanation -> mode choice -> [CANONICAL when host qualified] GitHub API base64 -> verified opaque relay -> local write/reopen -> materialize -> executed provenance/probe -> ACTIVE readback`
-
 ## Runtime shape
 
 Every host-permitted ACTIVE input enters local Node. A substantive answer requires same-input dispatch, constitutional/cognitive processing, persisted readback and same-turn DOCX readback before release.

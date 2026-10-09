@@ -8,9 +8,9 @@ iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime around
 
 Canonical lifecycle:
 
-`FIRST_CONTACT -> API_HEAD_BINDING -> API_ORIENTATION -> TERMS_FREEZE -> I ACCEPT -> FASTBOOT_MATERIALIZE -> AUTO_PROBE -> AUTO_INITIALIZE -> ACTIVE -> EXIT IKANT`
+`FIRST_CONTACT -> API_HEAD_BINDING -> API_ORIENTATION -> TERMS_FREEZE -> I ACCEPT -> C72_INTRO -> MODE_SELECTION -> {CANONICAL: C59_OWNER, EXPERIMENTAL: C77/C82/C78/C79/C81}`
 
-First contact pins `main`, performs the five-path API-only orientation, presents Terms and freezes acquisition. After exact acceptance, `SESSION_CHAT_LOCAL` is the only canonical activation: host-supplied linguistic compute on session-local Node; WEBAPP, hosted runtime, managed model and Plugin/MCP registration are not requirements. Carriers are authority-zero transport only. A pre-runtime host adapter may derive one NEXT from host-attested receipts and failure memory, but those attestations are not physical proof. The materializer verifies loader/shards; the local runtime reopens the published root, matches exact executed-module identities and runs its non-injectable probe before ACTIVE. Search/history/tests/qualification stay outside activation. Budgets are structural, not latency promises.
+First contact pins `main`, reads five orientation files by GitHub API, presents Terms and freezes. After exact acceptance, C72 requires a later exact CANONICAL/EXPERIMENTAL choice. Only CANONICAL enters C59 `SESSION_CHAT_LOCAL`; EXPERIMENTAL admits bounded parallel C82 samehash legacy carriers, without GitHub-ref authentication or ACTIVE. Canonical host compute runs on session-local Node without WEBAPP, hosted runtime, managed model or Plugin/MCP registration. Carriers and the pre-runtime single-NEXT/failure-memory adapter are authority-zero host attestations, not physical proof. Materialization validates loader/shards; runtime reopens the root, matches executed modules and runs a non-injectable probe before ACTIVE. Discovery, history, tests, qualification and SLO budgets do not activate a runtime.
 
 ## Persistence and turn spine
 
