@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {spawnSync} from 'node:child_process';
 import {buildC77Capsule} from '../scripts/c77-build-capsule.mjs';
 import {createC81LocalGitProof} from '../scripts/c81-create-git-proof.mjs';
 import {issueC72TermsOffer,acceptC72Terms,presentC72Introduction,selectC72Mode}
@@ -96,5 +97,35 @@ test('C84.1 invalid Git tree proof and wrong current input stop rather than fabr
   const b=await executeC84ExperimentalTurn(args(f,'x'.repeat(601)));
   assert.equal(b.status,'C84_STOP');
   assert.equal(b.first_unclosed_edge,'BOUNDED_NONSENSITIVE_CURRENT_HUMAN_INPUT');
+ }finally{fs.rmSync(f.dir,{recursive:true,force:true});}
+});
+
+test('C84.2 typed CLI actually receives opaque host bytes, executes Node capsule, emits exact one-turn voice',()=>{
+ const f=prepare();
+ try{
+  const payload={schema:'ikant-le-c84-host-transferred-turn/v1',
+   ...args(f,'Confronta due alternative e indica una prova osservabile.'),
+   carriers:[{name:'LEGACY_SAMEHASH',files:f.manifest.files.map(file=>({
+    path:file.path,contentBase64:fs.readFileSync(path.join(f.capsulePath,file.path)).toString('base64')}))}]};
+  const run=q=>spawnSync(process.execPath,['scripts/c84-experimental-turn-cli.mjs'],{
+   cwd:ROOT,input:JSON.stringify(q),encoding:'utf8',timeout:45000,maxBuffer:1024*1024});
+  const ok=run(payload);
+  assert.equal(ok.status,0,(ok.stderr||'')+' '+(ok.stdout||'').slice(0,1200));
+  const out=JSON.parse(ok.stdout);
+  assert.equal(out.status,'C84_RUNTIME_VOICE_READY_NOT_NATIVE_DELIVERED',JSON.stringify(out));
+  assert.equal(out.input_sha256,SHA(Buffer.from(payload.humanInput,'utf8')));
+  assert.equal(out.output_sha256,SHA(Buffer.from(out.runtime_computed_answer,'utf8')));
+  assert.equal(out.native_chat_delivery_attested,false);
+  assert.equal(out.source_origin_attested,false);
+  assert.equal(out.staged_files,34);
+  const corrupted=structuredClone(payload);
+  corrupted.carriers[0].files[0].contentBase64=Buffer.from('tampered').toString('base64');
+  const bad=run(corrupted);
+  assert.equal(bad.status,2);
+  assert.equal(JSON.parse(bad.stdout).status,'C84_STOP');
+  const extraneous=structuredClone(payload);extraneous.allowNativeActive=true;
+  const denied=run(extraneous);
+  assert.equal(denied.status,2);
+  assert.equal(JSON.parse(denied.stdout).first_unclosed_edge,'C84_CLI_INPUT_OR_EXECUTION');
  }finally{fs.rmSync(f.dir,{recursive:true,force:true});}
 });
