@@ -48,7 +48,7 @@ export function routeC71HostDraft(x={}){
  for(let i=0;i<computed.turns.length;i++){
   const t=computed.turns[i],d=drafts?.[i];
   let source='C70_REPOSITORY_FALLBACK',surface=t.demonstration_surface;
-  const blocked=guarded.has(t.central_mode)||t.method==='DIRECT_IDENTITY'||t.resource_gap;
+  const blocked=guarded.has(t.central_mode)||t.method==='DIRECT_IDENTITY'||t.response_family==='SELF_ONTOLOGY'||t.resource_gap;
   if(drafts!==undefined){
    if(!d||typeof d!=='object'||Array.isArray(d)||
       Object.keys(d).sort().join(',')!=='input_sha256,text'||

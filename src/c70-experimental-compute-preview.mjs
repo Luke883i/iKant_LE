@@ -1,6 +1,6 @@
 import { qualifyC69ExperimentalPreview } from '../host/c69-capability-first-preview.mjs';
 import { compileCognitiveTurn, updateExperience, validateCognitiveTurn } from './cognition-core.mjs';
-import { cognitiveFallbackSurface } from './cognition-surface.mjs';
+import { composeC82ExperimentalAnswer } from './c82-experimental-answer.mjs';
 import { retroactPsyche } from './psyche.mjs';
 import { emptyPsyche, emptyExperience } from './state.mjs';
 import { emptySelfWorld, prepareSelfWorldTurn, finalizeSelfWorldTurn,
@@ -61,11 +61,13 @@ export function runC70ExperimentalComputePreview(x={}) {
     const finalized=finalizeSelfWorldTurn(selfWorld,prepared,{outcome,psycheAfter:after});
     if (!validateSelfWorldTurn(finalized.turn)||!validateSelfWorldState(finalized.state))
       return deny('EXPERIMENTAL_KERNEL_REJECTED','SELF_WORLD_VALIDATION');
-    const surface=cognitiveFallbackSurface(input,c);
+    const composed=composeC82ExperimentalAnswer(input,c);
+    const surface=composed.text;
     turns.push({index:i+1,input_sha256:digest(input),method:c.method,
       central_mode:c.central.mode,policy:prepared.policy.name,
       resource_grants:0,resource_gap:missing,action_executed:false,
-      output_sha256:digest(surface),demonstration_surface:surface,
+      output_sha256:digest(surface),demonstration_surface:surface,response_family:composed.family,
+      semantic_scope:composed.semantic_scope,source_grounding:composed.evidence_grade,
       node_dispatch_input_bound:true,workspace_recurrence_cycles:prepared.workspace.recurrence_cycles,
       autobiography_before:prepared.recall.count,episode_hash:finalized.turn.episode.episode_hash,
       preceding_episode_hash:finalized.turn.episode.previous_episode_hash,
