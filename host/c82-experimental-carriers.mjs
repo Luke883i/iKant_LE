@@ -60,7 +60,7 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
  const paths=relay.expectedPaths;
  if(allowed.size!==paths.length||paths.some(p=>!allowed.has(p)))
   return stop('C82_MANIFEST_C78_PATH_SET');
- const found=new Map(),failures=[],capacity=permits(parallelism);
+ const found=new Map(),failures=[],capacity=permits(parallelism),quarantined=new Set();
  let cursor=0,invocations=0;
  async function worker(){
   while(cursor<paths.length){
@@ -70,8 +70,16 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
     await hedge(index*hedgeDelayMs,controller.signal);
     return capacity.run(async()=>{
      if(controller.signal.aborted)throw Error('CARRIER_SKIPPED_AFTER_WIN');
+     if(quarantined.has(c.name))throw Error('CARRIER_QUARANTINED_AFTER_TIMEOUT');
      invocations++;
-     const packet=await bounded(()=>c.getFile(p,{signal:controller.signal}),carrierTimeoutMs);
+     let packet;
+     try{packet=await bounded(()=>c.getFile(p,{signal:controller.signal}),carrierTimeoutMs);}
+     catch(e){
+      // A timeout does not mean the external host call has stopped.
+      // Never launch this provider again during this materialization.
+      if(e?.message==='CARRIER_TIMEOUT')quarantined.add(c.name);
+      throw e;
+     }
      const b=decode(packet?.contentBase64);
      if(b.length!==f.bytes||digest(b)!==f.sha256)throw Error('SHA256_OR_LENGTH_MISMATCH');
      // C77 emits one transformed C71 module and one generated build proof.
@@ -109,6 +117,8 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
    all_bytes_reopened:true,invoked_host_callbacks:invocations,
    max_awaited_callbacks_observed:capacity.peak,global_callback_budget:parallelism,
    candidate_hedge_delay_ms:hedgeDelayMs,
+   timed_out_carrier_names:[...quarantined].sort(),
+   provider_physical_termination_attested:false,
    timeout_does_not_prove_provider_cancellation:true,
    first_unclosed_edge:'HOST_GITHUB_ORIGIN_AUTHENTICATION',
    no_native_delivery_claim:true,source_origin_attested:false,

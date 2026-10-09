@@ -127,3 +127,25 @@ test('C84.3 timed hedging selects a fast alternate and cancels cooperative slow 
  assert.ok(r.max_awaited_callbacks_observed<=3);
  assert.equal(r.timeout_does_not_prove_provider_cancellation,true);
 });
+
+test('C84.5 quarantines a timed-out uncooperative provider, without inventing cancellation',async()=>{
+ let uncooperativeCalls=0;
+ const neverSettles={name:'UNCOOPERATIVE_LEGACY',getFile:async()=>{
+  uncooperativeCalls++;
+  return new Promise(()=>{});
+ }};
+ const good={name:'ACTUAL_SAMEHASH_CACHE',getFile:async path=>({
+  contentBase64:files.find(f=>f.path===path).contentBase64
+ })};
+ const relay=makeRelay();
+ const receipt=await materializeC82ParallelCarriers({
+  relay,manifest:{source_head:head,files},carriers:[neverSettles,good],
+  parallelism:2,carrierTimeoutMs:50,hedgeDelayMs:20});
+ assert.equal(receipt.status,'C82_C77_BYTES_MATERIALIZED_IN_NODE',JSON.stringify(receipt));
+ assert.equal(relay.writes.length,20);
+ assert.ok(uncooperativeCalls>0);
+ assert.ok(uncooperativeCalls<=2,'timed-out provider relaunched after quarantine');
+ assert.deepEqual(receipt.timed_out_carrier_names,['UNCOOPERATIVE_LEGACY']);
+ assert.equal(receipt.provider_physical_termination_attested,false);
+ assert.equal(receipt.active,false);
+});
