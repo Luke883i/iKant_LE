@@ -6,6 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {buildC77Capsule} from '../scripts/c77-build-capsule.mjs';
+import {buildC84SourcePackage} from '../scripts/c84-build-source-package.mjs';
 import {createC81LocalGitProof} from '../scripts/c81-create-git-proof.mjs';
 import {issueC72TermsOffer,acceptC72Terms,presentC72Introduction,selectC72Mode}
  from '../host/c72-unified-mode-admission.mjs';
@@ -127,5 +128,36 @@ test('C84.2 typed CLI actually receives opaque host bytes, executes Node capsule
   const denied=run(extraneous);
   assert.equal(denied.status,2);
   assert.equal(JSON.parse(denied.stdout).first_unclosed_edge,'C84_CLI_INPUT_OR_EXECUTION');
+ }finally{fs.rmSync(f.dir,{recursive:true,force:true});}
+});
+
+test('C84.4 one content-addressed source package crosses the real CLI and Node positive path',()=>{
+ const f=prepare();
+ try{
+  const packagePath=path.join(f.dir,'c84-single-source.json');
+  const receipt=buildC84SourcePackage({capsuleDir:f.capsulePath,outputPath:packagePath});
+  assert.equal(receipt.status,'C84_PACKAGE_WRITTEN_REOPENED_NOT_HOST_DELIVERED');
+  assert.equal(receipt.files,34);
+  assert.equal(receipt.write_reopen_verified,true);
+  assert.equal(receipt.source_reachability,'C81_GIT_REACHABILITY_VERIFIED');
+  const bytes=fs.readFileSync(packagePath);
+  assert.equal(SHA(bytes),receipt.package_sha256);
+  const q={schema:'ikant-le-c84-single-package-turn/v1',
+   selection:f.selection,humanInput:'Confronta due alternative e indica una prova osservabile.',
+   expectedPackageSha256:receipt.package_sha256,packageBase64:bytes.toString('base64')};
+  const run=input=>spawnSync(process.execPath,['scripts/c84-experimental-turn-cli.mjs'],{
+   cwd:ROOT,input:JSON.stringify(input),encoding:'utf8',timeout:45000,maxBuffer:1024*1024});
+  const ok=run(q);
+  assert.equal(ok.status,0,ok.stderr+' '+ok.stdout?.slice(0,800));
+  const out=JSON.parse(ok.stdout);
+  assert.equal(out.status,'C84_RUNTIME_VOICE_READY_NOT_NATIVE_DELIVERED',JSON.stringify(out));
+  assert.equal(out.staged_files,34);
+  assert.equal(out.input_sha256,SHA(Buffer.from(q.humanInput)));
+  assert.equal(out.native_chat_delivery_attested,false);
+  const tampered={...q,expectedPackageSha256:'0'.repeat(64)};
+  const blocked=run(tampered);
+  assert.equal(blocked.status,2);
+  assert.equal(JSON.parse(blocked.stdout).first_unclosed_edge,'C84_CLI_INPUT_OR_EXECUTION');
+  assert.equal(fs.statSync(packagePath).size,receipt.package_bytes);
  }finally{fs.rmSync(f.dir,{recursive:true,force:true});}
 });

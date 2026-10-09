@@ -1,16 +1,43 @@
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import {executeC84ExperimentalTurn} from '../host/c84-experimental-transport.mjs';
 
-const MAX_STDIN=8_000_000,MAX_FILES_PER_PROVIDER=50;
+const MAX_STDIN=10_000_000,MAX_FILES_PER_PROVIDER=50;
 const stop=edge=>({schema:'ikant-le-c84-experimental-turn/v1',status:'C84_STOP',
  first_unclosed_edge:edge,authority:0,active:false,canonical_runtime:false,
  persistent:false,source_origin_attested:false,native_event_attested:false,
  native_chat_delivery_attested:false,owner_receipt_issued:false});
 const exact=(x,keys)=>x&&typeof x==='object'&&!Array.isArray(x)&&
  Object.keys(x).sort().join(',')===keys.slice().sort().join(',');
+function unpackSinglePackage(q){
+ if(!exact(q,['schema','selection','humanInput','packageBase64','expectedPackageSha256'])||
+  typeof q.packageBase64!=='string'||q.packageBase64.length>9_000_000||
+  q.packageBase64.length%4||!/^[A-Za-z0-9+/]*={0,2}$/.test(q.packageBase64)||
+  !/^[a-f0-9]{64}$/.test(String(q.expectedPackageSha256)))
+  throw Error('C84_PACKAGE_TURN_ENVELOPE');
+ const raw=Buffer.from(q.packageBase64,'base64');
+ if(raw.toString('base64')!==q.packageBase64||
+  crypto.createHash('sha256').update(raw).digest('hex')!==q.expectedPackageSha256)
+  throw Error('C84_PACKAGE_SHA256_MISMATCH');
+ const p=JSON.parse(raw.toString('utf8'));
+ if(!exact(p,['schema','sourceHead','expectedManifestSha256','manifestBase64',
+   'sourceProof','files','active','source_origin_attested',
+   'native_chat_delivery_attested','authority'])||
+  p.schema!=='ikant-le-c84-single-source-package/v1'||
+  p.active!==false||p.source_origin_attested!==false||
+  p.native_chat_delivery_attested!==false||p.authority!==0||
+  !Array.isArray(p.files)||p.files.length<20||p.files.length>50)
+  throw Error('C84_PACKAGE_SOURCE_ENVELOPE');
+ return {schema:'ikant-le-c84-host-transferred-turn/v1',selection:q.selection,
+  humanInput:q.humanInput,sourceHead:p.sourceHead,
+  expectedManifestSha256:p.expectedManifestSha256,
+  manifestBase64:p.manifestBase64,sourceProof:p.sourceProof,
+  carriers:[{name:'SINGLE_C84_PACKAGE',files:p.files}]};
+}
 function decodeEnvelope(raw){
  if(raw.length>MAX_STDIN)throw Error('C84_CLI_STDIN_LIMIT');
- const q=JSON.parse(raw.toString('utf8'));
+ let q=JSON.parse(raw.toString('utf8'));
+ if(q?.schema==='ikant-le-c84-single-package-turn/v1')q=unpackSinglePackage(q);
  const required=['schema','selection','sourceHead','expectedManifestSha256',
   'manifestBase64','sourceProof','carriers','humanInput'];
  const optional=['parallelism','carrierTimeoutMs'];
