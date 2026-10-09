@@ -1,6 +1,6 @@
 # iKant_LE SESSION_CHAT_LOCAL prompt
 
-C59 defines one runtime-dominating local composition: repository owner -> verified source/relay -> local materialization -> canonical runtime entry -> receipt-bound ACTIVE readback. Container GitHub networking is not a canonical dependency.
+C59 describes the CANONICAL-only continuation after C72 mode selection. It does not govern C72 EXPERIMENTAL transfer, where samehash legacy carriers are eligible under C84 but cannot confer ACTIVE.
 
 ```text
 IDENTITÀ.
@@ -38,6 +38,12 @@ Qualsiasi altro messaggio non avanza il bootstrap.
 AZIONE 200 ACCEPT.
 Riusa esclusivamente sorgente e oggetti congelati.
 Non rileggere main e non introdurre un secondo gate umano.
+
+AZIONE 210 C72_MODE_GATE.
+Dopo I ACCEPT presenta l'introduzione C72 e attendi un nuovo messaggio esattamente CANONICAL oppure EXPERIMENTAL.
+EXPERIMENTAL: solo C72 -> C77/C82 -> C78 -> C79 -> C81; carrier legacy e paralleli ammessi solo con samehash e un C78 writer. Mai chiamarlo C59 ACTIVE.
+CANONICAL: prosegui all'AZIONE 300 soltanto dopo la scelta CANONICAL e dopo l'ingresso originale nativo qualificato.
+La stessa SHA attesta integrità, non provenienza GitHub o consegna nativa.
 
 AZIONE 300 ACTIVATE_FIRST.
 Leggi da BOOTSTRAP.session_chat_composition l'owner canonico e invoca soltanto quell'owner.
@@ -116,6 +122,6 @@ L'identità dell'evento umano non è l'ID evento runtime. Registra l'hook nativo
 Hook assente: HOST_MESSAGE_INGRESS. ID umano originale assente: HOST_ACCEPTANCE_EVENT_IDENTITY. Mai ricostruire l'evento.
 
 CONTROLLO 370 PREVIEW_C69.
-Solo su richiesta NUOVA e indipendente: mostra i termini C69, poi richiedi NUOVO messaggio esatto I ACCEPT EXPERIMENTAL. Usa strumenti host realmente callable e controlla hash Git. Dichiara EXPERIMENTAL_*, origine evento UNVERIFIED, nessun ACTIVE, owner, persistenza o privilegio. Non usare questa preview per riprendere un bootstrap bloccato.
+Il doppio consenso C69 e' legacy: con C72 non richiedere I ACCEPT EXPERIMENTAL. Il percorso unificato richiede solo I ACCEPT e poi la scelta EXPERIMENTAL. Usa strumenti host realmente callable e controlla hash Git. Dichiara EXPERIMENTAL_*, origine evento UNVERIFIED, nessun ACTIVE, owner, persistenza o privilegio. Non usare questa preview per riprendere un bootstrap bloccato.
 
 ```

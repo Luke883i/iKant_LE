@@ -18,7 +18,7 @@ Historical artifacts never self-promote. Maintained narrative SOTs are README, A
 
 Change the smallest affected neighborhood. A second writer/SOT is blocked; prefer delete/merge/reuse over new frameworks, databases, brokers, daemons, provider SDKs or ontologies. Repository writes use exact-head GitHub API `blob -> tree -> commit -> ref-last`; merge/release/settings remain separate authorization.
 
-Canonical `SESSION_CHAT_LOCAL` pins main, presents Terms and, after exact `I ACCEPT`, uses only GitHub API base64 -> `VERIFIED_OPAQUE_RELAY` -> C61 cold owner -> C59 materializer/ACTIVE readback. `LOCAL_DIRECT`, warm/file/ZIP and Fastboot selection remain noncanonical compatibility. C63 parallel Node staging cannot invent host capabilities or authority. Tests do not gate activation; 120 s is an SLO, not an integrity rule.
+Canonical `SESSION_CHAT_LOCAL` is entered only after the C72 introduction and exact later CANONICAL selection, with original native-event prerequisites. It pins main, presents Terms and uses only GitHub API base64 -> `VERIFIED_OPAQUE_RELAY` -> C61 cold owner -> C59 materializer/ACTIVE readback. `LOCAL_DIRECT`, warm/file/ZIP and Fastboot selection remain noncanonical compatibility. C63 parallel Node staging cannot invent host capabilities or authority. Separate EXPERIMENTAL acquisition re-canonicalizes legacy byte carriers solely as samehash-qualified C82 transport candidates, not as C59 ACTIVE owners; see `contracts/c84-host-composition-convergence.json`. C72 choice never itself activates a runtime. Tests do not gate activation; 120 s is an SLO, not an integrity rule.
 
 ## Development trajectory
 
