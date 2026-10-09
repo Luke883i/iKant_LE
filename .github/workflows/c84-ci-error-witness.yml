@@ -4,7 +4,6 @@ on:
     paths:
       - '.github/workflows/c84-ci-error-witness.yml'
 permissions:
-  contents: read
   contents: write
 jobs:
   witness:
