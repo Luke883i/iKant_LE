@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 // performs network IO or attests the external origin of a GitHub ref.
 const digest=b=>crypto.createHash('sha256').update(b).digest('hex');
 const gitBlob=b=>crypto.createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${b.length}\0`),b])).digest('hex');
+const H40=/^[a-f0-9]{40}$/;
 const stop=(edge,details=[])=>({schema:'ikant-le-c82-carrier-result/v1',
  status:'C82_CARRIER_STOP',first_unclosed_edge:edge,failures:details.slice(0,12),
  active:false,source_origin_attested:false,authority:0});
@@ -14,13 +15,24 @@ function decode(s){
  if(b.toString('base64')!==s)throw Error('NONCANONICAL_BASE64');
  return b;
 }
-function bounded(p,ms){let timer;const expire=new Promise((_,reject)=>{
- timer=setTimeout(()=>reject(Error('CARRIER_TIMEOUT')),ms);});
- return Promise.race([Promise.resolve().then(p),expire]).finally(()=>clearTimeout(timer));}
-/** Parallel IO qualification, single C78 staging writer.
- * The host supplies callable getFile adapters AFTER the C72 gate and after
- * acquiring an independently frozen source SHA. A mock adapter in tests is
- * not evidence that a ChatGPT host exposes that carrier in production. */
+function bounded(run,ms){let timer;return Promise.race([
+ Promise.resolve().then(run),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('CARRIER_TIMEOUT')),ms);})
+]).finally(()=>clearTimeout(timer));}
+function permits(limit){
+ let used=0,peak=0;const waiting=[];
+ return {
+  get peak(){return peak;},
+  async run(fn){
+   if(used>=limit)await new Promise(resolve=>waiting.push(resolve));
+   used++;peak=Math.max(peak,used);
+   try{return await fn();}finally{used--;waiting.shift()?.();}
+  }
+ };
+}
+/** All candidate source bytes are checked before ONE C78 writer stages anything.
+ * parallelism bounds global awaited callback slots, not merely worker count.
+ * Pending host callbacks cannot be forcibly cancelled if they ignore AbortSignal.
+ * Timeout is NOT evidence of provider cancellation. */
 export async function materializeC82ParallelCarriers({relay,manifest,carriers,
  parallelism=4,carrierTimeoutMs=5000}={}){
  if(!relay||!Array.isArray(relay.expectedPaths)||!manifest||
@@ -36,41 +48,46 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
  const paths=relay.expectedPaths;
  if(allowed.size!==paths.length||paths.some(p=>!allowed.has(p)))
   return stop('C82_MANIFEST_C78_PATH_SET');
- const found=new Map(),failures=[];
- let cursor=0;
+ const found=new Map(),failures=[],capacity=permits(parallelism);
+ let cursor=0,invocations=0;
  async function worker(){
   while(cursor<paths.length){
    const p=paths[cursor++],f=allowed.get(p);
-   const probes=carriers.map(c=>bounded(async()=>{
-    const packet=await c.getFile(p);
-    const b=decode(packet?.contentBase64);
-    if(b.length!==f.bytes||digest(b)!==f.sha256)
-      throw Error('SHA256_OR_LENGTH_MISMATCH');
-    if(!f.generated_derivative&&f.original_source_blob_sha1!==null&&gitBlob(b)!==f.original_source_blob_sha1)
-      throw Error('GIT_BLOB_MISMATCH');
-    return {path:p,carrier:c.name,contentBase64:packet.contentBase64,
-      sourceBlobSha1:f.original_source_blob_sha1};
-   },carrierTimeoutMs));
+   const controller=new AbortController();
+   const probes=carriers.map(c=>capacity.run(async()=>{
+     if(controller.signal.aborted)throw Error('CARRIER_SKIPPED_AFTER_WIN');
+     invocations++;
+     const packet=await bounded(()=>c.getFile(p,{signal:controller.signal}),carrierTimeoutMs);
+     const b=decode(packet?.contentBase64);
+     if(b.length!==f.bytes||digest(b)!==f.sha256)throw Error('SHA256_OR_LENGTH_MISMATCH');
+     if(f.original_source_blob_sha1!==null){
+      if(!H40.test(String(f.original_source_blob_sha1))||
+        gitBlob(b)!==f.original_source_blob_sha1)throw Error('GIT_BLOB_MISMATCH');
+     }else if(!f.generated_derivative)throw Error('MISSING_ORIGINAL_GIT_BLOB');
+     return {path:p,carrier:c.name,contentBase64:packet.contentBase64,
+       sourceBlobSha1:f.original_source_blob_sha1};
+   }));
    try{found.set(p,await Promise.any(probes));}
    catch{failures.push({path:p,edge:'NO_SAMEHASH_CARRIER'});}
+   finally{controller.abort();await Promise.allSettled(probes);}
   }
  }
  await Promise.all(Array.from({length:Math.min(parallelism,paths.length)},()=>worker()));
  if(found.size!==paths.length)return stop('C82_INCOMPLETE_CARRIER_COVERAGE',failures);
- // Deliberate serialization: no parallel state writer; an invalid write fails closed.
  try{
-  for(const p of paths)relay.stageFile({filePath:p,
-   contentBase64:found.get(p).contentBase64,
+  for(const p of paths)relay.stageFile({filePath:p,contentBase64:found.get(p).contentBase64,
    sourceBlobSha1:found.get(p).sourceBlobSha1});
   const readback=relay.finalize();
-  return {schema:'ikant-le-c82-carrier-result/v1',
-   status:'C82_C77_BYTES_MATERIALIZED_IN_NODE',
+  if(readback.all_bytes_reopened!==true)throw Error('C78_READBACK_NOT_VERIFIED');
+  return {schema:'ikant-le-c82-carrier-result/v1',status:'C82_C77_BYTES_MATERIALIZED_IN_NODE',
    source_head:manifest.source_head,files:paths.length,
    selected_carriers:paths.map(p=>({path:p,carrier:found.get(p).carrier})),
-   all_bytes_reopened:readback.all_bytes_reopened===true,
+   all_bytes_reopened:true,invoked_host_callbacks:invocations,
+   max_awaited_callbacks_observed:capacity.peak,global_callback_budget:parallelism,
+   timeout_does_not_prove_provider_cancellation:true,
    first_unclosed_edge:'HOST_GITHUB_ORIGIN_AUTHENTICATION',
    no_native_delivery_claim:true,source_origin_attested:false,
    active:false,persistent:false,canonical_runtime:false,authority:0};
  }catch(e){return stop('C82_C78_STAGING_READBACK',
-  [{detail:String(e?.message||e).slice(0,100)}]);}
+   [{detail:String(e?.message||e).slice(0,100)}]);}
 }

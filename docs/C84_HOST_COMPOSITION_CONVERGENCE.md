@@ -48,3 +48,11 @@ The current host demonstrated GitHub connector and a Node binary as separate cap
 ## Reproducible DoD
 
 `node scripts/c84-host-composition-qualify.mjs`, `node --test tests/c84-host-composition-qualify.test.mjs`, and preexisting Node qualification on the proposed PR branch must succeed. Independent ChatGPT native session evidence remains a separate unclosed DoD.
+
+## C84 runtime implementation (second semantic commit)
+
+- `host/c82-experimental-carriers.mjs` bounds global awaited callback concurrency, aborts cooperative losing providers after a byte-qualified winner, and requires complete SHA-256/Git blob validation before one C78 writer stages files. Provider timeouts are not proof of cancellation.
+- `host/c84-experimental-transport.mjs` composes validated C72 selection, C77 manifest, C82 transfer, C78 materialization/execution, C79 packet, Git-object C81 source verifier and exact runtime voice projection for one current non-sensitive input of at most 600 UTF-8 bytes. It stops on missing physical proof.
+- `contracts/c84-runtime-coordination.json` declares the scope. `tests/c84-runtime-convergence.test.mjs` uses actual carrier code with fixture providers, 1000 corruption mutations, and pre-runtime denials.
+- C59 canonical issuer, persistent writer and same-turn DOCX requirements are unchanged. These modules do not install a ChatGPT native listener or authenticate GitHub ref origin.
+- A fixture/CI success is repository evidence, not a native-host availability receipt or H95 field result.

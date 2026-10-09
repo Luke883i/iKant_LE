@@ -1,0 +1,87 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import {materializeC82ParallelCarriers} from '../host/c82-experimental-carriers.mjs';
+import {executeC84ExperimentalTurn} from '../host/c84-experimental-transport.mjs';
+
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const blob=b=>crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+const head='a'.repeat(40);
+const files=Array.from({length:20},(_,i)=>{
+ const b=Buffer.from('c84-qualified-source-'+i,'utf8');
+ return {path:'src/c84-fixture-'+i+'.mjs',bytes:b.length,sha256:sha(b),
+  original_source_blob_sha1:blob(b),generated_derivative:false,
+  contentBase64:b.toString('base64')};
+});
+const makeRelay=()=>({
+ expectedPaths:files.map(f=>f.path),_sourceHead:head,writes:[],
+ stageFile({filePath,contentBase64,sourceBlobSha1}){
+  const f=files.find(v=>v.path===filePath);
+  assert.equal(contentBase64,f.contentBase64);
+  assert.equal(sourceBlobSha1,f.original_source_blob_sha1);
+  this.writes.push(filePath);
+ },
+ finalize(){return {all_bytes_reopened:this.writes.length===files.length};}
+});
+test('C84 C82 parallel legacy byte transfer: one writer, no origin or ACTIVE promotion',async()=>{
+ let running=0,peak=0;
+ const provider=(name,valid)=>({name,async getFile(filePath){
+  running++;peak=Math.max(peak,running);
+  try{
+   await new Promise(resolve=>setTimeout(resolve,1));
+   const f=files.find(v=>v.path===filePath);
+   return {contentBase64:valid?f.contentBase64:Buffer.from('wrong').toString('base64')};
+  }finally{running--;}
+ }});
+ const relay=makeRelay();
+ const result=await materializeC82ParallelCarriers({relay,
+  manifest:{source_head:head,files},
+  carriers:[provider('LEGACY_CORRUPT',false),provider('LEGACY_ZIP_VERIFIED',true)],
+  parallelism:2,carrierTimeoutMs:1000});
+ assert.equal(result.status,'C82_C77_BYTES_MATERIALIZED_IN_NODE',JSON.stringify(result));
+ assert.equal(result.all_bytes_reopened,true);
+ assert.equal(result.files,20);
+ assert.equal(relay.writes.length,20);
+ assert.ok(peak<=2);
+ assert.ok(result.max_awaited_callbacks_observed<=2);
+ assert.ok(result.selected_carriers.every(v=>v.carrier==='LEGACY_ZIP_VERIFIED'));
+ assert.equal(result.source_origin_attested,false);
+ assert.equal(result.active,false);
+ assert.equal(result.persistent,false);
+});
+test('C84 1000 real C82 negative mutation attempts deny all-or-nothing staging',async()=>{
+ const carrier={name:'WARM_CACHE_EXACT',getFile:async p=>({
+  contentBase64:files.find(f=>f.path===p).contentBase64
+ })};
+ for(let i=0;i<1000;i++){
+  const mutant=files.map(f=>({...f}));
+  const target=mutant[i%mutant.length];
+  switch(i%5){
+  case 0: target.sha256='0'.repeat(64);break;
+  case 1: target.original_source_blob_sha1='f'.repeat(40);break;
+  case 2: target.bytes+=1;break;
+  case 3: target.sha256='F'.repeat(64);break;
+  case 4: target.original_source_blob_sha1=null;break;
+  }
+  const relay=makeRelay();
+  const result=await materializeC82ParallelCarriers({relay,
+   manifest:{source_head:head,files:mutant},carriers:[carrier],parallelism:3});
+  assert.equal(result.status,'C82_CARRIER_STOP');
+  assert.equal(relay.writes.length,0);
+ }
+});
+test('C84 rejects invalid frozen source and input without creating a runtime',async()=>{
+ for(const x of [
+  {sourceHead:'x',humanInput:'legitimo'},
+  {sourceHead:head,humanInput:'x'.repeat(601)},
+  {sourceHead:head,humanInput:'api_key=secret'},
+  {sourceHead:head,humanInput:'normale',selection:null}
+ ]){
+  const r=await executeC84ExperimentalTurn({
+   sourceHead:x.sourceHead,expectedManifestSha256:'b'.repeat(64),
+   humanInput:x.humanInput,selection:x.selection,carriers:[]});
+  assert.equal(r.status,'C84_STOP');
+  assert.equal(r.active,false);
+  assert.equal(r.owner_receipt_issued,false);
+ }
+});
