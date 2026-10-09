@@ -36,14 +36,8 @@ export async function executeC84ExperimentalTurn({
    return stop('C84_HOST_CARRIER_ENVELOPE');
  let relay;
  try{
-   relay=new C78HostRelay({selection,sourceHead,expectedManifestSha256,manifestBase64});
-   const staged=await materializeC82ParallelCarriers({relay,manifest:JSON.parse(Buffer.from(manifestBase64,'base64').toString('utf8')),
-      carriers,parallelism,carrierTimeoutMs});
-   if(staged.status!=='C82_C77_BYTES_MATERIALIZED_IN_NODE'||
-     staged.all_bytes_reopened!==true)
-     return stop(staged.first_unclosed_edge||'C82_CARRIER_MATERIALIZATION',staged.status);
-   // Transport admission is already complete with same-SHA and reopen.
-   // Git Merkle source proof is a separate, stronger gate for C81 voice.
+   // Fail before filesystem materialization on missing or inconsistent Git object proof.
+   // This proves reachability only, never native GitHub ref origin.
    // This verifier reads actual Git-object byte arguments, not a trust claim.
    if(!sourceProof||typeof sourceProof!=='object'||
       typeof sourceProof.commitBase64!=='string'||!Array.isArray(sourceProof.treeObjects))
@@ -56,6 +50,12 @@ export async function executeC84ExperimentalTurn({
    }catch(e){return stop('C81_SOURCE_PROOF_VERIFICATION',e.message);}
    if(readback.status!=='C81_GIT_REACHABILITY_VERIFIED')
      return stop('C81_SOURCE_GIT_REACHABILITY',readback.first_unclosed_edge);
+   relay=new C78HostRelay({selection,sourceHead,expectedManifestSha256,manifestBase64});
+   const staged=await materializeC82ParallelCarriers({relay,manifest:JSON.parse(Buffer.from(manifestBase64,'base64').toString('utf8')),
+      carriers,parallelism,carrierTimeoutMs});
+   if(staged.status!=='C82_C77_BYTES_MATERIALIZED_IN_NODE'||
+     staged.all_bytes_reopened!==true)
+     return stop(staged.first_unclosed_edge||'C82_CARRIER_MATERIALIZATION',staged.status);
    const dispatched=relay.dispatch({humanInput});
    if(dispatched.status!=='C78_NODE_RESPONSE_READY_HOST_DELIVERY_PENDING')
      return stop(dispatched.first_unclosed_edge||'C78_RUNTIME_DISPATCH',dispatched.status);

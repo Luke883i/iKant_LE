@@ -161,3 +161,22 @@ test('C84.4 one content-addressed source package crosses the real CLI and Node p
   assert.equal(fs.statSync(packagePath).size,receipt.package_bytes);
  }finally{fs.rmSync(f.dir,{recursive:true,force:true});}
 });
+
+test('C84.6 invalid Git Merkle proof fails before any carrier callback or disk staging',async()=>{
+ const f=prepare();
+ try{
+  let transportCalls=0;
+  const v=args(f,'Confronta due alternative e indica una prova osservabile.');
+  v.sourceProof=structuredClone(f.proof.proof);
+  v.sourceProof.treeObjects[0].sha1='0'.repeat(40);
+  v.carriers=[{name:'MUST_NOT_BE_INVOKED',getFile:async()=>{
+   transportCalls++;throw Error('EARLY_PROOF_GATE_BYPASSED');
+  }}];
+  const out=await executeC84ExperimentalTurn(v);
+  assert.equal(out.status,'C84_STOP');
+  assert.equal(out.first_unclosed_edge,'C81_SOURCE_GIT_REACHABILITY');
+  assert.equal(transportCalls,0);
+  assert.equal(out.active,false);
+  assert.equal(out.native_chat_delivery_attested,false);
+ }finally{fs.rmSync(f.dir,{recursive:true,force:true});}
+});
