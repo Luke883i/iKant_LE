@@ -85,3 +85,45 @@ test('C84 rejects invalid frozen source and input without creating a runtime',as
   assert.equal(r.owner_receipt_issued,false);
  }
 });
+
+test('C84.3 immediate samehash winner does not launch slower losing providers',async()=>{
+ let loserCalls=0;
+ const fastest={name:'WARM_CACHE_EXACT',getFile:async filePath=>{
+  const f=files.find(v=>v.path===filePath);return {contentBase64:f.contentBase64};
+ }};
+ const unused={name:'LEGACY_PERMALINK',getFile:async()=>{
+  loserCalls++;throw Error('LOSER_SHOULD_NOT_LAUNCH');
+ }};
+ const relay=makeRelay();
+ const r=await materializeC82ParallelCarriers({relay,
+  manifest:{source_head:head,files},carriers:[fastest,unused],
+  parallelism:3,carrierTimeoutMs:500,hedgeDelayMs:75});
+ assert.equal(r.status,'C82_C77_BYTES_MATERIALIZED_IN_NODE',JSON.stringify(r));
+ assert.equal(loserCalls,0);
+ assert.equal(r.invoked_host_callbacks,20);
+ assert.equal(r.max_awaited_callbacks_observed<=3,true);
+ assert.equal(r.candidate_hedge_delay_ms,75);
+ assert.equal(relay.writes.length,20);
+});
+test('C84.3 timed hedging selects a fast alternate and cancels cooperative slow carrier',async()=>{
+ let slowCalls=0,aborts=0,fastCalls=0;
+ const slow={name:'SLOW_LEGACY',getFile:(p,{signal})=>new Promise((resolve,reject)=>{
+  slowCalls++;
+  const timer=setTimeout(()=>reject(Error('SLOW_TIMEOUT')),300);
+  const cancel=()=>{aborts++;clearTimeout(timer);reject(Error('COOPERATIVE_ABORT'));};
+  signal.addEventListener('abort',cancel,{once:true});
+ })};
+ const quick={name:'GITHUB_API_BASE64',getFile:async p=>{
+  fastCalls++;return {contentBase64:files.find(f=>f.path===p).contentBase64};
+ }};
+ const relay=makeRelay();
+ const r=await materializeC82ParallelCarriers({relay,manifest:{source_head:head,files},
+  carriers:[slow,quick],parallelism:3,carrierTimeoutMs:500,hedgeDelayMs:20});
+ assert.equal(r.status,'C82_C77_BYTES_MATERIALIZED_IN_NODE',JSON.stringify(r));
+ assert.equal(r.all_bytes_reopened,true);
+ assert.ok(slowCalls>0);
+ assert.ok(fastCalls>0);
+ assert.equal(aborts,slowCalls);
+ assert.ok(r.max_awaited_callbacks_observed<=3);
+ assert.equal(r.timeout_does_not_prove_provider_cancellation,true);
+});

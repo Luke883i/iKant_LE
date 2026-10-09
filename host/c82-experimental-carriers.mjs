@@ -29,12 +29,23 @@ function permits(limit){
   }
  };
 }
+// Hedge alternatives only after a short bounded delay. Abort releases
+// delayed (not yet launched) candidates immediately after a samehash winner.
+function hedge(ms,signal){
+ if(ms<=0||signal.aborted)return Promise.resolve();
+ return new Promise(resolve=>{
+  let timer;
+  const done=()=>{clearTimeout(timer);signal.removeEventListener('abort',done);resolve();};
+  signal.addEventListener('abort',done,{once:true});
+  timer=setTimeout(done,ms);
+ });
+}
 /** All candidate source bytes are checked before ONE C78 writer stages anything.
  * parallelism bounds global awaited callback slots, not merely worker count.
  * Pending host callbacks cannot be forcibly cancelled if they ignore AbortSignal.
  * Timeout is NOT evidence of provider cancellation. */
 export async function materializeC82ParallelCarriers({relay,manifest,carriers,
- parallelism=4,carrierTimeoutMs=5000}={}){
+ parallelism=4,carrierTimeoutMs=5000,hedgeDelayMs=20}={}){
  if(!relay||!Array.isArray(relay.expectedPaths)||!manifest||
   !Array.isArray(manifest.files)||manifest.files.length<20||manifest.files.length>50||
   manifest.source_head!==relay._sourceHead||
@@ -42,7 +53,8 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
   !carriers.every(c=>c&&/^[A-Z0-9_]{2,48}$/.test(c.name)&&typeof c.getFile==='function')||
   new Set(carriers.map(c=>c.name)).size!==carriers.length||
   !Number.isInteger(parallelism)||parallelism<1||parallelism>8||
-  !Number.isInteger(carrierTimeoutMs)||carrierTimeoutMs<50||carrierTimeoutMs>30000)
+  !Number.isInteger(carrierTimeoutMs)||carrierTimeoutMs<50||carrierTimeoutMs>30000||
+  !Number.isInteger(hedgeDelayMs)||hedgeDelayMs<0||hedgeDelayMs>250)
   return stop('C82_CARRIER_ENVELOPE');
  const allowed=new Map(manifest.files.map(f=>[f.path,f]));
  const paths=relay.expectedPaths;
@@ -54,7 +66,9 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
   while(cursor<paths.length){
    const p=paths[cursor++],f=allowed.get(p);
    const controller=new AbortController();
-   const probes=carriers.map(c=>capacity.run(async()=>{
+   const probes=carriers.map((c,index)=>(async()=>{
+    await hedge(index*hedgeDelayMs,controller.signal);
+    return capacity.run(async()=>{
      if(controller.signal.aborted)throw Error('CARRIER_SKIPPED_AFTER_WIN');
      invocations++;
      const packet=await bounded(()=>c.getFile(p,{signal:controller.signal}),carrierTimeoutMs);
@@ -75,7 +89,8 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
      }else throw Error('DERIVATIVE_FLAG_INVALID');
      return {path:p,carrier:c.name,contentBase64:packet.contentBase64,
        sourceBlobSha1:f.original_source_blob_sha1};
-   }));
+    });
+   })());
    try{found.set(p,await Promise.any(probes));}
    catch{failures.push({path:p,edge:'NO_SAMEHASH_CARRIER'});}
    finally{controller.abort();await Promise.allSettled(probes);}
@@ -93,6 +108,7 @@ export async function materializeC82ParallelCarriers({relay,manifest,carriers,
    selected_carriers:paths.map(p=>({path:p,carrier:found.get(p).carrier})),
    all_bytes_reopened:true,invoked_host_callbacks:invocations,
    max_awaited_callbacks_observed:capacity.peak,global_callback_budget:parallelism,
+   candidate_hedge_delay_ms:hedgeDelayMs,
    timeout_does_not_prove_provider_cancellation:true,
    first_unclosed_edge:'HOST_GITHUB_ORIGIN_AUTHENTICATION',
    no_native_delivery_claim:true,source_origin_attested:false,
