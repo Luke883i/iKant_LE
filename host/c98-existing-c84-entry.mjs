@@ -1,3 +1,4 @@
+import {readC99SelectionFields,gateC99SourceHandoff,readC99EntryData} from './c99-route-policy.mjs';
 import crypto from 'node:crypto';
 import {makeC98C82Carrier} from './c98-c82-connector-port.mjs';
 import {preflightC98ChatGPTOffline} from './c98-chatgpt-offline-boundary.mjs';
@@ -12,9 +13,13 @@ const stop=e=>({schema:'ikant-le-c98-host-interop/v1',status:'C98_STOP',
  * This entry is inert until an actual host explicitly registers readC77Member
  * and provides same-turn C72 selection, Git proof and current human input.
  */
-export async function executeC98ExistingC84({humanInput,sourceHead,manifest,
-  manifestBase64,manifestSha256,selection,sourceProof,readC77Member,readC77Archive,
-  nodeGithubNetworkRequested=false}={}){
+export async function executeC98ExistingC84(args={}){
+ const safe=readC99EntryData(args);
+ if(!safe)return stop('C99_INPUT_ENVELOPE_ACCESSOR');
+ const {humanInput,sourceHead,manifest,manifestBase64,manifestSha256,
+   selection,sourceProof,readC77Member,readC77Archive}=safe;
+ const nodeGithubNetworkRequested=safe.nodeGithubNetworkRequested===undefined?
+   false:safe.nodeGithubNetworkRequested;
  const offline=preflightC98ChatGPTOffline({humanInput,sourceHead,selection,
    readC77Member,readC77Archive,nodeGithubNetworkRequested});
  if(offline.status!=='C98_CALLBACK_SHAPE_READY_NOT_HOST_AUTHENTICATED'){
@@ -29,14 +34,14 @@ export async function executeC98ExistingC84({humanInput,sourceHead,manifest,
  if(typeof humanInput!=='string'||!humanInput.trim()||
     Buffer.byteLength(humanInput,'utf8')>600||
     Buffer.from(humanInput,'utf8').toString('utf8')!==humanInput||
-    !H40.test(sourceHead||'')||selection?.selected_mode!=='EXPERIMENTAL'||
-    selection?.status!=='EXPERIMENTAL_SELECTED_NOT_RUNNING')
+    !H40.test(sourceHead||'')||readC99SelectionFields(selection).selected_mode!=='EXPERIMENTAL'||
+    readC99SelectionFields(selection).status!=='EXPERIMENTAL_SELECTED_NOT_RUNNING')
    return stop('C72_NATIVE_CURRENT_HUMAN_SELECTION_OR_SOURCE_REQUIRED');
  const methods=Number(typeof readC77Member==='function')+Number(typeof readC77Archive==='function');
  if(methods===0)return stop('HOST_CONNECTOR_NODE_CALLBACK_NOT_INSTALLED');
  if(methods!==1)return stop('AMBIGUOUS_HOST_CARRIER_SELECT_ONE');
- if(!sourceProof||typeof sourceProof!=='object'||
-    typeof sourceProof.commitBase64!=='string'||!Array.isArray(sourceProof.treeObjects))
+ if(gateC99SourceHandoff({sourceHead,manifestSha256,sourceProof}).status!==
+    'C99_C81_PROOF_SHAPE_ONLY_NOT_VERIFIED')
    return stop('C81_VERIFIED_SOURCE_PROOF_REQUIRED');
  let bound;try{bound=typeof readC77Archive==='function'?
     makeC98ArchiveC82Carrier({sourceHead,manifestBase64,manifestSha256,manifest,readC77Archive}):

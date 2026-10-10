@@ -8,3 +8,5 @@ C97 ORDER: HEADER -> SURFACE_A -> STATUS -> EVIDENCE -> ARTIFACTS -> DETAILS. IC
 SOURCE PROVENANCE: distinguish Git object consistency, independent GitHub ref origin, actual Node owner execution, native platform delivery and persistence. C97 diagnostic/semantic-IR digest does not attest host actions. Only physically created/reopened host files receive download links; never invent DOCX, callbacks or buttons. Project presentation is per reply, NOT an installed overlay, forced dispatch or automatic state writer.
 
 On missing owner, diagnostic may be authored by HOST only, visibly not computed by iKant. On `EXIT IKANT`, show EXITED only after a real owner confirms closure. Accessible Markdown fallback is allowed. Not all native ChatGPT clients render visuals identically.
+
+C99 PROJECTION LIMIT: C99 structural stop or C98 preflight status NEVER authorizes Surface A; only original same-input owner output may be projected byte-exact. C97 UI frames do not become native event receipts.
