@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import {createC94GitHubHTTPS,buildC94C84AutoPackage} from './c94-auto-artifact-carrier.mjs';
+import {acquireC95FromInstalledBridge} from './c95-host-connector-relay.mjs';
 import {bindC94GeneratedSurface,attemptC94HostNativeDelivery} from './c94-native-delivery-boundary.mjs';
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
 const stop=e=>({schema:'ikant-le-c94-cold-host-turn/v1',status:'C94_TURN_STOP',
@@ -8,15 +9,17 @@ const stop=e=>({schema:'ikant-le-c94-cold-host-turn/v1',status:'C94_TURN_STOP',
  owner_executed:false,native_delivery_attested:false,active:false,authority:0});
 /** Actual host should register a C72 selection and current native human input.
  * No direct caller-supplied voice/receipt, no model rewrite, no manual capsule. */
-export async function executeC94ColdHostTurn({humanInput,selection,sourceHead,hostBridge,hostPublicKey}={}){
+export async function executeC94ColdHostTurn({humanInput,selection,sourceHead,hostBridge,hostPublicKey,githubConnector}={}){
  if(typeof humanInput!=='string'||!humanInput.trim()||Buffer.byteLength(humanInput,'utf8')>600||
    selection?.status!=='EXPERIMENTAL_SELECTED_NOT_RUNNING'||
    selection.selected_mode!=='EXPERIMENTAL'||
    typeof sourceHead!=='string'||!/^[a-f0-9]{40}$/.test(sourceHead))return stop('CURRENT_HUMAN_INGRESS_C72_OR_SOURCE_HEAD');
- const github=createC94GitHubHTTPS();
- if(!github)return stop('GITHUB_ACTIONS_TOKEN_UNAVAILABLE_IN_NODE');
- const handoff=await buildC94C84AutoPackage({sourceHead,client:github});
- if(handoff.status!=='C94_C84_PACKAGE_REOPENED_C90_NOT_EXECUTED')
+ const github=githubConnector?null:createC94GitHubHTTPS();
+ if(!github&&!githubConnector)return stop('HOST_GITHUB_CONNECTOR_TO_NODE_HOOK_NOT_INSTALLED_OR_TOKEN_MISSING');
+ const handoff=githubConnector
+  ?await acquireC95FromInstalledBridge({sourceHead,hostBridge:githubConnector})
+  :await buildC94C84AutoPackage({sourceHead,client:github});
+ if(!['C94_C84_PACKAGE_REOPENED_C90_NOT_EXECUTED','C95_CONNECTOR_BYTES_IN_NODE_VERIFIED_NOT_OWNER_EXECUTED'].includes(handoff.status))
   return stop(handoff.first_unclosed_edge||'C94_C84_NOT_BUILT');
  let bytes;try{bytes=fs.readFileSync(handoff.package_path);}catch{return stop('C84_PACKAGE_READBACK_UNAVAILABLE');}
  if(hash(bytes)!==handoff.package_sha256)return stop('C84_PACKAGE_READBACK_DRIFT');

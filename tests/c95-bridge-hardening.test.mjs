@@ -55,3 +55,15 @@ test('Node HTTPS transport blocks all repository endpoints outside exact C77 C84
  const x=makeSyntheticGitHub();const r=await acquireC94Artifact(x.client,{sourceHead:x.head,runLimit:1000});
  assert.equal(r.status,'C94_AUTO_HANDOFF_STOP');assert.equal(r.first_unclosed_edge,'GITHUB_RUN_LIMIT_UNSAFE');
 });
+
+test('tokenless cold host calls installed connector before attempting C93 owner',async()=>{
+ const x=makeSyntheticGitHub();
+ const {executeC94ColdHostTurn}=await import('../host/c94-cold-host-turn.mjs');
+ const r=await executeC94ColdHostTurn({sourceHead:x.head,
+  humanInput:'Definisci la tua natura operativa',selection:{status:'EXPERIMENTAL_SELECTED_NOT_RUNNING',selected_mode:'EXPERIMENTAL'},
+  githubConnector:installed(x)});
+ assert.equal(r.status,'C94_TURN_STOP');
+ assert.notEqual(r.first_unclosed_edge,'GITHUB_ACTIONS_TOKEN_UNAVAILABLE_IN_NODE');
+ assert.notEqual(r.first_unclosed_edge,'HOST_GITHUB_CONNECTOR_TO_NODE_HOOK_NOT_INSTALLED_OR_TOKEN_MISSING');
+ assert.equal(r.active,false);
+});

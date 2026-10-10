@@ -1,7 +1,7 @@
 # C95 — C94 lossless conservation, actual C81 source qualification and carrier adapter
 
 Base for transplant: GitHub main@11eecb86f08ebb90aa228d55c1e7f50da890f79d (PR #98 merged).
-This bundle has the **unchanged five original C94 Git commits as its first five ancestors**. Their full content, including the 108226-byte C77 historic ZIP, is preserved in the local Git bundle and release archive. C95 changes are later descendants and never rewrite that history.
+The local lossless bundle retains all five original C94 commit IDs and history. The remote GitHub transplant **reparents** five equivalent semantic C94 commits to the actual post-PR98 main; commit SHAs change by design, but all 25 original C94 final Git blob IDs (including the 108226-byte C77 historical ZIP) are identical. Subsequent C95 commits are later descendants and preserve the original source in their ancestry.
 
 ## Non-trivial discovered gaps
 - C94 C84 assembly originally ended with `c81_executed:false` and never ran C85, C81 or C90-source before publishing. C95 now executes the **actual existing repository verifiers** before writing the packet.
