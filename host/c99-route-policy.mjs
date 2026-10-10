@@ -50,6 +50,15 @@ export function gateC99ExperimentalEntry(x={}){
  const s=readC99SelectionFields(selection);
  if(s.selected_mode!=='EXPERIMENTAL'||s.status!=='EXPERIMENTAL_SELECTED_NOT_RUNNING')
   return stop('C72_OR_SOURCE_CURRENT_INPUT_REQUIRED');
+ // C72 mode selection is pinned to the very same frozen source epoch.
+ // A caller-supplied mode/status pair is only a shape hint, never a receipt.
+ let epoch;
+ try{epoch=selection&&typeof selection==='object'?
+   Object.getOwnPropertyDescriptor(selection,'source_head'):undefined;}
+ catch{return stop('C99_SELECTION_SOURCE_EPOCH_DESCRIPTOR');}
+ if(epoch&&!Object.hasOwn(epoch,'value'))return stop('C99_SELECTION_SOURCE_EPOCH_ACCESSOR');
+ if(epoch&&epoch.value!==undefined&&epoch.value!==sourceHead)
+  return stop('C72_SELECTION_SOURCE_EPOCH_MISMATCH');
  if(typeof humanInput!=='string'||!humanInput.trim()||
     Buffer.byteLength(humanInput,'utf8')>600||
     Buffer.from(humanInput,'utf8').toString('utf8')!==humanInput)
