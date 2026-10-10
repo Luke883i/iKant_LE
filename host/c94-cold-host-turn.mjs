@@ -15,7 +15,7 @@ export async function executeC94ColdHostTurn({humanInput,selection,sourceHead,ho
    selection.selected_mode!=='EXPERIMENTAL'||
    typeof sourceHead!=='string'||!/^[a-f0-9]{40}$/.test(sourceHead))return stop('CURRENT_HUMAN_INGRESS_C72_OR_SOURCE_HEAD');
  const github=githubConnector?null:createC94GitHubHTTPS();
- if(!github&&!githubConnector)return stop('HOST_GITHUB_CONNECTOR_TO_NODE_HOOK_NOT_INSTALLED_OR_TOKEN_MISSING');
+ if(!github&&!githubConnector)return stop('GITHUB_ACTIONS_TOKEN_UNAVAILABLE_IN_NODE');
  const handoff=githubConnector
   ?await acquireC95FromInstalledBridge({sourceHead,hostBridge:githubConnector})
   :await buildC94C84AutoPackage({sourceHead,client:github});

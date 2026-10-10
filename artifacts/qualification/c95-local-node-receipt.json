@@ -21,5 +21,11 @@
   "endpoint_allowlist_negative_cases": 6,
   "source_transport_allowlist_hardened": true,
   "physical_connector_branch_executed_in_node_test": true,
-  "host_bridge_native_origin_independently_attested": false
+  "host_bridge_native_origin_independently_attested": false,
+  "falsification_regression_found": {
+    "before": "C94_LEGACY_MISSING_TOKEN_STOP_CHANGED",
+    "after": "C94_LEGACY_STOP_PRESERVED"
+  },
+  "c95_native_delivery_attested": false,
+  "semantic_model_calls": 0
 }
