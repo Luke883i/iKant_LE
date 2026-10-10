@@ -1,3 +1,5 @@
+import {isProxy} from 'node:util/types';
+
 /** C99 pure runtime path policy: source structure is NOT native/host proof.
  * This module has no IO, provider calls, writer, owner identity or status promotion.
  */
@@ -11,7 +13,8 @@ const stop=(edge)=>Object.freeze({
 });
 const prop=(o,k)=>{
  try {
-  if(!o||typeof o!=='object')return undefined;
+  if(!o||typeof o!=='object'||isProxy(o)||Array.isArray(o)||
+     Object.getPrototypeOf(o)!==Object.prototype)return undefined;
   const d=Object.getOwnPropertyDescriptor(o,k);
   return d&&Object.hasOwn(d,'value')?d.value:undefined;
  }catch{return undefined;}
@@ -26,7 +29,8 @@ export function readC99SelectionFields(selection){
 // the outer envelope must never execute before the original C84 checks.
 const root=(x,keys)=>{
  try {
-  if(!x||typeof x!=='object')return null;
+  if(!x||typeof x!=='object'||isProxy(x)||Array.isArray(x)||
+     Object.getPrototypeOf(x)!==Object.prototype)return null;
   const v={};
   for(const k of keys){
    const d=Object.getOwnPropertyDescriptor(x,k);
@@ -81,7 +85,7 @@ export function gateC99SourceHandoff(x={}){
  const commit=prop(sourceProof,'commitBase64');
  const trees=prop(sourceProof,'treeObjects');
  if(typeof commit!=='string'||!commit.length||commit.length>2_000_000||
-  !Array.isArray(trees)||trees.length<1||trees.length>256)
+  !Array.isArray(trees)||isProxy(trees)||trees.length<1||trees.length>256)
   return stop('C81_VERIFIED_SOURCE_PROOF_REQUIRED');
  // Shape-only: actual proof verification remains solely with C81.
  return Object.freeze({schema:'ikant-le-c99-route-gate/v1',

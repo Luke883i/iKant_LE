@@ -38,3 +38,25 @@ test('C98 real entry does not touch a malicious root sourceProof accessor',async
  assert.equal(r.first_unclosed_edge,'C99_INPUT_ENVELOPE_ACCESSOR');
  assert.equal(calls,0);
 });
+
+test('C99 refuses JavaScript Proxy on root envelope before executing proxy traps',()=>{
+ let traps=0;
+ const p=new Proxy(b(),{getOwnPropertyDescriptor(t,k){traps++;return Reflect.getOwnPropertyDescriptor(t,k)},
+  getPrototypeOf(t){traps++;return Reflect.getPrototypeOf(t)}});
+ const r=gateC99ExperimentalEntry(p);
+ assert.equal(r.status,'C99_STOP');assert.equal(r.first_unclosed_edge,'C99_INPUT_ENVELOPE_ACCESSOR');
+ assert.equal(traps,0);
+});
+test('C99 refuses Proxy C72 selection and raw Git proof without executing traps',()=>{
+ let traps=0;const poison=t=>new Proxy(t,{
+  getOwnPropertyDescriptor(o,k){traps++;return Reflect.getOwnPropertyDescriptor(o,k)},
+  getPrototypeOf(o){traps++;return Reflect.getPrototypeOf(o)},
+  get(o,k){traps++;return Reflect.get(o,k)}});
+ const s=poison({selected_mode:'EXPERIMENTAL',status:'EXPERIMENTAL_SELECTED_NOT_RUNNING',source_head:H});
+ assert.equal(gateC99ExperimentalEntry({...b(),selection:s}).status,'C99_STOP');
+ assert.equal(gateC99SourceHandoff({sourceHead:H,manifestSha256:M,
+  sourceProof:poison({commitBase64:'x',treeObjects:[{}]})}).status,'C99_STOP');
+ assert.equal(gateC99SourceHandoff({sourceHead:H,manifestSha256:M,
+  sourceProof:{commitBase64:'x',treeObjects:poison([{}])}}).status,'C99_STOP');
+ assert.equal(traps,0);
+});
