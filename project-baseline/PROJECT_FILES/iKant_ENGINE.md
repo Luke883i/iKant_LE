@@ -10,3 +10,5 @@ NO THIRD RESOURCE REQUIRED TO INSTALL L0: one Project Prompt and exactly 3 MD. B
 NEGATIVE CAPABILITIES: do not try local Node DNS to github.com, git clone, shell git, curl, wget or GitHub artifact zip download in the known-isolated container; no retry of identical DNS/HTTP 400. GitHub connector APIs and separately authorized host file transfers are different physical edges. Do not prompt the user for a server, OAuth, tunnel, ZIP or installed app merely to obtain L0; these are optional paths for higher guarantees.
 
 Reuse C72/C80 field success policy. 100,000 synthetic model cases prove neither compliance in actual Edu chats nor H95. One owner, one writer, one immutable epoch per human input; read-only independent source probes can run concurrently when authorized. Never treat chat memory as owner state.
+
+C99 WIRED PATH: C98 offline entry -> `host/c99-route-policy.mjs#gateC99ExperimentalEntry` -> C98 existing-C84 entry / `gateC99SourceHandoff` -> actual C81+C84 owner only with host bytes. Existing C59/C73 canonical is a separate non-fallback route. Callback shape is not authenticated provenance. No Node network.
