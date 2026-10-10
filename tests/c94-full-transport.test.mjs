@@ -37,7 +37,7 @@ function treeFor(node,map){
  const raw=Buffer.concat(entries.map(e=>Buffer.concat([Buffer.from(`${e.type==='tree'?'40000':'100644'} ${e.path}\0`),Buffer.from(e.sha,'hex')])));
  const id=gitSha('tree',raw);map.set(id,{sha:id,tree:entries,truncated:false});return id;
 }
-function makeSyntheticGitHub(){
+export function makeSyntheticGitHub(){
  const b=unpackC94Zip(fs.readFileSync(zipPath));const manifest=JSON.parse(b.get('c77-manifest.json').toString('utf8'));
  const sourceFiles=manifest.files.filter(f=>f.original_source_blob_sha1);
  const nodes={};const buildProof=JSON.parse(b.get('contracts/c77-cx-build-proof.json').toString('utf8'));
@@ -73,7 +73,7 @@ test('real C77 original source bytes can travel through automatic synthetic GitH
   const out=await buildC94C84AutoPackage({sourceHead:x.head,client:x.client,parentDir:dir});
   assert.equal(out.status,'C94_C84_PACKAGE_REOPENED_C90_NOT_EXECUTED',JSON.stringify(out));
   assert.equal(out.staged_files,35);assert.equal(out.physical_download_and_reopen,true);
-  assert.equal(out.c81_executed,false);assert.equal(out.native_chat_delivery_attested,false);
+  assert.equal(out.c81_executed,true);assert.equal(out.native_chat_delivery_attested,false);
   assert.ok(x.getCalls()>5);
   const raw=fs.readFileSync(out.package_path),p=JSON.parse(raw.toString());
   assert.equal(sha(raw),out.package_sha256);assert.equal(p.sourceProof.treeObjects.length,6);

@@ -7,6 +7,9 @@ import {validateC94C77Archive,stageC94C77Archive} from './c94-zip-c77.mjs';
 import {assembleC94GitProof} from './c94-git-api-proof.mjs';
 import {verifyC94C77Derivation} from './c94-derived-c77-proof.mjs';
 import {verifyC94CxAnchorReachability} from './c94-cx-anchor-proof.mjs';
+import {verifyC81SourceReachability} from './c81-git-source-reachability.mjs';
+import {verifyC85TransferredPackage} from './c85-physical-handoff.mjs';
+import {verifyC90Source} from './c90-source-boundary.mjs';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 const H40=/^[a-f0-9]{40}$/;
 const stop=e=>({schema:'ikant-le-c94-auto-handoff/v1',status:'C94_AUTO_HANDOFF_STOP',
@@ -74,6 +77,9 @@ export async function acquireC94Artifact(client,{sourceHead,runLimit=30}={}){
    const zip=await client.bytes(`/actions/artifacts/${artifact.id}/zip`);
    const checked=validateC94C77Archive(zip,{sourceHead});
    if(checked.status!=='C94_C77_CONTENT_VALID_NOT_GITHUB_ORIGIN')return stop(checked.first_unclosed_edge||'ARTIFACT_SOURCE_DRIFT');
+   // Freeze the ref over transport: a main-HEAD race cannot silently launder stale bytes.
+   const finalRef=await client.json('/git/ref/heads/main');
+   if(finalRef?.ref!=='refs/heads/main'||finalRef.object?.sha!==sourceHead)return stop('HOST_GITHUB_REF_CHANGED_DURING_TRANSPORT');
    return {schema:'ikant-le-c94-actions-handoff/v1',status:'C94_ACTIONS_ARTIFACT_BYTES_OBSERVED',
     artifactBytes:zip,artifact_id:artifact.id,run_id:run.id,sourceHead,
     artifact_sha256:sha(zip),manifest_sha256:checked.manifest_sha256,
@@ -116,6 +122,26 @@ export async function buildC94C84AutoPackage({sourceHead,client,parentDir=os.tmp
   active:false,source_origin_attested:false,native_chat_delivery_attested:false,authority:0};
  const raw=Buffer.from(JSON.stringify(packet)+'\n','utf8');
  if(raw.length>6_000_000){fs.rmSync(staged.output_dir,{recursive:true,force:true});return stop('C84_PACKET_TOO_LARGE');}
+ // C95: run the actual C85/C81/C90 source validators before publishing C84.
+ // Git Merkle consistency is NOT an attestation of origin; current-turn C90 owner
+ // execution still happens later inside C93/C92, using this exact frozen package.
+ const pin={packageBase64:raw.toString('base64'),expectedPackageSha256:sha(raw),
+  sourceHead,expectedManifestSha256:proof.manifest_sha256};
+ const c85=verifyC85TransferredPackage(pin);
+ if(c85.status!=='C85_PACKAGE_SAMEHASH_VERIFIED_NOT_MATERIALIZED'){
+  fs.rmSync(staged.output_dir,{recursive:true,force:true});return stop('C85_ACTUAL_SOURCE_'+(c85.first_unclosed_edge||'INVALID'));
+ }
+ const c81=verifyC81SourceReachability({expectedSourceHead:sourceHead,
+  expectedManifestSha256:proof.manifest_sha256,manifestBase64:packet.manifestBase64,
+  commitBase64:proof.commitBase64,treeObjects:proof.treeObjects});
+ if(c81.status!=='C81_GIT_REACHABILITY_VERIFIED'){
+  fs.rmSync(staged.output_dir,{recursive:true,force:true});return stop('C81_ACTUAL_EXECUTION_'+(c81.first_unclosed_edge||'INVALID'));
+ }
+ const c90source=verifyC90Source({packageBase64:pin.packageBase64,packageSha256:pin.expectedPackageSha256,
+  sourceHead,manifestSha256:pin.expectedManifestSha256});
+ if(c90source.status!=='C90_SOURCE_REACHABLE_NOT_HOST_ORIGIN_ATTESTED'){
+  fs.rmSync(staged.output_dir,{recursive:true,force:true});return stop('C90_SOURCE_GATE_'+(c90source.first_unclosed_edge||'INVALID'));
+ }
  const output=path.join(staged.output_dir,'c84-source-package.json');
  try{const fd=fs.openSync(output,'wx',0o600);try{if(fs.writeSync(fd,raw)!==raw.length)throw Error('SHORT_WRITE');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
   if(!fs.readFileSync(output).equals(raw))throw Error('C84_REOPEN');}
@@ -126,6 +152,7 @@ export async function buildC94C84AutoPackage({sourceHead,client,parentDir=os.tmp
   github_actions_artifact_id:acquired.artifact_id,github_actions_run_id:acquired.run_id,
   physical_download_and_reopen:true,git_raw_objects_reconstructed:true,
   c71_generated_derivation_verified:true,cx_anchor_git_reachability_independently_verified:true,
-  c81_executed:false,host_origin_authenticated:false,c90_executed:false,
+  c81_executed:true,c85_executed:true,c90_source_gate_executed:true,
+  c81_git_object_reachability_verified:true,host_origin_authenticated:false,c90_executed:false,
   native_chat_delivery_attested:false,active:false,authority:0};
 }
