@@ -22,8 +22,29 @@ export function readC99SelectionFields(selection){
  return Object.freeze({selected_mode,status});
 }
 /** Source-bound host entry preflight, before filesystem or C84 side effects. */
-export function gateC99ExperimentalEntry({sourceHead,selection,humanInput,
- readC77Member,readC77Archive,nodeGithubNetworkRequested=false}={}){
+// Only data-descriptor values may cross the C99 host ingress. An accessor in
+// the outer envelope must never execute before the original C84 checks.
+const root=(x,keys)=>{
+ try {
+  if(!x||typeof x!=='object')return null;
+  const v={};
+  for(const k of keys){
+   const d=Object.getOwnPropertyDescriptor(x,k);
+   if(d&&!Object.hasOwn(d,'value'))return null;
+   v[k]=d?.value;
+  }
+  return v;
+ }catch{return null;}
+};
+// Returns only data-descriptor values; no caller object is used after admission.
+export const readC99EntryData=x=>root(x,[
+ 'humanInput','sourceHead','manifest','manifestBase64','manifestSha256',
+ 'selection','sourceProof','readC77Member','readC77Archive','nodeGithubNetworkRequested']);
+export function gateC99ExperimentalEntry(x={}){
+ const f=root(x,['sourceHead','selection','humanInput','readC77Member','readC77Archive','nodeGithubNetworkRequested']);
+ if(!f)return stop('C99_INPUT_ENVELOPE_ACCESSOR');
+ const {sourceHead,selection,humanInput,readC77Member,readC77Archive}=f;
+ const nodeGithubNetworkRequested=f.nodeGithubNetworkRequested===undefined?false:f.nodeGithubNetworkRequested;
  if(nodeGithubNetworkRequested!==false)return stop('CHATGPT_NODE_GITHUB_NETWORK_FORBIDDEN');
  if(!HEAD.test(sourceHead||''))return stop('C72_OR_SOURCE_CURRENT_INPUT_REQUIRED');
  const s=readC99SelectionFields(selection);
@@ -42,7 +63,10 @@ export function gateC99ExperimentalEntry({sourceHead,selection,humanInput,
   callback_shape_only:true,source_origin_attested:false,
   native_event_attested:false,owner_executed:false,active:false,authority:0});
 }
-export function gateC99SourceHandoff({sourceHead,manifestSha256,sourceProof}={}){
+export function gateC99SourceHandoff(x={}){
+ const f=root(x,['sourceHead','manifestSha256','sourceProof']);
+ if(!f)return stop('C99_INPUT_ENVELOPE_ACCESSOR');
+ const {sourceHead,manifestSha256,sourceProof}=f;
  if(!HEAD.test(sourceHead||'')||!SHA.test(manifestSha256||''))
   return stop('FROZEN_HEAD_AND_MANIFEST_REQUIRED');
  const commit=prop(sourceProof,'commitBase64');

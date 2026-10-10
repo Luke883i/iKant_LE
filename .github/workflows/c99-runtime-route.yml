@@ -27,6 +27,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: C99 and existing C98 negative regressions
-        run: node --test tests/c99-route-policy.test.mjs tests/c98-offline-negative.test.mjs tests/c98-entry-negative.test.mjs
+        run: node --test tests/c99-route-policy.test.mjs tests/c99-root-hostile.test.mjs tests/c99-project-start.test.mjs tests/c98-offline-negative.test.mjs tests/c98-entry-negative.test.mjs
       - name: 100000 local semantic mutations through real C98 and C99 gates
         run: node scripts/c99-falsify-100k.mjs
+      - name: 100000 root-envelope accessor attacks
+        run: node scripts/c99-root-hostile-100k.mjs

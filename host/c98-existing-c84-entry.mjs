@@ -1,4 +1,4 @@
-import {readC99SelectionFields,gateC99SourceHandoff} from './c99-route-policy.mjs';
+import {readC99SelectionFields,gateC99SourceHandoff,readC99EntryData} from './c99-route-policy.mjs';
 import crypto from 'node:crypto';
 import {makeC98C82Carrier} from './c98-c82-connector-port.mjs';
 import {preflightC98ChatGPTOffline} from './c98-chatgpt-offline-boundary.mjs';
@@ -13,9 +13,13 @@ const stop=e=>({schema:'ikant-le-c98-host-interop/v1',status:'C98_STOP',
  * This entry is inert until an actual host explicitly registers readC77Member
  * and provides same-turn C72 selection, Git proof and current human input.
  */
-export async function executeC98ExistingC84({humanInput,sourceHead,manifest,
-  manifestBase64,manifestSha256,selection,sourceProof,readC77Member,readC77Archive,
-  nodeGithubNetworkRequested=false}={}){
+export async function executeC98ExistingC84(args={}){
+ const safe=readC99EntryData(args);
+ if(!safe)return stop('C99_INPUT_ENVELOPE_ACCESSOR');
+ const {humanInput,sourceHead,manifest,manifestBase64,manifestSha256,
+   selection,sourceProof,readC77Member,readC77Archive}=safe;
+ const nodeGithubNetworkRequested=safe.nodeGithubNetworkRequested===undefined?
+   false:safe.nodeGithubNetworkRequested;
  const offline=preflightC98ChatGPTOffline({humanInput,sourceHead,selection,
    readC77Member,readC77Archive,nodeGithubNetworkRequested});
  if(offline.status!=='C98_CALLBACK_SHAPE_READY_NOT_HOST_AUTHENTICATED'){
