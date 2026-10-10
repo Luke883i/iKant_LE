@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {makeC92LivePorts} from './c92-live-provider.mjs';
+import {checkC93SourceEpoch} from './c93-source-epoch.mjs';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 const H40=/^[0-9a-f]{40}$/,H64=/^[0-9a-f]{64}$/;
 const STOP=edge=>({schema:'ikant-le-c92-owner-surface/v1',status:'C92_STOP',
@@ -12,18 +13,18 @@ const STOP=edge=>({schema:'ikant-le-c92-owner-surface/v1',status:'C92_STOP',
  surface_a:null});
 const prohibited=new Set(['voice','hostCandidate','runtimeReceipt','ownerReceipt',
  'runtime_computed_answer','providerReceipt','modelOutput','reviewResult','active']);
-export const C92_MAIN_BASE='5fa8a7adb82e3a18cf0cde2a4c3202ddd93a388c';
+// No compile-time main SHA. The C84 bytes freeze the epoch per request; C90 verifies C85/C81.
+export const C92_MAIN_BASE=null;
 export function checkC92Request(q){
  if(!q||typeof q!=='object'||Array.isArray(q)||
   (Object.keys(q).some(k=>prohibited.has(k))||
    Object.keys(q).sort().join(',')!==['sourceHead','humanInput','inputSha256',
      'manifestSha256','packageSha256','packageBase64','selection'].sort().join(',')))return 'FORGED_OUTPUT_INPUT';
- if(q.sourceHead!==C92_MAIN_BASE||!H40.test(q.sourceHead))return 'FROZEN_HEAD_REQUIRED';
+ if(!H40.test(q.sourceHead||''))return 'FROZEN_HEAD_REQUIRED';
  if(typeof q.humanInput!=='string'||!q.humanInput.trim()||
   Buffer.byteLength(q.humanInput,'utf8')>600||!H64.test(q.inputSha256)||
   sha(Buffer.from(q.humanInput,'utf8'))!==q.inputSha256)return 'CURRENT_INPUT_IDENTITY';
- if(!H64.test(q.manifestSha256)||!H64.test(q.packageSha256)||
-  typeof q.packageBase64!=='string'||q.packageBase64.length<100)return 'C90_SOURCE_PACKAGE_REQUIRED';
+ if(checkC93SourceEpoch(q).status!=='C93_SOURCE_BYTES_BOUND_C81_STILL_REQUIRED')return 'C93_SOURCE_EPOCH_INVALID';
  if(q.selection?.selected_mode!=='EXPERIMENTAL'||
   q.selection?.status!=='EXPERIMENTAL_SELECTED_NOT_RUNNING')return 'VALID_C72_SELECTION_REQUIRED';
  return null;
