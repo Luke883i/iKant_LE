@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: C99 and existing C98 negative regressions
-        run: node --test tests/c99-route-policy.test.mjs tests/c99-manual-c77-evidence.test.mjs tests/c99-root-hostile.test.mjs tests/c99-project-start.test.mjs tests/c98-offline-negative.test.mjs tests/c98-entry-negative.test.mjs
+        run: node --test tests/c99-route-policy.test.mjs tests/c99-manual-c77-evidence.test.mjs tests/c98-file-backed-c84-entry.test.mjs tests/c99-root-hostile.test.mjs tests/c99-project-start.test.mjs tests/c98-offline-negative.test.mjs tests/c98-entry-negative.test.mjs
       - name: C99 forensic v5 pinned-epoch red-green regressions
         run: node --test tests/c99-v5-epoch-gate.test.mjs
       - name: 100000 local semantic mutations through real C98 and C99 gates

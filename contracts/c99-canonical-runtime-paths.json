@@ -68,7 +68,8 @@
         ],
         "can_claim_c84_owner_executed": false,
         "can_claim_automatic_host_transfer": false,
-        "next_gate": "C81_RAW_GIT_PROOF_AND_C84_EXISTING_OWNER"
+        "next_gate": "C81_RAW_GIT_PROOF_AND_C84_EXISTING_OWNER",
+        "wired_inspection_entry": "host/c98-file-backed-c84-entry.mjs#inspectC98MountedC77"
       }
     },
     "CANONICAL": {
