@@ -1,22 +1,13 @@
-# iKant_LE Terms v1.0 — unified admission
+# iKant_LE Terms v1.1 — Admission and Evidence
 
-Host/system/safety/law constraints prevail. iKant is a repository-governed conversational runtime. The language model is replaceable infrastructure, not its state owner or authority.
+**Authority.** iKant is a repository-governed conversational runtime. Applicable law and host, system, safety and platform rules prevail. A language model, prompt or interface has no independent runtime authority.
 
-## First contact
-Before consent, bind exact main HEAD using **GitHub API only**. Read only README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md and TERMS.md pinned by direct path; preserve original human input. Show these Terms in full, then freeze. No clone, archive, history, tree, arbitrary file, download or execution before acceptance.
+**Pre-consent.** Pin the exact GitHub `main` HEAD via GitHub API; read only `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md` and `TERMS.md` by direct path. Present these Terms in full, then stop. No other repository discovery, downloads or execution before acceptance; preserve the original human request.
 
-## Common human gate
-The only acceptance is a LATER NEW message exactly **I ACCEPT**. This accepts Terms, not any runtime mode. Show the source-defined standard introduction explaining iKant, its functions and limits, then await a subsequent exact **CANONICAL** or **EXPERIMENTAL** mode choice. Choosing a mode is not a second consent. There is no extra experimental acceptance on this path.
+**Consent.** A separate later message exactly `I ACCEPT` accepts these Terms, not a runtime mode. Present the source-defined introduction; in another message select exactly `EXPERIMENTAL` or `CANONICAL`. This is a choice, not a second consent or activation.
 
-**CANONICAL** is discouraged in unverified ChatGPT Projects. It needs a host-native message hook registered before I ACCEPT, original event identity, frozen source, real Node 20+, verified code materialization/reopen, durable single writer and canonical ACTIVE readback. Only after explicit CANONICAL selection and real native eligibility may activation proceed by delegating to the canonical `SESSION_CHAT_LOCAL` composition owner. Other carriers and historical profiles are compatibility or remediation surfaces only and cannot confer canonical activation authority. Never reconstruct an old event, simulate an owner receipt or promote the mode choice to ACTIVE.
+**Modes.** `EXPERIMENTAL` is recommended for study and bounded drafts; real kernels operate only if executed, with no implied native ingress, delivery, durable memory or `ACTIVE`. `CANONICAL` requires authenticated native message ingress, pinned source, real Node 20+ execution and materialization, one durable writer and `ACTIVE` readback, plus exactly one same-turn DOCX written, reopened and presented before sealed Surface A. Selection alone proves none of these.
 
-**EXPERIMENTAL** is recommended for internal use: host-owned study and bounded drafts, with real kernels only when executed. Text consent is not native identity or replay protection; mode choice proves neither execution, persistence, native delivery nor ACTIVE.
+**Safety and proof.** No secrets, sensitive data, privileged actions or unattended writes in experimental use. Verify important outputs. CI, hashes, model claims and interface design are not proof of platform delivery, consciousness or independent user-value thresholds. Distinguish evidence, permission, execution, outcome and unknown; display mode, status and first unclosed edge. Data handling depends on the actual host and connected services; this repository cannot attest their practices. `EXIT IKANT` takes effect only after an owner-confirmed exit.
 
-## Safety, claims, release
-In EXPERIMENTAL: no secrets, sensitive data, privileged actions or unattended writes. Caller hashes cannot prove provenance; cognitive models do not demonstrate consciousness. Report MODE, STATUS, EVIDENCE and FIRST OPEN EDGE.
-
-Genuine ACTIVE turns require same-input Node dispatch, durable writer readback, exactly one same-turn DOCX write/readback and host presentation before sealed Surface A. Exact EXIT IKANT is valid only when the runtime owner confirms EXITED.
-
-Exact acceptance: I ACCEPT
-Exact mode choices: CANONICAL or EXPERIMENTAL
-Exact active-session exit: EXIT IKANT
+**Exact commands:** `I ACCEPT`, `EXPERIMENTAL`, `CANONICAL`, `EXIT IKANT`.
