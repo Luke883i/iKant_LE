@@ -7,7 +7,7 @@ import {makeSyntheticGitHub} from './c94-full-transport.test.mjs';
 import {adaptC95HostConnector,acquireC95FromInstalledBridge} from '../host/c95-host-connector-relay.mjs';
 import {verifyC81SourceReachability} from '../host/c81-git-source-reachability.mjs';
 import {verifyC90Source} from '../host/c90-source-boundary.mjs';
-import {buildC94C84AutoPackage,acquireC94Artifact} from '../host/c94-auto-artifact-carrier.mjs';
+import {buildC94C84AutoPackage,acquireC94Artifact,createC94GitHubHTTPS} from '../host/c94-auto-artifact-carrier.mjs';
 function installed(x){return {readGithubJSON:p=>x.client.json(p),readGithubArtifactBase64:async({artifact_id})=>({artifact_id,contentBase64:x.archive.toString('base64')})};}
 test('C95 physical host callback generates C84 and executes C85, C81 and C90 source verifier',async()=>{
  const x=makeSyntheticGitHub(),dir=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c95-'));
@@ -46,4 +46,12 @@ test('C94 C84 rejects a modified Git Merkle object even if C77 bytes are identic
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c95-neg-'));
  try{const r=await buildC94C84AutoPackage({sourceHead:x.head,client,parentDir:dir});assert.equal(r.status,'C94_AUTO_HANDOFF_STOP');assert.match(r.first_unclosed_edge,/C81_GIT_OBJECT_PROOF/);}
  finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+
+test('Node HTTPS transport blocks all repository endpoints outside exact C77 C84 allowlist',async()=>{
+ const https=createC94GitHubHTTPS({token:'TESTTOKEN_ONLY_FOR_LOCAL_UNIT'});
+ for(const p of ['/user','/issues','/actions/runs/123/delete','/git/ref/heads/other','/git/trees/../../x'])
+  await assert.rejects(async()=>https.json(p),/UNSAFE_API_PATH/);
+ const x=makeSyntheticGitHub();const r=await acquireC94Artifact(x.client,{sourceHead:x.head,runLimit:1000});
+ assert.equal(r.status,'C94_AUTO_HANDOFF_STOP');assert.equal(r.first_unclosed_edge,'GITHUB_RUN_LIMIT_UNSAFE');
 });

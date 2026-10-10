@@ -1,6 +1,6 @@
 {
   "schema": "ikant-le-c95-local-proofs/v1",
-  "node_tests_passed": 28,
+  "node_tests_passed": 29,
   "node_tests_failed": 0,
   "connector_mutation_cases": 100000,
   "connector_mutation_survivors": 0,
@@ -17,5 +17,7 @@
   "github_actions_remote_binary_fetches": 0,
   "native_platform_deliveries": 0,
   "lossless_c94_original_commit": "28f42ceaeee7148ed136001db61aa7e4c7249753",
-  "local_original_fixture_sha256": "127c1df6c36d5b9d185a4e0d4cae497f77a1bb8779f9aa060a2da14b377df3d3"
+  "local_original_fixture_sha256": "127c1df6c36d5b9d185a4e0d4cae497f77a1bb8779f9aa060a2da14b377df3d3",
+  "endpoint_allowlist_negative_cases": 6,
+  "source_transport_allowlist_hardened": true
 }

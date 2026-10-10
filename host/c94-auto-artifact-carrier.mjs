@@ -18,6 +18,7 @@ const stop=e=>({schema:'ikant-le-c94-auto-handoff/v1',status:'C94_AUTO_HANDOFF_S
 const REPO='Luke883i/iKant_LE';
 const MAX=5_000_000;
 const artifactName='c77-qualified-standalone-microcapsule';
+const C95_GITHUB_API_ALLOWLIST=/^\/(?:git\/ref\/heads\/main|git\/commits\/[a-f0-9]{40}|git\/trees\/[a-f0-9]{40}|actions\/workflows\/c77-standalone-capsule\.yml\/runs\?branch=main&status=completed&per_page=(?:[1-9]|[1-4][0-9]|50)|actions\/runs\/[1-9][0-9]*\/artifacts\?per_page=100)$/;
 function domainOK(host){return host==='api.github.com'||host.endsWith('.blob.core.windows.net')||host==='productionresultssa0.blob.core.windows.net';}
 /** Actual Node HTTPS only: fixed source host, no arbitrary URL from model/user,
  * redirect token stripped; TLS certificate verification remains ON. */
@@ -49,7 +50,7 @@ export function createC94GitHubHTTPS({token=process.env.IKANT_C94_GITHUB_TOKEN}=
   });
  };
  return Object.freeze({
-  async json(endpoint){if(typeof endpoint!=='string'||!endpoint.startsWith('/'))throw Error('UNSAFE_API_PATH');
+  async json(endpoint){if(typeof endpoint!=='string'||!C95_GITHUB_API_ALLOWLIST.test(endpoint))throw Error('UNSAFE_API_PATH');
    const r=await request(`https://api.github.com/repos/${REPO}${endpoint}`);
    try{return JSON.parse(r.toString('utf8'));}catch{throw Error('GITHUB_API_JSON');}},
   async bytes(endpoint){if(typeof endpoint!=='string'||!endpoint.startsWith('/actions/artifacts/'))throw Error('UNSAFE_ARTIFACT_PATH');
@@ -60,6 +61,7 @@ export function createC94GitHubHTTPS({token=process.env.IKANT_C94_GITHUB_TOKEN}=
  * completed matching main run; no stale run, link-only claim or artifact spoofing. */
 export async function acquireC94Artifact(client,{sourceHead,runLimit=30}={}){
  if(!client||!H40.test(sourceHead||''))return stop('GITHUB_HOST_CLIENT_AND_SHA_REQUIRED');
+ if(!Number.isInteger(runLimit)||runLimit<1||runLimit>50)return stop('GITHUB_RUN_LIMIT_UNSAFE');
  try{
   const ref=await client.json('/git/ref/heads/main');
   if(ref.ref!=='refs/heads/main'||ref.object?.sha!==sourceHead)return stop('HOST_GITHUB_REF_HEAD_DRIFT');
