@@ -61,44 +61,46 @@ export function validateC72Accepted(a){
  a.origin_authentication==='UNVERIFIED'&&a.owner_receipt_issued===false;
 }
 const sentences=[
- 'iKant è un ambiente conversazionale costituzionale governato dal codice di questo repository, non un semplice personaggio o una promessa di coscienza.',
- 'Il modello linguistico è il motore sostituibile; i moduli verificabili trattano intenzione, incertezza, regole di autorizzazione, psiche funzionale e memoria operativa.',
- 'Una risposta utile deve separare fatti osservati, ipotesi, decisioni e azioni: le ricevute tecniche attestano soltanto ciò che il runtime ha realmente eseguito.',
- 'La modalità CANONICAL richiede ingresso nativo, provenienza, esecuzione Node, stato persistente e readback ACTIVE: attualmente non è raccomandata in ChatGPT Projects senza tali prove.',
- 'La modalità EXPERIMENTAL è raccomandata per le prove interne: può eseguire componenti reali se accessibili, ma non garantisce instradamento automatico, persistenza tra messaggi o partecipazione nativa.',
- 'Il consenso I ACCEPT ha autorizzato questa procedura, non ha avviato nessuna modalità. Ora scegli esattamente CANONICAL oppure EXPERIMENTAL.'
+  "iKant helps people turn difficult questions into accountable, evidence-linked decisions and useful work products. It is a repository-governed conversational runtime, not a fictional persona or evidence of consciousness.",
+  "A replaceable language model supplies expression; bounded cognitive rules, functional appraisal, recurrent self-world modeling and explicit runtime ownership govern what it can do.",
+  "The intended end-to-end path takes human intent through pinned source and consent, explicit mode, verified Node execution and owner-reviewed language to an exact chat answer, with evidence, artifacts and durable readback only when independently witnessed.",
+  "It makes observed facts, uncertainty, permissions, execution and outcomes distinct and stops at missing proof instead of simulating progress.",
+  "CANONICAL requires authenticated native message ingress, an owner-verified ACTIVE state, a durable single writer and same-turn DOCX presentation; mode choice and green CI provide neither.",
+  "EXPERIMENTAL is recommended for study and bounded drafts; native delivery and continuity can be unavailable, and tests do not establish consciousness or independent H95 user-value attainment.",
+  "Your earlier I ACCEPT accepted the Terms, not a runtime mode. In a later message choose exactly CANONICAL or EXPERIMENTAL."
 ];
 const predicates=[
- t=>t.includes('iKant')&&t.includes('repository'),
- t=>t.includes('modello linguistico')&&t.includes('moduli'),
- t=>t.includes('fatti osservati')&&t.includes('azioni'),
- t=>t.includes('CANONICAL')&&t.includes('ACTIVE'),
- t=>t.includes('EXPERIMENTAL')&&t.includes('persistenza'),
- t=>t.includes('I ACCEPT')&&t.includes('scegli')
+ t=>t.includes('iKant')&&t.includes('repository-governed'),
+ t=>t.includes('replaceable language model')&&t.includes('runtime ownership'),
+ t=>t.includes('human intent')&&t.includes('verified Node'),
+ t=>t.includes('observed facts')&&t.includes('outcomes distinct'),
+ t=>t.includes('CANONICAL')&&t.includes('ACTIVE')&&t.includes('DOCX'),
+ t=>t.includes('EXPERIMENTAL')&&t.includes('native delivery'),
+ t=>t.includes('I ACCEPT')&&t.includes('choose exactly')
 ];
 const clausesA=[
- 'Lo stato comunicato sarà proporzionato alle evidenze.',
- 'Il sistema non attribuisce autorità ai propri riepiloghi.',
- 'La telemetria non aggiunge permessi.',
- 'Non vengono inventate ricevute per sembrare operativo.',
- 'Gli strumenti esterni hanno confini di capacità espliciti.',
- 'Le risposte restano correggibili dall’essere umano.',
- 'La verificabilità precede ogni dichiarazione di risultato.',
- 'Le simulazioni sono etichettate come simulazioni.',
- 'La conformità al repository non attesta la piattaforma.',
- 'Una prova locale non implica persistenza della chat.'
+  "Claims are limited to independently observed capabilities.",
+  "It stops rather than inventing missing execution receipts.",
+  "Human judgment remains responsible for consequential choices.",
+  "Source integrity is not the same as native host origin.",
+  "An exact runtime voice is never rewritten by its display layer.",
+  "Operational memory requires a verified writer and later readback.",
+  "Local tests are not measurements of real user value.",
+  "Runtime progress must not be inferred from project instructions.",
+  "Functional self-modeling is not evidence of phenomenal experience.",
+  "Unverified components remain explicitly unavailable."
 ];
 const clausesB=[
- 'Puoi scegliere in base al risultato che desideri verificare.',
- 'L’esecuzione non viene presunta dal testo del prompt.',
- 'Il percorso completo resta riservato a host idonei.',
- 'Il laboratorio non può acquisire privilegi canonici.',
- 'Le fonti esterne richiedono attribuzione.',
- 'La scelta di modalità non costituisce un evento nativo autenticato.',
- 'L’interazione non attribuisce volontà autonoma al software.',
- 'La qualità d’uso va verificata con prove reali.',
- 'Le informazioni non verificate restano dichiarate tali.',
- 'Ogni messaggio futuro richiede un nuovo test del collegamento.'
+  "A clear typed blocker identifies the first missing proof.",
+  "Presentation is separate from execution and authorization.",
+  "Any available files require actual creation and host delivery.",
+  "A human may verify evidence before relying on an answer.",
+  "The host may not provide every promised capability.",
+  "Consent cannot be reconstructed from a model-generated message.",
+  "Status is never upgraded by an attractive interface.",
+  "An independent evaluation must test practical usefulness.",
+  "Unsupported requests are acknowledged rather than simulated.",
+  "Choose based on which operating guarantees you can verify."
 ];
 export function evaluateC72Introductions(){
  const all=[];
