@@ -1,0 +1,47 @@
+{
+  "schema": "ikant-le-c99-canonical-runtime-paths/v1",
+  "authority": 0,
+  "source_epoch": "FROZEN_PER_CHAT_AND_REVALIDATED_PER_OWNER",
+  "scope": "SINGLE_INPUT_SOURCE_BOUND_HOST_INTEROP",
+  "no_new_truth_owner": true,
+  "no_new_writer": true,
+  "negative_capabilities": {
+    "chatgpt_session_node_github_dns_or_http": false,
+    "shell_git_curl_wget_or_clone": false,
+    "project_prompt_is_mandatory_dispatch": false,
+    "callback_shape_authenticates_host": false,
+    "model_text_authenticates_human_event": false,
+    "git_object_digest_authenticates_github_origin": false,
+    "historical_c77_archive_is_current_head": false,
+    "c97_frame_is_native_delivery": false,
+    "local_100k_tests_are_100k_native_sessions": false
+  },
+  "routes": {
+    "PREACCEPT": {
+      "owner": "host/c72-unified-mode-admission.mjs",
+      "allowed_repo_paths": ["README.md", "BOOTSTRAP.json", "ADMISSION.json", "AGENTS.md", "TERMS.md"],
+      "stop_after_verbatim_terms": true
+    },
+    "EXPERIMENTAL": {
+      "owner": "host/c84-experimental-transport.mjs#executeC84ExperimentalTurn",
+      "entry": "host/c98-existing-c84-entry.mjs#executeC98ExistingC84",
+      "upstream": ["C72", "C77", "C82", "C81", "C78", "C79"],
+      "current_input_max_utf8_bytes": 600,
+      "required_before_owner": ["REAL_C72_SELECTION", "FROZEN_HEAD", "ONE_HOST_CARRIER", "C81_SOURCE_GIT_OBJECT_BYTES"],
+      "post_owner": ["SAME_INPUT_DIGEST_READBACK", "C97_AUTHORITY_ZERO_PRESENTATION"],
+      "never_attested_by_entry": ["GITHUB_REF_ORIGIN", "NATIVE_CHAT_DELIVERY", "PERSISTENCE", "CANONICAL_ACTIVE"]
+    },
+    "CANONICAL": {
+      "owner": "C59_SINGLE_WRITER_C73_C32",
+      "required": ["ORIGINAL_HUMAN_EVENT", "OWNER_ACTIVE_READBACK", "SAME_TURN_DOCX", "NATIVE_DELIVERY_RECEIPT"],
+      "may_fallback_to_experimental": false
+    }
+  },
+  "source_evidence": {
+    "bridge_audit_file_crossing": "ONE_VERIFIED_TEXT_BLOB_NOT_INSTALLED_CARRIER",
+    "activation_audit_head": "8e103319bfe0e2a91c85fdfc4bd0d0734e0922d8",
+    "activation_audit_first_open_edge": "CURRENT_HEAD_C77_CAPSULE_AND_AUTHORIZED_HOST_TO_NODE_CARRIER",
+    "pr_103_104_105_status": "MERGED_SOFTWARE_NOT_CHATGPT_HOST_DEPLOYMENT"
+  },
+  "host_gates_independent": ["ACTUAL_PINNED_GITHUB_REF", "HOST_BYTES_IN_NODE", "CURRENT_HUMAN_EVENT", "C81_PROOF", "OWNER_OUTPUT", "HOST_RENDER_EVENT", "FUTURE_STATE_READBACK", "C72_H95_FIELD"]
+}
