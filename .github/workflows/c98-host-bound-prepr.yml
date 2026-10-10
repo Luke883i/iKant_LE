@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Reuse actual source C82 C80 C72 and fixture; no bundled mirrors
         run: node --test --test-concurrency=1 tests/c98-*.test.mjs tests/c80-field-witness.test.mjs tests/c72-product-value.test.mjs
-      - name: Project-only 3MD baseline: negative gates and 100k finite cases
+      - name: 'Project-only 3MD baseline: negative gates and 100k finite cases'
         run: |
           node --test tests/c98-project-baseline.test.mjs
           node scripts/c98-project-boundary-100k.mjs 100000
@@ -35,7 +35,7 @@ jobs:
         run: node scripts/c98-h95-plan.mjs
       - name: Bounded hostile host callbacks
         run: node scripts/c98-falsify.mjs 10000
-      - name: Negative physical cold-host and byte-carrier regression: local Node only
+      - name: 'Negative physical cold-host and byte-carrier regression: local Node only'
         run: |
           node scripts/c98-cold-host-denials-100k.mjs 100000
           node scripts/c98-saturate-carriers-100k.mjs 100000
