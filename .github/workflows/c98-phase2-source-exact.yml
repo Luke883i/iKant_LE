@@ -1,0 +1,35 @@
+name: C98 phase 2 - offline boundary and H95 source transplant
+on:
+  pull_request:
+    paths:
+      - 'host/c98-h95-design.mjs'
+      - 'host/c98-chatgpt-offline-boundary.mjs'
+      - 'tests/c98-h95-design.test.mjs'
+      - 'tests/c98-offline-preflight-selfcontained.test.mjs'
+      - 'contracts/c98-h95-field-protocol.json'
+      - 'scripts/c98-h95-plan.mjs'
+      - '.github/workflows/c98-phase2-source-exact.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-exact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20','22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Execute original C98 and existing C80 C72 tests
+        run: node --test tests/c98-h95-design.test.mjs tests/c98-offline-preflight-selfcontained.test.mjs tests/c80-field-witness.test.mjs tests/c72-product-value.test.mjs
+      - name: Execute C98 plan on repository C72 policy
+        run: node scripts/c98-h95-plan.mjs > /tmp/c98-plan.json
+      - name: Preserve merged C98 project baseline regression
+        run: |
+          node --test tests/c98-project-baseline.test.mjs
+          node scripts/c98-project-boundary-100k.mjs 100000
