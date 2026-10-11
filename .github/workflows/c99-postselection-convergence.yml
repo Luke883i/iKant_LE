@@ -5,6 +5,7 @@ on:
       - 'host/c99-postselection-planner.mjs'
       - 'contracts/c99-postselection-convergence.json'
       - 'tests/c99-postselection-planner.test.mjs'
+      - 'tests/c103-synthetic-pass-nonattestation.test.mjs'
       - 'scripts/c99-postselection-falsify-100k.mjs'
       - '.github/workflows/c99-postselection-convergence.yml'
   workflow_dispatch:
@@ -19,8 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Original C72 and C99 source-bound planner tests
-        run: node --test tests/c99-postselection-planner.test.mjs tests/c99-route-policy.test.mjs
+      - name: Original C72 and C99 source-bound planner tests; C103 synthetic counterexample
+        run: node --test tests/c99-postselection-planner.test.mjs tests/c99-route-policy.test.mjs tests/c103-synthetic-pass-nonattestation.test.mjs
       - name: One hundred thousand negative route variants
         run: |
           node scripts/c99-postselection-falsify-100k.mjs > c99-postselection-result.json
