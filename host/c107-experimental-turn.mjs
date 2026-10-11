@@ -45,7 +45,7 @@ export function inspectC107Ledger(file){
   {schema,status:'C107_LEDGER_REOPENED',count:r.count,last_hash:r.last_hash,latest_state:r.latest_state,...denials}:
   stop('C87_LEDGER_INVALID');}catch{return stop('C87_LEDGER_TAMPER_OR_IO');}
 }
-export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false}={}){
+export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false,expectedC70OutputSha256=null}={}){
  if(!ledgerOk(ledgerFile))return stop('HOST_PRIVATE_LEDGER_PATH');
  if(typeof requireHostLanguage!=='boolean')return stop('HOST_LANGUAGE_REQUIRED_FLAG');
  const x=request||{};const head=x.sourceHead;
@@ -72,6 +72,9 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
   if(t.input_sha256!==sha(Buffer.from(x.humanInput,'utf8'))||
    t.output_sha256!==sha(Buffer.from(t.demonstration_surface,'utf8'))||t.node_dispatch_input_bound!==true)
    return stop('ORIGINAL_C70_SAME_INPUT_BINDING');
+  if(expectedC70OutputSha256!==null&&
+   (typeof expectedC70OutputSha256!=='string'||expectedC70OutputSha256!==t.output_sha256))
+   return stop('C107_COMPUTE_FIRST_C70_PLAN_DRIFT');
   const guarded=guarding.has(t.central_mode)||t.method==='DIRECT_IDENTITY'||
    t.response_family==='SELF_ONTOLOGY'||t.resource_gap===true;
   const hostLanguage=!!x.modelCandidate&&!guarded;
@@ -104,4 +107,41 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    original_c70_executed:true,original_c87_writer_executed:true,
    first_unclosed_edge:'HOST_NATIVE_CHATGPT_INGRESS_AND_MODEL_ORIGIN',...denials};
  }catch{return stop('C107_ORIGINAL_MODULE_OR_C87_IO_UNAVAILABLE');}
+}
+
+/** Current-turn ORIGINAL C70 compute-first guidance. No ledger write, provider
+ * invocation, canonical receipt, or native host-origin attestation. A subsequent
+ * C107 turn MUST verify c70_output_sha256 before its sole C87 append.
+ */
+export function previewC107CognitivePlan({request,priorMessages=[],resetContext=false}={}){
+ const x=request||{},head=x.sourceHead;
+ const bad=preflightC107Shape({head,nonce:'c107-preview-gate-001',
+  humanInput:x.humanInput,priorMessages,resetContext});
+ if(bad)return stop(bad);
+ if(x.optIn!==true||
+  !validateC72ModeSelection(x.selection,{mode:'EXPERIMENTAL',sourceHead:head}))
+  return stop('C107_COMPUTE_FIRST_C72_OPTIN_REQUIRED');
+ try{
+  const readme=fs.readFileSync(new URL('../README.md',import.meta.url));
+  const computed=runC70ExperimentalComputePreview({
+   sourceHead:head,unifiedSelection:x.selection,
+   offer:issueC69ExperimentalOffer({sourceHead:head}),
+   sourceObject:{path:'README.md',blob_sha1:gitBlob(readme),
+    content_base64:readme.toString('base64')},
+   messages:[...priorMessages,x.humanInput]});
+  const last=computed.turns?.at(-1);
+  if(computed.status!=='EXPERIMENTAL_COMPUTE_PREVIEW'||
+   computed.executed_repository_kernel!==true||
+   computed.turns.length!==priorMessages.length+1||
+   last?.input_sha256!==sha(Buffer.from(x.humanInput,'utf8'))||
+   last?.node_dispatch_input_bound!==true)
+   return stop('C107_COMPUTE_FIRST_ORIGINAL_KERNEL_FAILED');
+  return Object.freeze({schema,status:'C107_C70_PLAN_COMPUTED_NOT_LEDGERED',
+   source_head:head,input_sha256:last.input_sha256,
+   c70_output_sha256:last.output_sha256,
+   central_mode:last.central_mode,method:last.method,
+   response_family:last.response_family,resource_gap:last.resource_gap,
+   cognitive_window_length:computed.turns.length,
+   c70_original_executed:true,preliminary_only:true,...denials});
+ }catch{return stop('C107_COMPUTE_FIRST_ORIGINAL_SOURCE_UNAVAILABLE');}
 }
