@@ -45,8 +45,9 @@ export function inspectC107Ledger(file){
   {schema,status:'C107_LEDGER_REOPENED',count:r.count,last_hash:r.last_hash,latest_state:r.latest_state,...denials}:
   stop('C87_LEDGER_INVALID');}catch{return stop('C87_LEDGER_TAMPER_OR_IO');}
 }
-export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],resetContext=false}={}){
+export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false}={}){
  if(!ledgerOk(ledgerFile))return stop('HOST_PRIVATE_LEDGER_PATH');
+ if(typeof requireHostLanguage!=='boolean')return stop('HOST_LANGUAGE_REQUIRED_FLAG');
  const x=request||{};const head=x.sourceHead;
  const bad=preflightC107Shape({head,nonce,humanInput:x.humanInput,priorMessages,
   modelCandidate:x.modelCandidate,resetContext});
@@ -74,6 +75,7 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
   const guarded=guarding.has(t.central_mode)||t.method==='DIRECT_IDENTITY'||
    t.response_family==='SELF_ONTOLOGY'||t.resource_gap===true;
   const hostLanguage=!!x.modelCandidate&&!guarded;
+  if(requireHostLanguage&&!hostLanguage)return stop('HOST_LANGUAGE_GUARDED_NO_LEDGER_APPEND');
   const voice=hostLanguage?x.modelCandidate.text:t.demonstration_surface;
   const plan=prepareC100CohostDraft({sourceHead:head,selection:x.selection,humanInput:x.humanInput,optIn:true});
   const bound=finalizeC100CohostDraft({plan,planSha256:plan.plan_sha256,modelText:voice});

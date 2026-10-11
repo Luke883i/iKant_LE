@@ -10,13 +10,14 @@ export const C107_FILES=Object.freeze([
  'contracts/cognitive-kernel.json','contracts/host-shell.json','contracts/psyche-kernel.json',
  'contracts/self-world-kernel.json','host/c69-capability-first-preview.mjs',
  'host/c72-unified-mode-admission.mjs','host/c100-cohost-experimental.mjs',
- 'host/c87-durable-ledger.mjs','host/c107-experimental-turn.mjs',
+ 'host/c87-durable-ledger.mjs','host/c107-experimental-turn.mjs','host/c107-host-language-port.mjs',
  'src/c70-experimental-compute-preview.mjs','src/cognition-core.mjs',
  'src/c82-experimental-answer.mjs','src/psyche.mjs','src/state.mjs',
  'src/self-world-state.mjs','src/runtime-dispatch.mjs','src/contract.mjs',
  'src/cognition-surface.mjs','src/c83-semantic-router.mjs',
  'src/self-world-core.mjs','src/semantic-morphogenesis.mjs','src/self-world.mjs',
- 'scripts/c107-turn-cli.mjs','scripts/c107-console.mjs'
+ 'scripts/c107-turn-cli.mjs','scripts/c107-console.mjs',
+ 'scripts/c107-model-stdio.mjs'
 ]);
 const stop=e=>({schema:S,status:'C107_PACKAGE_STOP',first_unclosed_edge:e,active:false,native_delivery_attested:false});
 const safe=p=>typeof p==='string'&&/^(?:README\.md|TERMS\.md|(?:host|src|scripts|contracts)\/[a-zA-Z0-9_.\/-]+)$/.test(p)&&p.split('/').every(v=>v&&v!=='.'&&v!=='..');
