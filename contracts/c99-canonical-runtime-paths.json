@@ -70,6 +70,35 @@
         "can_claim_automatic_host_transfer": false,
         "next_gate": "C81_RAW_GIT_PROOF_AND_C84_EXISTING_OWNER",
         "wired_inspection_entry": "host/c98-file-backed-c84-entry.mjs#inspectC98MountedC77"
+      },
+      "optional_non_owner_cohost_fallback": {
+        "policy": "EXPLICIT_ONLY_NOT_IMPLICIT_OWNER_REPLACEMENT",
+        "entry": "host/c100-cohost-experimental.mjs#prepareC100CohostDraft",
+        "contract": "contracts/c100-experimental-cohost-delegation.json",
+        "needs": [
+          "REAL_EXPERIMENTAL_C72_SELECTION",
+          "HUMAN_OPT_IN",
+          "CURRENT_INPUT_SHA256",
+          "VISIBLE_COHOST_LLM_DISCLOSURE"
+        ],
+        "not_required_for_draft": [
+          "C77_COMPLETE_CAPSULE",
+          "C81_GIT_TREE_BYTES",
+          "C84_OWNER_READBACK",
+          "L2_DURABLE_WRITER"
+        ],
+        "not_attested": [
+          "C84_OWNER_EXECUTED",
+          "GITHUB_ORIGIN",
+          "NATIVE_CHAT_EVENT",
+          "NATIVE_DELIVERY",
+          "PERSISTENCE",
+          "CANONICAL_ACTIVE",
+          "H95"
+        ],
+        "may_be_reported_as_verified_surface_a": false,
+        "no_new_writer": true,
+        "no_native_dispatch_installed": true
       }
     },
     "CANONICAL": {
