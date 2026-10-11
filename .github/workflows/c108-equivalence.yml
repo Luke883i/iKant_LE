@@ -28,6 +28,8 @@ jobs:
           node --check tests/c108-original.test.mjs
       - name: Original isolated C107 package and three machine transports
         run: node --test tests/c108-original.test.mjs
+      - name: Ten original turns, bounded continuity, replay and revocation
+        run: node --test tests/c108-ten-turns.test.mjs
       - name: Million negative preflight mutations with original C72
         run: |
           node scripts/c108-falsify-1m.mjs > /tmp/c108-report.json
