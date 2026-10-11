@@ -11,6 +11,8 @@ export const C107_FILES=Object.freeze([
  'contracts/self-world-kernel.json','host/c69-capability-first-preview.mjs',
  'host/c72-unified-mode-admission.mjs','host/c100-cohost-experimental.mjs',
  'host/c87-durable-ledger.mjs','host/c107-experimental-turn.mjs','host/c107-host-language-port.mjs',
+ 'host/c108-host-matrix.mjs','host/c108-stdio-relay.mjs',
+ 'contracts/c108-machine-matrix.json',
  'src/c70-experimental-compute-preview.mjs','src/cognition-core.mjs',
  'src/c82-experimental-answer.mjs','src/psyche.mjs','src/state.mjs',
  'src/self-world-state.mjs','src/runtime-dispatch.mjs','src/contract.mjs',
