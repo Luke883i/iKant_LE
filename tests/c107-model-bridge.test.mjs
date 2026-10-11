@@ -70,3 +70,19 @@ test('installed-host STDIO handshake runs isolated original C70 C100 C87 with di
    node_runtime_original:true,real_model_provider_attested:false,native_hook_attested:false}));
  }finally{fs.rmSync(work,{recursive:true,force:true});}
 });
+
+test('strict model port refuses guarded identity turn before any C87 append',async()=>{
+ const base=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c107-guard-'));
+ try{
+  const dir=path.join(base,'.ikant-host');fs.mkdirSync(dir,{mode:0o700});
+  const ledger=path.join(dir,'c107-observations.jsonl');
+  const {executeC107HostLanguageTurn}=await import('../host/c107-host-language-port.mjs');
+  const denied=await executeC107HostLanguageTurn({ledgerFile:ledger,
+   nonce:'c107-guard-identity-01',request:req('chi sei?'),
+   priorMessages:[],resetContext:true,
+   languagePort:{async generate(){return 'Il modello propone una risposta, ma il kernel tutela la propria identita.';}}});
+  assert.equal(denied.status,'C107_HOST_LANGUAGE_STOP',JSON.stringify(denied));
+  assert.equal(denied.first_unclosed_edge,'HOST_LANGUAGE_GUARDED_NO_LEDGER_APPEND');
+  assert.equal(inspectC107Ledger(ledger).count,0);
+ }finally{fs.rmSync(base,{recursive:true,force:true});}
+});
