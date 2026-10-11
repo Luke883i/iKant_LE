@@ -12,6 +12,7 @@ export const C107_FILES=Object.freeze([
  'host/c72-unified-mode-admission.mjs','host/c100-cohost-experimental.mjs',
  'host/c87-durable-ledger.mjs','host/c107-experimental-turn.mjs','host/c107-host-language-port.mjs',
  'host/c108-host-matrix.mjs','host/c108-stdio-relay.mjs',
+ 'host/c92-live-provider.mjs','scripts/c108-live-turn.mjs',
  'contracts/c108-machine-matrix.json',
  'src/c70-experimental-compute-preview.mjs','src/cognition-core.mjs',
  'src/c82-experimental-answer.mjs','src/psyche.mjs','src/state.mjs',

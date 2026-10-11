@@ -29,7 +29,7 @@ test('three original C107 machine implementations match on deterministic generat
  try{
   const pkg=buildC107Package({root,expectedHead:head});
   assert.equal(pkg.status,'C107_PACKAGE_BUILT_NOT_TRANSPORTED',JSON.stringify(pkg));
-  assert.equal(pkg.file_count,32);
+  assert.equal(pkg.file_count,34);
   for(const x of ['host/c108-host-matrix.mjs','host/c108-stdio-relay.mjs',
    'contracts/c108-machine-matrix.json'])assert.ok(C107_FILES.includes(x));
   const results=[];
