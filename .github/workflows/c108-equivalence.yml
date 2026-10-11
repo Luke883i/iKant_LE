@@ -28,6 +28,8 @@ jobs:
           node --check tests/c108-original.test.mjs
       - name: Original isolated C107 package and three machine transports
         run: node --test tests/c108-original.test.mjs
+      - name: Real HTTPS provider transport fail-closed and compute-first plan
+        run: node --test tests/c108-live-provider.test.mjs
       - name: C70 compute-first plan binds generation before any C87 write
         run: node --test tests/c108-compute-first.test.mjs
       - name: Ten original turns, bounded continuity, replay and revocation
