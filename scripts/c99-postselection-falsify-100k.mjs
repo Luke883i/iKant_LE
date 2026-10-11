@@ -13,7 +13,7 @@ const inputs=['chi sei?','analizza queste ipotesi','questa e una prova?','confro
  'cosa cambia?','quale argomento?'];
 const mk=i=>({sourceHead:head,selection:structuredClone(selection),
  humanInput:inputs[i%inputs.length]+' #'+String(i),cohostOptInObserved:true,
- cohostRevoked:false,carrierHints:['C84','C102','C100'],
+ cohostRevoked:false,carrierHints:[],
  previousFailedRoute:'NONE',failedEvidenceChanged:false});
 const attacks=[
  x=>x.selection.status='INVALID', x=>x.sourceHead='f'.repeat(40),
@@ -28,13 +28,12 @@ const attacks=[
  x=>x.selection=null, x=>x.cohostOptInObserved=null
 ];
 let failures=0;const counts=Array(attacks.length).fill(0),t=Date.now();
-// For each negative mutation clear physical hints so no response plan can be
-// promoted, regardless of whether the corrupted envelope is caught first.
+// Each invalid mutation starts from the E0 baseline and MUST yield C99_STOP.
 for(let i=0;i<100000;i++){
  const x=mk(i),k=(i*13+7)%attacks.length;
- attacks[k](x); x.carrierHints=[];
+ attacks[k](x);
  const r=plan(x); counts[k]++;
- if(r.status!=='C99_STOP'&&r.route!=='E0_HOST_DRAFT')failures++;
+ if(r.status!=='C99_STOP')failures++;
  if(r.owner_executed!==false||r.local_runtime_executed!==false||
   r.active!==false||r.host_capabilities_attested!==false)failures++;
 }
