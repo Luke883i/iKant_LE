@@ -41,6 +41,8 @@ test('C89 gold reused, voice exact and nonindependently reviewed',()=>{
  const attack=executeC101LocalCohostMachine(hostile);
  assert.equal(attack.status,'C101_STOP');
  assert.equal(invoked,false);
+ const cycle=rubric([words[0]]);cycle.relevanceCase.untrusted=cycle.relevanceCase;
+ assert.equal(executeC101LocalCohostMachine(cycle).status,'C101_STOP');
 });
 test('real stdin->Node per-turn NDJSON carrier, independent input/output and failure isolation',()=>{
  const a=base,b={...base,humanInput:'Come distinguere test ed evidenza?'};

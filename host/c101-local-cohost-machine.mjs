@@ -6,6 +6,7 @@ import {issueC69ExperimentalOffer} from './c69-capability-first-preview.mjs';
 import {routeC71HostDraft} from '../src/c71-experimental-host-draft.mjs';
 import {prepareC100CohostDraft,finalizeC100CohostDraft} from './c100-cohost-experimental.mjs';
 import {evaluateC89BoundedRelevance} from './c89-relevance-gate.mjs';
+import {isC98JSONDataTree} from './c98-c82-connector-port.mjs';
 
 // C101 is a composition of EXISTING bounded owners: no new state, runtime
 // authority, retry system, user-event attestation or ChatGPT host hook.
@@ -34,28 +35,6 @@ function exactData(x,keys){
   }
   return out;
  }catch{return null;}
-}
-function plainDataTree(x,depth=0){
- if(depth>4||!x||typeof x!=='object'||Array.isArray(x)||isProxy(x)||
-   Object.getPrototypeOf(x)!==Object.prototype)return false;
- try{
-  const keys=Reflect.ownKeys(x);
-  if(keys.length>24||keys.some(k=>typeof k!=='string'))return false;
-  for(const k of keys){
-   const d=Object.getOwnPropertyDescriptor(x,k);
-   if(!d||!Object.hasOwn(d,'value'))return false;
-   const v=d.value;
-   if(Array.isArray(v)){
-    if(isProxy(v)||Object.getPrototypeOf(v)!==Array.prototype||v.length>24)return false;
-    for(let i=0;i<v.length;i++){const e=Object.getOwnPropertyDescriptor(v,String(i));
-     if(!e||!Object.hasOwn(e,'value')||typeof e.value!=='string')return false;}
-    if(Reflect.ownKeys(v).length!==v.length+1)return false;
-   }
-   else if(v&&typeof v==='object'){if(!plainDataTree(v,depth+1))return false;}
-   else if(!['string','boolean','number'].includes(typeof v))return false;
-  }
-  return true;
- }catch{return false;}
 }
 function safeSelection(x){
  try{
@@ -88,7 +67,7 @@ export function executeC101LocalCohostMachine(input={}){
     Buffer.from(modelCandidate,'utf8').toString('utf8')!==modelCandidate))
   return stop('BOUNDED_HOST_MODEL_CANDIDATE_REQUIRED');
  if((relevanceCase===undefined)!==(relevanceCaseSha256===undefined)||
-    (relevanceCase!==undefined&&(!plainDataTree(relevanceCase)||
+    (relevanceCase!==undefined&&(!isC98JSONDataTree(relevanceCase)||
       typeof relevanceCaseSha256!=='string')))
   return stop('C101_BOUNDED_RELEVANCE_ENVELOPE');
  // C100 is checked BEFORE local source IO: no secrets/overridden consent.

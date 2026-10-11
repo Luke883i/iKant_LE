@@ -13,7 +13,9 @@ closed curated admission table. Entries outside the table are **inventoried,
 not automatically admitted**. `C4` psyche, `C5` self-world, dispatch,
 `C82` response family and `C83` classifier already run *indirectly* through
 `C70/C71`; there must be no second classifier, writer or duplicate voice
-engine. Existing `C89` qualifies optional caller-pinned bounded phrase rubric
+engine. Existing `C98` supplies `isC98JSONDataTree` for the untrusted
+optional rubric envelope; **only that pure guard is imported**, not the C84
+carrier owner. Existing `C89` qualifies optional caller-pinned bounded phrase rubric
 without independent semantic review. `C86/C87/C91/C92/C95/C98` are excluded
 from this tier because their owners require stronger or different receipts.
 

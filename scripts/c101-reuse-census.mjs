@@ -15,6 +15,7 @@ const anchor={
  'src/c82-experimental-answer.mjs':['composeC82ExperimentalAnswer','ANSWER','INDIRECT_C70'],
  'src/c83-semantic-router.mjs':['classifyC83Task','TASK_ROUTER','INDIRECT_C82'],
  'host/c89-relevance-gate.mjs':['evaluateC89BoundedRelevance','BOUNDED_RUBRIC','WIRED_OPTIONAL'],
+ 'host/c98-c82-connector-port.mjs':['isC98JSONDataTree','UNTRUSTED_DATA_GUARD_ONLY','WIRED_GUARD'],
  'host/c100-cohost-experimental.mjs':['prepareC100CohostDraft','DRAFT_BINDING','WIRED'],
  'host/c101-local-cohost-machine.mjs':['executeC101LocalCohostMachine','EXPERIMENTAL_COMPOSITION','WIRED'],
  'host/c86-surface-a.mjs':['prepareC86Surface','C84_OWNER_ONLY','EXCLUDED'],
@@ -43,7 +44,7 @@ const rows=files.map(file=>{
 });
 const missing=Object.keys(anchor).filter(p=>!rows.some(r=>r.file===p));
 const missingExports=rows.filter(r=>r.required_export&&!r.exports.includes(r.required_export)).map(r=>r.file);
-const admitted=rows.filter(r=>r.routing==='WIRED'||r.routing==='WIRED_OPTIONAL'||r.routing.startsWith('INDIRECT_'));
+const admitted=rows.filter(r=>r.routing==='WIRED'||r.routing==='WIRED_OPTIONAL'||r.routing==='WIRED_GUARD'||r.routing.startsWith('INDIRECT_'));
 const report={schema:'ikant-le-c101-executable-census/v1',source:'LOCAL_CHECKOUT_UNAUTHENTICATED_REF',
  files_total:files.length,src_files:files.filter(x=>x.startsWith('src/')).length,
  host_files:files.filter(x=>x.startsWith('host/')).length,admitted:admitted.length,
