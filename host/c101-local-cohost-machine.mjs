@@ -5,6 +5,7 @@ import {validateC72ModeSelection} from './c72-unified-mode-admission.mjs';
 import {issueC69ExperimentalOffer} from './c69-capability-first-preview.mjs';
 import {routeC71HostDraft} from '../src/c71-experimental-host-draft.mjs';
 import {prepareC100CohostDraft,finalizeC100CohostDraft} from './c100-cohost-experimental.mjs';
+import {evaluateC89BoundedRelevance} from './c89-relevance-gate.mjs';
 
 // C101 is a composition of EXISTING bounded owners: no new state, runtime
 // authority, retry system, user-event attestation or ChatGPT host hook.
@@ -34,6 +35,28 @@ function exactData(x,keys){
   return out;
  }catch{return null;}
 }
+function plainDataTree(x,depth=0){
+ if(depth>4||!x||typeof x!=='object'||Array.isArray(x)||isProxy(x)||
+   Object.getPrototypeOf(x)!==Object.prototype)return false;
+ try{
+  const keys=Reflect.ownKeys(x);
+  if(keys.length>24||keys.some(k=>typeof k!=='string'))return false;
+  for(const k of keys){
+   const d=Object.getOwnPropertyDescriptor(x,k);
+   if(!d||!Object.hasOwn(d,'value'))return false;
+   const v=d.value;
+   if(Array.isArray(v)){
+    if(isProxy(v)||Object.getPrototypeOf(v)!==Array.prototype||v.length>24)return false;
+    for(let i=0;i<v.length;i++){const e=Object.getOwnPropertyDescriptor(v,String(i));
+     if(!e||!Object.hasOwn(e,'value')||typeof e.value!=='string')return false;}
+    if(Reflect.ownKeys(v).length!==v.length+1)return false;
+   }
+   else if(v&&typeof v==='object'){if(!plainDataTree(v,depth+1))return false;}
+   else if(!['string','boolean','number'].includes(typeof v))return false;
+  }
+  return true;
+ }catch{return false;}
+}
 function safeSelection(x){
  try{
   if(!x||typeof x!=='object'||Array.isArray(x)||isProxy(x)||
@@ -49,9 +72,9 @@ function safeSelection(x){
  * Same-input voice is EXACTLY C71's local readback, with a C100 binder.
  */
 export function executeC101LocalCohostMachine(input={}){
- const f=exactData(input,['sourceHead','selection','humanInput','optIn','modelCandidate']);
+ const f=exactData(input,['sourceHead','selection','humanInput','optIn','modelCandidate','relevanceCase','relevanceCaseSha256']);
  if(!f)return stop('C101_INPUT_DATA_DESCRIPTOR_REQUIRED');
- const {sourceHead,selection,humanInput,optIn,modelCandidate}=f;
+ const {sourceHead,selection,humanInput,optIn,modelCandidate,relevanceCase,relevanceCaseSha256}=f;
  if(!H40.test(sourceHead||'')||!safeSelection(selection)||
     !validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead}))
   return stop('REAL_C72_EXPERIMENTAL_SOURCE_BOUND_SELECTION_REQUIRED');
@@ -64,6 +87,10 @@ export function executeC101LocalCohostMachine(input={}){
     !modelCandidate.trim()||Buffer.byteLength(modelCandidate,'utf8')>3500||
     Buffer.from(modelCandidate,'utf8').toString('utf8')!==modelCandidate))
   return stop('BOUNDED_HOST_MODEL_CANDIDATE_REQUIRED');
+ if((relevanceCase===undefined)!==(relevanceCaseSha256===undefined)||
+    (relevanceCase!==undefined&&(!plainDataTree(relevanceCase)||
+      typeof relevanceCaseSha256!=='string')))
+  return stop('C101_BOUNDED_RELEVANCE_ENVELOPE');
  // C100 is checked BEFORE local source IO: no secrets/overridden consent.
  const plan=prepareC100CohostDraft({sourceHead,selection,humanInput,optIn:true});
  if(plan.status!=='C100_COHOST_PLAN_READY_UNATTESTED')
@@ -93,12 +120,24 @@ export function executeC101LocalCohostMachine(input={}){
     bound.bound_input_sha256!==turn.input_sha256||
     bound.bound_output_sha256!==turn.output_sha256||bound.active!==false)
     return stop(bound.first_unclosed_edge||'C101_C100_OUTPUT_BINDING');
+  let relevanceStatus='NOT_REQUESTED';
+  if(relevanceCase!==undefined){
+   const relevance=evaluateC89BoundedRelevance({casePacket:relevanceCase,
+    expectedCaseSha256:relevanceCaseSha256,sourceHead,
+    currentHumanInput:humanInput,runtimeVoice:voice,
+    expectedVoiceSha256:turn.output_sha256});
+   if(relevance.status!=='C89_BOUNDED_RUBRIC_PASS_NOT_H95')
+    return stop(relevance.first_unclosed_edge||'C101_C89_RUBRIC_REJECT');
+   relevanceStatus=relevance.status;
+  }
   return Object.freeze({schema:SCHEMA,
    status:'C101_LOCAL_MACHINE_VOICE_READY_NOT_NATIVE_DELIVERED',
    mode:'EXPERIMENTAL',source_head:sourceHead,
    input_sha256:turn.input_sha256,output_sha256:turn.output_sha256,
    plan_sha256:bound.plan_sha256,voice_utf8:voice,
    voice_source:turn.source,method:turn.method,
+   c89_relevance_status:relevanceStatus,
+   relevance_independent_review_attested:false,
    central_mode:turn.central_mode,guarded:turn.guarded,
    host_candidate_used:turn.host_candidate_used,
    cognitive_kernel_executed:true,local_machine_executed:true,
@@ -112,7 +151,7 @@ export function executeC101LocalCohostMachine(input={}){
 
 export function verifyC101Readback(r,input){
  try{
-  const i=exactData(input,['sourceHead','selection','humanInput','optIn','modelCandidate']);
+  const i=exactData(input,['sourceHead','selection','humanInput','optIn','modelCandidate','relevanceCase','relevanceCaseSha256']);
   if(!i||!r||isProxy(r)||r.schema!==SCHEMA||
     r.status!=='C101_LOCAL_MACHINE_VOICE_READY_NOT_NATIVE_DELIVERED'||
     r.source_head!==i.sourceHead||r.active!==false||r.c84_owner_executed!==false||
@@ -120,7 +159,9 @@ export function verifyC101Readback(r,input){
     r.cognitive_kernel_executed!==true||r.local_machine_executed!==true||
     r.input_sha256!==sha(Buffer.from(i.humanInput,'utf8'))||
     typeof r.voice_utf8!=='string'||
-    r.output_sha256!==sha(Buffer.from(r.voice_utf8,'utf8')))
+    r.output_sha256!==sha(Buffer.from(r.voice_utf8,'utf8'))||
+    r.relevance_independent_review_attested!==false||
+    r.c89_relevance_status!==(i.relevanceCase===undefined?'NOT_REQUESTED':'C89_BOUNDED_RUBRIC_PASS_NOT_H95'))
    return Object.freeze({ok:false,first_unclosed_edge:'C101_READBACK_INTEGRITY'});
   return Object.freeze({ok:true,first_unclosed_edge:r.first_unclosed_edge});
  }catch{return Object.freeze({ok:false,first_unclosed_edge:'C101_READBACK_INTEGRITY'});}
