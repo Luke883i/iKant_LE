@@ -6,6 +6,9 @@ on:
       - 'scripts/c101-*'
       - 'test/c101-local-machine.test.mjs'
       - 'contracts/c101-local-cohost-machine.json'
+      - 'contracts/c101-reuse-and-carrier.json'
+      - 'docs/C101_ENGINEERING_DOD.md'
+      - 'test/c101-hardening.test.mjs'
       - '.github/workflows/c101-local-cohost.yml'
   workflow_dispatch:
 permissions:
@@ -20,7 +23,11 @@ jobs:
         with:
           node-version: '22'
       - name: Source original integration test
-        run: node --test test/c101-local-machine.test.mjs
+        run: node --test test/c101-local-machine.test.mjs test/c101-hardening.test.mjs
+      - name: Deterministic source kernel census
+        run: |
+          node scripts/c101-reuse-census.mjs > c101-inventory.json
+          node -e 'const x=require("./c101-inventory.json");if(!x.qualified||x.missing.length||x.missing_exports.length||x.admitted<10)process.exit(2);console.log(JSON.stringify({files_total:x.files_total,admitted:x.admitted,source_content_sha256:x.source_content_sha256}));'
       - name: One hundred thousand negative mutations and thirty thousand scenarios
         run: |
           node scripts/c101-falsify-130k.mjs > c101-campaign.json

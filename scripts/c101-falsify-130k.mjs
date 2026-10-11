@@ -19,7 +19,8 @@ const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 const axes=['CANONICAL_SELECTION','SOURCE_HEAD_DRIFT','NO_OPTIN','PASSWORD','BOUNDARY_OVERFLOW',
  'EMPTY_INPUT','INVALID_CANDIDATE_TYPE','DRAFT_TOO_LONG','SELECTION_TAMPER','EXTRA_PROPERTY',
  'ROOT_PROXY','ROOT_ACCESSOR','SELECTION_PROXY','SELECTION_ACCESSOR','ROOT_SYMBOL',
- 'FORGED_RECEIPT','HUMAN_INPUT_TYPE','NULL_SELECTION','INVALID_HEAD','EMBEDDED_BEARER'];
+ 'FORGED_RECEIPT','HUMAN_INPUT_TYPE','NULL_SELECTION','INVALID_HEAD','EMBEDDED_BEARER',
+ 'RUBRIC_SHA_WITHOUT_CASE','RUBRIC_CASE_WITHOUT_SHA','RUBRIC_PROXY','RUBRIC_ARRAY_GETTER','RUBRIC_INVALID_KIND'];
 const base={sourceHead:head,selection,optIn:true,humanInput:'Analizza un processo con evidenza e vincoli'};
 function mutate(axis,i){
  const o={...base,humanInput:base.humanInput+' '+i};
@@ -45,6 +46,11 @@ function mutate(axis,i){
  case 17:o.selection=null;break;
  case 18:o.sourceHead='not-a-commit';break;
  case 19:o.humanInput='Bearer ABCDEFGHIJKLMNOPQRSTUVWXYZ'+i;break;
+ case 20:o.relevanceCaseSha256='0'.repeat(64);break;
+ case 21:o.relevanceCase={};break;
+ case 22:o.relevanceCase=new Proxy({},{get(){throw Error('forbidden nested read');}});o.relevanceCaseSha256='0'.repeat(64);break;
+ case 23:o.relevanceCase={required_phrases:Object.defineProperty([], '0',{get(){throw Error('poison getter');}})};o.relevanceCaseSha256='0'.repeat(64);break;
+ case 24:o.relevanceCase=42;o.relevanceCaseSha256='0'.repeat(64);break;
  }
  return o;
 }
