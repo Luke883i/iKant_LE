@@ -65,7 +65,9 @@ bytes, malicious paths and close/open cycles. GitHub CI tests the actual
 65-object source spec at current PR HEAD, stages the real checkout bytes through
 an actual asynchronous host-provided local-file read callback, verifies a
 C77 builder from the original source graph, and executes C77 on a real bounded
-input. CI does NOT demonstrate the GitHub connector→ChatGPT Node callback or
+input. On the same input the test independently runs the original C101/C102/C87
+observation bridge, reopens C87 and validates the C103 minimum envelope. C103
+PASS is structural, not provider or native-host origin attestation. CI does NOT demonstrate the GitHub connector→ChatGPT Node callback or
 native per-turn ChatGPT ingress. Keep field qualification distinct.
 
 Never repin SOURCE_HEAD of an existing chat because this code was merged.

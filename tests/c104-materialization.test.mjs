@@ -9,6 +9,8 @@ import {pathToFileURL} from 'node:url';
 import {issueC72TermsOffer,acceptC72Terms,presentC72Introduction,selectC72Mode} from '../host/c72-unified-mode-admission.mjs';
 import {inspectC104,stageC104,runC104HostWorkers,qualifyC104C77Handoff} from '../host/c104-resumable-materialization.mjs';
 import {buildC77Capsule} from '../scripts/c77-build-capsule.mjs';
+import {executeC102SoftTurn,inspectC102Ledger} from '../host/c102-soft-host-bridge.mjs';
+import {verifyC103HostAdapterWitness} from '../host/c103-host-adapter-conformance.mjs';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const gitBlob=b=>crypto.createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${b.length}\0`),b])).digest('hex');
 const repo=path.resolve(new URL('../',import.meta.url).pathname);
@@ -76,6 +78,26 @@ test('original C77 builder and Node cognition after verified source graph, not f
   assert.equal(result.input_sha256,sha(Buffer.from('Definisci un criterio falsificabile')));
   assert.equal(result.output_sha256,sha(Buffer.from(result.voice_utf8)));
   assert.equal(result.active,false);assert.equal(result.native_delivery_attested,false);
+  // Same physical host test connects the cognitive readback to original
+  // C101/C102/C87 and checks the existing minimum C103 envelope contract.
+  const session=path.join(cache,'.ikant-host');fs.mkdirSync(session,{mode:0o700});
+  const ledger=path.join(session,'c102-soft-observations.jsonl');
+  const nonce='c104-c103-local-adapter-0001';
+  const request={sourceHead:head,selection,
+    humanInput:'Definisci un criterio falsificabile',optIn:true};
+  const bound=executeC102SoftTurn({ledgerFile:ledger,nonce,request});
+  assert.equal(bound.status,'C102_ORIGINAL_C101_C87_LOCAL_READBACK',JSON.stringify(bound));
+  const reopened=inspectC102Ledger(ledger);
+  assert.equal(reopened.status,'C102_LEDGER_REOPENED');
+  const minimum=verifyC103HostAdapterWitness({request,nonce,receipt:bound,inspection:reopened});
+  assert.equal(minimum.status,'C103_ENVELOPE_CONFORMANT_NOT_HOST_ATTESTED',JSON.stringify(minimum));
+  assert.equal(minimum.input_sha256,result.input_sha256);
+  assert.equal(minimum.native_delivery_attested,false);
+  assert.equal(minimum.host_runtime_execution_attested,false);
+  console.log('C104_C103_ORIGINAL_HOST_ADAPTER '+JSON.stringify({
+   c102:bound.status,c103:minimum.status,c87:reopened.status,
+   ledger_entries:reopened.count,localhost_execution:true,
+   native_chatgpt_hook:false}));
   console.log('C104_ORIGINAL_EXECUTION '+JSON.stringify({source_objects:65,
    materialization:r.status,c77_build:build.file_count,
    kernel:result.status,c70:result.c70_status,c71:result.c71_status,
