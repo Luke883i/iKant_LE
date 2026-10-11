@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import {isProxy} from 'node:util/types';
 import {validateC72ModeSelection} from './c72-unified-mode-admission.mjs';
 
 // Co-host only: this never calls an LLM, authenticates a ChatGPT event,
@@ -10,7 +11,9 @@ const MAX_INPUT_BYTES=12000;
 const MAX_DRAFT_BYTES=16000;
 const SCHEMA='ikant-le-c100-cohost-experimental/v1';
 const own=(x,k)=>Object.getOwnPropertyDescriptor(x,k)?.value;
-const plain=x=>!!x&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype;
+const plain=x=>!!x&&typeof x==='object'&&!Array.isArray(x)&&!isProxy(x)&&
+ Object.getPrototypeOf(x)===Object.prototype&&Reflect.ownKeys(x).every(k=>
+  typeof k==='string'&&Object.hasOwn(Object.getOwnPropertyDescriptor(x,k),'value'));
 const hard={authority:0,active:false,canonical_runtime:false,persistent:false,
  owner_executed:false,owner_receipt_issued:false,source_origin_attested:false,
  native_event_attested:false,native_delivery_attested:false,
@@ -24,7 +27,7 @@ const privacy=/\b(?:api[_ -]?key\s*[:=]|bearer\s+[A-Za-z0-9_-]{12,}|password\s*[
  * receipt and cannot be converted to C97 source-verified Surface A.
  */
 export function prepareC100CohostDraft({sourceHead,selection,humanInput,optIn=false}={}){
- if(!H40.test(sourceHead||'')||!validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead}))
+ if(!plain(selection)||!H40.test(sourceHead||'')||!validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead}))
   return stop('REAL_EXPERIMENTAL_C72_SELECTION_REQUIRED');
  if(optIn!==true)return stop('EXPERIMENTAL_COHOST_OPT_IN_REQUIRED');
  if(typeof humanInput!=='string'||!humanInput.trim()||
