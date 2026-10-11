@@ -5,6 +5,7 @@ import {issueC72TermsOffer,acceptC72Terms,presentC72Introduction,selectC72Mode}
 import {executeC108} from './c108-host-matrix.mjs';
 import {inspectC107Ledger} from './c107-experimental-turn.mjs';
 import {checkC109TurnFrame} from './c109-frame-policy.mjs';
+import {selectC110Route,sealC110Synthetic} from './c110-experimental-lattice.mjs';
 
 // One host-scoped in-memory admission and routing shell. C108 is the only turn
 // dispatcher; C87 is the only durable writer. Nothing here installs a ChatGPT hook.
@@ -19,9 +20,10 @@ const docs=h=>[
  {title:'Runtime C108',url:`https://github.com/Luke883i/iKant_LE/blob/${h}/host/c108-host-matrix.mjs`,kind:'NAVIGATION_NOT_EVIDENCE'}
 ];
 export const C109_EXACT_OPTIN=OPTIN;
-export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPort}={}){
+export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPort,
+ syntheticPort,allowSynthetic=false}={}){
  if(!pin(sourceHead)||typeof ledgerFile!=='string')throw Error('C109_EXACT_HEAD_AND_LEDGER_REQUIRED');
- let phase='COLD',selection=null,accepted=null,orientation=null,prior=[],busy=false,terms=null;
+ let phase='COLD',selection=null,accepted=null,orientation=null,prior=[],syntheticPrior=[],busy=false,terms=null;
  const limited={active:false,canonical_runtime:false,native_event_attested:false,
   native_delivery_attested:false,host_hook_attested:false,cognitive_memory_persistent:false};
  const response=(status,surface_a=null,edge=null,evidence={})=>Object.freeze({
@@ -30,7 +32,7 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
    evidence,documents:phase==='TERMS'?[]:docs(sourceHead),
    render_surface_b:phase!=='TERMS',...limited},...limited});
  const reject=e=>response('C109_STOP',null,e);
- async function send({text,nonce,candidate}={}){
+ async function send({text,nonce,candidate,hostDraft}={}){
   if(busy)return reject('C109_CONCURRENT_TURN');
   if(typeof text!=='string'||!text.trim()||Buffer.byteLength(text,'utf8')>16000)
    return reject('C109_BOUNDED_HUMAN_INPUT');
@@ -62,7 +64,7 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
      'SEPARATE_EXACT_COHOST_OPTIN',{c72_selection_sha256:selection.receipt_sha256});
    }
    if(text==='STOP BOZZE COHOST'&&(phase==='OPTIN'||phase==='READY')){
-    prior=[];phase='OPTIN';return response('C109_OPTIN_REVOKED',
+    prior=[];syntheticPrior=[];phase='OPTIN';return response('C109_OPTIN_REVOKED',
      'Autorizzazione co-host revocata.','NEW_EXPLICIT_OPTIN_REQUIRED');
    }
    if(phase==='OPTIN'){
@@ -76,7 +78,7 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
    if(phase==='CLOSED')return reject('C109_SESSION_CLOSED');
    if(phase!=='READY')return reject('C109_INVALID_PHASE');
    if(text==='ESCI LAB'){
-    phase='CLOSED';prior=[];return response('C109_LOCAL_SESSION_CLOSED',null,'NATIVE_EXIT_NOT_ATTESTED');
+    phase='CLOSED';prior=[];syntheticPrior=[];return response('C109_LOCAL_SESSION_CLOSED',null,'NATIVE_EXIT_NOT_ATTESTED');
    }
    if(text==='MOSTRA STATO'){
     const r=inspectC107Ledger(ledgerFile);
@@ -87,6 +89,30 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
    const failure=checkC109TurnFrame({text,nonce,candidate});
    if(failure)return reject(failure);
    const request={sourceHead,selection,humanInput:text,optIn:true};
+   const originalCallable=typeof languagePort?.generate==='function'||
+    typeof relayPort?.turn==='function'||candidate!==undefined;
+   const hostDraftSupplied=typeof hostDraft==='string'&&hostDraft.trim().length>0;
+   const syntheticCallable=hostDraftSupplied||typeof syntheticPort?.generate==='function';
+   const route=selectC110Route({sourceHead,cohostOptIn:true,turnSafe:true,
+    originalCallable,syntheticAuthorized:allowSynthetic===true,syntheticCallable});
+   if(route.route==='SYNTHETIC_HOST_DRAFT_ELIGIBLE'){
+    let draft;
+    try{draft=hostDraftSupplied?hostDraft:await syntheticPort.generate(Object.freeze({
+     current_input_utf8:text,prior_messages_utf8:Object.freeze([...syntheticPrior]),
+     source_head:sourceHead,authority:0}));}
+    catch{return reject('C110_SYNTHETIC_HOST_GENERATION_FAILED');}
+    const sealed=sealC110Synthetic({sourceHead,input:text,voice:draft,nonce,
+     priorCount:syntheticPrior.length});
+    if(sealed.status!=='C110_SYNTHETIC_HOST_DRAFT_NOT_IKANT_RUNTIME')
+     return reject(sealed.first_unclosed_edge||'C110_SYNTHETIC_OUTPUT_REJECTED');
+    syntheticPrior=[...syntheticPrior,text].slice(-4);
+    return response('C109_SYNTHETIC_HOST_DRAFT_NOT_IKANT_RUNTIME',sealed.surface_a,
+     sealed.first_unclosed_edge,{...sealed.evidence,synthetic_history_length:syntheticPrior.length,
+      physical_C108_invoked:false,original_C70_executed:false,C87_writer_invoked:false});
+   }
+   if(route.route!=='ORIGINAL_C108_ELIGIBLE')
+    return reject(route.first_unclosed_edge==='NO_ORIGINAL_PORT_AND_NO_AUTHORIZED_SYNTHETIC_DRAFT'?
+     'C108_NO_CALLABLE_HOST_MACHINE':(route.first_unclosed_edge||'C110_NO_PERMITTED_ROUTE'));
    const x=await executeC108({request,nonce,ledgerFile,priorMessages:prior,
     resetContext:prior.length===0,languagePort,relayPort,candidate});
    if(x.status!=='C108_LOCAL_RUNTIME_REOPENED_NOT_NATIVE')

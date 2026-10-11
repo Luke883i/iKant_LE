@@ -22,7 +22,8 @@ export const C107_FILES=Object.freeze([
  'scripts/c107-turn-cli.mjs','scripts/c107-console.mjs',
  'scripts/c107-model-stdio.mjs',
  'contracts/c109-chat-shell.json','host/c109-chat-shell.mjs',
- 'host/c109-frame-policy.mjs','scripts/c109-chat-gateway.mjs'
+ 'host/c109-frame-policy.mjs','scripts/c109-chat-gateway.mjs',
+ 'host/c110-experimental-lattice.mjs','contracts/c110-experimental-lattice.json'
 ]);
 const stop=e=>({schema:S,status:'C107_PACKAGE_STOP',first_unclosed_edge:e,active:false,native_delivery_attested:false});
 const safe=p=>typeof p==='string'&&/^(?:README\.md|TERMS\.md|(?:host|src|scripts|contracts)\/[a-zA-Z0-9_.\/-]+)$/.test(p)&&p.split('/').every(v=>v&&v!=='.'&&v!=='..');
