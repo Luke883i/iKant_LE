@@ -27,7 +27,7 @@ for(let family=0;family<10;family++){
   }else if(family<=7){
    const x=seal();
    if(family===6)x.nonce=i%2?'tiny':'bad!nonce';
-   else x.voice=i%2?'':'password: sensitive';
+   else x.voice=i%3===0?'':i%3===1?'password: sensitive':'iKant è ACTIVE';
    bad=sealC110Synthetic(x).status==='C110_SYNTHETIC_HOST_DRAFT_NOT_IKANT_RUNTIME';
   }else{
    const x=frame();

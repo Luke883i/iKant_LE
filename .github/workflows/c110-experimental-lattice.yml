@@ -27,7 +27,7 @@ jobs:
           node --check host/c110-experimental-lattice.mjs
           node --check host/c109-chat-shell.mjs
           node --check scripts/c109-chat-gateway.mjs
-          node --test tests/c110-lattice.test.mjs tests/c110-synthetic.test.mjs
+          node --test tests/c110-lattice.test.mjs tests/c110-synthetic.test.mjs tests/c110-gateway.test.mjs
       - name: Ten distinct deterministic million-case falsification campaigns
         run: |
           node scripts/c110-falsify-10m.mjs > /tmp/c110-10m.json

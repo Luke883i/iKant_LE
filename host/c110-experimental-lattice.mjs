@@ -14,6 +14,8 @@ function plain(x){try{return x!==null&&typeof x==='object'&&!isProxy(x)&&!Array.
   typeof k==='string'&&Object.hasOwn(Object.getOwnPropertyDescriptor(x,k),'value'));}catch{return false;}}
 const H=x=>crypto.createHash('sha256').update(x).digest('hex');
 const secret=/(?:\bpassword\s*[:=]|\bapi[_ -]?key\s*[:=]|\bbearer\s+[a-z0-9._~+-]{12,}|\bprivate[_ -]?key\s*[:=])/i;
+const overclaim=/(?:\b(?:ikant\s+(?:e|è|is)\s+active|canonical\s+active|native\s+(?:event|delivery)\s+attested|persisten(?:ce|za)\s+(?:verified|garantita))\b)/i;
+export const C110_SYNTHETIC_LABEL='[BOZZA HOST SPERIMENTALE - C70/C87 NON ESEGUITI]';
 /** Route selection does not invoke anything: it can never attest Node, C70, C87 or model origin. */
 export function selectC110Route(x={}){
  if(!plain(x)||Object.keys(x).sort().join(',')!==[
@@ -38,13 +40,15 @@ export function sealC110Synthetic({sourceHead,input,voice,nonce,priorCount=0}={}
  if(!hex.test(sourceHead||'')||typeof input!=='string'||!input.trim()||
   Buffer.byteLength(input,'utf8')>600||secret.test(input)||typeof nonce!=='string'||
   !/^[A-Za-z0-9_-]{12,96}$/.test(nonce)||typeof voice!=='string'||!voice.trim()||
-  Buffer.byteLength(voice,'utf8')>16000||secret.test(voice)||!Number.isInteger(priorCount)||priorCount<0||priorCount>4)
+  Buffer.byteLength(voice,'utf8')>15000||secret.test(voice)||overclaim.test(voice)||!Number.isInteger(priorCount)||priorCount<0||priorCount>4)
   return Object.freeze({schema:C.schema,status:'C110_SYNTHETIC_STOP',
    first_unclosed_edge:'SYNTHETIC_BYTES_OR_NONCE_INVALID',...LIMITS});
+ const presented=C110_SYNTHETIC_LABEL+'\n'+voice;
  return Object.freeze({schema:C.schema,status:'C110_SYNTHETIC_HOST_DRAFT_NOT_IKANT_RUNTIME',
-  surface_a:voice,
+  surface_a:presented,
   evidence:Object.freeze({grade:'HOST_SYNTHETIC_NOT_ORIGINAL_EXECUTION',source_head:sourceHead,
-   input_sha256:H(Buffer.from(input,'utf8')),visible_voice_sha256:H(Buffer.from(voice,'utf8')),
+   input_sha256:H(Buffer.from(input,'utf8')),visible_voice_sha256:H(Buffer.from(presented,'utf8')),
+   host_draft_sha256:H(Buffer.from(voice,'utf8')),
    nonce_sha256:H(Buffer.from(nonce,'utf8')),prior_questions_seen_by_host:priorCount,
    c70_original_executed:false,c100_original_bound:false,c87_writer_executed:false,
    ledger_entries:null,ledger_event_sha256:null,model_provider_origin_attested:false,

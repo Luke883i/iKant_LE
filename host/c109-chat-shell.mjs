@@ -24,6 +24,7 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
  syntheticPort,allowSynthetic=false}={}){
  if(!pin(sourceHead)||typeof ledgerFile!=='string')throw Error('C109_EXACT_HEAD_AND_LEDGER_REQUIRED');
  let phase='COLD',selection=null,accepted=null,orientation=null,prior=[],syntheticPrior=[],busy=false,terms=null;
+ const syntheticNonces=new Set();
  const limited={active:false,canonical_runtime:false,native_event_attested:false,
   native_delivery_attested:false,host_hook_attested:false,cognitive_memory_persistent:false};
  const response=(status,surface_a=null,edge=null,evidence={})=>Object.freeze({
@@ -96,6 +97,7 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
    const route=selectC110Route({sourceHead,cohostOptIn:true,turnSafe:true,
     originalCallable,syntheticAuthorized:allowSynthetic===true,syntheticCallable});
    if(route.route==='SYNTHETIC_HOST_DRAFT_ELIGIBLE'){
+    if(syntheticNonces.has(nonce))return reject('C110_SYNTHETIC_NONCE_REPLAY');
     let draft;
     try{draft=hostDraftSupplied?hostDraft:await syntheticPort.generate(Object.freeze({
      current_input_utf8:text,prior_messages_utf8:Object.freeze([...syntheticPrior]),
@@ -105,6 +107,7 @@ export function createC109ChatShell({sourceHead,ledgerFile,languagePort,relayPor
      priorCount:syntheticPrior.length});
     if(sealed.status!=='C110_SYNTHETIC_HOST_DRAFT_NOT_IKANT_RUNTIME')
      return reject(sealed.first_unclosed_edge||'C110_SYNTHETIC_OUTPUT_REJECTED');
+    syntheticNonces.add(nonce);
     syntheticPrior=[...syntheticPrior,text].slice(-4);
     return response('C109_SYNTHETIC_HOST_DRAFT_NOT_IKANT_RUNTIME',sealed.surface_a,
      sealed.first_unclosed_edge,{...sealed.evidence,synthetic_history_length:syntheticPrior.length,

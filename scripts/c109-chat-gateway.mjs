@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import readline from 'node:readline';
 import {createC109ChatShell} from '../host/c109-chat-shell.mjs';
 import {makeC92C107LanguagePort,inspectC92C107LanguageConfig} from '../host/c92-live-provider.mjs';
@@ -22,7 +23,9 @@ for await(const line of rl){
   const frame=JSON.parse(line);
   if(!frame||typeof frame!=='object'||Array.isArray(frame)||
    Object.keys(frame).some(k=>!['text','nonce','candidate','hostDraft'].includes(k)))throw Error('C109_FRAME_INVALID');
-  reply=await shell.send(frame);
+  // Host-owned nonce: ordinary chat callers send only their text. An explicit nonce is never silently rewritten.
+  const ingress=Object.hasOwn(frame,'nonce')?frame:{...frame,nonce:crypto.randomUUID()};
+  reply=await shell.send(ingress);
  }catch(e){reply={schema:'ikant-le-c109-chat-shell/v1',status:'C109_STOP',
   surface_a:null,surface_b:{first_unclosed_edge:String(e.message||e).slice(0,90)},
   active:false,native_delivery_attested:false};}
