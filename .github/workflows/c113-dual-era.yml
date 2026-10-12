@@ -1,0 +1,32 @@
+name: C113 dual-era MCP original source qualification
+on:
+  pull_request:
+    paths:
+      - 'host/c113-*'
+      - 'scripts/c113-*'
+      - 'tests/c113-*'
+      - 'scripts/c107-pack.mjs'
+      - '.github/workflows/c113-dual-era.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  c113-original:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile modern codec and transport
+        run: |
+          node --check host/c113-dual-era.mjs
+          node --check host/c113-http.mjs
+          node --check scripts/c113-mcp-server.mjs
+      - name: Original Node source-exact 2026 request executes C70 C100 C87
+        run: node --test tests/c113-original.test.mjs
+      - name: Falsify 100k modern frames
+        run: |
+          node scripts/c113-falsify-100k.mjs > /tmp/c113-mutations.json
+          node -e 'const x=require("/tmp/c113-mutations.json");if(!x.pass||x.rejected!==100000||x.accepted!==1000)process.exit(2)'
