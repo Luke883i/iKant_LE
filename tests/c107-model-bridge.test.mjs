@@ -82,7 +82,7 @@ test('strict model port refuses guarded identity turn before any C87 append',asy
    priorMessages:[],resetContext:true,
    languagePort:{async generate(){return 'Il modello propone una risposta, ma il kernel tutela la propria identita.';}}});
   assert.equal(denied.status,'C107_HOST_LANGUAGE_STOP',JSON.stringify(denied));
-  assert.equal(denied.first_unclosed_edge,'HOST_LANGUAGE_GUARDED_NO_LEDGER_APPEND');
+  assert.equal(denied.first_unclosed_edge,'C114_ONTOLOGY_DISCLOSURE_REQUIRED');
   assert.equal(inspectC107Ledger(ledger).count,0);
  }finally{fs.rmSync(base,{recursive:true,force:true});}
 });
