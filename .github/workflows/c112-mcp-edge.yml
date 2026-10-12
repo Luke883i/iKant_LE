@@ -1,0 +1,33 @@
+name: C112 MCP and bottom-up micro adapter original source qualification
+on:
+  pull_request:
+    paths:
+      - 'host/c112-*'
+      - 'scripts/c112-*'
+      - 'tests/c112-*'
+      - 'scripts/c107-pack.mjs'
+      - '.github/workflows/c112-mcp-edge.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  c112-original-mcp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile checks
+        run: |
+          node --check host/c112-mcp-edge.mjs
+          node --check host/c112-transports.mjs
+          node --check scripts/c112-mcp-server.mjs
+          node --check tests/c112-original.test.mjs
+      - name: Real Node HTTP, STDIO, original isolated C70 C100 C87 end to end
+        run: node --test tests/c112-mcp-fixture.test.mjs tests/c112-original.test.mjs
+      - name: Ten deterministic million-case negative campaigns
+        run: |
+          node scripts/c112-falsify-10m.mjs > /tmp/c112-10m.json
+          node -e 'const x=require("/tmp/c112-10m.json");if(!x.qualified||x.negative_rejected!==10000000||x.positive_accepted!==10000)process.exit(2);console.log(JSON.stringify({qualified:x.qualified,campaigns:x.campaigns.length,negative_cases:x.negative_cases,positive_controls:x.positive_controls}))'
