@@ -6,6 +6,7 @@ import {issueC69ExperimentalOffer} from './c69-capability-first-preview.mjs';
 import {runC70ExperimentalComputePreview} from '../src/c70-experimental-compute-preview.mjs';
 import {prepareC100CohostDraft,finalizeC100CohostDraft} from './c100-cohost-experimental.mjs';
 import {appendC87Turn,reopenC87Ledger} from './c87-durable-ledger.mjs';
+import {qualifyC114OntologyCandidate} from './c114-ontology-language-policy.mjs';
 
 // Reuses original C70,C100,C87. Not C77, C84, C101 or a native ChatGPT hook.
 const schema='ikant-le-c107-prototype/v1';
@@ -77,8 +78,11 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    return stop('C107_COMPUTE_FIRST_C70_PLAN_DRIFT');
   const guarded=guarding.has(t.central_mode)||t.method==='DIRECT_IDENTITY'||
    t.response_family==='SELF_ONTOLOGY'||t.resource_gap===true;
-  const hostLanguage=!!x.modelCandidate&&!guarded;
-  if(requireHostLanguage&&!hostLanguage)return stop('HOST_LANGUAGE_GUARDED_NO_LEDGER_APPEND');
+  const ontologyReview=x.modelCandidate&&guarded?qualifyC114OntologyCandidate({
+   episode:t,text:x.modelCandidate.text}):null;
+  const ontologyLimited=ontologyReview?.allowed===true;
+  const hostLanguage=!!x.modelCandidate&&(!guarded||ontologyLimited);
+  if(requireHostLanguage&&!hostLanguage)return stop(ontologyReview?.reason||'HOST_LANGUAGE_GUARDED_NO_LEDGER_APPEND');
   const voice=hostLanguage?x.modelCandidate.text:t.demonstration_surface;
   const plan=prepareC100CohostDraft({sourceHead:head,selection:x.selection,humanInput:x.humanInput,optIn:true});
   const bound=finalizeC100CohostDraft({plan,planSha256:plan.plan_sha256,modelText:voice});
@@ -91,6 +95,7 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    c70_last_episode_hash:out.ephemeral_last_episode_hash||null,
    cognitive_window_length:priorMessages.length+1,source_c70_sha256:t.output_sha256,
    visible_voice_sha256:sha(Buffer.from(voice,'utf8')),host_language_used:hostLanguage,
+   c114_limited_ontology_policy:ontologyLimited,independent_semantic_review_attested:false,
    active:false,cognitive_persistence_attested:false};
   const receipt=appendC87Turn(ledgerFile,{source_head:head,input_sha256:t.input_sha256,
    output_sha256:state.visible_voice_sha256,state},{atomicGuard:{source_head:head,nonce,
@@ -105,6 +110,7 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    c70_ephemeral_turns:out.ephemeral_autobiography,cognitive_window_length:state.cognitive_window_length,
    ledger_event_sha256:after.last_hash,ledger_entries:after.count,
    original_c70_executed:true,original_c87_writer_executed:true,
+   c114_limited_ontology_policy:ontologyLimited,independent_semantic_review_attested:false,
    first_unclosed_edge:'HOST_NATIVE_CHATGPT_INGRESS_AND_MODEL_ORIGIN',...denials};
  }catch{return stop('C107_ORIGINAL_MODULE_OR_C87_IO_UNAVAILABLE');}
 }
