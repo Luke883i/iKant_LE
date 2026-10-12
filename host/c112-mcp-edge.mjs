@@ -76,10 +76,12 @@ export function createC112McpEdge({sourceHead,privateRoot,makeEdge,maxSessions=1
    peak=Math.max(peak,sessions.size);
    const receipt=await edge.dispatch({op:'ACTIVATE'});
    if(receipt.status!=='C109_TERMS_PRESENTED'){
-    sessions.delete(session);return toolPayload(deny('C111_ACTIVATION_DID_NOT_PRESENT_TERMS'));
+    sessions.delete(session);fs.rmSync(path.join(privateRoot,session),{recursive:true,force:true});
+    return toolPayload(deny('C111_ACTIVATION_DID_NOT_PRESENT_TERMS'));
    }
    return toolPayload({...receipt,transport_bound_by_host:false},session);
-  }catch{return toolPayload(deny('C111_PHYSICAL_NODE_FACTORY_UNAVAILABLE'),null);}
+  }catch{sessions.delete(session);try{fs.rmSync(path.join(privateRoot,session),{recursive:true,force:true});}catch{}
+   return toolPayload(deny('C111_PHYSICAL_NODE_FACTORY_UNAVAILABLE'),null);}
  };
  const run=async(tool,a)=>{
   if(tool==='ikant_start')return start();

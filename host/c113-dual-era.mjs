@@ -37,7 +37,8 @@ export function createC113DualEra(edge){
     return edge.handle(f);
    }
    if(modern!==MODERN)return versionError(f,modern);
-   if(!validMeta(metaOf(f))||!plain(f.params))return rpcErr(f.id,-32600,'Per-request MCP metadata required');
+   if(!validMeta(metaOf(f))||!plain(f.params)||
+    !(Number.isSafeInteger(f.id)||typeof f.id==='string'))return rpcErr(f.id,-32600,'Per-request MCP metadata and id required');
    if(transport==='http'&&headersFault(f,headers))return headerErr(f);
    if(f.method==='initialize'||f.method==='notifications/initialized')return rpcErr(f.id,-32601,'Legacy handshake not available on modern request');
    if(f.method==='server/discover'&&Object.keys(f.params).some(k=>k!=='_meta'))
