@@ -7,6 +7,7 @@ import { emptySelfWorld, prepareSelfWorldTurn, finalizeSelfWorldTurn,
   validateSelfWorldState, validateSelfWorldTurn } from './self-world-state.mjs';
 import { nodeDispatchReceiptPure, validateNodeDispatchReceipt } from './runtime-dispatch.mjs';
 import { sha256 } from './contract.mjs';
+import {deriveC124LanguageChannels} from './c124-channel-bridge.mjs';
 
 const blocked = new Set(['I ACCEPT', 'I ACCEPT EXPERIMENTAL', 'EXIT IKANT',
   'PROBE IKANT', 'INITIALIZE IKANT']);
@@ -63,12 +64,14 @@ export function runC70ExperimentalComputePreview(x={}) {
       return deny('EXPERIMENTAL_KERNEL_REJECTED','SELF_WORLD_VALIDATION');
     const composed=composeC82ExperimentalAnswer(input,c);
     const surface=composed.text;
+    const languageChannels=deriveC124LanguageChannels({c,prepared,composed,inputSha256:digest(input)});
     turns.push({index:i+1,input_sha256:digest(input),method:c.method,
       central_mode:c.central.mode,policy:prepared.policy.name,
       resource_grants:0,resource_gap:missing,action_executed:false,
       output_sha256:digest(surface),demonstration_surface:surface,response_family:composed.family,
       semantic_scope:composed.semantic_scope,source_grounding:composed.evidence_grade,
       node_dispatch_input_bound:true,workspace_recurrence_cycles:prepared.workspace.recurrence_cycles,
+      c124_language_channels:languageChannels,language_channel_sha256:languageChannels.channel_sha256,
       autobiography_before:prepared.recall.count,episode_hash:finalized.turn.episode.episode_hash,
       preceding_episode_hash:finalized.turn.episode.previous_episode_hash,
       telemetry_complete:finalized.turn.telemetry.complete,

@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import {validateC72ModeSelection} from './c72-unified-mode-admission.mjs';
 import {issueC69ExperimentalOffer} from './c69-capability-first-preview.mjs';
 import {runC70ExperimentalComputePreview} from '../src/c70-experimental-compute-preview.mjs';
+import {verifyC124LanguageChannels} from '../src/c124-channel-bridge.mjs';
 import {prepareC100CohostDraft,finalizeC100CohostDraft} from './c100-cohost-experimental.mjs';
 import {appendC87Turn,reopenC87Ledger} from './c87-durable-ledger.mjs';
 import {qualifyC114OntologyCandidate} from './c114-ontology-language-policy.mjs';
@@ -46,7 +47,7 @@ export function inspectC107Ledger(file){
   {schema,status:'C107_LEDGER_REOPENED',count:r.count,last_hash:r.last_hash,latest_state:r.latest_state,...denials}:
   stop('C87_LEDGER_INVALID');}catch{return stop('C87_LEDGER_TAMPER_OR_IO');}
 }
-export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false,expectedC70OutputSha256=null}={}){
+export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false,expectedC70OutputSha256=null,expectedC124ChannelSha256=null}={}){
  if(!ledgerOk(ledgerFile))return stop('HOST_PRIVATE_LEDGER_PATH');
  if(typeof requireHostLanguage!=='boolean')return stop('HOST_LANGUAGE_REQUIRED_FLAG');
  const x=request||{};const head=x.sourceHead;
@@ -76,6 +77,10 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
   if(expectedC70OutputSha256!==null&&
    (typeof expectedC70OutputSha256!=='string'||expectedC70OutputSha256!==t.output_sha256))
    return stop('C107_COMPUTE_FIRST_C70_PLAN_DRIFT');
+  if(!verifyC124LanguageChannels(t.c124_language_channels,t.input_sha256))return stop('C124_SOURCE_CHANNEL_INVALID');
+  if(x.modelCandidate&&typeof expectedC124ChannelSha256!=='string')return stop('C124_CHANNEL_ACK_REQUIRED');
+  if(expectedC124ChannelSha256!==null&&expectedC124ChannelSha256!==t.language_channel_sha256)
+   return stop('C124_PREWRITE_CHANNEL_DRIFT');
   const guarded=guarding.has(t.central_mode)||t.method==='DIRECT_IDENTITY'||
    t.response_family==='SELF_ONTOLOGY'||t.resource_gap===true;
   const ontologyReview=x.modelCandidate&&guarded?qualifyC114OntologyCandidate({
@@ -94,6 +99,7 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    previous_window_sha256:windowHash(priorMessages),next_window_sha256:windowHash(nextWindow),
    c70_last_episode_hash:out.ephemeral_last_episode_hash||null,
    cognitive_window_length:priorMessages.length+1,source_c70_sha256:t.output_sha256,
+   c124_language_channel_sha256:t.language_channel_sha256,
    visible_voice_sha256:sha(Buffer.from(voice,'utf8')),host_language_used:hostLanguage,
    c114_limited_ontology_policy:ontologyLimited,independent_semantic_review_attested:false,
    active:false,cognitive_persistence_attested:false};
@@ -106,7 +112,7 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    after.latest_state?.nonce!==nonce)return stop('C87_POSTWRITE_REOPEN');
   return {schema,status:'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK',voice_utf8:voice,
    input_sha256:t.input_sha256,output_sha256:state.visible_voice_sha256,
-   original_c70_output_sha256:t.output_sha256,model_draft_used:hostLanguage,
+   original_c70_output_sha256:t.output_sha256,c124_language_channel_sha256:t.language_channel_sha256,model_draft_used:hostLanguage,
    c70_ephemeral_turns:out.ephemeral_autobiography,cognitive_window_length:state.cognitive_window_length,
    ledger_event_sha256:after.last_hash,ledger_entries:after.count,
    original_c70_executed:true,original_c87_writer_executed:true,
@@ -145,6 +151,8 @@ export function previewC107CognitivePlan({request,priorMessages=[],resetContext=
   return Object.freeze({schema,status:'C107_C70_PLAN_COMPUTED_NOT_LEDGERED',
    source_head:head,input_sha256:last.input_sha256,
    c70_output_sha256:last.output_sha256,
+   c124_language_channels:last.c124_language_channels,
+   c124_language_channel_sha256:last.language_channel_sha256,
    central_mode:last.central_mode,method:last.method,
    response_family:last.response_family,resource_gap:last.resource_gap,
    cognitive_window_length:computed.turns.length,
