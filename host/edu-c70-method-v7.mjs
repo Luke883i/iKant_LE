@@ -11,6 +11,7 @@ import {isProxy} from 'node:util/types';
 import {createLocalCohostAdapter,denyHostTurn} from './edu-cohost-outcome.mjs';
 import {compileC117SemanticGuide} from './c117-semantic-guidance.mjs';
 import {PIN} from './c107-carrier-consumer.mjs';
+import {C124_SOURCE_EPOCH} from './c124-source-overlay.mjs';
 import {projectV10Terminal} from './edu-v10-terminal-shell.mjs';
 import {qualifyV8HostClaim} from './edu-v8-release-policy.mjs';
 const H=v=>crypto.createHash('sha256').update(Buffer.from(v,'utf8')).digest('hex');
@@ -46,13 +47,13 @@ const getInspector=(dir,ledger)=>{
  if(p.status!==0)return null;
  try{return JSON.parse(p.stdout);}catch{return null;}
 };
-export async function createGuidedCohostV7({carrierBytes,privateParent,languagePort}={}){
+export async function createGuidedCohostV7({carrierBytes,privateParent,languagePort,c124OverlayBytes=null}={}){
  if(typeof languagePort!=='function')return {ok:false,first_edge:'HOST_LANGUAGE_PORT_NOT_CALLABLE',blocked:no('HOST_LANGUAGE_PORT_NOT_CALLABLE')};
  let base;
- try{base=await createLocalCohostAdapter({carrierBytes,privateParent});}
+ try{base=await createLocalCohostAdapter({carrierBytes,privateParent,c124OverlayBytes});}
  catch{return {ok:false,first_edge:'PR119_ADAPTER_EXCEPTION',blocked:no('PR119_ADAPTER_EXCEPTION')};}
  if(!base.ok)return {...base,blocked:no(base.first_edge||'P01_PR119_SOURCE_UNAVAILABLE')};
- const root=base.install_root;
+ const root=base.install_root,sourceHead=base.source_head||PIN.head,c124Epoch=sourceHead===C124_SOURCE_EPOCH;
  const c107=await import(pathToFileURL(path.join(root,'host/c107-experimental-turn.mjs')).href);
  const c72=await import(pathToFileURL(path.join(root,'host/c72-unified-mode-admission.mjs')).href);
  let closed=false,turnInFlight=false;
@@ -73,13 +74,17 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
    typeof nonce!=='string'||!/^[A-Za-z0-9_-]{12,96}$/.test(nonce)||
    !Array.isArray(priorMessages)||priorMessages.length>4||priorMessages.some(s=>typeof s!=='string'||!s.trim()||Buffer.byteLength(s,'utf8')>600)||
    typeof resetContext!=='boolean'||(resetContext&&priorMessages.length!==0))return no('V7_INPUT_NONCE_OR_WINDOW');
-  if(!c72.validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead:PIN.head}))return no('V7_ORIGINAL_C72_SELECTION_INVALID');
-  const request={sourceHead:PIN.head,selection,humanInput,optIn:true};
+  if(!c72.validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead:sourceHead}))return no('V7_ORIGINAL_C72_SELECTION_INVALID');
+  const request={sourceHead:sourceHead,selection,humanInput,optIn:true};
   let preview;
   try{preview=c107.previewC107CognitivePlan({request,priorMessages,resetContext});}
   catch{return no('V8_C70_PREVIEW_EXCEPTION');}
   if(preview.status!=='C107_C70_PLAN_COMPUTED_NOT_LEDGERED'||preview.c70_original_executed!==true||
    preview.input_sha256!==H(humanInput)||!SHA64.test(preview.c70_output_sha256))return no(preview.first_unclosed_edge||'V7_ORIGINAL_C70_PREVIEW');
+  if(c124Epoch){const channels=preview.c124_language_channels;
+   if(channels?.channels?.length!==12||channels.channel_sha256!==preview.c124_language_channel_sha256||
+    channels.input_sha256!==preview.input_sha256||channels.channels.some(c=>c.included!==true||c.authority!==0))
+    return no('C124_INCOMPLETE_OR_UNBOUND_LANGUAGE_CHANNELS');}
   const plan=Object.freeze({schema:'ikant-le-c107-c70-before-language/v1',
    input_sha256:preview.input_sha256,c70_output_sha256:preview.c70_output_sha256,
    central_mode:preview.central_mode,method:preview.method,
@@ -88,14 +93,15 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
   let guidance;
   try{guidance=compileC117SemanticGuide(plan);}catch{return no('V7_C70_SEMANTIC_GUIDE_INVALID');}
   const task=Object.freeze({schema:'ikant-edu-c70-language-task/v7',
-   source_head:PIN.head,current_input_utf8:humanInput,prior_messages_utf8:Object.freeze([...priorMessages]),
-   plan,guidance,statement:'Guidance received is not evidence of model comprehension or independent semantic causality.'});
+   source_head:sourceHead,current_input_utf8:humanInput,prior_messages_utf8:Object.freeze([...priorMessages]),
+   plan,guidance,...(c124Epoch?{c124_channels:preview.c124_language_channels,c124_channel_sha256:preview.c124_language_channel_sha256}:{}),statement:'Guidance received is not evidence of model comprehension or independent semantic causality.'});
   let draft;
   try{draft=await languagePort(task);}catch{return no('V7_HOST_LANGUAGE_ERROR');}
   if(closed)return no('V8_DISPOSED_DURING_LANGUAGE_PORT');
-  if(!safe(draft)||!exactFields(draft,['text','ack_plan_sha256','input_sha256'])||
+  if(!safe(draft)||!exactFields(draft,c124Epoch?['text','ack_plan_sha256','input_sha256','ack_c124_channel_sha256']:['text','ack_plan_sha256','input_sha256'])||
    typeof draft.text!=='string'||!draft.text.trim()||Buffer.byteLength(draft.text,'utf8')>16000||
-   draft.ack_plan_sha256!==guidance.plan_sha256||draft.input_sha256!==preview.input_sha256)
+   draft.ack_plan_sha256!==guidance.plan_sha256||draft.input_sha256!==preview.input_sha256||
+   c124Epoch&&draft.ack_c124_channel_sha256!==preview.c124_language_channel_sha256)
    return no('V7_PLAN_ACK_OR_HOST_TEXT_INVALID');
   // PR119 calls C107 without requireHostLanguage. In guarded routes C107 would
   // otherwise append an ORIGINAL_DEMO fallback even when the host draft is denied.
@@ -113,6 +119,7 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
   const before=getInspector(root,base.ledger_file);
   if(before?.status!=='C107_LEDGER_REOPENED')return no('V7_C87_PREFLIGHT_READBACK');
   const result=base.runTurn({humanInput,nonce,selection,priorMessages,resetContext,authorization,
+   ...(c124Epoch?{expectedC124ChannelSha256:preview.c124_language_channel_sha256}:{}),
    modelCandidate:{input_sha256:preview.input_sha256,text:draft.text}});
   if(result.surface_a?.origin!=='HOST_BOUND'||result.surface_a.voice_utf8!==draft.text||
    result.surface_b?.visible_voice_sha256!==H(draft.text)||result.surface_b?.INPUT_REF!==preview.input_sha256)
@@ -121,13 +128,14 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
   if(after?.status!=='C107_LEDGER_REOPENED'||after.count!==before.count+1||
    after.last_hash!==result.surface_b.TRACE_REF||after.latest_state?.nonce!==nonce||
    after.latest_state?.source_c70_sha256!==preview.c70_output_sha256||
+   (c124Epoch&&after.latest_state?.c124_language_channel_sha256!==preview.c124_language_channel_sha256)||
    after.latest_state?.visible_voice_sha256!==H(draft.text)||after.latest_state?.host_language_used!==true)
    return no('V7_INDEPENDENT_C87_READBACK_MISMATCH');
   // Necessary host release policy is checked only AFTER owner receipt and a second
   // process' readback; this does not turn caller flags into provenance.
-  const evidence={schema:'ikant-edu-v8-host-evidence/v1',source_head:PIN.head,
+  const evidence={schema:'ikant-edu-v8-host-evidence/v1',source_head:sourceHead,
    carrier_sha256:PIN.carrier_sha256,language_origin:'HOST_BOUND',
-   source_staged_exact:base.stage_verified===true&&base.source_package_sha256===PIN.package_sha256,
+   source_staged_exact:base.stage_verified===true&&(c124Epoch?base.c124_verified===true:base.source_package_sha256===PIN.package_sha256),
    consent_original_c72:true,consent_separate_cohost:true,
    input_sha256_bound:true,original_c70_before_language:true,c70_plan_ack_match:true,
    c114_guard_completed:true,pr119_owner_host_bound:true,single_c87_writer:true,
@@ -144,7 +152,8 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
    ORIGIN:'HOST_AUTHORED_ORIGINAL_C100_C87',TRACE_REF:B.TRACE_REF,
    CONTINUITY:'C87_INDEPENDENT_PROCESS_REOPEN',C70_PLAN_SHA256:guidance.plan_sha256,
    C70_ROUTE:guidance.route_id,
-   ACK_SCOPE:'PROTOCOL_ONLY_NOT_SEMANTIC_PROOF',SOURCE_REF:PIN.head,
+   ACK_SCOPE:'PROTOCOL_ONLY_NOT_SEMANTIC_PROOF',SOURCE_REF:sourceHead,
+   ...(c124Epoch?{C124_CHANNEL_SHA256:preview.c124_language_channel_sha256,C124_CHANNEL_COVERAGE:'12_OF_12_BOUND_NOT_CAUSAL_PROOF'}:{}),
    FIRST_EDGE:'NATIVE_CHATGPT_PER_TURN_DISPATCH',NEXT:'INDEPENDENT_HOST_FIELD_WITNESS',
    ACTIVE:false,PROVIDER_ATTESTED:false,SEMANTIC_CAUSALITY_ATTESTED:false});
   const qualified=Object.freeze({schema:'ikant-edu-c70-guided/v7',surface_a:Object.freeze({...result.surface_a}),
@@ -164,7 +173,7 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
   const r=getInspector(root,base.ledger_file);
   if(r?.status!=='C107_LEDGER_REOPENED')return Object.freeze({status:'UNVERIFIED',continuity:'CONTINUITY_UNVERIFIED'});
   return Object.freeze({status:'LOCAL_C87_REOPENED',count:r.count,last_hash:r.last_hash,
-   source_head:PIN.head,continuity:'LOCAL_ONLY_NOT_NATIVE',persistent_across_chats_attested:false});
+   source_head:sourceHead,continuity:'LOCAL_ONLY_NOT_NATIVE',persistent_across_chats_attested:false});
  }
  return Object.freeze({ok:true,runGuidedTurn,checkpoint,recovery:base.recovery,
   dispose:()=>{if(!closed){closed=true;base.dispose();}},

@@ -16,12 +16,12 @@ function inspect(guided){
   return x.status===0?JSON.parse(x.stdout):null;
  }catch{return null}
 }
-export async function createC125ShellSession({carrierBytes,privateParent,languagePort,send,afterAcceptWitness}={}){
+export async function createC125ShellSession({carrierBytes,privateParent,languagePort,send,afterAcceptWitness,c124OverlayBytes=null}={}){
  const port=createC125HostOutputPort({send,afterAcceptWitness});
  if(!port.ok)return Object.freeze({ok:false,first_edge:port.reason,native_ui_exclusive:false});
  let guided=null,initEdge='PR119_UNAVAILABLE';
  try{
-  guided=await createGuidedCohostV7({carrierBytes,privateParent,languagePort});
+  guided=await createGuidedCohostV7({carrierBytes,privateParent,languagePort,c124OverlayBytes});
   if(!guided.ok)initEdge=guided.first_edge||'PR119_INITIALIZATION_BLOCKED';
  }catch{initEdge='PR119_INITIALIZATION_EXCEPTION'}
  let closed=false,busy=false;const seen=new Set();

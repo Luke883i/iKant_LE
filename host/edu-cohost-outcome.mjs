@@ -8,6 +8,7 @@ import crypto from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {isProxy} from 'node:util/types';
 import * as pr118 from './c107-carrier-consumer.mjs';
+import {C124_SOURCE_EPOCH,stageC124Overlay} from './c124-source-overlay.mjs';
 const C107_RELEASE=pr118.C107_RELEASE??pr118.PIN;
 const HEAD=C107_RELEASE.source_head??C107_RELEASE.head;
 const HANDOFF=C107_RELEASE.manual_source_url??C107_RELEASE.manual_url;
@@ -45,11 +46,14 @@ function safeData(v,depth=0){
 }
 export function denyHostTurn(edge){return {schema:'ikant-edu-cohost-surface/v1',surface_a:{origin:'NO_VOICE',voice_utf8:null},surface_b:B(edge),manual_source_url:HANDOFF};}
 /** The host may choose any transport; this Node implementation expects already-real bytes. */
-export async function createLocalCohostAdapter({carrierBytes,privateParent=os.tmpdir()}={}){
+export async function createLocalCohostAdapter({carrierBytes,privateParent=os.tmpdir(),c124OverlayBytes=null}={}){
  const proof=pr118.inspectC107Carrier(carrierBytes);
  if(!proof.ok)return {ok:false,first_edge:proof.first_unclosed_edge,blocked:denyHostTurn('P01_CARRIER_BYTES_UNVERIFIED')};
  const stage=await pr118.stageC107Carrier(carrierBytes,{privateParent,parent:privateParent});
  if(!stage.ok)return {ok:false,first_edge:stage.first_unclosed_edge,blocked:denyHostTurn('P01_STAGE_REOPEN_FAILED')};
+ const overlay=c124OverlayBytes===null?null:stageC124Overlay(stage.install_root,c124OverlayBytes);
+ if(overlay&&!overlay.ok){fs.rmSync(stage.install_root,{recursive:true,force:true});return {ok:false,first_edge:overlay.first_edge,blocked:denyHostTurn(overlay.first_edge)};}
+ const sourceHead=overlay?C124_SOURCE_EPOCH:HEAD;
  const root=stage.install_root,ledgerDir=path.join(root,'.ikant-host');
  fs.mkdirSync(ledgerDir,{mode:0o700});
  const ledger=path.join(ledgerDir,'c107-observations.jsonl');
@@ -60,12 +64,12 @@ export async function createLocalCohostAdapter({carrierBytes,privateParent=os.tm
  function runTurn(frame={}){
   if(closed)return blocked('ADAPTER_CLOSED');
   if(!safeData(frame))return blocked('HOST_FRAME_GETTER_PROXY_OR_SHAPE');
-  const {humanInput,nonce,selection,priorMessages=[],resetContext=false,modelCandidate,authorization}=frame;
+  const {humanInput,nonce,selection,priorMessages=[],resetContext=false,modelCandidate,authorization,expectedC124ChannelSha256}=frame;
   if(!authorization||authorization.human_mode_selected!==true||authorization.opt_in_confirmed!==true)
    return blocked('P02_TEXT_MODE_OR_OPTIN_MISSING');
   if(authorization.provenance!=='LOCAL_TEST_FIXTURE'&&authorization.provenance!=='HOST_TEXT_WITNESSED')
    return blocked('P02_CONSENT_ORIGIN_UNSUPPORTED');
-  if(!c72.validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead:HEAD}))
+  if(!c72.validateC72ModeSelection(selection,{mode:'EXPERIMENTAL',sourceHead:sourceHead}))
    return blocked('P02_ORIGINAL_C72_SELECTION_INVALID');
   if(modelCandidate!==undefined&&authorization.separate_cohost_draft_authorized!==true)
    return blocked('P03_SEPARATE_HOST_DRAFT_OPTIN_MISSING');
@@ -76,22 +80,25 @@ export async function createLocalCohostAdapter({carrierBytes,privateParent=os.tm
   let turn,readback;
   try{
    turn=c107.executeC107Turn({ledgerFile:ledger,nonce,
-    request:{sourceHead:HEAD,selection,humanInput,optIn:true,
+    ...(overlay?{expectedC124ChannelSha256}:{}),
+    request:{sourceHead:sourceHead,selection,humanInput,optIn:true,
       ...(modelCandidate!==undefined?{modelCandidate}:{})},priorMessages,resetContext});
    readback=c107.inspectC107Ledger(ledger);
   }catch{return blocked('P02_ORIGINAL_OWNER_EXCEPTION')}
-  const voice=pr118.qualifyC107Voice({turn,readback,humanInput,nonce,ledgerFile:ledger});
+  const voice=pr118.qualifyC107Voice({turn,readback,humanInput,nonce,ledgerFile:ledger,sourceHead});
   if(voice.origin==='NO_VOICE')return blocked(turn?.first_unclosed_edge||voice.first_unclosed_edge||'P03_READBACK_NOT_QUALIFIED');
   if(voice.origin==='HOST_BOUND'&&authorization.separate_cohost_draft_authorized!==true)
    return blocked('P03_HOST_BOUND_OPTIN_MISSING');
   const trace=readback.last_hash;
   return {schema:'ikant-edu-cohost-surface/v1',surface_a:{origin:voice.origin,voice_utf8:voice.voice_utf8},
    surface_b:{...B('NATIVE_CHATGPT_PER_TURN_DISPATCH',trace,'C87_LOCAL_REOPENED_NOT_NATIVE'),
+    source_head:sourceHead,SOURCE_REF:sourceHead,
     STATE:'C107_ORIGINAL_LOCAL_EXECUTED',INPUT_REF:digest(Buffer.from(humanInput,'utf8')),
     C70_PROOF:'C107_SOURCE_ORIGINAL_NODE_EXECUTED',C100_PROOF:'ORIGINAL_INPUT_OUTPUT_BOUND',
     C87_PROOF:'ORIGINAL_APPEND_REOPEN',AUTHOR_ORIGIN:voice.origin==='HOST_BOUND'?'HOST_AUTHORED':'ORIGINAL_DEMO',
     EVENT_REF:readback.last_hash,HOST_COMMENT:'Linguaggio locale verificato tramite C107/C87; ingresso nativo ChatGPT non provato.',
-    scope:authorization.provenance,source_package_sha256:proof.package_sha256,
+    scope:authorization.provenance,source_package_sha256:overlay?overlay.source_package_sha256:proof.package_sha256,
+    ...(overlay?{c124_language_channel_sha256:turn.c124_language_channel_sha256}:{}) ,
     input_sha256:digest(Buffer.from(humanInput,'utf8')),visible_voice_sha256:turn.output_sha256,
     original_c70_executed:true,original_c87_writer_executed:true,
     independent_semantic_review_attested:false,host_draft_authorized:authorization.separate_cohost_draft_authorized===true,
@@ -107,6 +114,7 @@ export async function createLocalCohostAdapter({carrierBytes,privateParent=os.tm
   return {status:'PROBE_ALLOWED',attempt:attempts,retries_left:3-attempts};
  }
  function dispose(){if(!closed){closed=true;fs.rmSync(root,{recursive:true,force:true})}}
- return {ok:true,stage_verified:true,source_package_sha256:proof.package_sha256,
+ return {ok:true,stage_verified:true,source_head:sourceHead,c124_verified:overlay?.stage_reopened===true,
+  source_package_sha256:overlay?overlay.source_package_sha256:proof.package_sha256,
   install_root:root,ledger_file:ledger,runTurn,recovery,dispose};
 }

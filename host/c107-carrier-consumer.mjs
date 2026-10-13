@@ -63,21 +63,21 @@ export function stageC107Carrier(raw,{parent=os.tmpdir()}={}){
  }catch(e){if(dir)fs.rmSync(dir,{recursive:true,force:true});return fail(e?.message||'STAGE_FAILURE')}
 }
 /** Consistency of local original receipts, never native or provider attestation. */
-export function qualifyC107Voice({turn,readback,humanInput,nonce,ledgerFile}={}){
+export function qualifyC107Voice({turn,readback,humanInput,nonce,ledgerFile,sourceHead=PIN.head}={}){
  const no=e=>({origin:'NO_VOICE',voice_utf8:null,first_unclosed_edge:e,active:false});
  if(typeof humanInput!=='string'||typeof nonce!=='string'||!turn||!readback)return no('RECEIPT_MISSING');
  if(turn.status!=='C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK'||turn.original_c70_executed!==true||
   turn.original_c87_writer_executed!==true||turn.active!==false||typeof turn.voice_utf8!=='string'||
   turn.input_sha256!==H(Buffer.from(humanInput))||turn.output_sha256!==H(Buffer.from(turn.voice_utf8)))return no('C107_SAME_INPUT_OR_VOICE');
  if(readback.status!=='C107_LEDGER_REOPENED'||readback.last_hash!==turn.ledger_event_sha256||
-  readback.latest_state?.source_head!==PIN.head||readback.latest_state?.nonce!==nonce||
+  readback.latest_state?.source_head!==sourceHead||readback.latest_state?.nonce!==nonce||
   readback.latest_state?.visible_voice_sha256!==turn.output_sha256||
   readback.latest_state?.host_language_used!==turn.model_draft_used)return no('C87_READBACK_MISMATCH');
  try{
   const bytes=fs.readFileSync(ledgerFile,'utf8');if(!bytes.endsWith('\n'))return no('C87_TORN_LEDGER');
   const rows=bytes.trimEnd().split('\n');if(rows.length!==readback.count)return no('C87_COUNT');
   const event=JSON.parse(rows.at(-1));
-  if(event.record_sha256!==readback.last_hash||event.source_head!==PIN.head||
+  if(event.record_sha256!==readback.last_hash||event.source_head!==sourceHead||
    event.input_sha256!==turn.input_sha256||event.output_sha256!==turn.output_sha256||
    event.state?.nonce!==nonce||event.active!==false)return no('C87_EVENT_MISMATCH');
  }catch{return no('C87_LOCAL_LEDGER_UNAVAILABLE')}

@@ -4,6 +4,7 @@
  */
 import {isProxy} from 'node:util/types';
 import {PIN} from './c107-carrier-consumer.mjs';
+import {C124_SOURCE_EPOCH} from './c124-source-overlay.mjs';
 export const V8_CLAIM_FIELDS=Object.freeze([
  'source_staged_exact','consent_original_c72','consent_separate_cohost',
  'input_sha256_bound','original_c70_before_language','c70_plan_ack_match',
@@ -25,7 +26,7 @@ export function qualifyV8HostClaim(input){
   const expected=['schema','source_head','carrier_sha256','language_origin',...V8_CLAIM_FIELDS];
   if(keys.length!==expected.length||!expected.every(k=>Object.hasOwn(descriptors,k)&&Object.hasOwn(descriptors[k],'value'))||
    keys.some(k=>typeof k!=='string'||!expected.includes(k)))return blocked('V8_UNKNOWN_OR_ACCESSOR_FIELDS');
-  if(input.schema!=='ikant-edu-v8-host-evidence/v1'||input.source_head!==PIN.head||
+  if(input.schema!=='ikant-edu-v8-host-evidence/v1'||![PIN.head,C124_SOURCE_EPOCH].includes(input.source_head)||
    input.carrier_sha256!==PIN.carrier_sha256||input.language_origin!=='HOST_BOUND')
    return blocked('V8_SOURCE_OR_ORIGIN_MISMATCH');
   for(const k of V8_CLAIM_FIELDS)if(input[k]!==true)return blocked('V8_MISSING_'+k.toUpperCase());
