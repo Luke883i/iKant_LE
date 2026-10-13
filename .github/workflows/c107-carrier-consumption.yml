@@ -2,6 +2,7 @@ name: C107 real carrier consumption and host outcome gates
 on:
   push:
     branches:
+      - main
       - prepr/c107-single-carrier-v8
   pull_request:
     paths:
