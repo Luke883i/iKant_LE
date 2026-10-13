@@ -2,7 +2,7 @@
  * Negated task instructions are stripped before positive routing, reducing
  * unsupported-task overclaim from a mere matching keyword. */
 const P={
- SELF_ONTOLOGY:/\b(?:chi sei|cosa sei|who are you|what are you|ontolog\w*|identit\w*|coscienz\w*|soggettivit\w*|esistenzial\w*|essere artificiale|esperienza soggettiva|natura (?:del|della|tua)|rapporto con il mondo)\b/i,
+ SELF_ONTOLOGY:/\b(?:chi sei|cosa sei|who are you|what are you|parlami di te|tell me about yourself|(?:la tua|tua|your|my) identit[a-z]*|(?:chi (?:e|è)|what is) ikant|(?:sei|sono|are you) cosciente|(?:tua|your) coscienz[a-z]*|(?:tua|your) ontolog[a-z]*|(?:tua|your) soggettivit[a-z]*|ontolog\w*|identit\w*|coscienz\w*|soggettivit\w*|esistenzial\w*|essere artificiale|esperienza soggettiva|natura (?:del|della|tua)|rapporto con il mondo)\b/i,
  REPEAT_DIAGNOSIS:/\b(?:ripet\w*|verbatim|fallback|identic\w*|stess\w* (?:testo|rispost\w*)|testo (?:identic\w*|uguale)|output resta uguale|risposte uguali|sempre lo stesso|risposta resta uguale)\b/i,
  ACQUISITION:/\b(?:bootstrap|materializz\w*|trasfer\w*|carrier\w*|install\w*|inizializz\w*|acquisizion\w*|ottieni i file|sorgenti originali|avvia un.acquisizione)\b/i,
  EVALUATION:/\b(?:audit|falsific\w*|test\w*|metric\w*|\bdod\b|pull request|\bpr\b|verific\w*|validazion\w*|mutazion\w*|criteri|rubric|qualit[aà] del codice|regressione)\b/i,
