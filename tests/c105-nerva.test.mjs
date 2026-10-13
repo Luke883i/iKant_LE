@@ -40,7 +40,7 @@ test('NERVA composes original C104 -> C77 -> C99 -> C102/C87 -> C103 with real l
    contentBase64:fs.readFileSync(path.join(root,first.path)).toString('base64'),carrierId:'TEST_LOCAL'}));
   assert.equal(staged.status,'C105_SOURCE_STAGE_LOCAL_REOPENED');
   assert.equal(staged.verified,1);
-  assert.equal((await dispatchC105Nerva(frame({command:'GET MISSING'}))).missing.length,64);
+  assert.equal((await dispatchC105Nerva(frame({command:'GET MISSING'}))).missing.length,65);
   assert.equal((await dispatchC105Nerva(frame({command:'RUN TURN'}))).status,'C105_STOP');
   const r=await runC104HostWorkers({context:ctx,carrierId:'TEST_LOCAL',
    carrierEvidenceSha256:sha('real checked-out files'),concurrency:8,

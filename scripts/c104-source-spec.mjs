@@ -10,7 +10,7 @@ const segment=name=>{const x=source.match(new RegExp('const '+name+'=\\[([\\s\\S
  if(!x)throw Error('C104_C77_BUILDER_FORMAT_CHANGED');
  return [...x[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);};
 const code=segment('codePaths'),data=segment('dataPaths');
-if(code.length!==24||data.length!==9)throw Error('C104_C77_SOURCE_SET_DRIFT');
+if(code.length!==25||data.length!==9)throw Error('C104_C77_SOURCE_SET_DRIFT');
 const census=JSON.parse(fs.readFileSync(path.join(root,'contracts/c71-cx-execution-census.json'),'utf8'));
 if(census.schema!=='ikant-le-c71-cx-execution-census/v1'||census.entries?.length!==70)
  throw Error('C104_C71_CENSUS_DRIFT');
@@ -28,7 +28,7 @@ const files=[...paths].sort().map(p=>{
  if(actual!==sha)throw Error('C104_CHECKOUT_SOURCE_DRIFT:'+p);
  return {path:p,bytes:b.length,git_blob_sha1:sha};
 });
-if(files.length!==65)throw Error('C104_SOURCE_CENSUS_UNEXPECTED:'+files.length);
+if(files.length!==66)throw Error('C104_SOURCE_CENSUS_UNEXPECTED:'+files.length);
 const spec={schema:'ikant-le-c104-source-spec/v1',source_head:head,
  authority:0,github_origin_attested:false,files};
 const specSha256=crypto.createHash('sha256').update(JSON.stringify(spec)).digest('hex');
