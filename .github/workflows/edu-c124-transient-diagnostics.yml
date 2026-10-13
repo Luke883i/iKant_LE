@@ -1,0 +1,46 @@
+name: edu-c124-transient-full-diagnostics
+on:
+  pull_request:
+    paths:
+      - 'host/c107-experimental-turn.mjs'
+      - 'host/c124-source-overlay.mjs'
+      - 'scripts/c107-pack.mjs'
+      - '.github/workflows/edu-c124-transient-diagnostics.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+jobs:
+  summarize-original-full-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run and collect full Node regression
+        id: diagnosis
+        shell: bash
+        run: |
+          set +e
+          node --test --test-concurrency=1 > /tmp/ikant-c124-full.tap 2>&1
+          rc=$?
+          echo "failed=$([ "$rc" -eq 0 ] && echo false || echo true)" >> "$GITHUB_OUTPUT"
+          grep -E '^(not ok |  error:|  failureType:|  code:|  message:|# fail |# tests )' /tmp/ikant-c124-full.tap | head -n 65 > /tmp/ikant-c124-summary.txt || true
+          if [ "$rc" -eq 0 ]; then echo "ALL_NODE_TESTS_PASS" > /tmp/ikant-c124-summary.txt; fi
+          exit 0
+      - name: Post machine-readable failed-case names to this PR
+        if: steps.diagnosis.outputs.failed == 'true' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          body=$(printf 'C124 transient diagnostic %s\n\n```text\n' "$SHA"; cat /tmp/ikant-c124-summary.txt; printf '\n```\n')
+          gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body"
+      - name: Fail when full Node regression failed
+        if: steps.diagnosis.outputs.failed == 'true'
+        run: exit 1
