@@ -8,11 +8,11 @@ import {isProxy} from 'node:util/types';
 import {PIN} from './c107-carrier-consumer.mjs';
 const SHA=b=>crypto.createHash('sha256').update(b).digest('hex');
 const GIT=b=>crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+b.length+'\0'),b])).digest('hex');
-export const C124_SOURCE_EPOCH='e64270cddd0c62f3c2fa3450aa8afce264a9bd59';
+export const C124_SOURCE_EPOCH='d1502363c82bd8d3466e2042a5e298879a68ac25';
 export const C124_OVERLAY_GIT_BLOBS=Object.freeze({
  'src/c124-channel-bridge.mjs':'d31972e2000f62f8ebc4dd68b274f0e987a410c3',
  'src/c70-experimental-compute-preview.mjs':'372da2db8c519037b6c8d2e9a349294e6e428aee',
- 'host/c107-experimental-turn.mjs':'ee59a7ff7a6ba582fbd6ac579fdffe71165976a8'
+ 'host/c107-experimental-turn.mjs':'ba83547737518a1e710b40b0552c5f0dbd1a1659'
 });
 const paths=Object.keys(C124_OVERLAY_GIT_BLOBS).sort();
 const fail=first_edge=>({ok:false,first_edge,active:false});
