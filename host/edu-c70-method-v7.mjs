@@ -11,6 +11,7 @@ import {isProxy} from 'node:util/types';
 import {createLocalCohostAdapter,denyHostTurn} from './edu-cohost-outcome.mjs';
 import {compileC117SemanticGuide} from './c117-semantic-guidance.mjs';
 import {PIN} from './c107-carrier-consumer.mjs';
+import {projectV10Terminal} from './edu-v10-terminal-shell.mjs';
 import {qualifyV8HostClaim} from './edu-v8-release-policy.mjs';
 const H=v=>crypto.createHash('sha256').update(Buffer.from(v,'utf8')).digest('hex');
 const SHA64=/^[0-9a-f]{64}$/;
@@ -146,10 +147,16 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
    ACK_SCOPE:'PROTOCOL_ONLY_NOT_SEMANTIC_PROOF',SOURCE_REF:PIN.head,
    FIRST_EDGE:'NATIVE_CHATGPT_PER_TURN_DISPATCH',NEXT:'INDEPENDENT_HOST_FIELD_WITNESS',
    ACTIVE:false,PROVIDER_ATTESTED:false,SEMANTIC_CAUSALITY_ATTESTED:false});
-  return Object.freeze({schema:'ikant-edu-c70-guided/v7',surface_a:Object.freeze({...result.surface_a}),
+  const qualified=Object.freeze({schema:'ikant-edu-c70-guided/v7',surface_a:Object.freeze({...result.surface_a}),
    surface_a_label:release.allowed_label,
    surface_b:brief,pr119_surface_b:B,source_receipt_sha256:result.surface_b.source_package_sha256,
    status:'PR119_OWNER_C70_GUIDED_LOCAL_READBACK',active:false});
+  // V10 is a terminal projection AFTER independent original C87 readback.
+  // It cannot rewrite voice_utf8 or mint a new original receipt.
+  const terminal=projectV10Terminal(qualified);
+  if(terminal.surface_a.origin!=='HOST_BOUND'||terminal.surface_a.voice_utf8!==qualified.surface_a.voice_utf8)
+   return no('V10_EXACT_TERMINAL_PROJECTION_DENIED');
+  return Object.freeze({...qualified,terminal});
   } finally {turnInFlight=false;}
  }
  function checkpoint(){
