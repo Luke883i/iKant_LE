@@ -24,16 +24,16 @@ const tmp=()=>fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c104-test-'));
 const ctx=root=>({sourceHead:head,selection,spec:manifest.spec,specSha256:manifest.specSha256,cacheRoot:root});
 const read=f=>fs.readFileSync(path.join(repo,f.path));
 
-test('exact-head inventory consists of the 33 C77 originals and 70 Cx anchors, 65 unique blobs',()=>{
- assert.equal(manifest.source_paths,33);assert.equal(manifest.anchor_declarations,70);
- assert.equal(manifest.distinct_source_blobs,65);assert.equal(manifest.spec.files.length,65);
+test('exact-head inventory consists of the 34 C77 source paths and 70 Cx anchors, 66 unique blobs',()=>{
+ assert.equal(manifest.source_paths,34);assert.equal(manifest.anchor_declarations,70);
+ assert.equal(manifest.distinct_source_blobs,66);assert.equal(manifest.spec.files.length,66);
 });
 
 test('resumable host-local workers, no premature completion and physical readback',async()=>{
  const root=tmp();const c=ctx(root);let calls=0,parallel=0,peak=0;
  try{
   const first=inspectC104(c);
-  assert.equal(first.verified,0);assert.equal(first.missing.length,65);
+  assert.equal(first.verified,0);assert.equal(first.missing.length,66);
   assert.equal(first.compute_priority,'SOURCE_MATERIALIZATION');
   // A bad Git blob must not contribute to progress.
   assert.equal(stageC104({context:c,filePath:manifest.spec.files[0].path,
@@ -47,14 +47,14 @@ test('resumable host-local workers, no premature completion and physical readbac
    readFile:async f=>{calls++;parallel++;peak=Math.max(peak,parallel);
     await new Promise(ok=>setTimeout(ok,1));parallel--;return read(f);}});
   assert.equal(run.status,'C104_SOURCE_BYTES_100PCT_NOT_RUNTIME');
-  assert.equal(run.actual_callback_invocations,62);assert.equal(calls,62);
-  assert.ok(peak>1&&peak<=8);assert.equal(run.verified,65);
+  assert.equal(run.actual_callback_invocations,63);assert.equal(calls,63);
+  assert.ok(peak>1&&peak<=8);assert.equal(run.verified,66);
   assert.equal(run.runtime_qualified,false);assert.equal(run.native_host_hook_attested,false);
-  assert.equal(inspectC104(ctx(root)).verified,65);
+  assert.equal(inspectC104(ctx(root)).verified,66);
   assert.equal((await runC104HostWorkers({context:c,carrierEvidenceSha256:sha('source checkout observed'),readFile:async()=>{throw Error('CALL_NOT_EXPECTED')}})).actual_callback_invocations,0);
   const file=path.join(root,'c104-'+head+'-'+manifest.specSha256.slice(0,24),'objects',selected[0].path);
   fs.appendFileSync(file,'corrupt');
-  const tamper=inspectC104(ctx(root));assert.equal(tamper.verified,64);assert.deepEqual(tamper.corrupt,[selected[0].path]);
+  const tamper=inspectC104(ctx(root));assert.equal(tamper.verified,65);assert.deepEqual(tamper.corrupt,[selected[0].path]);
   assert.notEqual(tamper.status,'C104_SOURCE_BYTES_100PCT_NOT_RUNTIME');
   assert.equal(stageC104({context:c,filePath:selected[0].path,contentBase64:read(selected[0]).toString('base64'),carrierId:'LOCAL_FS'}).status,'C104_STOP');
  }finally{fs.rmSync(root,{recursive:true,force:true});}
@@ -68,7 +68,7 @@ test('original C77 builder and Node cognition after verified source graph, not f
   assert.equal(r.status,'C104_SOURCE_BYTES_100PCT_NOT_RUNTIME');
   // This original C77 build independently enforces git HEAD:blob identity.
   const build=buildC77Capsule({outDir:capsule});
-  assert.equal(build.file_count,34);
+  assert.equal(build.file_count,35);
   assert.equal(build.qualified_cx_count,70);
   const result=await qualifyC104C77Handoff({context:c,capsuleDir:capsule,
    manifestSha256:build.bundle_manifest_sha256,humanInput:'Definisci un criterio falsificabile'});
@@ -98,7 +98,7 @@ test('original C77 builder and Node cognition after verified source graph, not f
    c102:bound.status,c103:minimum.status,c87:reopened.status,
    ledger_entries:reopened.count,localhost_execution:true,
    native_chatgpt_hook:false}));
-  console.log('C104_ORIGINAL_EXECUTION '+JSON.stringify({source_objects:65,
+  console.log('C104_ORIGINAL_EXECUTION '+JSON.stringify({source_objects:66,
    materialization:r.status,c77_build:build.file_count,
    kernel:result.status,c70:result.c70_status,c71:result.c71_status,
    host_native_hook:false,active:false}));
@@ -112,17 +112,17 @@ test('unchanged failed carrier evidence is suppressed across local invocations; 
   const reader=async ({path:p})=>{if(p===f.path){failedCalls++;throw Error('NO_PHYSICAL_PORT_BYTES');}return read({path:p});};
   const first=await runC104HostWorkers({context:c,carrierId:'HOST_FILE_PORT',
    carrierEvidenceSha256:sha('bridge unqualified epoch 1'),concurrency:8,readFile:reader});
-  assert.equal(first.verified,64);assert.equal(first.status,'C104_MATERIALIZATION_NEXT_REQUIRED');
+  assert.equal(first.verified,65);assert.equal(first.status,'C104_MATERIALIZATION_NEXT_REQUIRED');
   assert.equal(failedCalls,1);
   const second=await runC104HostWorkers({context:ctx(root),carrierId:'HOST_FILE_PORT',
    carrierEvidenceSha256:sha('bridge unqualified epoch 1'),concurrency:8,readFile:reader});
-  assert.equal(second.verified,64);assert.equal(second.actual_callback_invocations,0);
+  assert.equal(second.verified,65);assert.equal(second.actual_callback_invocations,0);
   assert.equal(second.skipped_unchanged_failed_carrier,1);
   assert.equal(failedCalls,1);
   const third=await runC104HostWorkers({context:c,carrierId:'HOST_FILE_PORT',
    carrierEvidenceSha256:sha('bridge real capability changed epoch 2'),concurrency:8,
    readFile:async()=>read(f)});
-  assert.equal(third.verified,65);assert.equal(third.status,'C104_SOURCE_BYTES_100PCT_NOT_RUNTIME');
+  assert.equal(third.verified,66);assert.equal(third.status,'C104_SOURCE_BYTES_100PCT_NOT_RUNTIME');
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
 
@@ -145,6 +145,6 @@ test('actual host-built NDJSON adapter stages exact source bytes and survives pr
   const second=spawnSync(process.execPath,cmd,{cwd:repo,encoding:'utf8',timeout:120000,
    input:'{"op":"INSPECT"}\n'});
   const reread=JSON.parse(second.stdout.trim());assert.equal(reread.verified,1);
-  assert.equal(reread.missing.length,64);
+  assert.equal(reread.missing.length,65);
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });

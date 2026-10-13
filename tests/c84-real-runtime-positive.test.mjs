@@ -41,7 +41,7 @@ function args(f,humanInput){
 test('C84.1 two truly executed C77/C82/C78/C79/C81 positive runtime turns, no native status',async()=>{
  const f=prepare();
  try{
-  assert.equal(f.manifest.files.length,34);
+  assert.equal(f.manifest.files.length,35);
   const derivative=f.manifest.files.find(x=>x.path==='src/c71-experimental-host-draft.mjs');
   assert.equal(derivative.generated_derivative,true);
   assert.match(derivative.original_source_blob_sha1,/^[a-f0-9]{40}$/);
@@ -53,7 +53,7 @@ test('C84.1 two truly executed C77/C82/C78/C79/C81 positive runtime turns, no na
    assert.equal(result.status,'C84_RUNTIME_VOICE_READY_NOT_NATIVE_DELIVERED',JSON.stringify(result));
    assert.equal(result.input_sha256,SHA(Buffer.from(input,'utf8')));
    assert.equal(result.output_sha256,SHA(Buffer.from(result.runtime_computed_answer,'utf8')));
-   assert.equal(result.staged_files,34);
+   assert.equal(result.staged_files,35);
    assert.equal(result.source_reachability,'C81_GIT_REACHABILITY_VERIFIED');
    assert.equal(result.runtime_projection,'C81_RUNTIME_SURFACE_A_READY_NOT_NATIVE_DELIVERED');
    assert.equal(result.active,false);
@@ -118,7 +118,7 @@ test('C84.2 typed CLI actually receives opaque host bytes, executes Node capsule
   assert.equal(out.output_sha256,SHA(Buffer.from(out.runtime_computed_answer,'utf8')));
   assert.equal(out.native_chat_delivery_attested,false);
   assert.equal(out.source_origin_attested,false);
-  assert.equal(out.staged_files,34);
+  assert.equal(out.staged_files,35);
   const corrupted=structuredClone(payload);
   corrupted.carriers[0].files[0].contentBase64=Buffer.from('tampered').toString('base64');
   const bad=run(corrupted);
@@ -137,7 +137,7 @@ test('C84.4 one content-addressed source package crosses the real CLI and Node p
   const packagePath=path.join(f.dir,'c84-single-source.json');
   const receipt=buildC84SourcePackage({capsuleDir:f.capsulePath,outputPath:packagePath});
   assert.equal(receipt.status,'C84_PACKAGE_WRITTEN_REOPENED_NOT_HOST_DELIVERED');
-  assert.equal(receipt.files,34);
+  assert.equal(receipt.files,35);
   assert.equal(receipt.write_reopen_verified,true);
   assert.equal(receipt.source_reachability,'C81_GIT_REACHABILITY_VERIFIED');
   const bytes=fs.readFileSync(packagePath);
@@ -151,7 +151,7 @@ test('C84.4 one content-addressed source package crosses the real CLI and Node p
   assert.equal(ok.status,0,ok.stderr+' '+ok.stdout?.slice(0,800));
   const out=JSON.parse(ok.stdout);
   assert.equal(out.status,'C84_RUNTIME_VOICE_READY_NOT_NATIVE_DELIVERED',JSON.stringify(out));
-  assert.equal(out.staged_files,34);
+  assert.equal(out.staged_files,35);
   assert.equal(out.input_sha256,SHA(Buffer.from(q.humanInput)));
   assert.equal(out.native_chat_delivery_attested,false);
   const tampered={...q,expectedPackageSha256:'0'.repeat(64)};

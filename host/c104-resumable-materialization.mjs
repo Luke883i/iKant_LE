@@ -157,7 +157,7 @@ export async function qualifyC104C77Handoff({context,capsuleDir,manifestSha256,h
   const bytes=fs.readFileSync(manifestFile);
   if(hash(bytes)!==manifestSha256)return deny('C104_C77_MANIFEST_HASH');
   const manifest=JSON.parse(bytes.toString('utf8'));
-  if(manifest.source_head!==context.sourceHead||manifest.files?.length!==34)
+  if(manifest.source_head!==context.sourceHead||manifest.files?.length!==35)
    return deny('C104_C77_CAPSULE_SOURCE_EPOCH');
   const entry=path.join(capsuleDir,'host/c77-first-turn.mjs');
   const c77=await import(pathToFileURL(entry).href);

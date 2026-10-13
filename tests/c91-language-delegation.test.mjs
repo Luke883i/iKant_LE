@@ -58,7 +58,7 @@ const deep=x=>structuredClone(x);
 
 test('SOURCE FIXTURE: manifest and 6 local original files are available',()=>{
  assert.equal(manifest.source_head,HEAD);
- assert.equal(manifest.files.length,34);
+ assert.equal(manifest.files.length,35);
  for(const f of C91_SOURCE_ALLOWLIST)assert.ok(manifest.files.some(x=>x.path===f&&x.generated_derivative===false));
 });
 test('C91 bound local structural candidate (fixture NOT actual GPT-6 invocation)',async()=>{

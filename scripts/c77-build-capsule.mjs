@@ -14,7 +14,7 @@ const head=git('rev-parse','HEAD');
 const codePaths=[
  'host/c69-capability-first-preview.mjs','host/c72-unified-mode-admission.mjs',
  'host/c73-project-capsule.mjs','host/c77-qualified-census.mjs','host/c77-first-turn.mjs',
- 'src/c70-experimental-compute-preview.mjs','src/c71-experimental-host-draft.mjs',
+ 'src/c70-experimental-compute-preview.mjs','src/c124-channel-bridge.mjs','src/c71-experimental-host-draft.mjs',
  'src/cognition-core.mjs','src/cognition-surface.mjs','src/c82-experimental-answer.mjs',
  'src/c83-semantic-router.mjs','src/contract.mjs',
  'src/deadline-integrity.mjs','src/fastboot-convergence.mjs','src/host-consumption-frame.mjs',
