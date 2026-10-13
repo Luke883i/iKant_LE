@@ -33,9 +33,9 @@ const plain=o=>o&&typeof o==='object'&&!isProxy(o)&&!Array.isArray(o)&&
 const clean=o=>{if(!plain(o))return false;const ds=Object.getOwnPropertyDescriptors(o);
  return Reflect.ownKeys(ds).every(k=>typeof k==='string'&&k!=='__proto__'&&k!=='constructor'&&
  k!=='prototype'&&Object.hasOwn(ds[k],'value'));};
-const exact=(o,keys)=>clean(o)&&Object.keys(o).length===keys.length&&keys.every(k=>Object.hasOwn(o,k));
+const exact=(o,keys)=>clean(o)&&Reflect.ownKeys(o).length===keys.length&&keys.every(k=>Object.hasOwn(o,k));
 const arr=(a,n)=>Array.isArray(a)&&!isProxy(a)&&a.length===n&&
- Object.keys(a).length===n&&Array.from({length:n},(_,i)=>i).every(i=>Object.hasOwn(a,i)&&
+ Reflect.ownKeys(a).length===n+1&&Array.from({length:n},(_,i)=>i).every(i=>Object.hasOwn(a,i)&&
  Object.hasOwn(Object.getOwnPropertyDescriptors(a)[i],'value'));
 const line=s=>typeof s==='string'&&s.length>=20&&s.length<=500&&
  Buffer.from(s,'utf8').toString('utf8')===s&&

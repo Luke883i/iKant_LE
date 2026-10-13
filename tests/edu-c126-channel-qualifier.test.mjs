@@ -51,6 +51,10 @@ test('dangerous getter, Proxy, sparse array are denied without getter access',()
  const y=sample();y.channels[0]=new Proxy(y.channels[0],{get(){touched++;throw Error('exfiltrate')}});
  assert.equal(qualify(y).ok,false);assert.equal(touched,0);
  const z=sample();delete z.channels[1];assert.equal(qualify(z).ok,false);
+ const hidden=sample();Object.defineProperty(hidden.channels[0],'hiddenAuthority',{value:true,enumerable:false});
+ assert.equal(qualify(hidden).ok,false);
+ const symbol=sample();symbol.channels[1][Symbol('authority')]=true;
+ assert.equal(qualify(symbol).ok,false);
 });
 test('4096 deterministic real validator mutants, all recomputed-hash negative cases denied',()=>{
  let seed=0xC1262026;const rnd=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0;};
