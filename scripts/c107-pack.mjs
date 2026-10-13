@@ -15,7 +15,7 @@ export const C107_FILES=Object.freeze([
  'host/c108-host-matrix.mjs','host/c108-stdio-relay.mjs',
  'host/c92-live-provider.mjs','scripts/c108-live-turn.mjs',
  'contracts/c108-machine-matrix.json',
- 'src/c70-experimental-compute-preview.mjs','src/cognition-core.mjs',
+ 'src/c70-experimental-compute-preview.mjs','src/c124-channel-bridge.mjs','src/cognition-core.mjs',
  'src/c82-experimental-answer.mjs','src/psyche.mjs','src/state.mjs',
  'src/self-world-state.mjs','src/runtime-dispatch.mjs','src/contract.mjs',
  'src/cognition-surface.mjs','src/c83-semantic-router.mjs',

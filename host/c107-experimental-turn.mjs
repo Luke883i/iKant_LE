@@ -78,7 +78,9 @@ export function executeC107Turn({ledgerFile,nonce,request,priorMessages=[],reset
    (typeof expectedC70OutputSha256!=='string'||expectedC70OutputSha256!==t.output_sha256))
    return stop('C107_COMPUTE_FIRST_C70_PLAN_DRIFT');
   // C124 binding is mandatory ONLY for the new source epoch, never for frozen C107.
-  const sourceEpochC124=head!=='c734bf934e33703a6a1f91f0f4d5df96eec96945';
+  // C124 verification is explicitly activated by the verified composite owner;
+  // legacy main-head packages must remain backward-compatible.
+  const sourceEpochC124=expectedC124ChannelSha256!==null;
   if(sourceEpochC124){
    if(!verifyC124LanguageChannels(t.c124_language_channels,t.input_sha256))return stop('C124_SOURCE_CHANNEL_INVALID');
    if(x.modelCandidate&&typeof expectedC124ChannelSha256!=='string')return stop('C124_CHANNEL_ACK_REQUIRED');

@@ -73,6 +73,9 @@ export async function createLocalCohostAdapter({carrierBytes,privateParent=os.tm
    return blocked('P02_ORIGINAL_C72_SELECTION_INVALID');
   if(modelCandidate!==undefined&&authorization.separate_cohost_draft_authorized!==true)
    return blocked('P03_SEPARATE_HOST_DRAFT_OPTIN_MISSING');
+  if(overlay&&modelCandidate!==undefined&&
+     (typeof expectedC124ChannelSha256!=='string'||!/^[0-9a-f]{64}$/.test(expectedC124ChannelSha256)))
+   return blocked('C124_ORIGINAL_CHANNEL_BINDING_REQUIRED');
   if(typeof humanInput!=='string'||!humanInput.trim()||typeof nonce!=='string')
    return blocked('P02_INPUT_NONCE_INVALID');
   if(!Array.isArray(priorMessages)||priorMessages.some(x=>typeof x!=='string'))
