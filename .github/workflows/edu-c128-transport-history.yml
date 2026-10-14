@@ -1,0 +1,39 @@
+name: edu-c128-transport-and-history-closure
+on:
+  pull_request:
+    paths:
+      - 'host/edu-c127-source-transport.mjs'
+      - 'scripts/c128-*'
+      - 'tests/edu-c128-*'
+      - 'contracts/c128-*'
+      - 'docs/C128_*'
+      - '.github/workflows/edu-c128-transport-history.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  complete-history-and-transport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Full git merge graph PR 1-127 and every uniquely introduced semantic commit
+        run: node scripts/c128-pr-history-audit.mjs /tmp/c128-complete-pr-history.json
+      - name: Publish unabridged commit inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c128-pr1-127-commit-forensic-census
+          path: /tmp/c128-complete-pr-history.json
+          if-no-files-found: ignore
+      - name: Exhaustively evaluate 1024 competing engineering contracts
+        run: node scripts/c128-contract-lattice.mjs
+      - name: C128 real Node attacks and original C127/C124/C126 owner regression
+        run: node --test tests/edu-c128-transport-supervisor.test.mjs tests/edu-c127-cache-identity.test.mjs tests/edu-c127-transport-attempts.test.mjs tests/edu-c124-guided-source.test.mjs tests/edu-c126-channel-qualifier.test.mjs
+      - name: Historical docs, canon and Terms unaffected
+        run: npm run check
