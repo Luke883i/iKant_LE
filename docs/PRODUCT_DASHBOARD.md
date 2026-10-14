@@ -29,3 +29,7 @@ Per impostazione predefinita, tutti i messaggi scritti dal modello HOST — inte
 La linea `1.0.0-edu.1` e' una versione **sperimentale** e rimane candidata fino a merge, prove sul commit effettivo di `main` e decisione separata di rilascio. [Decisori e alternative](V1_PRODUCT_DECISIONS.md) · [Prove verificabili](V1_E2E_TRACEABILITY.md). Le righe sopra non certificano miglioramenti cognitivi del modello o ingresso nativo.
 
 **GOLD E MIGRAZIONE:** [inventario dei componenti e decisioni di riuso](V1_GOLD_MIGRATION.md). Il censimento completo si produce con `node scripts/v1-gold-census.mjs`; non sostituisce la revisione semantica di ogni singolo file.
+
+## Prossima qualificazione
+
+La [roadmap ENTERPRISE_CANDIDATE](C132_ENTERPRISE_CANDIDATE.md) distingue il patrimonio storico da componenti qualificati e risultati cognitivi reali. Il nuovo classificatore e' ancora un esperimento isolato: non sostituisce il proprietario delle risposte e non prova una superiorita' del modello linguistico.
