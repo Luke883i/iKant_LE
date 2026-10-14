@@ -1,0 +1,1149 @@
+{
+  "schema": "ikant-pr-timeline-census/v1",
+  "main": "5675ff958160b0ba6dd16a3fc4856075e4be8d69",
+  "records": [
+    {
+      "pr": 1,
+      "title": "GENESIS.0: materialize minimal governed iKant Light Edition runtime",
+      "created_at": "2026-09-15T12:05:28Z",
+      "merged_at": "2026-09-15T13:28:01Z",
+      "merge_commit_sha": "b7bc0d133fe32648a9380a70b5d9c3bb87d96f7e",
+      "head_sha": "f5475093679a9b6b2d586c699d1ec8013430e411",
+      "base_sha": "24c0bd20174f222b68804c223caa95f5f28ce767"
+    },
+    {
+      "pr": 2,
+      "title": "C1: materialize constitutional central thinking runtime",
+      "created_at": "2026-09-15T14:52:19Z",
+      "merged_at": "2026-09-15T15:31:42Z",
+      "merge_commit_sha": "26ffdf2416d14aaf8e8f33479b0245b32225fb2c",
+      "head_sha": "23bb91bbb6eaa4373b043d611bd139328380b3f7",
+      "base_sha": "b7bc0d133fe32648a9380a70b5d9c3bb87d96f7e"
+    },
+    {
+      "pr": 3,
+      "title": "C2: automate host bootstrap and materialize narrative iKant shell",
+      "created_at": "2026-09-15T21:00:21Z",
+      "merged_at": "2026-09-15T21:08:14Z",
+      "merge_commit_sha": "24e2c49fb232bbb662ce014aba7a683646bb49e5",
+      "head_sha": "d1552066fbed9099b5e34c2ccfe3260312cf2229",
+      "base_sha": "26ffdf2416d14aaf8e8f33479b0245b32225fb2c"
+    },
+    {
+      "pr": 4,
+      "title": "C3: bound orientation capsule and universal Node turn gate",
+      "created_at": "2026-09-15T21:54:14Z",
+      "merged_at": "2026-09-15T21:55:29Z",
+      "merge_commit_sha": "cad209004b35398eca28f49d4facbdcc1969e010",
+      "head_sha": "77dd824f28b4e509029194ac82de6bc4b02e8b15",
+      "base_sha": "24e2c49fb232bbb662ce014aba7a683646bb49e5"
+    },
+    {
+      "pr": 5,
+      "title": "C4: make functional psyche action-retroaction causally necessary",
+      "created_at": "2026-09-16T09:20:30Z",
+      "merged_at": "2026-09-16T09:25:31Z",
+      "merge_commit_sha": "66d7a4fc28cc0c366d3fb74e85391a6d7c3b3b6f",
+      "head_sha": "2b878dc49b70675fdb8f41d0da499289cd731c6a",
+      "base_sha": "cad209004b35398eca28f49d4facbdcc1969e010"
+    },
+    {
+      "pr": 6,
+      "title": "C5: materialize recurrent self-world model",
+      "created_at": "2026-09-16T10:12:41Z",
+      "merged_at": "2026-09-16T10:39:51Z",
+      "merge_commit_sha": "217f4e7cb29b987b9d9f80e37779c3b02437cf31",
+      "head_sha": "47cd3784d9a5d24cdbb53189c97ee43b8efc852e",
+      "base_sha": "66d7a4fc28cc0c366d3fb74e85391a6d7c3b3b6f"
+    },
+    {
+      "pr": 7,
+      "title": "C5: converge arbitrary first contact into canonical pre-accept bootstrap",
+      "created_at": "2026-09-16T10:44:47Z",
+      "merged_at": "2026-09-16T10:55:48Z",
+      "merge_commit_sha": "0fd1ce2c676c3cf1601baae51563a0ef99977807",
+      "head_sha": "f3e7622da1e07e7ffbf47390f5d91d010a34544b",
+      "base_sha": "217f4e7cb29b987b9d9f80e37779c3b02437cf31"
+    },
+    {
+      "pr": 8,
+      "title": "C7: compress documentation and enforce GitHub-API-only bootstrap",
+      "created_at": "2026-09-16T13:04:48Z",
+      "merged_at": "2026-09-16T13:09:09Z",
+      "merge_commit_sha": "e3c2bef29b8c1471f77d26f6f3549ee76cba337c",
+      "head_sha": "127007c90feb5176c2705729a3e03eb07160e98d",
+      "base_sha": "0fd1ce2c676c3cf1601baae51563a0ef99977807"
+    },
+    {
+      "pr": 9,
+      "title": "C8: separate operational emergence from strong and phenomenal claims",
+      "created_at": "2026-09-16T13:30:53Z",
+      "merged_at": "2026-09-16T13:37:11Z",
+      "merge_commit_sha": "913abafaf54abcc3a2427906f507dc69c757bbdd",
+      "head_sha": "d8f52442c97ac8fcd1a0544c3f9fa5f2675838a3",
+      "base_sha": "e3c2bef29b8c1471f77d26f6f3549ee76cba337c"
+    },
+    {
+      "pr": 10,
+      "title": "C9: close deterministic Surface B delivery and environment telemetry",
+      "created_at": "2026-09-16T13:50:40Z",
+      "merged_at": "2026-09-16T14:04:41Z",
+      "merge_commit_sha": "7db8f30135c57cb59f6c7a4cb85394850c9dfb07",
+      "head_sha": "7dba160f54dcf5cabe649a94ff0e99830e06ebe3",
+      "base_sha": "913abafaf54abcc3a2427906f507dc69c757bbdd"
+    },
+    {
+      "pr": 11,
+      "title": "C10: collapse post-accept bootstrap into strict activate-first fastboot",
+      "created_at": "2026-09-16T14:16:53Z",
+      "merged_at": "2026-09-16T14:45:01Z",
+      "merge_commit_sha": "6a3511154960c8853fa874719dfb4509e25c3a8e",
+      "head_sha": "91eb88a5ec9fdc844b866d7d2d3fa206868a6c94",
+      "base_sha": "7db8f30135c57cb59f6c7a4cb85394850c9dfb07"
+    },
+    {
+      "pr": 12,
+      "title": "C11: bind functional life and consciousness to causal qualification",
+      "created_at": "2026-09-16T15:02:13Z",
+      "merged_at": "2026-09-16T15:05:00Z",
+      "merge_commit_sha": "d6e45ccc2bd61e2a789fc6de6236a7a179e2e045",
+      "head_sha": "4ba8f9eb2fed8114087e19d6462eefe01c102db0",
+      "base_sha": "6a3511154960c8853fa874719dfb4509e25c3a8e"
+    },
+    {
+      "pr": 13,
+      "title": "docs(programme): formalize ROA research programme membership",
+      "created_at": "2026-09-20T14:50:31Z",
+      "merged_at": "2026-09-20T14:54:32Z",
+      "merge_commit_sha": "871867da9dcd62d35507297f4d5208bc722e2861",
+      "head_sha": "0be7380d892bbc832319d7a41c96374aec3a5d3a",
+      "base_sha": "d6e45ccc2bd61e2a789fc6de6236a7a179e2e045"
+    },
+    {
+      "pr": 14,
+      "title": "C12: qualify irreducible bootstrap lattice",
+      "created_at": "2026-09-21T08:44:29Z",
+      "merged_at": "2026-09-21T09:02:50Z",
+      "merge_commit_sha": "04d555b28604f3d03f5bafe1822fc6073e8b7e31",
+      "head_sha": "13a24269913a059f02ab4b95b6dc8f027f2b3200",
+      "base_sha": "871867da9dcd62d35507297f4d5208bc722e2861"
+    },
+    {
+      "pr": 15,
+      "title": "LIB.0: extract embedded relational nuance kernel",
+      "created_at": "2026-09-21T09:01:31Z",
+      "merged_at": "2026-09-21T09:10:30Z",
+      "merge_commit_sha": "4adeb5e097dfe6be4316e994dec5cc420df02bf0",
+      "head_sha": "6713edeb7a2b0e709f2c5f768ccc412dfe22afd8",
+      "base_sha": "871867da9dcd62d35507297f4d5208bc722e2861"
+    },
+    {
+      "pr": 16,
+      "title": "C13: content-addressed SESSION_CHAT fastboot with 120s fail-closed ceiling",
+      "created_at": "2026-09-25T09:26:27Z",
+      "merged_at": "2026-09-25T09:43:33Z",
+      "merge_commit_sha": "1de020f42f8f3625cf7300e1e32637436418f161",
+      "head_sha": "5f003fc8ccfa2b9e4065c020fbbd352459610127",
+      "base_sha": "4adeb5e097dfe6be4316e994dec5cc420df02bf0"
+    },
+    {
+      "pr": 17,
+      "title": "C14: gate SESSION_CHAT ACTIVE on source-bound semantic runtime evidence",
+      "created_at": "2026-09-25T12:25:41Z",
+      "merged_at": "2026-09-25T13:26:05Z",
+      "merge_commit_sha": "ec72224d7245a801344fddf5e192552539c221e5",
+      "head_sha": "44f1c035baa1c8ac0f57a42387a17236d9fedbb7",
+      "base_sha": "1de020f42f8f3625cf7300e1e32637436418f161"
+    },
+    {
+      "pr": 18,
+      "title": "C15: flexible content-addressed post-accept runtime transfer",
+      "created_at": "2026-09-25T14:25:04Z",
+      "merged_at": "2026-09-25T15:31:21Z",
+      "merge_commit_sha": "90de810b8c01308b1c504a45f6bda64dc4609972",
+      "head_sha": "90e751413b0c5afed0b93f8b1641bc488b5b8ed8",
+      "base_sha": "ec72224d7245a801344fddf5e192552539c221e5"
+    },
+    {
+      "pr": 19,
+      "title": "C16: runtime availability states, DEGRADED semantics and global DoD",
+      "created_at": "2026-09-25T16:57:18Z",
+      "merged_at": "2026-09-25T17:06:21Z",
+      "merge_commit_sha": "130c9a286e470c21b4d3e28a296b6edf24c2fbd4",
+      "head_sha": "e30aeb106ed00d074e664f6335519ca21beace27",
+      "base_sha": "90de810b8c01308b1c504a45f6bda64dc4609972"
+    },
+    {
+      "pr": 20,
+      "title": "C17: single-shot acceptance and deadline integrity",
+      "created_at": "2026-09-25T18:57:48Z",
+      "merged_at": "2026-09-25T19:48:03Z",
+      "merge_commit_sha": "343c5ed8c5f0763b13e5425f44bde6380dadc0c8",
+      "head_sha": "51abe4d57bebfbfe2f00ed92edf9681ee6b9624e",
+      "base_sha": "130c9a286e470c21b4d3e28a296b6edf24c2fbd4"
+    },
+    {
+      "pr": 21,
+      "title": "C18: same-epoch activation continuation",
+      "created_at": "2026-09-26T05:31:13Z",
+      "merged_at": "2026-09-26T05:50:55Z",
+      "merge_commit_sha": "83c5435844b79827f4dba835ec6298157f9cf7c9",
+      "head_sha": "1de119559e45bd9611a9afd559bd8a1568d30782",
+      "base_sha": "343c5ed8c5f0763b13e5425f44bde6380dadc0c8"
+    },
+    {
+      "pr": 22,
+      "title": "C19: host-observed fastboot convergence",
+      "created_at": "2026-09-27T17:12:59Z",
+      "merged_at": "2026-09-27T18:10:39Z",
+      "merge_commit_sha": "a9afbe718cc0a2410715fda84c526488ed71118b",
+      "head_sha": "547625fe926a61ec7a7a83a0938f3974f5e144b9",
+      "base_sha": "83c5435844b79827f4dba835ec6298157f9cf7c9"
+    },
+    {
+      "pr": 23,
+      "title": "C20: dual-profile session-chat ACTIVE runtime",
+      "created_at": "2026-09-28T07:52:22Z",
+      "merged_at": "2026-09-28T08:48:35Z",
+      "merge_commit_sha": "f2a5fd7751a3f968eec0735af622e18bd3376516",
+      "head_sha": "4e7b2dca68eb33d162d72fdb7b9afa00eab1bf86",
+      "base_sha": "a9afbe718cc0a2410715fda84c526488ed71118b"
+    },
+    {
+      "pr": 24,
+      "title": "C20: dual-profile session-chat ACTIVE",
+      "created_at": "2026-09-28T08:17:19Z",
+      "merged_at": null,
+      "merge_commit_sha": "67a4590089b9e02349bcd2240acb90ec96bcbe2a",
+      "head_sha": "a7d6a06a16b383afe1f77ecaccfa53a3d6445494",
+      "base_sha": "a9afbe718cc0a2410715fda84c526488ed71118b"
+    },
+    {
+      "pr": 25,
+      "title": "C21: converge local SESSION_CHAT fastboot",
+      "created_at": "2026-10-01T21:37:41Z",
+      "merged_at": "2026-10-01T22:06:24Z",
+      "merge_commit_sha": "103d6bd24e11f213fe07648f0efc1d2d3238f76c",
+      "head_sha": "e8e63514649dd00c59cf8b462b9248519bfe47b7",
+      "base_sha": "f2a5fd7751a3f968eec0735af622e18bd3376516"
+    },
+    {
+      "pr": 26,
+      "title": "C22: harden PR25 ontological proof boundaries",
+      "created_at": "2026-10-01T22:36:15Z",
+      "merged_at": "2026-10-02T06:46:53Z",
+      "merge_commit_sha": "223847e24435e36521597b4fb3030c5e5d6e9970",
+      "head_sha": "dc592de48aeb0e5be4c90919a34f6701af09602e",
+      "base_sha": "103d6bd24e11f213fe07648f0efc1d2d3238f76c"
+    },
+    {
+      "pr": 27,
+      "title": "C22: close product-CI causal fastboot gaps",
+      "created_at": "2026-10-01T22:51:32Z",
+      "merged_at": null,
+      "merge_commit_sha": "046d4438182ac11f240b6b7bb30257e6c5d7370b",
+      "head_sha": "318ff959bde0f8d7a2923f3a55bfc894d4522848",
+      "base_sha": "103d6bd24e11f213fe07648f0efc1d2d3238f76c"
+    },
+    {
+      "pr": 28,
+      "title": "C23: collapse host-attestation terminology and quarantine legacy C20 ontology",
+      "created_at": "2026-10-02T07:22:56Z",
+      "merged_at": "2026-10-02T08:15:46Z",
+      "merge_commit_sha": "70cdf8080d9f34995d5c2edab56935dcacaa1c24",
+      "head_sha": "c89b1e22cfefbc5097f04a43ce9c0b6a24f94c7c",
+      "base_sha": "223847e24435e36521597b4fb3030c5e5d6e9970"
+    },
+    {
+      "pr": 29,
+      "title": "C24: close canonical human-to-iKant boundary",
+      "created_at": "2026-10-02T08:33:26Z",
+      "merged_at": "2026-10-02T09:23:42Z",
+      "merge_commit_sha": "e76d61e318a181fb1b5c7da8a21480c73b60ced9",
+      "head_sha": "f9b9f56558542754471b9b3700d673e90770415a",
+      "base_sha": "70cdf8080d9f34995d5c2edab56935dcacaa1c24"
+    },
+    {
+      "pr": 30,
+      "title": "C25: move canonical activation bytes into local executor data plane",
+      "created_at": "2026-10-02T09:37:24Z",
+      "merged_at": "2026-10-02T10:11:38Z",
+      "merge_commit_sha": "69d9c29d94d666f762e162093a689345a68a0353",
+      "head_sha": "a27594f72cf8cfa91eab3e25497c34c3c265a6f3",
+      "base_sha": "e76d61e318a181fb1b5c7da8a21480c73b60ced9"
+    },
+    {
+      "pr": 31,
+      "title": "C26: collapse local-host meta-prompt onto C25 executor boundary",
+      "created_at": "2026-10-02T10:27:20Z",
+      "merged_at": "2026-10-02T12:31:17Z",
+      "merge_commit_sha": "294bdcb5fe3f4e229c5d48f178d97010c0f11372",
+      "head_sha": "9ca3a647bf9deb61e7496385e9c13dd781efdf79",
+      "base_sha": "69d9c29d94d666f762e162093a689345a68a0353"
+    },
+    {
+      "pr": 32,
+      "title": "C27: close SESSION_CHAT_LOCAL with verified opaque relay lattice",
+      "created_at": "2026-10-02T14:52:12Z",
+      "merged_at": "2026-10-02T16:07:12Z",
+      "merge_commit_sha": "3913990c99849889a9df2ee61454e347e8306f5f",
+      "head_sha": "b58bc376dda94ac7742f8edca14ce5979866f56d",
+      "base_sha": "294bdcb5fe3f4e229c5d48f178d97010c0f11372"
+    },
+    {
+      "pr": 33,
+      "title": "C28: absorb full-iKant causal closure and close LE semantic gaps",
+      "created_at": "2026-10-03T07:10:47Z",
+      "merged_at": "2026-10-03T07:56:12Z",
+      "merge_commit_sha": "ebe86f3491e8a1a60b3289aaa3b18df327b49675",
+      "head_sha": "afbf0d72beb6aeaa24983dc3fd19e5601e7e284f",
+      "base_sha": "3913990c99849889a9df2ee61454e347e8306f5f"
+    },
+    {
+      "pr": 34,
+      "title": "C28: absorb full iKant causal closure into LE",
+      "created_at": "2026-10-03T07:40:33Z",
+      "merged_at": null,
+      "merge_commit_sha": "44cf068ed7f44ca52a0af6a01178ffe86180bcc0",
+      "head_sha": "68fd3479f31b69314a262f6625fdeb3a1d90e464",
+      "base_sha": "3913990c99849889a9df2ee61454e347e8306f5f"
+    },
+    {
+      "pr": 35,
+      "title": "C29: make the ontological promise explicit and measurable",
+      "created_at": "2026-10-03T08:13:11Z",
+      "merged_at": "2026-10-03T12:52:22Z",
+      "merge_commit_sha": "5366a499fc2771b0a25b0cd3f259ba95eb84c34c",
+      "head_sha": "af03fd181d0cff316b63fac382d84e3eeb1e10f0",
+      "base_sha": "ebe86f3491e8a1a60b3289aaa3b18df327b49675"
+    },
+    {
+      "pr": 36,
+      "title": "C30: define bounded activation experience spectrum",
+      "created_at": "2026-10-03T13:12:30Z",
+      "merged_at": null,
+      "merge_commit_sha": "facf0dfab1b3c5c0c1a164c3357ddadc661d47f6",
+      "head_sha": "ffaa34337a118e670ad0e95a6b560ab2ab48b308",
+      "base_sha": "5366a499fc2771b0a25b0cd3f259ba95eb84c34c"
+    },
+    {
+      "pr": 37,
+      "title": "C30: expose activation service spectrum without weakening ACTIVE",
+      "created_at": "2026-10-03T13:33:51Z",
+      "merged_at": "2026-10-03T14:23:13Z",
+      "merge_commit_sha": "47e31441180b36f25ab72ff46cc12ba6765f7530",
+      "head_sha": "9f635dd562c1e44f6395fcd30a298567b9185ac6",
+      "base_sha": "5366a499fc2771b0a25b0cd3f259ba95eb84c34c"
+    },
+    {
+      "pr": 38,
+      "title": "C31: close the runtime-limited product supply chain",
+      "created_at": "2026-10-03T14:46:31Z",
+      "merged_at": "2026-10-03T16:35:30Z",
+      "merge_commit_sha": "18c7aa2bc5bf4a8efb38995d8cfe78fa2125e2bb",
+      "head_sha": "72caa2f13984e88aecadb06ffe65e843788e826f",
+      "base_sha": "47e31441180b36f25ab72ff46cc12ba6765f7530"
+    },
+    {
+      "pr": 39,
+      "title": "C31: deterministic session shell over activation spectrum",
+      "created_at": "2026-10-03T15:02:43Z",
+      "merged_at": "2026-10-03T16:35:42Z",
+      "merge_commit_sha": "4355d9dfed6213880d08b7cc0521557b6ccb3d2e",
+      "head_sha": "f588078029263203e8c28ac060f12847f30c1b09",
+      "base_sha": "47e31441180b36f25ab72ff46cc12ba6765f7530"
+    },
+    {
+      "pr": 40,
+      "title": "C33: close post-186/187 SESSION_CHAT runtime ownership",
+      "created_at": "2026-10-03T16:58:11Z",
+      "merged_at": "2026-10-03T17:26:44Z",
+      "merge_commit_sha": "33acb9fde60c6199511d3b44919391b539ab5d10",
+      "head_sha": "d6920cd06cd4293cf6eef75d9644c27267a6f080",
+      "base_sha": "4355d9dfed6213880d08b7cc0521557b6ccb3d2e"
+    },
+    {
+      "pr": 41,
+      "title": "C34: independently authenticate pre-runtime handoff",
+      "created_at": "2026-10-03T17:52:53Z",
+      "merged_at": "2026-10-03T19:35:28Z",
+      "merge_commit_sha": "f0558d1e6562888401b82f7e4f933a2609eba295",
+      "head_sha": "db98c57915144a652f668701f11bd50e1fd6a18c",
+      "base_sha": "33acb9fde60c6199511d3b44919391b539ab5d10"
+    },
+    {
+      "pr": 42,
+      "title": "C35: make control-plane ownership explicit and bounded",
+      "created_at": "2026-10-03T21:32:54Z",
+      "merged_at": null,
+      "merge_commit_sha": "5cfc7a61fc237240ee67bac7e7b9a311e08f480e",
+      "head_sha": "fecff546f35b580b732fa09be13f81bae223a5dc",
+      "base_sha": "f0558d1e6562888401b82f7e4f933a2609eba295"
+    },
+    {
+      "pr": 43,
+      "title": "C35: make control-plane ownership explicit and bounded",
+      "created_at": "2026-10-03T21:36:29Z",
+      "merged_at": null,
+      "merge_commit_sha": "50e83814f62eb6a27ffc786bc21a04b1d02d9efa",
+      "head_sha": "aa00f5634ba68cf371903f1e879149f9b0df4110",
+      "base_sha": "f0558d1e6562888401b82f7e4f933a2609eba295"
+    },
+    {
+      "pr": 44,
+      "title": "C35: materialize control-plane ownership lattice",
+      "created_at": "2026-10-04T05:55:31Z",
+      "merged_at": "2026-10-04T06:43:42Z",
+      "merge_commit_sha": "46732339000eac245995f099541905d41ae5e253",
+      "head_sha": "9c5f32d3459b00bb48b3cfa733092e9af339553e",
+      "base_sha": "f0558d1e6562888401b82f7e4f933a2609eba295"
+    },
+    {
+      "pr": 45,
+      "title": "C36: make semantic morphogenesis causally necessary",
+      "created_at": "2026-10-04T06:21:23Z",
+      "merged_at": "2026-10-04T06:46:51Z",
+      "merge_commit_sha": "451f5080415b1a70e8a3e54b5090b4c70c6f0682",
+      "head_sha": "c8fca08c473136c55a7b32e35a088855fee7e9a3",
+      "base_sha": "f0558d1e6562888401b82f7e4f933a2609eba295"
+    },
+    {
+      "pr": 46,
+      "title": "C37: close causal evidence semantics for SML and Operational Subject",
+      "created_at": "2026-10-04T07:08:56Z",
+      "merged_at": "2026-10-04T07:40:43Z",
+      "merge_commit_sha": "ce649dcc1f609cee4f20f59d98efb7955d7c0587",
+      "head_sha": "f274281614cdd6719b051150095f41efef50b30d",
+      "base_sha": "451f5080415b1a70e8a3e54b5090b4c70c6f0682"
+    },
+    {
+      "pr": 47,
+      "title": "C38: semantic-lossless control evidence closure",
+      "created_at": "2026-10-04T07:58:56Z",
+      "merged_at": "2026-10-04T08:40:44Z",
+      "merge_commit_sha": "3d0e65a77ec9db74cd3474abf48cc3dd58c68d39",
+      "head_sha": "bb1d2c65c22492e2b3c59ddec10629ef6c568525",
+      "base_sha": "ce649dcc1f609cee4f20f59d98efb7955d7c0587"
+    },
+    {
+      "pr": 48,
+      "title": "C39: AI-agent first entrypoint with runtime-owned UX guidance",
+      "created_at": "2026-10-04T08:52:42Z",
+      "merged_at": "2026-10-04T09:17:24Z",
+      "merge_commit_sha": "ae030bff0c2cbae5757ac3b267e06bd060ae38bd",
+      "head_sha": "f132aa703097b1df5cf4bce8a1716c6f7bbf9d1f",
+      "base_sha": "3d0e65a77ec9db74cd3474abf48cc3dd58c68d39"
+    },
+    {
+      "pr": 49,
+      "title": "C40: close bootstrap execute-observe-reenter loop",
+      "created_at": "2026-10-04T09:47:49Z",
+      "merged_at": "2026-10-04T10:12:55Z",
+      "merge_commit_sha": "34b532e3eb31850dcffda9fc062728314ea822ac",
+      "head_sha": "82d313e4c065414ff7fc033f8ab55a9aab2e5890",
+      "base_sha": "ae030bff0c2cbae5757ac3b267e06bd060ae38bd"
+    },
+    {
+      "pr": 50,
+      "title": "C41: carrier-local retry epochs and bootstrap UX continuity",
+      "created_at": "2026-10-04T11:10:01Z",
+      "merged_at": "2026-10-04T11:33:25Z",
+      "merge_commit_sha": "36b09d724b271c174762d3cfd8d842d08275e532",
+      "head_sha": "603937f013712bfb796e9dc3bdc6a8dbe090b517",
+      "base_sha": "34b532e3eb31850dcffda9fc062728314ea822ac"
+    },
+    {
+      "pr": 51,
+      "title": "C42: close bootstrap intent and pre-runtime handoff ontology",
+      "created_at": "2026-10-04T13:48:55Z",
+      "merged_at": "2026-10-04T14:23:34Z",
+      "merge_commit_sha": "ff7a5efb3b98711828ba0a5fb63d056701adf668",
+      "head_sha": "b9cdbb144f78146d4a2239d0ebb51a61af6605b4",
+      "base_sha": "36b09d724b271c174762d3cfd8d842d08275e532"
+    },
+    {
+      "pr": 52,
+      "title": "C43: bootstrap recovery hardening and last-resort file handoff",
+      "created_at": "2026-10-04T14:58:07Z",
+      "merged_at": "2026-10-04T16:49:27Z",
+      "merge_commit_sha": "561e76811c9085f5f2dfb0c8ab3fa074edfd5c71",
+      "head_sha": "06429383b5405174b66155f12c1f66542357c7f4",
+      "base_sha": "ff7a5efb3b98711828ba0a5fb63d056701adf668"
+    },
+    {
+      "pr": 53,
+      "title": "C44: methodological bootstrap, runtime context and ASCII shell",
+      "created_at": "2026-10-04T15:30:09Z",
+      "merged_at": "2026-10-04T17:33:11Z",
+      "merge_commit_sha": "c94b7d498fdc65e7c9fdbfdf7c5aaeb0cdd259d1",
+      "head_sha": "e4a621bc53050f14090c4b7d5db26aff707acaa1",
+      "base_sha": "06429383b5405174b66155f12c1f66542357c7f4"
+    },
+    {
+      "pr": 54,
+      "title": "C45: persistent cohost context root and exact ASCII delivery boundary",
+      "created_at": "2026-10-04T19:21:04Z",
+      "merged_at": "2026-10-05T06:40:39Z",
+      "merge_commit_sha": "8a73d2575608b569cb56aaa2a96ea5e145a04758",
+      "head_sha": "b46e871d1733ef6712ebf6c91bca1b7bae217caf",
+      "base_sha": "c94b7d498fdc65e7c9fdbfdf7c5aaeb0cdd259d1"
+    },
+    {
+      "pr": 55,
+      "title": "C46: fast co-host bind nucleus over C44/C45",
+      "created_at": "2026-10-05T07:58:51Z",
+      "merged_at": "2026-10-05T08:25:31Z",
+      "merge_commit_sha": "c5c497d47f0f603a1d7458d6673b6fbb980460bb",
+      "head_sha": "36b804fb1b0d672587fcc65e8f52ff4964ad9b84",
+      "base_sha": "561e76811c9085f5f2dfb0c8ab3fa074edfd5c71"
+    },
+    {
+      "pr": 56,
+      "title": "C47: persist co-host runtime upgrade and exact-main closure",
+      "created_at": "2026-10-05T08:53:25Z",
+      "merged_at": "2026-10-05T09:13:19Z",
+      "merge_commit_sha": "c1550c800a5a2c209832388df613f36fe62789d7",
+      "head_sha": "8eb953e93a9057714bf45c048a88950abad91e1f",
+      "base_sha": "c5c497d47f0f603a1d7458d6673b6fbb980460bb"
+    },
+    {
+      "pr": 57,
+      "title": "C48: close exact-main co-host gate coverage",
+      "created_at": "2026-10-05T09:26:37Z",
+      "merged_at": "2026-10-05T09:49:41Z",
+      "merge_commit_sha": "b0011d8328f172d7606bf8d0e5d46227dfc35391",
+      "head_sha": "a89f069872b58729cd806b89a2db000c62db8121",
+      "base_sha": "c1550c800a5a2c209832388df613f36fe62789d7"
+    },
+    {
+      "pr": 58,
+      "title": "C49: consolidate tiered co-host closure profile",
+      "created_at": "2026-10-05T10:08:16Z",
+      "merged_at": "2026-10-05T10:28:32Z",
+      "merge_commit_sha": "70839099866b77d9713a29add1b1d131a9bc5f77",
+      "head_sha": "2c041f4f86cbf184f73f22cad93870746cb7de26",
+      "base_sha": "b0011d8328f172d7606bf8d0e5d46227dfc35391"
+    },
+    {
+      "pr": 59,
+      "title": "C50: add native transcript actor boundary",
+      "created_at": "2026-10-05T10:49:47Z",
+      "merged_at": "2026-10-05T10:56:19Z",
+      "merge_commit_sha": "fe40fa221612d5e9c9fe2e7506bd1fc41553fc9d",
+      "head_sha": "4ec7f464f78f54ae3d88e0ae7a6f1da528017aa6",
+      "base_sha": "70839099866b77d9713a29add1b1d131a9bc5f77"
+    },
+    {
+      "pr": 60,
+      "title": "C51: close supersystem runtime conformance v1.1",
+      "created_at": "2026-10-05T14:55:17Z",
+      "merged_at": "2026-10-05T15:13:46Z",
+      "merge_commit_sha": "fbac6cb1b0591a7f41c2dc7b96125ca9c63827cc",
+      "head_sha": "4ef120f42a8d201949007f1ac752e180fb4f15e1",
+      "base_sha": "fe40fa221612d5e9c9fe2e7506bd1fc41553fc9d"
+    },
+    {
+      "pr": 61,
+      "title": "C52: close physical runtime proof surface for iKant_LE v1 experimental",
+      "created_at": "2026-10-05T17:00:43Z",
+      "merged_at": "2026-10-05T18:36:00Z",
+      "merge_commit_sha": "fcc1d67cb26b96ddb0f33e1a2ec5532f3a95e2e5",
+      "head_sha": "056190d83b838d89518201ab96017dbd15c4c8c1",
+      "base_sha": "fbac6cb1b0591a7f41c2dc7b96125ca9c63827cc"
+    },
+    {
+      "pr": 62,
+      "title": "C53: harden physical runtime closure across session and native boundaries",
+      "created_at": "2026-10-05T18:47:27Z",
+      "merged_at": "2026-10-06T05:39:22Z",
+      "merge_commit_sha": "d035622e457d5301c32cb112374f4067886dd9ad",
+      "head_sha": "908a18e2700c3f6636b5c797778838fc090bbe54",
+      "base_sha": "fcc1d67cb26b96ddb0f33e1a2ec5532f3a95e2e5"
+    },
+    {
+      "pr": 63,
+      "title": "C54: materialize ontological promise for host consumption",
+      "created_at": "2026-10-05T20:18:46Z",
+      "merged_at": "2026-10-06T07:31:22Z",
+      "merge_commit_sha": "964bf03a726cc54f0b4f673358a350c82573d0c2",
+      "head_sha": "aebbe75b968673a0dfe408144ae6ae581ca12b1c",
+      "base_sha": "d035622e457d5301c32cb112374f4067886dd9ad"
+    },
+    {
+      "pr": 64,
+      "title": "C55: harden local-host post-meta caller discipline",
+      "created_at": "2026-10-05T21:23:02Z",
+      "merged_at": "2026-10-06T09:11:32Z",
+      "merge_commit_sha": "c63ef5e63bddc2a26cb63629d922a1479248d26d",
+      "head_sha": "7b342ae3ad07cad198ed5f58fe2887fcd18e49f1",
+      "base_sha": "964bf03a726cc54f0b4f673358a350c82573d0c2"
+    },
+    {
+      "pr": 65,
+      "title": "C56: converge local-host session meta-prompt over C46-C55",
+      "created_at": "2026-10-06T09:25:04Z",
+      "merged_at": "2026-10-06T10:18:52Z",
+      "merge_commit_sha": "2d8032071b1320437df2c5e79d181800ba9b07b7",
+      "head_sha": "8ca8431fd4c7fdfb336d8f81fcb9c3008370653e",
+      "base_sha": "c63ef5e63bddc2a26cb63629d922a1479248d26d"
+    },
+    {
+      "pr": 66,
+      "title": "C57: bind local-host meta-prompt to actual SESSION_CHAT surface",
+      "created_at": "2026-10-06T10:34:51Z",
+      "merged_at": "2026-10-07T09:04:29Z",
+      "merge_commit_sha": "6c45a9aeb77823fa4ce452575387537de76b575b",
+      "head_sha": "d5587c78dff80c83839d7c08f55354abd523d2b3",
+      "base_sha": "2d8032071b1320437df2c5e79d181800ba9b07b7"
+    },
+    {
+      "pr": 67,
+      "title": "C58: executable lifecycle gate and host-route decline",
+      "created_at": "2026-10-07T09:23:10Z",
+      "merged_at": "2026-10-07T12:31:06Z",
+      "merge_commit_sha": "b1a2f75516fcf76ee46b4054ba46aff5c89d11bc",
+      "head_sha": "e10689ef551751b5e6bd6d990cd8e2a31580c407",
+      "base_sha": "6c45a9aeb77823fa4ce452575387537de76b575b"
+    },
+    {
+      "pr": 68,
+      "title": "C59: converge SESSION_CHAT_LOCAL on one deterministic composition channel",
+      "created_at": "2026-10-07T13:39:30Z",
+      "merged_at": "2026-10-07T18:51:18Z",
+      "merge_commit_sha": "9848155f7c1b1cdb4a0d73acc66b9e8ac64deb35",
+      "head_sha": "5ef82a3c19ca687624482ab7fdfe1c5e29c04b6b",
+      "base_sha": "b1a2f75516fcf76ee46b4054ba46aff5c89d11bc"
+    },
+    {
+      "pr": 69,
+      "title": "C60: harden ChatGPT Project ROM against host-side bootstrap drift",
+      "created_at": "2026-10-07T18:54:45Z",
+      "merged_at": "2026-10-07T18:59:17Z",
+      "merge_commit_sha": "c27e73d7cd192bcefb4dbc5b6e1604e20403b0da",
+      "head_sha": "e4d8f478071561d07eae1730842cb479a2904420",
+      "base_sha": "9848155f7c1b1cdb4a0d73acc66b9e8ac64deb35"
+    },
+    {
+      "pr": 70,
+      "title": "C61: close canonical cold producer edge",
+      "created_at": "2026-10-07T19:22:54Z",
+      "merged_at": "2026-10-07T20:34:31Z",
+      "merge_commit_sha": "95ad46089e4c9ebdeee18da1f3a43f9e16a13a3e",
+      "head_sha": "aaff66c53341e90b10433ce1fbae3ee687ce3d0b",
+      "base_sha": "c27e73d7cd192bcefb4dbc5b6e1604e20403b0da"
+    },
+    {
+      "pr": 71,
+      "title": "C62: separate frozen evidence from runtime bytes",
+      "created_at": "2026-10-07T21:43:03Z",
+      "merged_at": "2026-10-08T07:00:28Z",
+      "merge_commit_sha": "88e22ae8bf6768852a35c2bbd6655f2e4d8b9448",
+      "head_sha": "5a4d7ff3887ce5abae7b53ef3daba5b427200533",
+      "base_sha": "95ad46089e4c9ebdeee18da1f3a43f9e16a13a3e"
+    },
+    {
+      "pr": 72,
+      "title": "C63: execute parallel host byte relay through canonical C61/C59 owner",
+      "created_at": "2026-10-08T10:34:21Z",
+      "merged_at": "2026-10-08T10:45:26Z",
+      "merge_commit_sha": "c2b573e4e248c35877b3476374371e8f64a8ffaf",
+      "head_sha": "2334da13c7a460bb8510de469ccc15150955900c",
+      "base_sha": "88e22ae8bf6768852a35c2bbd6655f2e4d8b9448"
+    },
+    {
+      "pr": 73,
+      "title": "C64: capture acceptance origin before canonical C63 pinned GitHub ingress",
+      "created_at": "2026-10-08T12:13:05Z",
+      "merged_at": "2026-10-08T12:19:18Z",
+      "merge_commit_sha": "017edf7a6c561abe80835115ecd01af1352bf230",
+      "head_sha": "217409120ac1399e0dbe6cb9a16cc43cbf295f7e",
+      "base_sha": "c2b573e4e248c35877b3476374371e8f64a8ffaf"
+    },
+    {
+      "pr": 74,
+      "title": "C65: wire pinned GitHub API source adapter to C61 relay readback evidence",
+      "created_at": "2026-10-08T12:32:18Z",
+      "merged_at": "2026-10-08T12:53:18Z",
+      "merge_commit_sha": "f7d6760cad5cd1e6b8c61b62fd901db57e6edc17",
+      "head_sha": "cf70c0fb2aa7a692a3bc44a3a27e7a54f51b36de",
+      "base_sha": "017edf7a6c561abe80835115ecd01af1352bf230"
+    },
+    {
+      "pr": 75,
+      "title": "C66: owner-evidence-qualified non-ACTIVE outcomes and fail-closed retry gate",
+      "created_at": "2026-10-08T13:19:59Z",
+      "merged_at": "2026-10-08T13:46:44Z",
+      "merge_commit_sha": "3cddb7902651bbb278eae964d8732e380ca45164",
+      "head_sha": "c01d006f2d97fae17d5cf22b1e3bfc9968d9fea1",
+      "base_sha": "f7d6760cad5cd1e6b8c61b62fd901db57e6edc17"
+    },
+    {
+      "pr": 76,
+      "title": "C67: manifest-bound local recovery, typed worker evidence and canonical micro-audit prompt",
+      "created_at": "2026-10-08T14:05:27Z",
+      "merged_at": "2026-10-08T14:18:05Z",
+      "merge_commit_sha": "8da610f21d057b87afbfff54459552849bd9deec",
+      "head_sha": "4b8abf07b11a38ee00e9be9b1e9b74b6c1e561c2",
+      "base_sha": "3cddb7902651bbb278eae964d8732e380ca45164"
+    },
+    {
+      "pr": 77,
+      "title": "C68: bind pre-registered human acceptance ingress without inventing runtime identity",
+      "created_at": "2026-10-08T14:31:42Z",
+      "merged_at": "2026-10-08T14:48:20Z",
+      "merge_commit_sha": "5cb6f4f68b3998d8d4bb144d3a2135cb478e4e2d",
+      "head_sha": "a27931522896d8592e68383f82ee9c6642c77121",
+      "base_sha": "8da610f21d057b87afbfff54459552849bd9deec"
+    },
+    {
+      "pr": 78,
+      "title": "C69: capability-first low-assurance experimental preview without canonical runtime bypass",
+      "created_at": "2026-10-08T15:06:33Z",
+      "merged_at": "2026-10-08T15:18:14Z",
+      "merge_commit_sha": "4db1a06c2e3f338201f407add954cb2ceaac42e2",
+      "head_sha": "5f1d928369ded6a7799650932c4c5e3078719fd2",
+      "base_sha": "5cb6f4f68b3998d8d4bb144d3a2135cb478e4e2d"
+    },
+    {
+      "pr": 79,
+      "title": "C70: real Node cognitive lab above C69 without runtime state promotion",
+      "created_at": "2026-10-08T15:21:23Z",
+      "merged_at": null,
+      "merge_commit_sha": "1ec3e342526bf407d5808c43da407fc899e6db42",
+      "head_sha": "6064081da11af349f53a411b998a5e772700e67f",
+      "base_sha": "5f1d928369ded6a7799650932c4c5e3078719fd2"
+    },
+    {
+      "pr": 80,
+      "title": "C70: execute actual cognitive kernels in bounded experimental preview (100 mutants)",
+      "created_at": "2026-10-08T15:31:40Z",
+      "merged_at": "2026-10-08T15:37:58Z",
+      "merge_commit_sha": "62b7464e7251c9e3354cfade9fc818af31e82fc4",
+      "head_sha": "5e65508a07de0265ec7da9d64905188b57c5c049",
+      "base_sha": "4db1a06c2e3f338201f407add954cb2ceaac42e2"
+    },
+    {
+      "pr": 81,
+      "title": "C71: evidence-gated Cx runtime census and conversational host draft selection",
+      "created_at": "2026-10-08T15:46:58Z",
+      "merged_at": "2026-10-08T15:58:29Z",
+      "merge_commit_sha": "85454681f7848dfee6d4f2f062be4a8714561d90",
+      "head_sha": "b48a58244efe9d2c97d331f0791522267118950c",
+      "base_sha": "62b7464e7251c9e3354cfade9fc818af31e82fc4"
+    },
+    {
+      "pr": 82,
+      "title": "C72: one I ACCEPT, explain iKant, then explicit CANONICAL/EXPERIMENTAL choice",
+      "created_at": "2026-10-08T16:11:14Z",
+      "merged_at": "2026-10-08T17:47:11Z",
+      "merge_commit_sha": "f52435500c2d4bb44a51d78750a9ceed30b65b5b",
+      "head_sha": "76cc60698f41a5438586801bd25fd6a93d4514f4",
+      "base_sha": "85454681f7848dfee6d4f2f062be4a8714561d90"
+    },
+    {
+      "pr": 83,
+      "title": "C73: branded ChatGPT capsule, owner-bound Surface A and DOCX handoff",
+      "created_at": "2026-10-08T17:20:45Z",
+      "merged_at": "2026-10-08T17:47:28Z",
+      "merge_commit_sha": "4e4cccd4d224e950f99d9078e25767b08f0ae080",
+      "head_sha": "3738f771fb24258401c7a2290174734a84efa277",
+      "base_sha": "76cc60698f41a5438586801bd25fd6a93d4514f4"
+    },
+    {
+      "pr": 84,
+      "title": "C74: recover merged C73 into main; harden canonical proof and test real Node bootstrap",
+      "created_at": "2026-10-08T17:57:03Z",
+      "merged_at": "2026-10-08T18:12:37Z",
+      "merge_commit_sha": "8c3e74c84c9a7d3a8f3e871243a2b7ecbaf77fec",
+      "head_sha": "a1064c7c2248b2a1995fe0a8c992f55896374681",
+      "base_sha": "f52435500c2d4bb44a51d78750a9ceed30b65b5b"
+    },
+    {
+      "pr": 85,
+      "title": "C76 FARO: 100k real Node bootstrap invocations, Cartesian failure atlas and M+13k saturation",
+      "created_at": "2026-10-08T19:41:27Z",
+      "merged_at": "2026-10-08T19:51:02Z",
+      "merge_commit_sha": "2aab63c662d69ffb0ae6fec425d32c63f227d9a3",
+      "head_sha": "08d3b44d89f256999541959bcb36d9f45fb5438c",
+      "base_sha": "8c3e74c84c9a7d3a8f3e871243a2b7ecbaf77fec"
+    },
+    {
+      "pr": 86,
+      "title": "C77: qualified standalone C70/C71/C73 capsule without historical Cx runtime dependencies",
+      "created_at": "2026-10-08T20:18:49Z",
+      "merged_at": "2026-10-08T21:25:14Z",
+      "merge_commit_sha": "bbeca19853b040424204f20f589628707737035c",
+      "head_sha": "8eafd2057b5a4d3f59e2c600aca07f05dc0e064a",
+      "base_sha": "2aab63c662d69ffb0ae6fec425d32c63f227d9a3"
+    },
+    {
+      "pr": 87,
+      "title": "C78: post-consent verified opaque byte relay into real Node and C77 cognitive Surface A",
+      "created_at": "2026-10-08T21:32:20Z",
+      "merged_at": "2026-10-08T21:48:27Z",
+      "merge_commit_sha": "e109c3908b817a9a693a986aae92c9018d8e5862",
+      "head_sha": "72446dd30d0aede211f4ef3ae6c626cd24eeadaa",
+      "base_sha": "bbeca19853b040424204f20f589628707737035c"
+    },
+    {
+      "pr": 88,
+      "title": "C79: same-input Node cognitive Surface A packet and honest native-host witness boundary",
+      "created_at": "2026-10-08T21:59:09Z",
+      "merged_at": "2026-10-08T22:07:24Z",
+      "merge_commit_sha": "1fdf13458887f2c45c3957c39f5d2e756b132887",
+      "head_sha": "c0a139ec220de245acb151c3c9d377fa08e1cc9a",
+      "base_sha": "e109c3908b817a9a693a986aae92c9018d8e5862"
+    },
+    {
+      "pr": 89,
+      "title": "C80: externally anchored host witness verifier and conservative H95 field qualification",
+      "created_at": "2026-10-08T22:12:54Z",
+      "merged_at": "2026-10-09T06:07:07Z",
+      "merge_commit_sha": "ca120d69d4078aa275e191864cd1a286d174dae6",
+      "head_sha": "ea8e217d0e5ea4de8fdba5a601eef2fc988998fb",
+      "base_sha": "1fdf13458887f2c45c3957c39f5d2e756b132887"
+    },
+    {
+      "pr": 90,
+      "title": "C81: cryptographically verify C77 original blobs through pinned Git commit/tree reachability",
+      "created_at": "2026-10-09T06:20:27Z",
+      "merged_at": "2026-10-09T07:25:00Z",
+      "merge_commit_sha": "7553daf119b4b2ad78e4a3b4b01e0bd15c0e8322",
+      "head_sha": "9985fd50e2914e68ceed24fd8a11e5dd2bc8258f",
+      "base_sha": "ca120d69d4078aa275e191864cd1a286d174dae6"
+    },
+    {
+      "pr": 91,
+      "title": "C82: bounded semantic voice + parallel samehash carriers + verifiable DoD",
+      "created_at": "2026-10-09T09:59:09Z",
+      "merged_at": "2026-10-09T10:34:40Z",
+      "merge_commit_sha": "befabffcf4a787016672065ce26ff9002fd33e43",
+      "head_sha": "e9a1d09cee0c5aad21d1e50eb34cc651abac061b",
+      "base_sha": "7553daf119b4b2ad78e4a3b4b01e0bd15c0e8322"
+    },
+    {
+      "pr": 92,
+      "title": "C83: 1M semantic falsifications, lossless UTF-8 ingress & independent H95 proof gates",
+      "created_at": "2026-10-09T11:11:15Z",
+      "merged_at": "2026-10-09T11:31:21Z",
+      "merge_commit_sha": "499225373756e5f93fea0bc73f5d94643e6b177e",
+      "head_sha": "096e9166bccb1f26d42e816c640b67fbc85c967e",
+      "base_sha": "befabffcf4a787016672065ce26ff9002fd33e43"
+    },
+    {
+      "pr": 93,
+      "title": "C84: converge host mode routing and parallel samehash legacy experimental runtime",
+      "created_at": "2026-10-09T12:37:06Z",
+      "merged_at": "2026-10-09T14:13:59Z",
+      "merge_commit_sha": "1ad3ff4f685fd22bcee43de5772cfc2fe22b34e4",
+      "head_sha": "5bfcb88046b7022bf8fc97fa533375a14d0dfb2b",
+      "base_sha": "499225373756e5f93fea0bc73f5d94643e6b177e"
+    },
+    {
+      "pr": 94,
+      "title": "C85–C89: transplant five verified semantic runtime slices onto merged C84 main",
+      "created_at": "2026-10-09T14:25:15Z",
+      "merged_at": "2026-10-09T14:33:19Z",
+      "merge_commit_sha": "66f074b34f34455b3c4188703d83ad71316baa06",
+      "head_sha": "a86224a676ce031056be6532ea64b6a282da90db",
+      "base_sha": "1ad3ff4f685fd22bcee43de5772cfc2fe22b34e4"
+    },
+    {
+      "pr": 95,
+      "title": "C90: causal runtime voice and observed backlog, forensic bridge hardening",
+      "created_at": "2026-10-09T17:31:26Z",
+      "merged_at": "2026-10-09T17:36:56Z",
+      "merge_commit_sha": "5c632e024f679dbcdf95839fae7c226eafd8068f",
+      "head_sha": "acfaeb0b95944b04465061792037778e4f4800d7",
+      "base_sha": "66f074b34f34455b3c4188703d83ad71316baa06"
+    },
+    {
+      "pr": 96,
+      "title": "C91: owner-bound cognitive language port and falsified self/world coverage (post-PR95)",
+      "created_at": "2026-10-09T18:51:52Z",
+      "merged_at": "2026-10-09T19:07:21Z",
+      "merge_commit_sha": "5fa8a7adb82e3a18cf0cde2a4c3202ddd93a388c",
+      "head_sha": "f7954ee904b257a4f678a772317d657d4b7f1d43",
+      "base_sha": "5c632e024f679dbcdf95839fae7c226eafd8068f"
+    },
+    {
+      "pr": 97,
+      "title": "C92: transplant real-provider owner-language Surface A bridge (post-PR96)",
+      "created_at": "2026-10-09T20:32:47Z",
+      "merged_at": "2026-10-09T20:58:13Z",
+      "merge_commit_sha": "53e9519ea8a9b392f1a4cb288db01937cde58c76",
+      "head_sha": "78c0df67802c8670e535c7f76c3775d58e17a6b5",
+      "base_sha": "5fa8a7adb82e3a18cf0cde2a4c3202ddd93a388c"
+    },
+    {
+      "pr": 98,
+      "title": "C93: remove stale source epoch, verify handoff bytes and gate same-input owner Surface A",
+      "created_at": "2026-10-09T21:09:22Z",
+      "merged_at": "2026-10-10T06:53:43Z",
+      "merge_commit_sha": "11eecb86f08ebb90aa228d55c1e7f50da890f79d",
+      "head_sha": "04405740731432d7e304dcc861e3d7071139769f",
+      "base_sha": "53e9519ea8a9b392f1a4cb288db01937cde58c76"
+    },
+    {
+      "pr": 99,
+      "title": "C94+C95: lossless automatic C77/C84 carrier with real C85/C81 source gates and typed host bridge",
+      "created_at": "2026-10-10T09:50:34Z",
+      "merged_at": "2026-10-10T10:03:22Z",
+      "merge_commit_sha": "bf6c5bf9a1436d72c82ece6a5370d54b4ab35bd6",
+      "head_sha": "da2b1f8969b8acc9433c9fba987194b9ad4baf1d",
+      "base_sha": "11eecb86f08ebb90aa228d55c1e7f50da890f79d"
+    },
+    {
+      "pr": 100,
+      "title": "C96: source-exact parallel C77 member carriers and strict anti-entropy (post-PR99)",
+      "created_at": "2026-10-10T10:27:56Z",
+      "merged_at": "2026-10-10T11:23:17Z",
+      "merge_commit_sha": "61ad7cb99dad9b83546f0f20d4a6f135a053e219",
+      "head_sha": "51a4c6943be7ed42cc495e3304bce64eb093cfa6",
+      "base_sha": "bf6c5bf9a1436d72c82ece6a5370d54b4ab35bd6"
+    },
+    {
+      "pr": 101,
+      "title": "C97 (pre-PR): deterministic ChatGPT Project UIUX projection over C81/C73",
+      "created_at": "2026-10-10T12:10:08Z",
+      "merged_at": "2026-10-10T12:15:30Z",
+      "merge_commit_sha": "bc5fbcb938c7ba959de0eaef96f92e754d953d4b",
+      "head_sha": "5404c0c7feada0e0a373847cd89c80b71cb68b61",
+      "base_sha": "61ad7cb99dad9b83546f0f20d4a6f135a053e219"
+    },
+    {
+      "pr": 102,
+      "title": "C98 (draft): two-file English Terms and post-consent iKant introduction",
+      "created_at": "2026-10-10T12:24:47Z",
+      "merged_at": null,
+      "merge_commit_sha": "2cf4aced59acb9f8e25c61223ff6d831aa52ff5b",
+      "head_sha": "ab9edcf721c3713e7985d827956138f686496f79",
+      "base_sha": "bc5fbcb938c7ba959de0eaef96f92e754d953d4b"
+    },
+    {
+      "pr": 103,
+      "title": "C98 (draft): source-exact ChatGPT Edu Project 3MD baseline — partial v6 transplant",
+      "created_at": "2026-10-10T14:47:02Z",
+      "merged_at": "2026-10-10T14:57:26Z",
+      "merge_commit_sha": "1c08db9494c8efe82982642f52cf0ff2f64cad90",
+      "head_sha": "52b5a59aa0352e187dcda4ab54f228d715da9ee4",
+      "base_sha": "bc5fbcb938c7ba959de0eaef96f92e754d953d4b"
+    },
+    {
+      "pr": 104,
+      "title": "C98 phase 2 (draft): source-exact H95 + ChatGPT offline host boundary after PR103",
+      "created_at": "2026-10-10T16:29:04Z",
+      "merged_at": "2026-10-10T16:42:48Z",
+      "merge_commit_sha": "a9a9676cf90bc505c0a02f9cdda350c95e7d5189",
+      "head_sha": "56de1fd2ba9e1e6c883abdb9615ef96dfa600f47",
+      "base_sha": "1c08db9494c8efe82982642f52cf0ff2f64cad90"
+    },
+    {
+      "pr": 105,
+      "title": "C98 phase 3 (draft): transplant remaining 38 source-exact v6 files after PR104",
+      "created_at": "2026-10-10T16:52:40Z",
+      "merged_at": "2026-10-10T17:20:45Z",
+      "merge_commit_sha": "8e103319bfe0e2a91c85fdfc4bd0d0734e0922d8",
+      "head_sha": "7ab45cf028292156438cdc0ea6dd04617cf97ad9",
+      "base_sha": "a9a9676cf90bc505c0a02f9cdda350c95e7d5189"
+    },
+    {
+      "pr": 106,
+      "title": "C99 (draft): central canonical routes, real C98/C84 boundary wiring and 100k falsification",
+      "created_at": "2026-10-10T19:14:43Z",
+      "merged_at": "2026-10-10T20:16:37Z",
+      "merge_commit_sha": "640c3393873a212e7fa639bfdf85b8e2d2b6ba13",
+      "head_sha": "5cb66270f6829e5a9e8f01bb377d06cd9c3d4273",
+      "base_sha": "8e103319bfe0e2a91c85fdfc4bd0d0734e0922d8"
+    },
+    {
+      "pr": 107,
+      "title": "C100: opt-in experimental co-host LLM drafts with honest evidence grades and 250k local falsification",
+      "created_at": "2026-10-10T21:29:17Z",
+      "merged_at": "2026-10-11T07:53:43Z",
+      "merge_commit_sha": "fd32fd5362784409d34ec578299ffeabf3de8f0c",
+      "head_sha": "da6c79625588dc3fffe1f8b965716ce874385f43",
+      "base_sha": "640c3393873a212e7fa639bfdf85b8e2d2b6ba13"
+    },
+    {
+      "pr": 108,
+      "title": "C100 hardening: reject hostile getters/Proxy in cohost evidence envelopes",
+      "created_at": "2026-10-11T08:14:48Z",
+      "merged_at": "2026-10-11T09:02:42Z",
+      "merge_commit_sha": "3bc929b55f5dedb9f0ed833e8d036558a5c13d53",
+      "head_sha": "38261e2c3dd143f1c8f4f05b72997718b556e9d0",
+      "base_sha": "fd32fd5362784409d34ec578299ffeabf3de8f0c"
+    },
+    {
+      "pr": 109,
+      "title": "feat(c101): real local co-host cognitive projection between C100 and C84",
+      "created_at": "2026-10-11T10:09:32Z",
+      "merged_at": "2026-10-11T11:14:11Z",
+      "merge_commit_sha": "45c952fd0f32354c5a4200fe47aa22cdc8d1a44c",
+      "head_sha": "a88c7e5415175c6f71bc997e1fcd6f6a12ddeb40",
+      "base_sha": "3bc929b55f5dedb9f0ed833e8d036558a5c13d53"
+    },
+    {
+      "pr": 110,
+      "title": "C103 host adapter",
+      "created_at": "2026-10-11T11:26:08Z",
+      "merged_at": "2026-10-11T13:01:36Z",
+      "merge_commit_sha": "a05846cb58af8a6509299008674beb582020e318",
+      "head_sha": "c304ebdab218799c025034b65f3bc463c7ae6e4b",
+      "base_sha": "45c952fd0f32354c5a4200fe47aa22cdc8d1a44c"
+    },
+    {
+      "pr": 111,
+      "title": "C99 post-selection route closure: executable no-retry guard, 30-PR circularity audit",
+      "created_at": "2026-10-11T13:30:10Z",
+      "merged_at": "2026-10-11T14:41:28Z",
+      "merge_commit_sha": "90852257cfc8d285c8b83da4b1e156ced71c5e53",
+      "head_sha": "b63e07fbffa8e50dabb2c57f0a488553b41d248f",
+      "base_sha": "a05846cb58af8a6509299008674beb582020e318"
+    },
+    {
+      "pr": 112,
+      "title": "feat(C105): NERVA host-local nervous system with executable command lexicon and C104→C77→C102→C103 readback",
+      "created_at": "2026-10-11T14:50:41Z",
+      "merged_at": "2026-10-11T14:56:29Z",
+      "merge_commit_sha": "3c8fd02220a936aa78985d564d4ce1ca16e75bc4",
+      "head_sha": "345b0f36f777b4ec2061eebb3c6e2021a243356d",
+      "base_sha": "90852257cfc8d285c8b83da4b1e156ced71c5e53"
+    },
+    {
+      "pr": 113,
+      "title": "C107: minimal original C70+C100+C87 cognitive prototype, isolated artifact and 1M falsification",
+      "created_at": "2026-10-11T17:20:57Z",
+      "merged_at": "2026-10-11T20:07:44Z",
+      "merge_commit_sha": "b083c1bff23749b516c45e2375a2b3083e2dff56",
+      "head_sha": "9588d5e3ae17d4333950d11e8f0d0e2a4712753e",
+      "base_sha": "3c8fd02220a936aa78985d564d4ce1ca16e75bc4"
+    },
+    {
+      "pr": 114,
+      "title": "C109: original C108 chat shell, typed A/B surfaces and host adapter contract",
+      "created_at": "2026-10-11T20:27:23Z",
+      "merged_at": "2026-10-12T07:39:33Z",
+      "merge_commit_sha": "399e38ea719106f9b724e7bb0eae59f1dbdba9df",
+      "head_sha": "f5f546a867263f8c3b9909044a199a2835dcf66d",
+      "base_sha": "b083c1bff23749b516c45e2375a2b3083e2dff56"
+    },
+    {
+      "pr": 115,
+      "title": "C112: MCP + local bottom-up host adapter over original C111, source-exact qualification",
+      "created_at": "2026-10-12T07:57:53Z",
+      "merged_at": "2026-10-12T08:34:39Z",
+      "merge_commit_sha": "030c473f273520bc6f42515512869f8433eaf5db",
+      "head_sha": "499f0e1d3ab5ec96105437ea4cc33324b8bfa892",
+      "base_sha": "f5f546a867263f8c3b9909044a199a2835dcf66d"
+    },
+    {
+      "pr": 116,
+      "title": "C114: permit bounded ontology self-observation through original C70-C100-C87",
+      "created_at": "2026-10-12T11:10:31Z",
+      "merged_at": "2026-10-12T19:08:18Z",
+      "merge_commit_sha": "67e93f9a3dd147d7a62ae65897c45282c1a971e7",
+      "head_sha": "38b13452663ad66567595f42c7982f47ec613f6b",
+      "base_sha": "399e38ea719106f9b724e7bb0eae59f1dbdba9df"
+    },
+    {
+      "pr": 117,
+      "title": "C115: distinguish addressing iKant from asking about its ontology",
+      "created_at": "2026-10-12T19:35:01Z",
+      "merged_at": "2026-10-13T06:30:22Z",
+      "merge_commit_sha": "c734bf934e33703a6a1f91f0f4d5df96eec96945",
+      "head_sha": "c966293e4b0deeafd33323fbbb3ff32080194367",
+      "base_sha": "67e93f9a3dd147d7a62ae65897c45282c1a971e7"
+    },
+    {
+      "pr": 118,
+      "title": "draft(C107): pin one source-exact 62KB carrier and outcome-only EDU host contract",
+      "created_at": "2026-10-13T11:04:27Z",
+      "merged_at": "2026-10-13T12:15:47Z",
+      "merge_commit_sha": "875d39081d20abe672e6a496ac593ef27be9a12d",
+      "head_sha": "1c84b4f0e19fe0df3820ec514d279780da439529",
+      "base_sha": "c734bf934e33703a6a1f91f0f4d5df96eec96945"
+    },
+    {
+      "pr": 119,
+      "title": "draft(C119): 100% v9 runtime host outcomes over merged C107 carrier, no second owner",
+      "created_at": "2026-10-13T12:47:30Z",
+      "merged_at": "2026-10-13T12:54:30Z",
+      "merge_commit_sha": "63f6869fbeef2096b3bb95164462fd09a03973a3",
+      "head_sha": "1316b4ee1d1b13e499f692feaa8828d51a720b82",
+      "base_sha": "875d39081d20abe672e6a496ac593ef27be9a12d"
+    },
+    {
+      "pr": 120,
+      "title": "feat(edu): C70-guided HOST_BOUND runtime and verified disclosure (v7)",
+      "created_at": "2026-10-13T13:37:51Z",
+      "merged_at": "2026-10-13T13:47:13Z",
+      "merge_commit_sha": "20471203dc944fc113f9cee8d3ca18a1d6039539",
+      "head_sha": "4b918b58e7436a5a7cb22e14fa4cfa79d1e203ce",
+      "base_sha": "63f6869fbeef2096b3bb95164462fd09a03973a3"
+    },
+    {
+      "pr": 121,
+      "title": "fix(edu): holistic post-120 audit, serialized C70-guided turns and truthful host claims (v8)",
+      "created_at": "2026-10-13T14:22:09Z",
+      "merged_at": "2026-10-13T15:18:58Z",
+      "merge_commit_sha": "e9a452d2473524dea365b3518a9d4f47c6cad0b0",
+      "head_sha": "a329bd36c9eb27f2f0e3dd6cadb6fa4299f84512",
+      "base_sha": "20471203dc944fc113f9cee8d3ca18a1d6039539"
+    },
+    {
+      "pr": 122,
+      "title": "fix(edu): V9 linear first-attempt route, handoff-last projection and Project UX contract",
+      "created_at": "2026-10-13T20:24:27Z",
+      "merged_at": "2026-10-13T20:40:53Z",
+      "merge_commit_sha": "402c03d99a5b497c5051ffb2d4147a112e90817e",
+      "head_sha": "c538e8509e902ada2ec02ccb1f4e30f513d65f6d",
+      "base_sha": "e9a452d2473524dea365b3518a9d4f47c6cad0b0"
+    },
+    {
+      "pr": 123,
+      "title": "feat(edu): V10 post-122 Cx mind atlas and exact-readback 90s terminal shell",
+      "created_at": "2026-10-13T20:50:52Z",
+      "merged_at": "2026-10-13T21:02:59Z",
+      "merge_commit_sha": "aff995cd6b15c8f6efa6fd9d9f1895ca64960543",
+      "head_sha": "879810b7fcbf68dc447aefa1e5eb080e8900cbd0",
+      "base_sha": "402c03d99a5b497c5051ffb2d4147a112e90817e"
+    },
+    {
+      "pr": 124,
+      "title": "feat(edu): C125 exclusive HOST output shell over real PR119 C87 readback, 10M falsification",
+      "created_at": "2026-10-13T21:37:48Z",
+      "merged_at": "2026-10-13T21:53:51Z",
+      "merge_commit_sha": "0ced4258f434c9c1f6a1a7b9f615b7a46bc1f7b5",
+      "head_sha": "2355d43e24a1061bc44f7a3392d6373be544afb9",
+      "base_sha": "aff995cd6b15c8f6efa6fd9d9f1895ca64960543"
+    },
+    {
+      "pr": 125,
+      "title": "feat(c124): source-verifiable 12-channel C70 to PR119/C87 cognitive language binding",
+      "created_at": "2026-10-13T22:06:39Z",
+      "merged_at": "2026-10-13T22:34:53Z",
+      "merge_commit_sha": "19e9b30380c42ffea0c77db7661cc9eeb0b73455",
+      "head_sha": "e6723abea770e49fca32eb343c816ab238c2e0a6",
+      "base_sha": "0ced4258f434c9c1f6a1a7b9f615b7a46bc1f7b5"
+    },
+    {
+      "pr": 126,
+      "title": "fix(edu): C126 post-125 language-envelope integrity guard before PR119 model port",
+      "created_at": "2026-10-13T22:43:40Z",
+      "merged_at": "2026-10-14T05:44:50Z",
+      "merge_commit_sha": "28e72a8bbe06a7305d51c4ca4a693ba322cbb65f",
+      "head_sha": "6386adf9e641102eb8a8605fe351cb19bd8280f7",
+      "base_sha": "19e9b30380c42ffea0c77db7661cc9eeb0b73455"
+    },
+    {
+      "pr": 127,
+      "title": "feat(c127): physical C107+C124 Project cache, bounded last-resort transfer and honest iKant README",
+      "created_at": "2026-10-14T08:12:58Z",
+      "merged_at": "2026-10-14T09:04:43Z",
+      "merge_commit_sha": "5675ff958160b0ba6dd16a3fc4856075e4be8d69",
+      "head_sha": "8f66fe6247de324dff954fd57846134d4e26e7c1",
+      "base_sha": "28e72a8bbe06a7305d51c4ca4a693ba322cbb65f"
+    }
+  ]
+}
