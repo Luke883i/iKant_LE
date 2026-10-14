@@ -35,7 +35,12 @@ export function buildC127SourceCache({carrierBytes,c124OverlayBytes}={}){
 export function inspectC127SourceCache(raw){
  try{
   if(!Buffer.isBuffer(raw)||raw.length<62000||raw.length>250000)return bad('C127_CACHE_LENGTH');
-  const o=JSON.parse(raw.toString('utf8'));
+  // C128: decoding must not normalize invalid UTF-8 or ambiguous JSON bytes.
+  const utf8=raw.toString('utf8');
+  if(!Buffer.from(utf8,'utf8').equals(raw))return bad('C128_CACHE_NONCANONICAL_UTF8');
+  const o=JSON.parse(utf8);
+  if(!Buffer.from(JSON.stringify(o)+'\n','utf8').equals(raw))
+   return bad('C128_CACHE_NONCANONICAL_JSON');
   if(!safe(o)||Reflect.ownKeys(o).length!==6||
     o.schema!=='ikant-c127-project-source-cache/v1'||o.source_epoch!==C124_SOURCE_EPOCH||
     o.original_head!==PIN.head||o.carrier_sha256!==PIN.carrier_sha256||
@@ -53,18 +58,40 @@ export function inspectC127SourceCache(raw){
   }
   const r=normalized(Buffer.from(o.carrier_base64,'base64'),overlay);
   if(!r.ok)return r;
+  // Independent roundtrip through the frozen C127 writer: one physical byte identity,
+  // exactly one canonical order of the four source regions.
+  const rebuilt=buildC127SourceCache({carrierBytes:r.carrierBytes,c124OverlayBytes:r.c124OverlayBytes});
+  if(!rebuilt.ok||!rebuilt.bytes.equals(raw))return bad('C128_CACHE_NONCANONICAL_SOURCE_ORDER');
   return {...r,cache_sha256:hash(raw),member_count:4,source_transport:'C127_LOCAL_CACHE_BYTES_VERIFIED'};
  }catch{return bad('C127_CACHE_PARSE_OR_BYTES')}
 }
 export function loadC127SourceCache(cachePath){
+ if(typeof cachePath!=='string'||!cachePath.startsWith('/')||cachePath.length>4096)
+  return bad('C127_ABSOLUTE_PATH_REQUIRED');
+ let fd=null;
  try{
-  if(typeof cachePath!=='string'||!cachePath.startsWith('/')||cachePath.length>4096)return bad('C127_ABSOLUTE_PATH_REQUIRED');
-  const st=fs.lstatSync(cachePath);if(!st.isFile()||st.isSymbolicLink()||st.size>250000)return bad('C127_LOCAL_FILE_UNSAFE');
-  const a=fs.readFileSync(cachePath),b=fs.readFileSync(cachePath);
-  if(!a.equals(b))return bad('C127_CACHE_READBACK_DRIFT');
+  // Validate and read from a single held inode. Path-based lstat/readFileSync/readFileSync
+  // opens three times and allows symlink or inode replacement between operations.
+  fd=fs.openSync(cachePath,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);
+  const first=fs.fstatSync(fd);
+  if(!first.isFile()||first.size<62000||first.size>250000)return bad('C127_LOCAL_FILE_UNSAFE');
+  function reread(){
+   const out=Buffer.alloc(first.size);
+   let offset=0;
+   while(offset<out.length){
+    const n=fs.readSync(fd,out,offset,out.length-offset,offset);
+    if(n<=0)return null;
+    offset+=n;
+   }
+   return out;
+  }
+  const a=reread(),b=reread(),last=fs.fstatSync(fd);
+  if(!a||!b||!a.equals(b)||last.size!==first.size||
+     last.ino!==first.ino||last.dev!==first.dev)return bad('C128_CACHE_FILE_READBACK_DRIFT');
   const r=inspectC127SourceCache(a);
-  return r.ok?{...r,file_readback_verified:true}:r;
+  return r.ok?{...r,file_readback_verified:true,single_inode_readback_verified:true}:r;
  }catch{return bad('C127_LOCAL_CACHE_UNAVAILABLE')}
+ finally{if(fd!==null){try{fs.closeSync(fd)}catch{}}}
 }
 /** Only genuinely callable, *distinct* host transports are attempted; no invented retries.
  * callbacks return physical cache bytes. Max 1 initial + 2 evidence-distinct methods.
