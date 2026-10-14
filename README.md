@@ -33,7 +33,7 @@ npm run runtime-root:verify
 npm run bundle:edu
 ```
 
-Servono Node.js 20+ e Python 3. La costruzione del bundle produce un **candidato**, non installa il runtime e non pubblica una release. Le prove del funzionamento originale e i loro limiti sono descritte nella [tracciabilita' V1](docs/V1_E2E_TRACEABILITY.md).
+Servono Node.js 20+ e Python 3. La costruzione del bundle produce un **candidato**, non installa il runtime e non pubblica una release. 
 
 ## Da dove arrivano le regole
 
@@ -41,8 +41,10 @@ Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commi
 
 **Una sola fonte di prodotto:** il commit effettivo di `main`, dopo merge e verifiche. **Le PR non sono versioni:** conservano la storia delle modifiche e delle prove. **Prompt e ZIP** si producono dal medesimo commit, con manifest e impronte verificabili; non sono autorita' autonome.
 
-**Per gli ingegneri:** [decisioni V1](docs/V1_PRODUCT_DECISIONS.md), [governance](docs/GOVERNANCE.md), [contratti](contracts/), [test](tests/), [catalogo](release/catalog.json). `npm run qualify:canonical` controlla una parte estesa delle garanzie software, non certifica connessioni native esterne.
+**Per gli ingegneri:** [decisioni](docs/V1_PRODUCT_DECISIONS.md), [governance](docs/GOVERNANCE.md), [contratti](contracts/), [test](tests/).
 
 **Confine di prova:** gli hash attestano l'identita' dei file; registrare una risposta non ne prova verita' o qualita'. L'HOST linguistico rimane sostituibile.
 
-**Promemoria di compatibilita' per le verifiche storiche:** one canonical `SESSION_CHAT_LOCAL` composition; Prefer EXPERIMENTAL; CANONICAL requires native event evidence. Significa un solo proprietario dell'avvio canonico e un ingresso nativo verificato.
+**Promemoria di compatibilita' per le verifiche storiche:** one canonical `SESSION_CHAT_LOCAL` composition; Prefer EXPERIMENTAL; CANONICAL requires native event evidence. 
+
+**Invarianti:** `contracts/session-chat-composition-census.json`. GitHub DNS/egress from the container is not a dependency.
