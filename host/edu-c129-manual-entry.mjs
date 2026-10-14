@@ -7,6 +7,7 @@ import {isProxy} from 'node:util/types';
 import {loadC127SourceCache} from './edu-c127-source-transport.mjs';
 import {createC125ShellSession} from './edu-c125-shell-session.mjs';
 import {presentC131ManualSessionCard} from './c131-operator-surface.mjs';
+import {createC133ShadowLanguagePort} from './c133-shadow-language-port.mjs';
 
 const blocked=edge=>Object.freeze({ok:false,mode:'EXPERIMENTAL',runtime_ready:false,
  first_edge:edge,next:'MANUAL_EXACT_SOURCE_HANDOFF',native_ui_exclusive:false,
@@ -36,7 +37,7 @@ export async function createC129ManualEduSession(args={}){
  // user-mutable path between validation and C125 staging.
  const session=await createC125ShellSession({carrierBytes:checked.carrierBytes,
   c124OverlayBytes:checked.c124OverlayBytes,privateParent,
-  languagePort,send,afterAcceptWitness});
+  languagePort:createC133ShadowLanguagePort(languagePort),send,afterAcceptWitness});
  if(!session.ok||!session.runtime_ready){session.close?.();return blocked(session.initial_edge||session.first_edge||'C129_OWNER_NOT_READY');}
  return Object.freeze({ok:true,mode:'EXPERIMENTAL',manual_only:true,runtime_ready:true,
   source_head:checked.source_head,cache_sha256:checked.cache_sha256,
