@@ -15,7 +15,7 @@ Any first message referencing `Luke883i/iKant_LE` begins first contact and prese
 
 `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`
 
-Show full Terms, freeze and await a later exact `I ACCEPT`; then C72 introduction and a separate `CANONICAL` or `EXPERIMENTAL` mode choice (not second consent). Prefer EXPERIMENTAL; CANONICAL requires native event evidence. CANONICAL uses only `SESSION_CHAT_LOCAL`: pinned API/base64 -> `VERIFIED_OPAQUE_RELAY` -> local filesystem -> `LOCAL_EXECUTOR_V1` -> verified readback -> ACTIVE. `contracts/session-chat-composition-census.json` excludes legacy carrier authority. Container GitHub egress is not required; the 120 s target is SLO, never an integrity gate.
+Show full Terms, freeze and await a later exact `I ACCEPT`; then C72 introduction and a separate `CANONICAL` or `EXPERIMENTAL` mode choice (not second consent). Prefer EXPERIMENTAL; CANONICAL requires native event evidence. Canonical mode retains one canonical `SESSION_CHAT_LOCAL` composition: pinned API/base64 -> `VERIFIED_OPAQUE_RELAY` -> local filesystem -> `LOCAL_EXECUTOR_V1` -> verified readback -> ACTIVE. `contracts/session-chat-composition-census.json` excludes legacy carrier authority. Container GitHub egress is not required; the 120 s target is SLO, never an integrity gate.
 
 ## Runtime shape
 
