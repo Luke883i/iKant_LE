@@ -58,6 +58,6 @@ Qualification is source-bound and risk-adaptive: deterministic checks first; typ
 
 C28 anti-entropy: add evidence below existing owners where possible; every repository gap closes mechanically or exposes `first_unclosed_edge`, while external facts remain explicit.
 
-## EDU source transport and document lineage
+## EDU lineage
 
-Original Terms/AGENTS govern acceptance; a C127 cache of C107 plus exact C124 overlay is HOST transport data, never an active runtime. Reuse mounted bytes, then at most three genuine evidence-distinct transfer methods, with manual handoff last after exhaustion. C124/126 are not real-model quality guarantees. See docs/EDU_C127_TEXT_LINEAGE.md; maintain historical PR and source epochs separately from current HEAD.
+Terms/AGENTS unchanged; see docs/EDU_C127_TEXT_LINEAGE.md.

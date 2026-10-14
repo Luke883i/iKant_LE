@@ -49,6 +49,6 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 
 
-## EDU experiment after PR122-126
+## EDU profile
 
-The CANONICAL ACTIVE contract above remains unchanged. EXPERIMENTAL EDU: C72 -> pinned C107 plus three C124 overlay Git blobs -> original C70/C4/C5/C82 -> twelve C124 source obligations -> C126 HOST guard -> PR119 language -> C114/C100/C87 independent reopen -> C125 host-controlled shell. C127 can physically deliver the exact source bytes, not replace the runtime owner. The brain metaphor is functional, not evidence of sentience. See docs/EDU_C127_MIND_TRANSPORT_DOD.md.
+C124/C126 -> PR119 -> original C87 -> C125 HOST shell; C127 is transport only.
