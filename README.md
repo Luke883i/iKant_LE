@@ -5,40 +5,46 @@
 
 > **ROA Research Programme.** Component of the programme coordinated in `Luke883i/academics` and anchored by `Luke883i/ROA`. Repository-local contracts/evidence remain authoritative; membership alone implies neither ROA conformance/derivation, empirical validation nor production readiness.
 
-# iKant_LE
+# iKant — risposte guidate, prove verificabili
 
-iKant Light Edition is a repository-owned constitutional runtime for a local chat host; the host model/provider is replaceable infrastructure with zero independent authority.
+**iKant guida le risposte di un assistente linguistico e verifica le operazioni eseguite.** E' sperimentale, non una persona, un modello separato o un hook nativo ChatGPT.
 
-## First contact and fast activation
+**Cosa ottieni oggi:** laboratorio Node.js, ingresso da file verificato, bozze guidate e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
 
-Any first message referencing `Luke883i/iKant_LE` begins first contact and preserves pending intent. Pre-accept access is **GitHub API only**. Pin exact `main`, read only:
+| Voglio... | Apri |
+|---|---|
+| Capire e provare iKant | [Inizia qui](docs/START_HERE.md) |
+| Sapere cosa funziona e cosa manca | [Dashboard](docs/PRODUCT_DASHBOARD.md) |
+| Capire quale versione e' ufficiale | [Catalogo e regole di rilascio](release/catalog.json) |
+| Valutare il progetto tecnicamente | [Architettura](docs/ARCHITECTURE.md) · [Prove V1](docs/V1_E2E_TRACEABILITY.md) |
+| Capire il posizionamento | [Cosa possiamo promettere](docs/PRODUCT_POSITIONING.md) |
 
-`README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`
+## Due livelli, non due prodotti
 
-Show full Terms, freeze and await a later exact `I ACCEPT`; then C72 introduction and a separate `CANONICAL` or `EXPERIMENTAL` mode choice (not second consent). Prefer EXPERIMENTAL; CANONICAL requires native event evidence. Canonical mode retains one canonical `SESSION_CHAT_LOCAL` composition: pinned API/base64 -> `VERIFIED_OPAQUE_RELAY` -> local filesystem -> `LOCAL_EXECUTOR_V1` -> verified readback -> ACTIVE. `contracts/session-chat-composition-census.json` excludes legacy carrier authority. GitHub DNS/egress from the container is not a dependency. the 120 s target is SLO, never an integrity gate.
+- **EXPERIMENTAL / EDU:** dopo Termini, selezione e autorizzazione specifica alle bozze, usa un file verificato. La prova locale non e' integrazione nativa della chat.
+- **CANONICAL:** richiede identita' nativa dell'evento, Node, stato durevole e rilettura, documento del turno e ricevuta di consegna. Senza prove resta inattivo; il ripiego manuale non e' ancora disponibile.
 
-## Runtime shape
-
-CANONICAL ACTIVE needs Node same-input dispatch, cognitive processing, sole-writer readback and one same-turn DOCX.
-
-- **Surface A**: natural iKant prose, user-intention first, 50-500 words.
-- **Surface B**: exactly one same-turn DOCX; structured host handoff/presentation required; filename-only is not delivery.
-- **State**: one append-only hash-linked writer, readback before reliance.
-- **Cognition**: bounded intent/method, functional psyche and recurrent self-world processing, authority zero.
-- **Boundary**: evidence, permission, policy, execution and reported outcome remain distinct.
-
-Code and machine contracts govern: `AGENTS.md` execution, `TERMS.md` admission, `docs/ARCHITECTURE.md` design, `docs/GOVERNANCE.md` evidence. Historical DoD is non-normative.
-
-## Development qualification
+## Come riprodurre una verifica
 
 ```bash
-npm run qualify:canonical
+npm test
+npm run check
+npm run runtime-root:verify
+npm run bundle:edu
 ```
 
-`qualify:current` aliases `qualify:canonical`.
+Servono Node.js 20+ e Python 3. Il bundle e' un **candidato**, non una installazione o release.
 
-`SESSION_CHAT_LOCAL` has one caller composition only: `docs/SESSION_CHAT_LOCAL_PROMPT.md` + `contracts/session-chat-local-host-kernel.json` + `contracts/session-chat-composition-channel.json`. Older carriers/prompts/plugins cannot define another lifecycle.
+## Da dove arrivano le regole
 
-## Experimental EDU OneShell (not CANONICAL ACTIVE)
+Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commit `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`, mostra i Termini integralmente, si ferma e attende un nuovo messaggio `I ACCEPT`; poi presenta l'introduzione e richiede `EXPERIMENTAL` o `CANONICAL`. Nessuna delle scelte installa da sola iKant.
 
-iKant is an atypical cognitive method: the replaceable HOST model, not an independent iKant mind, writes its words. C70/C4/C5/C82 compute bounded context; C124 exposes 12 channels, C126 checks them, PR119/C87 binds the turn, C125 frames only HOST output. C127 verifies exact C107+three C124 overlay files and allows one plus two distinct real machine attempts before manual handoff last. No native ChatGPT hook, cross-chat memory or LLM uplift is proven. Bundle and prompt_innesco are zero-authority. See docs/EDU_C127_MIND_TRANSPORT_DOD.md.
+**Fonte unica:** `main` dopo merge e verifiche. Le PR conservano la storia, non sono release. Prompt e ZIP sono ricostruiti dallo stesso commit con impronte verificabili.
+
+**Per gli ingegneri:** [decisioni](docs/V1_PRODUCT_DECISIONS.md), [governance](docs/GOVERNANCE.md), [contratti](contracts/), [test](tests/).
+
+**Prove:** gli hash identificano i file, non certificano la verita' delle risposte. Il modello HOST resta sostituibile.
+
+**Promemoria di compatibilita' per le verifiche storiche:** one canonical `SESSION_CHAT_LOCAL` composition; Prefer EXPERIMENTAL; CANONICAL requires native event evidence. 
+
+**Invarianti:** `contracts/session-chat-composition-census.json`. GitHub DNS/egress from the container is not a dependency.

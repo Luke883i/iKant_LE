@@ -30,9 +30,28 @@ permissions:
   contents: read
 
 jobs:
-  c43:
+  c42-regression:
+    name: c42-1m-regression
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: C42 strengthened regression (1M full, not smoke)
+        run: npm run falsify:c42 | tee /tmp/c42.json
+      - name: Upload C42 receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c43-c42-closure-1m
+          path: /tmp/c42.json
+          if-no-files-found: ignore
+  c43:
+    name: c43-1m-recovery
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -40,9 +59,7 @@ jobs:
           node-version: '20'
       - name: Focused regression
         run: node --test --test-concurrency=1 tests/first-contact.test.mjs tests/runtime.test.mjs tests/c40-bootstrap-reentry.test.mjs tests/c41-retry-epoch-ux.test.mjs tests/c42-bootstrap-ontological-closure.test.mjs tests/c43-bootstrap-recovery-hardening.test.mjs
-      - name: C42 strengthened regression
-        run: npm run falsify:c42
-      - name: Seeded 1M C43 runtime falsification
+      - name: C43 seeded recovery falsification (1M full, not smoke)
         run: npm run falsify:c43 | tee /tmp/c43.json
       - name: Runtime root exactness
         run: npm run runtime-root:verify

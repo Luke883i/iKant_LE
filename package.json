@@ -1,6 +1,6 @@
 {
   "name": "ikant-le",
-  "version": "0.9.0",
+  "version": "1.0.0-edu.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -69,6 +69,9 @@
     "select:c45": "node scripts/c45-context-root-select.mjs > /tmp/c45-selection.json && cmp /tmp/c45-selection.json artifacts/qualification/c45-context-root-selection-10k.json && cat /tmp/c45-selection.json",
     "falsify:c45": "node scripts/c45-context-root-falsify.mjs > /tmp/c45-falsification.json && cmp /tmp/c45-falsification.json artifacts/qualification/c45-context-root-falsification-10m.json && cat /tmp/c45-falsification.json",
     "falsify:c58": "node scripts/c58-runtime-lifecycle-gate-falsify.mjs --cases 1000000",
-    "prompt:session-chat-local": "node scripts/session-chat-local-prompt.mjs"
+    "prompt:session-chat-local": "node scripts/session-chat-local-prompt.mjs",
+    "bundle:edu": "python3 scripts/c131-build-project-bundle.py dist/iKant_OneShell_EDU_C131_CANDIDATE.zip",
+    "falsify:c131": "node scripts/c131-falsify-release-gate.mjs 1000000",
+    "qualify:v1:product": "node --test tests/v1-workflow-retention.test.mjs tests/v1-product-contract.test.mjs tests/c131-product-release.test.mjs tests/c130-architecture.test.mjs tests/edu-c129-manual-entry.test.mjs && node scripts/v1-product-audit.mjs"
   }
 }
