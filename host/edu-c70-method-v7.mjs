@@ -12,6 +12,7 @@ import {createLocalCohostAdapter,denyHostTurn} from './edu-cohost-outcome.mjs';
 import {compileC117SemanticGuide} from './c117-semantic-guidance.mjs';
 import {PIN} from './c107-carrier-consumer.mjs';
 import {C124_SOURCE_EPOCH} from './c124-source-overlay.mjs';
+import {qualifyC126Channels} from './edu-c126-channel-qualifier.mjs';
 import {projectV10Terminal} from './edu-v10-terminal-shell.mjs';
 import {qualifyV8HostClaim} from './edu-v8-release-policy.mjs';
 const H=v=>crypto.createHash('sha256').update(Buffer.from(v,'utf8')).digest('hex');
@@ -81,10 +82,13 @@ export async function createGuidedCohostV7({carrierBytes,privateParent,languageP
   catch{return no('V8_C70_PREVIEW_EXCEPTION');}
   if(preview.status!=='C107_C70_PLAN_COMPUTED_NOT_LEDGERED'||preview.c70_original_executed!==true||
    preview.input_sha256!==H(humanInput)||!SHA64.test(preview.c70_output_sha256))return no(preview.first_unclosed_edge||'V7_ORIGINAL_C70_PREVIEW');
-  if(c124Epoch){const channels=preview.c124_language_channels;
-   if(channels?.channels?.length!==12||channels.channel_sha256!==preview.c124_language_channel_sha256||
-    channels.input_sha256!==preview.input_sha256||channels.channels.some(c=>c.included!==true||c.authority!==0))
-    return no('C124_INCOMPLETE_OR_UNBOUND_LANGUAGE_CHANNELS');}
+  // Independent structural check of all 12 computed obligations BEFORE languagePort.
+  // SHA agreement alone does not authorize promotion; C87 stays untouched on denial.
+  if(c124Epoch){
+   const gate=qualifyC126Channels(preview.c124_language_channels,{
+    inputSha256:preview.input_sha256,channelSha256:preview.c124_language_channel_sha256});
+   if(!gate.ok)return no(gate.first_edge||'C126_CHANNEL_QUALIFICATION_DENIED');
+  }
   const plan=Object.freeze({schema:'ikant-le-c107-c70-before-language/v1',
    input_sha256:preview.input_sha256,c70_output_sha256:preview.c70_output_sha256,
    central_mode:preview.central_mode,method:preview.method,
