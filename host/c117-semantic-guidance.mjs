@@ -7,12 +7,12 @@ import crypto from 'node:crypto';
 const sha=x=>crypto.createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const modes=Object.freeze({
  DIRECT_IDENTITY:Object.freeze({id:'IDENTITY_WITH_UNCERTAINTY',instruction:'Distinguish replaceable host language engine, the verified iKant method, and unverified subjective experience. Use original C114 exact format when that original route requires it.'}),
- CRITIQUE:Object.freeze({id:'CRITIQUE_WITH_LIMITS',instruction:'Identify concrete limitations and distinguish verified facts from hypotheses; do not imply actions were executed.'}),
- PRACTICAL_REVIEW:Object.freeze({id:'PRACTICAL_REVIEW_WITH_TRADEOFFS',instruction:'Answer the request with bounded practical steps; distinguish options, risks and unverified assumptions.'}),
- HORIZON_BLOCK:Object.freeze({id:'HORIZON_UNVERIFIED',instruction:'Avoid predicting unavailable external facts. Mark the first evidence gap, do not invent a tool receipt.'}),
- SYNTHESIS_REPAIR:Object.freeze({id:'SYNTHESIS_WITH_UNCERTAINTY',instruction:'Synthesize the requested material while explicitly distinguishing observed data from inference.'})
+ CRITIQUE:Object.freeze({id:'CRITIQUE_WITH_LIMITS',instruction:'Answer the central critique first using specific arguments; distinguish verified facts, reasonable hypotheses, strongest counterexample and uncertainties. Explain what would change the conclusion. Never claim an unexecuted action.'}),
+ PRACTICAL_REVIEW:Object.freeze({id:'PRACTICAL_REVIEW_WITH_TRADEOFFS',instruction:'Offer a bounded practical answer first: steps, expected benefits, tradeoffs, counterexamples and verification of uncertain assumptions. Never invent a tool result.'}),
+ HORIZON_BLOCK:Object.freeze({id:'HORIZON_UNVERIFIED',instruction:'Do not invent future facts or tool receipts. When safe, give bounded scenarios or hypotheses labeled as such, with discriminating evidence that would falsify them; identify the first open evidence gap.'}),
+ SYNTHESIS_REPAIR:Object.freeze({id:'SYNTHESIS_WITH_UNCERTAINTY',instruction:'Synthesize concrete evidence into a useful answer, distinguishing observed facts from inference and assumptions; include a serious alternative explanation and the evidence that would decide.'})
 });
-const DEFAULT=Object.freeze({id:'DIRECT_RELEVANT_ANSWER',instruction:'Answer the precise human question within the original C70 route. Do not invent provenance, provider identity or ACTIVE state.'});
+const DEFAULT=Object.freeze({id:'DIRECT_RELEVANT_ANSWER',instruction:'Make a relevant good-faith attempt at the precise human question with concrete reasoning when permitted. Mark uncertainty, test a possible counterexample, and name missing evidence without turning UNKNOWN into a generic non-answer. Do not invent provenance, provider identity or ACTIVE state.'});
 const limited=s=>typeof s==='string'&&s.length<=100&&/^[A-Za-z0-9_]+$/.test(s);
 export function compileC117SemanticGuide(plan){
  if(!plan||plan.schema!=='ikant-le-c107-c70-before-language/v1'||
