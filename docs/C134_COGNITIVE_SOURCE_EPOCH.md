@@ -29,3 +29,14 @@
 **C134** sorgente candidata e falsificazione -> **C135** integrazione della nuova sorgente nel proprietario EDU con cache verificata e una voce effettivamente riletta -> **C136** ripiego manuale nel proprietario CANONICAL dopo fallimenti reali distinti -> **C137** benchmark cieco stesso modello/input, qualità, sicurezza, costo, latenza -> **C138** catalogo, prompt, bundle e rilascio per tier su SHA identico.
 
 La qualifica EDU può precedere CANONICAL se sono dichiarate chiaramente le garanzie distinte. Nessun test strutturale equivale a una prova di qualità cognitiva.
+
+## Rivalutazione del reticolo: due percorsi in parallelo
+
+Il precedente elenco C134 -> C135 -> C136 -> C137 -> C138 era eccessivamente sequenziale. La nuova dipendenza verificabile e':
+
+- P0 (accessibilita, complessita, prova non scambiata per cognizione, coerenza) vale in ogni nodo.
+- **C134 -> C135 EDU -> C137 valutazione LLM -> C138 rilascio EDU**.
+- **C127 storico -> C136 ripiego CANONICAL** puo procedere in parallelo a C135, senza aspettare il nuovo modello cognitivo.
+- **C138 rilascio CANONICAL** richiede C136, qualifica linguistica pertinente e prove native originali, non una simulazione EDU.
+
+Il grafo aggiornato, le metriche e le checklist per ogni nodo si trovano in `contracts/c134-convergence-lattice.json`; il test controlla che nessun nodo di rilascio sia raggiungibile tramite scorciatoie. Il budget di tre tentativi si applica a fallimenti macchina reali e distinti: risultato incerto => STOP, non handoff.
