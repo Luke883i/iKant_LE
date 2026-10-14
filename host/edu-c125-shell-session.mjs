@@ -5,6 +5,7 @@ import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {createGuidedCohostV7} from './edu-c70-method-v7.mjs';
 import {createC125HostOutputPort} from './c125-output-port.mjs';
+import {loadC127SourceCache} from './edu-c127-source-transport.mjs';
 const H=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
 const ID=/^[A-Za-z0-9_-]{12,96}$/;
 const META=/^[A-Za-z0-9_:.\/-]{1,120}$/;
@@ -16,10 +17,17 @@ function inspect(guided){
   return x.status===0?JSON.parse(x.stdout):null;
  }catch{return null}
 }
-export async function createC125ShellSession({carrierBytes,privateParent,languagePort,send,afterAcceptWitness,c124OverlayBytes=null}={}){
+export async function createC125ShellSession({carrierBytes,privateParent,languagePort,send,afterAcceptWitness,c124OverlayBytes=null,c127CachePath=null}={}){
  const port=createC125HostOutputPort({send,afterAcceptWitness});
  if(!port.ok)return Object.freeze({ok:false,first_edge:port.reason,native_ui_exclusive:false});
  let guided=null,initEdge='PR119_UNAVAILABLE';
+ // Optional real file transport. Never treat a filename as proof of source bytes.
+ if(c127CachePath!==null){
+  if(carrierBytes!==undefined||c124OverlayBytes!==null)return Object.freeze({ok:false,first_edge:'C127_AMBIGUOUS_SOURCE_INPUT',native_ui_exclusive:false});
+  const cache=loadC127SourceCache(c127CachePath);
+  if(!cache.ok)return Object.freeze({ok:false,first_edge:cache.first_edge,native_ui_exclusive:false});
+  carrierBytes=cache.carrierBytes;c124OverlayBytes=cache.c124OverlayBytes;
+ }
  try{
   guided=await createGuidedCohostV7({carrierBytes,privateParent,languagePort,c124OverlayBytes});
   if(!guided.ok)initEdge=guided.first_edge||'PR119_INITIALIZATION_BLOCKED';
