@@ -66,3 +66,15 @@ test('repeatable seeded mutational family distinguishes software and human subje
   assert.equal(classifyC132Candidate(s+suffix).scope,'SOFTWARE');
  }
 });
+
+test('fixed oracle corpus demonstrates bounded reduction in improper self routing', async()=>{
+ const {measureC132Routing}=await import('../scripts/c132-cognitive-benchmark.mjs');
+ const r=measureC132Routing();
+ assert.equal(r.corpus_cases,20);
+ assert.equal(r.status,'PASS');
+ assert.ok(r.legacy_improper_self>=5);
+ assert.equal(r.shadow_improper_self,0);
+ assert.equal(r.scope_accuracy_shadow,'20/20');
+ assert.equal(r.software_self_recall,'6/6');
+ assert.equal(r.limitations.llm_answer_quality_measured,false);
+});

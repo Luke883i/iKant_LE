@@ -35,5 +35,7 @@ jobs:
         run: node scripts/c132-gold-dashboard.mjs
       - name: Cognition shadow regressions and 10000 bounded variants
         run: node --test tests/c132-enterprise-candidate.test.mjs
+      - name: Fixed corpus measurement against original C82
+        run: node scripts/c132-cognitive-benchmark.mjs
       - name: Source-root source integrity
         run: npm run runtime-root:verify

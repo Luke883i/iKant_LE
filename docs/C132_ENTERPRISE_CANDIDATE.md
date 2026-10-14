@@ -64,3 +64,7 @@ L'ordine rifiutato più rischioso è `release prima dei dati` o `modifica silenz
 - Ogni workflow cancellato richiede migrazione dichiarata, non un silenzioso indebolimento di CI.
 
 **Comandi di prova:** `node --test tests/c132-enterprise-candidate.test.mjs`, `node scripts/c132-zero-gates.mjs`, `node scripts/c132-decision-lattice.mjs --json`, `node scripts/c132-gold-dashboard.mjs` (ultimo richiede registro gold e git-tree completo).
+
+## Misura riproducibile del miglioramento circoscritto
+
+Il corpus fisso di **20 domande etichettate** in `scripts/c132-cognitive-benchmark.mjs` confronta lo stesso input con C82 originale e con il classificatore C132, senza generare testo tramite LLM. Nella misura locale: **5 instradamenti impropri di domande non-software al percorso SELF_ONTOLOGY in C82, contro 0 al percorso software nel prototipo C132**; 20/20 categorie del soggetto e 6/6 domande software riconosciute nella matrice scelta. Questa è una prova del codice su un corpus dichiarato, **non** una stima su richieste future, né un miglioramento dimostrato della qualità di risposta. Il test automatizzato rifiuta regressioni su questo corpus.
