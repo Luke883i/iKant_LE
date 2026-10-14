@@ -49,10 +49,6 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 
 
-## EDU experimental profile: implemented after PR122–126
+## EDU experiment after PR122-126
 
-The preceding CANONICAL / ACTIVE architecture, including native event identity and one delivered same-turn DOCX, remains unchanged. A separate non-ACTIVE experimental flow now exists: original C72 selection -> exact original C107 carrier + three source-exact C124 overlays -> C70 intent and bounded C4/C5/C82 computation -> twelve source-derived C124 language obligations -> C126 host structural guard -> sole PR119 language bridge -> original C114/C100/C87 -> independent readback -> C125 host-controlled shell. C127 can supply a physical offline cache before the existing PR119 flow; it is not a new runtime or activation owner.
-
-Neuroscience analogies are pedagogical: C1/C70 associate and regulate, C4 numerically modulates expression, C5 computes bounded working context, C82 integrates, C114/C126 perform inhibition/structure checks, C87 records an external hash-linked notebook. These do not demonstrate subjective experience, all-Cx execution, an independent LLM or inter-chat memory. Twelve bounded instruction channels are not every numeric register; ACK does not prove real-model language efficacy. C114's five-line multi-intent rigidity remains a known limit.
-
-An EXPERIMENTAL HOST_BOUND result is HOST-generated language with procedural checks, not CANONICAL ACTIVE. C125 controls only its HOST send callback, never the native global ChatGPT UI. Original TERMS.md, AGENTS.md, CANONICAL and sole C87 writer remain authoritative. See docs/EDU_C127_MIND_TRANSPORT_DOD.md.
+The CANONICAL ACTIVE contract above remains unchanged. EXPERIMENTAL EDU: C72 -> pinned C107 plus three C124 overlay Git blobs -> original C70/C4/C5/C82 -> twelve C124 source obligations -> C126 HOST guard -> PR119 language -> C114/C100/C87 independent reopen -> C125 host-controlled shell. C127 can physically deliver the exact source bytes, not replace the runtime owner. The brain metaphor is functional, not evidence of sentience. See docs/EDU_C127_MIND_TRANSPORT_DOD.md.

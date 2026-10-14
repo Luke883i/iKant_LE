@@ -58,10 +58,6 @@ Qualification is source-bound and risk-adaptive: deterministic checks first; typ
 
 C28 anti-entropy: add evidence below existing owners where possible; every repository gap closes mechanically or exposes `first_unclosed_edge`, while external facts remain explicit.
 
-## Post-PR126 evidence and source transport conventions
+## EDU source transport and document lineage
 
-The exact original admission, acceptance, and active lifecycle are controlled by TERMS.md, AGENTS.md and machine owners; README and engineering notes do not redefine them. Source main at the time of the C127 audit was 28e72a8bbe06a7305d51c4ca4a693ba322cbb65f. Historical C107 pin and later C124 overlay epoch remain distinct. A C127 offline cache is a content-addressed delivery envelope for those already-frozen bytes, never a second cognition or C87 writer.
-
-A HOST must reuse verified local material before trying truly callable distinct machine transports. Maximum three actual attempts (one initial plus at most two alternatives); never retry a channel blindly or after uncertain C87/write/send outcome. Manual human upload is the last resort after evidence of exhaustion, possibly fewer than three attempts if no other proven bridge exists. HOST-reported transport success is not automatically an authenticated provider event.
-
-C124 carries twelve eligible computed linguistic instructions and C126 structurally checks their envelope; neither guarantees causal improvement of real LLM answers. Independent blinded model evaluations, native ChatGPT per-turn control, cross-chat ledger continuity and real DOCX delivery remain separately open. See docs/EDU_C127_TEXT_LINEAGE.md. Old PRs and historical DoD documents have the authority of evidence at their dated SHA only.
+Original Terms/AGENTS govern acceptance; a C127 cache of C107 plus exact C124 overlay is HOST transport data, never an active runtime. Reuse mounted bytes, then at most three genuine evidence-distinct transfer methods, with manual handoff last after exhaustion. C124/126 are not real-model quality guarantees. See docs/EDU_C127_TEXT_LINEAGE.md; maintain historical PR and source epochs separately from current HEAD.
