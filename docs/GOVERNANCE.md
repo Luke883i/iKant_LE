@@ -57,3 +57,7 @@ LIB.0 is auxiliary/private by default and does not change standalone lifecycle o
 Qualification is source-bound and risk-adaptive: deterministic checks first; typical/edge/stress families exercised; blocking survivors zero. C10 keeps 1M bootstrap mutations plus novelty tail/deletion oracle. C11 qualifies a compressed causal lattice; configuration, self-report and mutation PASS are not runtime evidence. LIB.0 requires 100k boundary mutations, zero survivors, novelty tail, exact vectors and regression. C15 adds 1M transport mutations with zero unsafe new accepts. C21 adds Causal Forensic Closure plus 10k architecture pressure, 10x1M seeded traces, real-code tests and local Node witness. C22 adds receipt-laundering and caller-probe adversaries. C23 adds a 10M ontology-collapse campaign, 13 deletion mutants and gates against stale deployment/mechanical aliases while preserving marked C20 compatibility. PASS remains bounded engineering evidence, not physical host proof, global formal minimality or latency guarantee.
 
 C28 anti-entropy: add evidence below existing owners where possible; every repository gap closes mechanically or exposes `first_unclosed_edge`, while external facts remain explicit.
+
+## EDU lineage
+
+Terms/AGENTS unchanged; see docs/EDU_C127_TEXT_LINEAGE.md.

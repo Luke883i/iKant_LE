@@ -48,3 +48,7 @@ C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualif
 
 Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
 
+
+## EDU profile
+
+C124/C126 -> PR119 -> original C87 -> C125 HOST shell; C127 is transport only.
