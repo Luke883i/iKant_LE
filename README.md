@@ -7,9 +7,9 @@
 
 # iKant — risposte guidate, prove verificabili
 
-**iKant e' un metodo sperimentale per guidare un assistente linguistico, controllarne le affermazioni e conservare tracce tecniche di cio' che e' stato davvero eseguito.** Non e' una persona, un modello linguistico indipendente o un collegamento nativo a ChatGPT.
+**iKant guida le risposte di un assistente linguistico e verifica le operazioni eseguite.** E' sperimentale, non una persona, un modello separato o un hook nativo ChatGPT.
 
-**Cosa ottieni oggi:** un laboratorio Node.js con ingresso sperimentale da file verificato, guida alla formulazione di risposte e registrazione locale riletta. **Cosa non e' dimostrato:** un miglioramento cognitivo generale, memoria fra chat o attivazione canonica su questa piattaforma.
+**Cosa ottieni oggi:** laboratorio Node.js, ingresso da file verificato, bozze guidate e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
 
 | Voglio... | Apri |
 |---|---|
@@ -21,8 +21,8 @@
 
 ## Due livelli, non due prodotti
 
-- **EXPERIMENTAL / EDU:** uso didattico controllato. Dopo i Termini, la selezione della modalita' e l'eventuale autorizzazione alle bozze, si fornisce un pacchetto esatto; il programma verifica i byte prima di elaborare la richiesta. Una prova locale non equivale a una funzione nativa della chat.
-- **CANONICAL:** stesso repository, garanzie piu' forti. Richiede identita' dell'evento di ingresso, esecuzione Node, stato durevole e rilettura, documento dello stesso turno e ricevuta di consegna. Se mancano, lo stato resta non attivo. Il ripiego manuale canonico e' ancora un obiettivo, non una capacita' gia' consegnata.
+- **EXPERIMENTAL / EDU:** dopo Termini, selezione e autorizzazione specifica alle bozze, usa un file verificato. La prova locale non e' integrazione nativa della chat.
+- **CANONICAL:** richiede identita' nativa dell'evento, Node, stato durevole e rilettura, documento del turno e ricevuta di consegna. Senza prove resta inattivo; il ripiego manuale non e' ancora disponibile.
 
 ## Come riprodurre una verifica
 
@@ -33,17 +33,17 @@ npm run runtime-root:verify
 npm run bundle:edu
 ```
 
-Servono Node.js 20+ e Python 3. La costruzione del bundle produce un **candidato**, non installa il runtime e non pubblica una release. 
+Servono Node.js 20+ e Python 3. Il bundle e' un **candidato**, non una installazione o release.
 
 ## Da dove arrivano le regole
 
 Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commit `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`, mostra i Termini integralmente, si ferma e attende un nuovo messaggio `I ACCEPT`; poi presenta l'introduzione e richiede `EXPERIMENTAL` o `CANONICAL`. Nessuna delle scelte installa da sola iKant.
 
-**Una sola fonte di prodotto:** il commit effettivo di `main`, dopo merge e verifiche. **Le PR non sono versioni:** conservano la storia delle modifiche e delle prove. **Prompt e ZIP** si producono dal medesimo commit, con manifest e impronte verificabili; non sono autorita' autonome.
+**Fonte unica:** `main` dopo merge e verifiche. Le PR conservano la storia, non sono release. Prompt e ZIP sono ricostruiti dallo stesso commit con impronte verificabili.
 
 **Per gli ingegneri:** [decisioni](docs/V1_PRODUCT_DECISIONS.md), [governance](docs/GOVERNANCE.md), [contratti](contracts/), [test](tests/).
 
-**Confine di prova:** gli hash attestano l'identita' dei file; registrare una risposta non ne prova verita' o qualita'. L'HOST linguistico rimane sostituibile.
+**Prove:** gli hash identificano i file, non certificano la verita' delle risposte. Il modello HOST resta sostituibile.
 
 **Promemoria di compatibilita' per le verifiche storiche:** one canonical `SESSION_CHAT_LOCAL` composition; Prefer EXPERIMENTAL; CANONICAL requires native event evidence. 
 
