@@ -11,15 +11,15 @@ iKant Light Edition is a repository-owned constitutional runtime for a local cha
 
 ## First contact and fast activation
 
-Any first message referencing `Luke883i/iKant_LE` enters first contact before generic discovery and is preserved verbatim as pending intent. Pre-accept repository access is **GitHub API only**, with no fallback. Resolve exact `main`, pin the head, then read only:
+Any first message referencing `Luke883i/iKant_LE` begins first contact and preserves pending intent. Pre-accept access is **GitHub API only**. Pin exact `main`, read only:
 
 `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`
 
-Present Terms, freeze acquisition and await a later exact `I ACCEPT`. This common consent is followed by a standard iKant explanation and explicit `CANONICAL` or `EXPERIMENTAL` choice (not another consent). Prefer EXPERIMENTAL; CANONICAL requires native event evidence and is discouraged on unverified hosts. Legacy automatic activation is compatibility-only. Canonical mode retains one canonical `SESSION_CHAT_LOCAL` composition: pinned GitHub API/base64 -> `VERIFIED_OPAQUE_RELAY` -> local filesystem -> `LOCAL_EXECUTOR_V1` -> materialize/reopen -> executed provenance, Node probe, writer and ACTIVE readback. GitHub DNS/egress from the container is not a dependency. The census `contracts/session-chat-composition-census.json` excludes legacy carriers from canonical authority. The 120 s target is SLO telemetry, never an integrity gate.
+Show full Terms, freeze and await a later exact `I ACCEPT`; then C72 introduction and a separate `CANONICAL` or `EXPERIMENTAL` mode choice (not second consent). Prefer EXPERIMENTAL; CANONICAL requires native event evidence. CANONICAL uses only `SESSION_CHAT_LOCAL`: pinned API/base64 -> `VERIFIED_OPAQUE_RELAY` -> local filesystem -> `LOCAL_EXECUTOR_V1` -> verified readback -> ACTIVE. `contracts/session-chat-composition-census.json` excludes legacy carrier authority. Container GitHub egress is not required; the 120 s target is SLO, never an integrity gate.
 
 ## Runtime shape
 
-Every host-permitted ACTIVE input enters local Node. A substantive answer requires same-input dispatch, constitutional/cognitive processing, persisted readback and same-turn DOCX readback before release.
+CANONICAL ACTIVE needs Node same-input dispatch, cognitive processing, sole-writer readback and one same-turn DOCX.
 
 - **Surface A**: natural iKant prose, user-intention first, 50-500 words.
 - **Surface B**: exactly one same-turn DOCX; structured host handoff/presentation required; filename-only is not delivery.
@@ -27,7 +27,7 @@ Every host-permitted ACTIVE input enters local Node. A substantive answer requir
 - **Cognition**: bounded intent/method, functional psyche and recurrent self-world processing, authority zero.
 - **Boundary**: evidence, permission, policy, execution and reported outcome remain distinct.
 
-Machine truth belongs to current code/tests and machine contracts. `AGENTS.md` is the compact execution contract, `TERMS.md` admission, `docs/ARCHITECTURE.md` product model and `docs/GOVERNANCE.md` engineering/evidence trajectory. Historical DoD files are compatibility pointers.
+Code and machine contracts govern: `AGENTS.md` execution, `TERMS.md` admission, `docs/ARCHITECTURE.md` design, `docs/GOVERNANCE.md` evidence. Historical DoD is non-normative.
 
 ## Development qualification
 
@@ -35,10 +35,9 @@ Machine truth belongs to current code/tests and machine contracts. `AGENTS.md` i
 npm run qualify:canonical
 ```
 
-`qualify:canonical` verifies runtime-root, regression/check and hardening; `qualify:current` is its compatibility alias.
+`qualify:current` aliases `qualify:canonical`.
 
-`SESSION_CHAT_LOCAL` has one caller composition only: `docs/SESSION_CHAT_LOCAL_PROMPT.md` + `contracts/session-chat-local-host-kernel.json` + `contracts/session-chat-composition-channel.json`. Older prompt, planner, carrier, deployment and plugin surfaces are support/remediation/legacy and cannot define a second lifecycle.
-
+`SESSION_CHAT_LOCAL` has one caller composition only: `docs/SESSION_CHAT_LOCAL_PROMPT.md` + `contracts/session-chat-local-host-kernel.json` + `contracts/session-chat-composition-channel.json`. Older carriers/prompts/plugins cannot define another lifecycle.
 
 ## Experimental EDU OneShell (not CANONICAL ACTIVE)
 
