@@ -98,7 +98,7 @@
     "runtime_closure_unsafe_canonical_active_required": 0,
     "runtime_closure_dead_path_required": 0,
     "runtime_closure_oracle_mismatch_required": 0,
-    "executable_activation_related_files": 24,
+    "executable_activation_related_files": 25,
     "canonical_active_issuer_count_required": 1,
     "project_rom_mutations": 100,
     "project_rom_mutation_families": 20,

@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const R=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-executable-surface-registry.json'),'utf8'));
 const B=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8'));
+const C=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-composition-channel.json'),'utf8'));
 const activationRe=/(I ACCEPT|['"]ACTIVE['"]|RUNTIME_BOUND_LIMITED|HANDOFF_PRE_RUNTIME|LOCAL_DIRECT|VERIFIED_OPAQUE_RELAY|WARM_CACHE_EXACT|runCommand\s*\(|resumeActivation\s*\(|executePreRuntimeBootstrap\s*\(|executeCanonicalSessionChatBootstrap\s*\(|acceptDeployedSession\s*\(|acceptLocalLimitedSession\s*\(|issueCanonicalSessionChatComposition\s*\(|runCanonicalSessionChat\s*\(|materializeRuntimeRoot\s*\()/;
 
 function walk(dir){
@@ -35,6 +36,7 @@ for(const p of exceptions){
 const discovered=production.filter(p=>!exceptions.has(p)&&activationRe.test(fs.readFileSync(path.join(ROOT,p),'utf8'))).sort();
 const declared=[...(R.discovery?.activation_related_files||[])].sort();
 if(JSON.stringify(discovered)!==JSON.stringify(declared))errors.push('activation_related_file_set');
+if(C.qualification?.executable_activation_related_files!==discovered.length)errors.push('composition_registry_count_mismatch');
 const issuers=(R.surfaces||[]).filter(x=>x.may_issue_canonical_active===true);const materializer=(R.surfaces||[]).find(x=>x.id==='PRE_RUNTIME_MATERIALIZER');
 if(issuers.length!==1||issuers[0]?.ref!=='src/runtime-command.mjs#runCanonicalSessionChat')errors.push('canonical_issuer');if(materializer?.ref!=='src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap'||materializer?.classification!=='CANONICAL_INTERNAL_EDGE')errors.push('canonical_materializer_registry');
 const src=p=>fs.readFileSync(path.join(ROOT,p),'utf8');

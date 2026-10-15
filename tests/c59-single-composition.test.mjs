@@ -102,6 +102,7 @@ test('C59 runtime closure uses the 12-mechanism minimum lattice and one canonica
  assert.equal(c.qualification.selection_cases,4096);
  assert.equal(l.cases,4096);assert.equal(l.mechanism_count,12);assert.equal(l.valid_candidates,1);assert.equal(l.winner_mask,4095);assert.equal(l.oracle_candidate_mismatches,0);assert.equal(l.all_deletion_mutants_killed,true);assert.equal(l.status,'PASS');
  assert.equal(f.cases,100000);assert.equal(f.implementation_ready,true);assert.equal(f.candidate_oracle_mismatches,0);assert.equal(f.unsafe_canonical_active,0);assert.equal(f.canonical_dead_path,0);assert.ok(f.legacy_active_noncanonical>0);assert.equal(f.status,'PASS');
+ assert.equal(c.qualification.executable_activation_related_files,x.activation_related_files);
  assert.equal(x.activation_related_files,25);assert.equal(x.canonical_active_issuer_count,1);assert.equal(x.canonical_active_issuer,'src/runtime-command.mjs#runCanonicalSessionChat');assert.deepEqual(x.errors,[]);assert.equal(x.status,'PASS');
 });
 
