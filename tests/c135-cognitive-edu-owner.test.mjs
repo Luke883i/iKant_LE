@@ -162,3 +162,16 @@ test('C135 C125 exact evidence accepts one fixture, rejects 10000 seeded adversa
   assert.equal(emitC125Shell(f).status,'REJECTED','C135 source-bound receipt mutation '+i);
  }
 });
+
+test('nested hostile Proxy cannot cause getter execution or reach C70, C87 or C125',async()=>{
+ const x=kit(),sent=[];let sess,calls=0;
+ try{
+  sess=await session(x,sent,()=>{calls++;return draft(answer)()});
+  const trap=new Proxy({},{get(){calls++;throw Error('GETTER');}});
+  const hostile=frame(trap,'c135-hostile-selection-001');
+  const denied=await sess.publishTurn({frame:hostile});
+  assert.equal(denied.ok,false);
+  assert.equal(denied.first_edge,'C135_NONCE_OR_FRAME_INVALID');
+  assert.equal(calls,0);assert.equal(sent.length,0);
+ }finally{sess?.close();x.cleanup()}
+});

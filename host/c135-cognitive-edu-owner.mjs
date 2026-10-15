@@ -25,6 +25,25 @@ const own=x=>{
  const d=Object.getOwnPropertyDescriptors(x);
  return Reflect.ownKeys(d).every(k=>typeof k==='string'&&Object.hasOwn(d[k],'value'));
 };
+function safeDeep(v,depth=0){
+ if(depth>10)return false;
+ if(v===null||typeof v==='string'||typeof v==='boolean')return true;
+ if(typeof v==='number')return Number.isFinite(v);
+ if(typeof v!=='object'||isProxy(v))return false;
+ try{
+  if(Array.isArray(v)){
+   const ds=Object.getOwnPropertyDescriptors(v);
+   if(v.length>16||Reflect.ownKeys(ds).length!==v.length+1)return false;
+   for(let i=0;i<v.length;i++)
+    if(!ds[i]||!Object.hasOwn(ds[i],'value')||!safeDeep(ds[i].value,depth+1))return false;
+   return true;
+  }
+  if(!own(v))return false;
+  const ds=Object.getOwnPropertyDescriptors(v);
+  return Reflect.ownKeys(ds).length<=36&&
+    Reflect.ownKeys(ds).every(k=>safeDeep(ds[k].value,depth+1));
+ }catch{return false}
+}
 function independent(root,ledger){
  const p=spawnSync(process.execPath,['scripts/c107-turn-cli.mjs',ledger],{
   cwd:root,encoding:'utf8',input:JSON.stringify({action:'INSPECT'}),
@@ -73,7 +92,7 @@ export async function createC135CognitiveSession({sourceCapture,privateParent,la
     edge,next:'RECONCILE_OWNER',hostNotes:notes}});
   async function publishTurn({frame,hostNotes=null}={}){
    if(closed||busy)return deny(closed?'C135_SESSION_CLOSED':'C135_CONCURRENT_DENIED');
-   if(!own(frame)||!nonceOk(frame.nonce)||seen.has(frame.nonce))return deny('C135_NONCE_OR_FRAME_INVALID');
+   if(!safeDeep(frame)||!nonceOk(frame.nonce)||seen.has(frame.nonce))return deny('C135_NONCE_OR_FRAME_INVALID');
    const id=frame.nonce;seen.add(id);busy=true;
    try{
     if(Object.keys(frame).some(k=>!['humanInput','nonce','selection','priorMessages','resetContext','authorization'].includes(k))||
