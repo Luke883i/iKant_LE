@@ -6,7 +6,7 @@
 
 **Cosa posso usare?** Una modalita' sperimentale che verifica file e registra localmente le risposte quando il programma viene realmente eseguito. Il percorso canonico richiede ulteriori prove native che non possono essere garantite da un prompt o da uno ZIP.
 
-**Come si inizia?** Prima si leggono i Termini originali e si esprime un consenso specifico; si seleziona poi la modalita'. Per l'esperimento EDU si fornisce un solo pacchetto esatto e verificabile. Un file allegato, da solo, non installa il runtime.
+**Come si inizia?** Alla versione esatta di main si leggono i Termini originali, si risponde in un nuovo turno esattamente `I ACCEPT`, quindi si seleziona in un altro turno `EDU` (consigliata) oppure `CANONICAL` (via MCP). Per l'esperimento EDU si fornisce un solo pacchetto esatto e verificabile. Un file allegato, da solo, non installa il runtime.
 
 **Come controllo il progetto?** Consulta la [dashboard](PRODUCT_DASHBOARD.md) per distinguere integrato, proposto, verificato e ancora da provare. I riferimenti tecnici sono opzionali e devono essere accompagnati dal loro significato in linguaggio comune.
 

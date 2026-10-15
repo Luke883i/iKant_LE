@@ -109,19 +109,23 @@
   "read_only_remediation_requires_reacquisition": true,
   "read_only_remediation_retroactive_authorization": false,
   "default_onboarding": {
-    "schema": "ikant-le-c72-unified-mode-admission/v1",
+    "schema": "ikant-le-c72-public-mode-admission/v2",
+    "owner": "host/c72-public-mode-admission.mjs",
+    "contract": "contracts/c72-public-mode-admission-v2.json",
     "human_gate": "I ACCEPT",
-    "after_gate": "PRESENT_INTRO_AND_AWAIT_MODE",
+    "after_gate": "PRESENT_SOURCE_DEFINED_V2_INTRO_AND_AWAIT_MODE",
     "modes": [
-      "CANONICAL",
-      "EXPERIMENTAL"
+      "EDU",
+      "CANONICAL"
     ],
+    "recommended": "EDU",
     "single_consent_for_all_modes": true,
     "explicit_mode_required": true,
     "canonical_owner_only_after_choice": true,
-    "experimental_second_consent": false,
     "native_origin_required_for_canonical_only": true,
-    "legacy_auto_activate": "COMPATIBILITY_ONLY",
+    "legacy_c72_v1_receipts": "HISTORICAL_COMPATIBILITY_ONLY",
+    "no_mode_aliasing": true,
+    "selection_not_runtime_activation": true,
     "authority": 0
   },
   "automatic_after_acceptance_legacy_compatibility": [
@@ -132,5 +136,12 @@
     "AUTO_PROBE",
     "AUTO_INITIALIZE",
     "RESUME_PENDING_INTENT_IF_ANY"
-  ]
+  ],
+  "legacy_c72_admission": {
+    "schema": "ikant-le-c72-unified-mode-admission/v1",
+    "module": "host/c72-unified-mode-admission.mjs",
+    "contract": "contracts/c72-unified-mode-admission.json",
+    "historical_only": true,
+    "not_new_human_mode_choice": true
+  }
 }
