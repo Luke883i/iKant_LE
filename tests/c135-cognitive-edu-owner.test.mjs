@@ -10,6 +10,7 @@ import {buildC127SourceCache} from '../host/edu-c127-source-transport.mjs';
 import {PIN} from '../host/c107-carrier-consumer.mjs';
 import {C124_OVERLAY_GIT_BLOBS} from '../host/c124-source-overlay.mjs';
 import {qualifyC134Source} from '../scripts/c134-source-epoch.mjs';
+import {emitC125Shell} from '../host/c125-exclusive-shell.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const H=x=>crypto.createHash('sha256').update(x).digest('hex');
 const human='Descrivi la mia natura ontologica, sono un uomo.';
@@ -109,4 +110,55 @@ test('invalid epoch, symlink cache and stale source never fall through to legacy
   const linked=await createC129ManualEduSession({...args,cognitiveEpoch:'C134_COMPOSITE',manualCachePath:symlink});
   assert.equal(linked.ok,false);assert.equal(sent.length,0);
  }finally{x.cleanup()}
+});
+
+test('C135 C125 exact evidence accepts one fixture, rejects 10000 seeded adversarial mutations',()=>{
+ const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+ const epoch='a'.repeat(40),nonce='c135-mutant-test-001',trace='b'.repeat(64),input='c'.repeat(64),channel='d'.repeat(64);
+ const voice='Risposta locale verificata.';
+ function specimen(){
+  const evidence={schema:'ikant-c135-owner-evidence/v1',
+   status:'C135_ORIGINAL_C107_C87_BOUND',
+   source_kind:'EXPERIMENTAL_COMPOSITE_NOT_GIT_COMMIT',source_epoch:epoch,active:false,
+   input_sha256:input,surface_a:{origin:'HOST_BOUND',voice_utf8:voice},
+   c134_source_verified:true,single_c87_writer:true,native_chatgpt_origin_attested:false,
+   c126_status:'C126_STRUCTURAL_CONVEYANCE_ONLY',c126_channels:12,
+   original_turn:{status:'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK',
+    original_c70_executed:true,original_c87_writer_executed:true,
+    model_draft_used:true,ledger_event_sha256:trace,input_sha256:input,
+    output_sha256:sha(voice),voice_utf8:voice,c124_language_channel_sha256:channel}};
+  return {afterAccept:true,kind:'OWNER_VOICE',mode:'EXPERIMENTAL',trace,
+   continuity:'C87_INDEPENDENT_REOPEN',edge:'NATIVE_CHATGPT_PER_TURN_DISPATCH',
+   next:'QUALIFY_NATIVE_HOOK',nonce,input_sha256:input,ownerReceipt:evidence,
+   independentReadback:{status:'C107_LEDGER_REOPENED',last_hash:trace,
+    latest_state:{host_language_used:true,nonce,visible_voice_sha256:sha(voice),
+     source_head:epoch,c124_language_channel_sha256:channel}}};
+ }
+ assert.equal(emitC125Shell(specimen()).status,'ASSISTANT_TEXT_ONLY');
+ const mutants=[
+  f=>f.ownerReceipt.schema='ikant-edu-c70-guided/v7',
+  f=>f.ownerReceipt.status='OTHER',
+  f=>f.ownerReceipt.active=true,
+  f=>f.ownerReceipt.source_kind='GIT_COMMIT',
+  f=>f.ownerReceipt.source_epoch='e'.repeat(40),
+  f=>f.ownerReceipt.input_sha256='e'.repeat(64),
+  f=>f.ownerReceipt.c126_channels=11,
+  f=>f.ownerReceipt.c126_status='SKIPPED',
+  f=>f.ownerReceipt.c134_source_verified=false,
+  f=>f.ownerReceipt.single_c87_writer=false,
+  f=>f.ownerReceipt.native_chatgpt_origin_attested=true,
+  f=>f.ownerReceipt.original_turn.status='C107_STOP',
+  f=>f.ownerReceipt.original_turn.original_c70_executed=false,
+  f=>f.ownerReceipt.original_turn.original_c87_writer_executed=false,
+  f=>f.ownerReceipt.original_turn.model_draft_used=false,
+  f=>f.ownerReceipt.original_turn.ledger_event_sha256='f'.repeat(64),
+  f=>f.ownerReceipt.original_turn.output_sha256='f'.repeat(64),
+  f=>f.ownerReceipt.original_turn.voice_utf8='Changed',
+  f=>f.ownerReceipt.original_turn.c124_language_channel_sha256='f'.repeat(64),
+  f=>f.independentReadback.latest_state.source_head='f'.repeat(40)
+ ];
+ for(let i=0;i<10000;i++){
+  const f=specimen();mutants[i%mutants.length](f);
+  assert.equal(emitC125Shell(f).status,'REJECTED','C135 source-bound receipt mutation '+i);
+ }
 });
