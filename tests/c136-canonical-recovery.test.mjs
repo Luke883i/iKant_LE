@@ -92,3 +92,16 @@ test('10000 deterministic mutant carriers cannot cross original C59 authority bo
   assert.equal(validateC136RecoveryPermit(a,args).ok,false,'mutant '+i);
  }
 });
+
+test('exclusive staging lock and hostile Proxy fail before materialization',()=>{
+ const x=fixture();try{
+  fs.writeFileSync(x.outputRoot+'.c136.lock','busy');
+  const r=materializeC136ManualCarrier({workspace:ROOT,manualRoot:x.manualRoot,outputRoot:x.outputRoot,sourceHead:HEAD,permit:permit()});
+  assert.equal(r.ok,false);assert.equal(fs.existsSync(x.outputRoot),false);
+  fs.unlinkSync(x.outputRoot+'.c136.lock');
+  let touches=0;const proxy=new Proxy(failures()[0],{get(){touches++;throw Error('hostile')}});
+  const a=failures();a[0]=proxy;
+  const p=issueC136RecoveryPermit({sourceHead:HEAD,runtimeRootSha256:descriptor.runtime_root_sha256,attempts:a});
+  assert.equal(p.ok,false);assert.equal(touches,0);
+ }finally{x.cleanup()}
+});
