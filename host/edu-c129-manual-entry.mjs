@@ -8,6 +8,7 @@ import {loadC127SourceCache} from './edu-c127-source-transport.mjs';
 import {createC125ShellSession} from './edu-c125-shell-session.mjs';
 import {presentC131ManualSessionCard} from './c131-operator-surface.mjs';
 import {createC133ShadowLanguagePort} from './c133-shadow-language-port.mjs';
+import {createC135CognitiveSession} from './c135-cognitive-edu-owner.mjs';
 
 const blocked=edge=>Object.freeze({ok:false,mode:'EXPERIMENTAL',runtime_ready:false,
  first_edge:edge,next:'MANUAL_EXACT_SOURCE_HANDOFF',native_ui_exclusive:false,
@@ -19,10 +20,11 @@ const own=o=>o&&typeof o==='object'&&!isProxy(o)&&!Array.isArray(o)&&
 /** Do not accept host-carrier alternatives, callbacks that fetch bytes, or unverified paths. */
 export async function createC129ManualEduSession(args={}){
  if(!own(args))return blocked('C129_UNSAFE_ENTRY_ENVELOPE');
- const expected=['afterAcceptWitness','languagePort','manualCachePath','privateParent','send'];
+ const expected=['afterAcceptWitness','languagePort','manualCachePath','privateParent','send','cognitiveEpoch'];
  const keys=Object.keys(args);
  if(keys.some(k=>!expected.includes(k)))return blocked('C129_UNEXPECTED_OR_MACHINE_TRANSPORT');
- const {manualCachePath,privateParent,languagePort,send,afterAcceptWitness}=args;
+ const {manualCachePath,privateParent,languagePort,send,afterAcceptWitness,cognitiveEpoch=null}=args;
+ if(cognitiveEpoch!==null&&cognitiveEpoch!=='C134_COMPOSITE')return blocked('C135_EPOCH_SELECTION_INVALID');
  if(!own(afterAcceptWitness)||Object.keys(afterAcceptWitness).sort().join(',')!=='accepted,scope'||
   afterAcceptWitness.accepted!==true||afterAcceptWitness.scope!=='HOST_WITNESSED_ONLY')
   return blocked('C129_POST_ACCEPT_HOST_WITNESS_REQUIRED');
@@ -35,6 +37,21 @@ export async function createC129ManualEduSession(args={}){
  if(!checked.ok)return blocked(checked.first_edge);
  // Pass only the bytes captured by the verified held inode. Do not reopen a
  // user-mutable path between validation and C125 staging.
+ if(cognitiveEpoch==='C134_COMPOSITE'){
+  // One public manual entry: new epoch is an explicit experimental choice.
+  // The capture is passed directly, never reopened from a mutable path.
+  const v=await createC135CognitiveSession({sourceCapture:checked,privateParent,
+   languagePort,send,afterAcceptWitness});
+  if(!v.ok||!v.runtime_ready){v.close?.();return blocked(v.first_edge||'C135_SOURCE_NOT_READY');}
+  return Object.freeze({ok:true,mode:'EXPERIMENTAL',manual_only:true,runtime_ready:true,
+   source_head:v.source_head,source_kind:v.source_kind,cognitive_epoch:'C134_COMPOSITE',
+   cache_sha256:checked.cache_sha256,single_inode_readback_verified:true,
+   machine_transport_attempts:0,active:false,authority:0,native_ui_exclusive:false,
+   provider_origin_attested:false,publishTurn:v.publishTurn,
+   close:v.close,status:v.status,
+   operatorCard:()=>presentC131ManualSessionCard(v.status)});
+ }
+
  const session=await createC125ShellSession({carrierBytes:checked.carrierBytes,
   c124OverlayBytes:checked.c124OverlayBytes,privateParent,
   languagePort:createC133ShadowLanguagePort(languagePort),send,afterAcceptWitness});

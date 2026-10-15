@@ -36,7 +36,7 @@
       "requires": [
         "P0"
       ],
-      "status": "PR_CANDIDATE",
+      "status": "MERGED_MAIN_EXPERIMENTAL_COMPOSITE",
       "owner": "C134",
       "measurement": "4 of 4 exact overlay blobs, original C107/C87 human-readback, 0 forged ACTIVE",
       "checklist": [
@@ -53,16 +53,20 @@
         "C134",
         "C127_BASE"
       ],
-      "status": "NOT_DONE",
+      "status": "CANDIDATE_ACTUAL_C129_EDU_SOURCE_COMPOSITION",
       "owner": "C129_C125_ORIGINAL",
-      "measurement": "1 owner write, independent reopen, 12/12 structural channels, no false voice",
+      "measurement": "C127 single inode -> exact C107+C124+C134 four-blob stage -> C126 12/12 -> original C107/C87 one append -> second-process reopen -> C125 at-most-once",
       "checklist": [
-        "native owner staging of pinned new source",
-        "original consent",
-        "C126 before model",
-        "original C114 for software",
-        "C87 one writer",
-        "C125 one controlled send"
+        "same C129 public manual entry with explicit opt-in cognitiveEpoch C134_COMPOSITE",
+        "original C127 held inode and C124 three pinned blobs unchanged",
+        "C134 four new exact blobs installed in isolated original C107 stage before original module import",
+        "C70 original plan and C126 12-channel structural validation before HOST callback",
+        "C133 advisory in real language callback, ACKs bound to input/plan/channels",
+        "software C114 strict disclosure and non-self C134 positive claim gate before C87 write",
+        "one original C107/C87 append and independent Node process readback with same nonce, epoch and voice bytes",
+        "C125 controlled send accepts only genuine C135 schema and denies fake PR119 identity",
+        "negative: invalid/symlink cache, false claim, tampered ACK, replay, concurrency, dispose",
+        "no native hook, no general LLM semantic gain and no canonical ACTIVE by inference"
       ]
     },
     {
