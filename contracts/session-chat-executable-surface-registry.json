@@ -34,6 +34,13 @@
       "may_issue_canonical_active": false
     },
     {
+      "id": "C136_MANUAL_RECOVERY",
+      "kind": "pre_runtime_byte_recovery",
+      "ref": "src/c136-canonical-recovery.mjs#materializeC136ManualCarrier",
+      "classification": "CANONICAL_PRE_RUNTIME_BYTE_ADAPTER",
+      "may_issue_canonical_active": false
+    },
+    {
       "id": "RUNTIME_CANONICAL_ENTRY",
       "kind": "runtime_entry",
       "ref": "src/runtime-command.mjs#runCanonicalSessionChat",
@@ -124,6 +131,7 @@
       "scripts/session-chat-runtime-cli.mjs",
       "src/bootstrap-intent-adapter.mjs",
       "src/bootstrap-semantic.mjs",
+      "src/c136-canonical-recovery.mjs",
       "src/cohost-context-root.mjs",
       "src/contract.mjs",
       "src/control-plane-ownership.mjs",

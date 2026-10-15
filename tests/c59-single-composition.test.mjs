@@ -102,7 +102,7 @@ test('C59 runtime closure uses the 12-mechanism minimum lattice and one canonica
  assert.equal(c.qualification.selection_cases,4096);
  assert.equal(l.cases,4096);assert.equal(l.mechanism_count,12);assert.equal(l.valid_candidates,1);assert.equal(l.winner_mask,4095);assert.equal(l.oracle_candidate_mismatches,0);assert.equal(l.all_deletion_mutants_killed,true);assert.equal(l.status,'PASS');
  assert.equal(f.cases,100000);assert.equal(f.implementation_ready,true);assert.equal(f.candidate_oracle_mismatches,0);assert.equal(f.unsafe_canonical_active,0);assert.equal(f.canonical_dead_path,0);assert.ok(f.legacy_active_noncanonical>0);assert.equal(f.status,'PASS');
- assert.equal(x.activation_related_files,24);assert.equal(x.canonical_active_issuer_count,1);assert.equal(x.canonical_active_issuer,'src/runtime-command.mjs#runCanonicalSessionChat');assert.deepEqual(x.errors,[]);assert.equal(x.status,'PASS');
+ assert.equal(x.activation_related_files,25);assert.equal(x.canonical_active_issuer_count,1);assert.equal(x.canonical_active_issuer,'src/runtime-command.mjs#runCanonicalSessionChat');assert.deepEqual(x.errors,[]);assert.equal(x.status,'PASS');
 });
 
 test('C59 enforcement predicate and ACTIVE readback live inside the materialized runtime root',()=>{
@@ -124,4 +124,10 @@ test('C59 Project ROM and executable registry are repository-owned inputs to com
  assert.equal(c.minimum_semantic_lattice,'contracts/session-chat-semantic-lattice.json');
  assert.equal(r.invariants.unregistered_activation_surface_allowed,false);
  assert.equal(r.discovery.exact_set_required,true);
+ const c136=r.surfaces.filter(x=>x.id==='C136_MANUAL_RECOVERY');
+ assert.equal(c136.length,1);
+ assert.equal(c136[0].ref,'src/c136-canonical-recovery.mjs#materializeC136ManualCarrier');
+ assert.equal(c136[0].classification,'CANONICAL_PRE_RUNTIME_BYTE_ADAPTER');
+ assert.equal(c136[0].may_issue_canonical_active,false);
+ assert.ok(r.discovery.activation_related_files.includes('src/c136-canonical-recovery.mjs'));
 });
