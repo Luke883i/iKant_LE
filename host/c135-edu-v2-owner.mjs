@@ -81,8 +81,9 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const original=await import(pathToFileURL(path.join(stage,'host/c107-edu-v2-turn.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
   const ledger=path.join(d,'c107-observations.jsonl');
-  let busy=false,closed=false;const seen=new Set();
+  let busy=false,closed=false,uncertain=false;const seen=new Set();
   async function publishTurn(frame){
+   if(uncertain)return no('S02_UNCERTAIN_WRITE_OR_DELIVERY_RECONCILE');
    if(closed||busy)return no('S02_CLOSED_OR_BUSY');
    if(!safeDeep(frame)||!clean(frame)||Object.keys(frame).some(k=>!['humanInput','nonce','priorMessages','resetContext'].includes(k))||
       typeof frame.humanInput!=='string'||!frame.humanInput.trim()||
@@ -125,8 +126,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       expectedC124ChannelSha256:plan.c124_language_channel_sha256});
     if(turn.status!=='C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK'||turn.voice_utf8!==draft.text||
        !turn.original_c87_writer_executed||!turn.original_c70_executed||turn.public_mode!=='EDU'||
-       turn.public_selection_receipt_sha256!==selection.receipt_sha256)
-      return no(turn.first_unclosed_edge||'S02_ORIGINAL_C107_STOP');
+       turn.public_selection_receipt_sha256!==selection.receipt_sha256){
+      uncertain=true;return no(turn.first_unclosed_edge||'S02_ORIGINAL_C107_STOP');}
     const after=inspect(stage,ledger);
     if(after?.status!=='C107_LEDGER_REOPENED'||after.count!==before.count+1||
        after.last_hash!==turn.ledger_event_sha256||after.latest_state?.nonce!==frame.nonce||
@@ -135,7 +136,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
        after.latest_state?.public_selection_receipt_sha256!==selection.receipt_sha256||
        after.latest_state?.visible_voice_sha256!==turn.output_sha256||
        after.latest_state?.c124_language_channel_sha256!==plan.c124_language_channel_sha256||
-       after.latest_state?.host_language_used!==true)return no('S02_INDEPENDENT_C87_REOPEN_MISMATCH');
+       after.latest_state?.host_language_used!==true){
+      uncertain=true;return no('S02_INDEPENDENT_C87_REOPEN_MISMATCH');}
     const evidence={schema:'ikant-c135-edu-v2-owner-evidence/v1',
       status:'C135_EDU_V2_ORIGINAL_C107_C87_READBACK',public_mode:'EDU',
       source_kind:'LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN',source_head:src.head,
@@ -148,6 +150,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       trace:after.last_hash,continuity:'C87_INDEPENDENT_REOPEN',edge:'NATIVE_CHATGPT_PER_TURN_DISPATCH',
       next:'QUALIFY_NATIVE_HOOK',nonce:frame.nonce,input_sha256:plan.input_sha256,
       ownerReceipt:evidence,independentReadback:after}});
+    if(result.ok!==true)uncertain=true; // Unknown delivery after a C87 write: no new turns or blind retries.
     return Object.freeze({ok:result.ok===true,source_head:src.head,source_tree:src.tree,
      status:result.ok?'S02_EDU_V2_HOST_BOUND_LOCAL_READBACK':'S02_C125_OUTPUT_BLOCKED',
      first_edge:result.ok?'NATIVE_CHATGPT_PER_TURN_DISPATCH':result.reason,
@@ -158,6 +161,6 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   function close(){if(!closed){closed=true;out.close();fs.rmSync(stage,{recursive:true,force:true})}}
   return Object.freeze({ok:true,mode:'EDU',source_head:src.head,source_tree:src.tree,
     runtime_ready:true,active:false,native_event_attested:false,owner:'C135_EDU_V2',
-    publishTurn,close,status:()=>Object.freeze({closed,busy,attempted:seen.size,port:out.status()})});
+    publishTurn,close,status:()=>Object.freeze({closed,busy,uncertain,attempted:seen.size,port:out.status()})});
  }catch(e){if(stage)fs.rmSync(stage,{recursive:true,force:true});out.close();return no(e?.message||'S02_STAGE_DENIED')}
 }
