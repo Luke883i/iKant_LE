@@ -31,12 +31,12 @@ const blocked=reason=>Object.freeze({schema:'ikant-le-c125-exclusive-shell/v2',s
 export function emitC125Shell(frame){
  if(!safeData(frame)||!frame||Array.isArray(frame))return blocked('UNSAFE_FRAME');
  const {afterAccept=false,kind='BLOCKED',mode='EXPERIMENTAL',trace='NOT_SAVED',continuity='UNVERIFIED',edge='UNKNOWN',next='STOP',ownerReceipt=null,independentReadback=null,hostNotes=null,docxWitness=null,nonce=null,input_sha256=null}=frame;
- if(afterAccept!==true||!STATES.has(kind)||!['EXPERIMENTAL','CANONICAL'].includes(mode)||
+ if(afterAccept!==true||!STATES.has(kind)||!['EXPERIMENTAL','EDU','CANONICAL'].includes(mode)||
    ![trace,continuity,edge,next].every(s=>typeof s==='string'&&ATOM.test(s))||docxWitness!==null)return blocked('GATE_OR_META_OR_DOCX');
  let voice='NO_VOICE',origin='NO_VOICE';
  if(kind==='OWNER_VOICE'){
   const r=ownerReceipt,w=independentReadback;
-  const common=mode==='EXPERIMENTAL'&&safeData(r)&&safeData(w)&&!!r&&!!w&&
+  const common=['EXPERIMENTAL','EDU'].includes(mode)&&safeData(r)&&safeData(w)&&!!r&&!!w&&
     r.active===false&&r.surface_a?.origin==='HOST_BOUND'&&text(r.surface_a.voice_utf8)&&
     r.surface_a.voice_utf8.trim()&&Buffer.byteLength(r.surface_a.voice_utf8,'utf8')<=16000&&
     !/[\x00-\x1f\x7f\u202a-\u202e\u2066-\u2069]/u.test(r.surface_a.voice_utf8.replace(/\n/g,''))&&
@@ -44,7 +44,7 @@ export function emitC125Shell(frame){
     w.status==='C107_LEDGER_REOPENED'&&w.last_hash===trace&&w.latest_state?.host_language_used===true&&
     HEX64.test(input_sha256||'')&&ATOM.test(nonce||'')&&w.latest_state?.nonce===nonce&&
     w.latest_state?.visible_voice_sha256===digest(r.surface_a.voice_utf8);
-  const legacy=r?.schema==='ikant-edu-c70-guided/v7'&&r.status==='PR119_OWNER_C70_GUIDED_LOCAL_READBACK'&&
+  const legacy=mode==='EXPERIMENTAL'&&r?.schema==='ikant-edu-c70-guided/v7'&&r.status==='PR119_OWNER_C70_GUIDED_LOCAL_READBACK'&&
     r.surface_b?.TRACE_REF===trace&&r.pr119_surface_b?.TRACE_REF===trace&&r.surface_b?.ACTIVE===false&&
     r.pr119_surface_b?.C87_PROOF==='ORIGINAL_APPEND_REOPEN'&&
     r.pr119_surface_b?.C100_PROOF==='ORIGINAL_INPUT_OUTPUT_BOUND'&&
@@ -54,7 +54,7 @@ export function emitC125Shell(frame){
     r.pr119_surface_b?.INPUT_REF===input_sha256&&
     r.pr119_surface_b?.visible_voice_sha256===digest(r.surface_a.voice_utf8);
   // A separate C135 source-bound C107 receipt. Never impersonate PR119.
-  const c135=r?.schema==='ikant-c135-owner-evidence/v1'&&r.status==='C135_ORIGINAL_C107_C87_BOUND'&&
+  const c135=mode==='EXPERIMENTAL'&&r?.schema==='ikant-c135-owner-evidence/v1'&&r.status==='C135_ORIGINAL_C107_C87_BOUND'&&
     r.source_kind==='EXPERIMENTAL_COMPOSITE_NOT_GIT_COMMIT'&&/^[0-9a-f]{40}$/.test(r.source_epoch||'')&&
     r.source_epoch===w.latest_state?.source_head&&r.input_sha256===input_sha256&&
     r.c134_source_verified===true&&r.single_c87_writer===true&&
@@ -66,7 +66,25 @@ export function emitC125Shell(frame){
     r.original_turn?.input_sha256===input_sha256&&r.original_turn?.output_sha256===digest(r.surface_a.voice_utf8)&&
     r.original_turn?.voice_utf8===r.surface_a.voice_utf8&&
     r.original_turn?.c124_language_channel_sha256===w.latest_state?.c124_language_channel_sha256;
-  if(!common||!(legacy||c135))return blocked('ORIGINAL_READBACK_NOT_QUALIFIED');
+  const eduV2=mode==='EDU'&&r?.schema==='ikant-c135-edu-v2-owner-evidence/v1'&&
+    r.status==='C135_EDU_V2_ORIGINAL_C107_C87_READBACK'&&r.public_mode==='EDU'&&
+    r.active===false&&r.source_kind==='LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN'&&
+    /^[0-9a-f]{40}$/.test(r.source_head||'')&&r.source_head===w.latest_state?.source_head&&
+    r.input_sha256===input_sha256&&r.original_c70_executed===true&&
+    r.original_c87_writer_executed===true&&r.c126_channels===12&&
+    r.c126_status==='C126_STRUCTURAL_CONVEYANCE_ONLY'&&
+    r.native_chatgpt_origin_attested===false&&r.single_c87_writer===true&&
+    /^[0-9a-f]{64}$/.test(r.public_selection_receipt_sha256||'')&&
+    w.latest_state?.admission_schema==='ikant-le-c72-public-selection/v2'&&
+    w.latest_state?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
+    r.original_turn?.status==='C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK'&&
+    r.original_turn?.public_mode==='EDU'&&r.original_turn?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
+    r.original_turn?.original_c70_executed===true&&r.original_turn?.original_c87_writer_executed===true&&
+    r.original_turn?.model_draft_used===true&&r.original_turn?.ledger_event_sha256===trace&&
+    r.original_turn?.input_sha256===input_sha256&&r.original_turn?.output_sha256===digest(r.surface_a.voice_utf8)&&
+    r.original_turn?.voice_utf8===r.surface_a.voice_utf8&&
+    r.original_turn?.c124_language_channel_sha256===w.latest_state?.c124_language_channel_sha256;
+  if(!common||!(legacy||c135||eduV2))return blocked('ORIGINAL_READBACK_NOT_QUALIFIED');
   voice=r.surface_a.voice_utf8;origin='HOST_BOUND';
  }else if(ownerReceipt!==null||independentReadback!==null)return blocked('RECEIPT_ON_NONVOICE_STATUS');
  let notes={FATTO:'—',LETTURA:'—',LIMITE:'—'};
