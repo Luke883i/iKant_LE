@@ -53,7 +53,7 @@
         "C134",
         "C127_BASE"
       ],
-      "status": "CANDIDATE_ACTUAL_C129_EDU_SOURCE_COMPOSITION",
+      "status": "MERGED_MAIN_EDU_EXPERIMENTAL_OWNER_PATH",
       "owner": "C129_C125_ORIGINAL",
       "measurement": "C127 single inode -> exact C107+C124+C134 four-blob stage -> C126 12/12 -> original C107/C87 one append -> second-process reopen -> C125 at-most-once",
       "checklist": [
@@ -74,14 +74,17 @@
       "requires": [
         "C127_BASE"
       ],
-      "status": "NOT_DONE",
+      "status": "CANDIDATE_C136_ORIGINAL_CANONICAL_BYTE_PREACTIVATION",
       "owner": "C59_ORIGINAL_CANONICAL",
-      "measurement": "max 3 distinct real machine failures, UNKNOWN stops, native event not invented",
+      "measurement": "3 distinct failed side-effect-free machine transports -> exact loader and 7 shards with same-inode double-read -> atomic staging; original C59 native handoff still required for ACTIVE",
       "checklist": [
-        "bounded distinct attempts",
-        "integrity failure stops",
-        "ambiguous send never retried",
-        "manual bytes satisfy native owner predicate"
+        "all three distinct, definitive machine failures with no possible side effects",
+        "UNKNOWN or uncertain-send => STOP, no manual unlock",
+        "original descriptor and 8 Git object identities exact",
+        "manual object read twice on one O_NOFOLLOW descriptor",
+        "atomic stage into absent output path, independent byte readback",
+        "original C59 composition validator rejects manual receipt as native handoff",
+        "no new canonical ACTIVE owner or provider-origin claims"
       ]
     },
     {
