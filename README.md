@@ -9,7 +9,7 @@
 
 **iKant guida le risposte di un assistente linguistico e verifica le operazioni eseguite.** E' sperimentale, non una persona, un modello separato o un hook nativo ChatGPT.
 
-**Oggi:** laboratorio Node.js, file verificato, bozze e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
+**Cosa ottieni oggi:** laboratorio Node.js, file verificato, bozze e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
 
 | Voglio... | Apri |
 |---|---|
