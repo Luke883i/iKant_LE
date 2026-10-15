@@ -1,0 +1,138 @@
+{
+  "schema": "ikant-c134-convergence-lattice/v1",
+  "authority": 0,
+  "base_main_commit": "016fe816099cf66e7a5931e27c586e3fad7fa9eb",
+  "principle": "PARALLEL_WHEN_INDEPENDENT_RELEASE_TIERS_PROVED_SEPARATELY",
+  "nodes": [
+    {
+      "id": "P0",
+      "requires": [],
+      "status": "INSTALLED_CONTINUOUS",
+      "owner": "C132",
+      "measurement": "four controls active on every visible and release surface",
+      "checklist": [
+        "novice-visible text",
+        "one public owner",
+        "integrity not semantic quality",
+        "documentation current"
+      ]
+    },
+    {
+      "id": "C127_BASE",
+      "requires": [
+        "P0"
+      ],
+      "status": "HISTORIC_MAIN",
+      "owner": "C127",
+      "measurement": "single inode double read, old sha unchanged",
+      "checklist": [
+        "exact original cache",
+        "no symlink",
+        "history retained"
+      ]
+    },
+    {
+      "id": "C134",
+      "requires": [
+        "P0"
+      ],
+      "status": "PR_CANDIDATE",
+      "owner": "C134",
+      "measurement": "4 of 4 exact overlay blobs, original C107/C87 human-readback, 0 forged ACTIVE",
+      "checklist": [
+        "source epoch composite distinct from Git commit",
+        "human/software split",
+        "software C114 preserved",
+        "false claims denied",
+        "isolated staging only"
+      ]
+    },
+    {
+      "id": "C135_EDU",
+      "requires": [
+        "C134",
+        "C127_BASE"
+      ],
+      "status": "NOT_DONE",
+      "owner": "C129_C125_ORIGINAL",
+      "measurement": "1 owner write, independent reopen, 12/12 structural channels, no false voice",
+      "checklist": [
+        "native owner staging of pinned new source",
+        "original consent",
+        "C126 before model",
+        "original C114 for software",
+        "C87 one writer",
+        "C125 one controlled send"
+      ]
+    },
+    {
+      "id": "C136_CANONICAL_FALLBACK",
+      "requires": [
+        "C127_BASE"
+      ],
+      "status": "NOT_DONE",
+      "owner": "C59_ORIGINAL_CANONICAL",
+      "measurement": "max 3 distinct real machine failures, UNKNOWN stops, native event not invented",
+      "checklist": [
+        "bounded distinct attempts",
+        "integrity failure stops",
+        "ambiguous send never retried",
+        "manual bytes satisfy native owner predicate"
+      ]
+    },
+    {
+      "id": "C137_LLM_EFFICACY",
+      "requires": [
+        "C135_EDU"
+      ],
+      "status": "NOT_DONE",
+      "owner": "C137_EVALUATOR",
+      "measurement": "at least 300 blinded paired real responses per route, utility/safety/latency/cost reported",
+      "checklist": [
+        "same model and input",
+        "blind independent raters",
+        "counterexamples and abstentions",
+        "measured error and confidence",
+        "no synthetic-to-LLM equivalence"
+      ]
+    },
+    {
+      "id": "C138_EDU_RELEASE",
+      "requires": [
+        "C135_EDU",
+        "C137_LLM_EFFICACY"
+      ],
+      "status": "NOT_DONE",
+      "owner": "RELEASE_FROM_MAIN",
+      "measurement": "one exact main SHA, all required CI success, two identical prompt/ZIP builds",
+      "checklist": [
+        "merge before build",
+        "same-commit evidence",
+        "human release decision",
+        "EDU tier not CANONICAL ACTIVE"
+      ]
+    },
+    {
+      "id": "C138_CANONICAL_RELEASE",
+      "requires": [
+        "C136_CANONICAL_FALLBACK",
+        "C137_LLM_EFFICACY"
+      ],
+      "status": "NOT_DONE",
+      "owner": "ORIGINAL_CANONICAL_RELEASE",
+      "measurement": "original native event and delivery attested, one state/write, same source SHA",
+      "checklist": [
+        "native event proof",
+        "owner receipt and readback",
+        "source and nonce stable",
+        "separate human release decision"
+      ]
+    }
+  ],
+  "never_infer": [
+    "CI_PASS_EQUALS_REASONING_GAIN",
+    "COMPOSITE_EPOCH_EQUALS_GIT_COMMIT",
+    "EDU_PROOF_EQUALS_NATIVE_CANONICAL",
+    "SYNTHETIC_CASES_EQUALS_REAL_LLM_BENCHMARK"
+  ]
+}
