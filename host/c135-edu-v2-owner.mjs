@@ -47,9 +47,12 @@ function sourceVerified(sourceRoot,selection){
   if(!HEX.test(head)||!HEX.test(tree)||!safeDeep(selection)||
      !validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead:head})||
      selection.terms_digest!==sha(fs.readFileSync(path.join(sourceRoot,'TERMS.md'),'utf8')))return null;
-  // The  C107 packer validates every executable member against Git HEAD blobs.
-  // Workspace-wide modifications are rejected, but untracked local test logs are allowed.
-  if(g(['status','--porcelain','--untracked-files=no']))return null;
+  // The C107 packer independently verifies every transported runtime member
+  // against its HEAD Git blob. Generated qualification receipts are not runtime
+  // sources and may change in CI between select/falsify steps and npm test.
+  // Other tracked modifications still fail closed before package materialization.
+  const changed=g(['diff','--name-only','-z','HEAD']).split('\0').filter(Boolean);
+  if(changed.some(p=>!/^artifacts\/qualification\/[A-Za-z0-9_.-]+\.json$/.test(p)))return null;
   return {head,tree};
  }catch{return null}
 }
