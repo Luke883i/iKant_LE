@@ -64,3 +64,11 @@ export async function createC129ManualEduSession(args={}){
   publishStatus:session.publishStatus,close:session.close,status:session.status,
   operatorCard:()=>presentC131ManualSessionCard(session.status)});
 }
+
+/** Public EDU/v2 entry. This is NOT the C127/C134 historical manual-cache
+ * entry above. No path can mint a C72/v1 experimental receipt.
+ */
+export async function createC129PublicEduV2Session(args={}){
+ const {createS02EduV2Session}=await import('./s02-edu-versioned-consumer.mjs');
+ return createS02EduV2Session(args);
+}
