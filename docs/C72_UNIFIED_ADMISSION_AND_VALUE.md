@@ -1,3 +1,17 @@
+# C72 — public admission v2 (EDU / CANONICAL via MCP)
+
+The public orientation at the pinned source now uses `host/c72-public-mode-admission.mjs` and `contracts/c72-public-mode-admission-v2.json`: GitHub API pinned five-file read, full Terms, later exact `I ACCEPT`, source-defined introduction, later exact `EDU` or `CANONICAL`. This is **one acceptance** with no automatic runtime activation. EDU is recommended. MCP is the canonical target transport, not an ACTIVE receipt.
+
+**Migration:** `host/c72-unified-mode-admission.mjs` and `contracts/c72-unified-mode-admission.json` retain old schema v1 and `EXPERIMENTAL` exclusively for historical consumers/tests. v2 selections cannot be used as v1 receipts; silent translation of an EDU human message to EXPERIMENTAL is prohibited. S02 wires versioned EDU original owners and C87 readback; this S01 does not run them.
+
+**Proof limits:** self-hashes check internal consistency, not authenticated user origin, chronology, Node execution, MCP installation, DOCX delivery or ACTIVE. C59 remains sole canonical owner. Pre-existing c72 v1 tests remain compatibility coverage, not evidence a third mode is still offered to users.
+
+See [S01 migration contract](S01_PUBLIC_EDU_CANONICAL_ADMISSION.md) for scope, tests and edge.
+
+---
+
+## Historical C72/v1 behavior (not current admission)
+
 # C72 — one acceptance, explain iKant, then choose mode
 
 ## New product promise (2026-10-08)

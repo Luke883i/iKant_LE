@@ -9,7 +9,7 @@
 
 **iKant guida le risposte di un assistente linguistico e verifica le operazioni eseguite.** E' sperimentale, non una persona, un modello separato o un hook nativo ChatGPT.
 
-**Cosa ottieni oggi:** laboratorio Node.js, ingresso da file verificato, bozze guidate e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
+**Cosa ottieni oggi:** laboratorio Node.js, file verificato, bozze e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
 
 | Voglio... | Apri |
 |---|---|
@@ -21,8 +21,8 @@
 
 ## Due livelli, non due prodotti
 
-- **EXPERIMENTAL / EDU:** dopo Termini, selezione e autorizzazione specifica alle bozze, usa un file verificato. La prova locale non e' integrazione nativa della chat.
-- **CANONICAL:** richiede identita' nativa dell'evento, Node, stato durevole e rilettura, documento del turno e ricevuta di consegna. Senza prove resta inattivo; il ripiego manuale non e' ancora disponibile.
+- **EDU (sperimentale, consigliata):** dopo Termini, selezione e autorizzazione specifica alle bozze, usa un file verificato. La prova locale non e' integrazione nativa della chat.
+- **CANONICAL (via MCP):** richiede identita' nativa dell'evento, Node, stato durevole e rilettura, documento del turno e ricevuta di consegna. Senza ricevute originali resta inattivo; la presenza di MCP non e' ACTIVE.
 
 ## Come riprodurre una verifica
 
@@ -37,7 +37,9 @@ Servono Node.js 20+ e Python 3. Il bundle e' un **candidato**, non una installaz
 
 ## Da dove arrivano le regole
 
-Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commit `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`, mostra i Termini integralmente, si ferma e attende un nuovo messaggio `I ACCEPT`; poi presenta l'introduzione e richiede `EXPERIMENTAL` o `CANONICAL`. Nessuna delle scelte installa da sola iKant.
+Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commit `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`, mostra i Termini integralmente, si ferma e attende un nuovo messaggio `I ACCEPT`; poi presenta l'introduzione e richiede `EDU` o `CANONICAL`. Nessuna delle scelte installa da sola iKant.
+
+**S01:** C72/v2 espone EDU/CANONICAL; i consumatori legacy rimangono v1 fino a S02, senza ACTIVE implicito.
 
 **Fonte unica:** `main` dopo merge e verifiche. Le PR conservano la storia, non sono release. Prompt e ZIP sono ricostruiti dallo stesso commit con impronte verificabili.
 
@@ -45,6 +47,6 @@ Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commi
 
 **Prove:** gli hash identificano i file, non certificano la verita' delle risposte. Il modello HOST resta sostituibile.
 
-**Promemoria di compatibilita' per le verifiche storiche:** one canonical `SESSION_CHAT_LOCAL` composition; Prefer EXPERIMENTAL; CANONICAL requires native event evidence. 
+**C59:** one canonical `SESSION_CHAT_LOCAL` composition. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; MCP da solo non attiva CANONICAL.
 
 **Invarianti:** `contracts/session-chat-composition-census.json`. GitHub DNS/egress from the container is not a dependency.

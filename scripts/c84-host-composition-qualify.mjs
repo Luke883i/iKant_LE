@@ -40,6 +40,13 @@ assert.match(prompt,/non C59 ACTIVE/);
 assert.match(prompt,/CANONICAL: AZIONE 300 richiede ingresso nativo/);
 assert.match(read('docs/ARCHITECTURE.md'),/C72_INTRO -> MODE_SELECTION/);
 assert.match(read('docs/GOVERNANCE.md'),/Separate EXPERIMENTAL acquisition/);
-assert.match(read('README.md'),/Prefer EXPERIMENTAL; CANONICAL requires native event evidence/);
+// C84 historical transport evidence stays frozen; public admission follows C72/v2.
+const publicReadme=read('README.md');
+assert.match(publicReadme,/EDU \(sperimentale, consigliata\)/);
+assert.match(publicReadme,/CANONICAL \(via MCP\)/);
+assert.match(publicReadme,/richiede identita' nativa dell'evento/);
+assert.match(publicReadme,/one canonical `SESSION_CHAT_LOCAL` composition/);
+assert.match(publicReadme,/C72\/v1 conserva `EXPERIMENTAL` solo come ricevuta storica/);
+assert.match(publicReadme,/MCP da solo non attiva CANONICAL/);
 const output={schema:'ikant-le-c84-host-governance-audit/v1',source_head:history.source_head,merged_count:85,closed_unmerged_count:7,title_keyword_tags_overlap:tags,transport_classes:ids.length,authority:0,active:false,native_host_sessions_tested:0,status:'REPOSITORY_POLICY_CONCORDANCE_NOT_HOST_RUNTIME_PROOF'};
 console.log(JSON.stringify(output));

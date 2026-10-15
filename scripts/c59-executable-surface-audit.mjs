@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const R=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-executable-surface-registry.json'),'utf8'));
 const B=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8'));
+const C=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/session-chat-composition-channel.json'),'utf8'));
 const activationRe=/(I ACCEPT|['"]ACTIVE['"]|RUNTIME_BOUND_LIMITED|HANDOFF_PRE_RUNTIME|LOCAL_DIRECT|VERIFIED_OPAQUE_RELAY|WARM_CACHE_EXACT|runCommand\s*\(|resumeActivation\s*\(|executePreRuntimeBootstrap\s*\(|executeCanonicalSessionChatBootstrap\s*\(|acceptDeployedSession\s*\(|acceptLocalLimitedSession\s*\(|issueCanonicalSessionChatComposition\s*\(|runCanonicalSessionChat\s*\(|materializeRuntimeRoot\s*\()/;
 
 function walk(dir){
@@ -35,6 +36,7 @@ for(const p of exceptions){
 const discovered=production.filter(p=>!exceptions.has(p)&&activationRe.test(fs.readFileSync(path.join(ROOT,p),'utf8'))).sort();
 const declared=[...(R.discovery?.activation_related_files||[])].sort();
 if(JSON.stringify(discovered)!==JSON.stringify(declared))errors.push('activation_related_file_set');
+if(C.qualification?.executable_activation_related_files!==discovered.length)errors.push('composition_registry_count_mismatch');
 const issuers=(R.surfaces||[]).filter(x=>x.may_issue_canonical_active===true);const materializer=(R.surfaces||[]).find(x=>x.id==='PRE_RUNTIME_MATERIALIZER');
 if(issuers.length!==1||issuers[0]?.ref!=='src/runtime-command.mjs#runCanonicalSessionChat')errors.push('canonical_issuer');if(materializer?.ref!=='src/runtime-root-verified.mjs#executeCanonicalSessionChatBootstrap'||materializer?.classification!=='CANONICAL_INTERNAL_EDGE')errors.push('canonical_materializer_registry');
 const src=p=>fs.readFileSync(path.join(ROOT,p),'utf8');
@@ -45,6 +47,17 @@ if(!runtime.includes("Canonical SESSION_CHAT_LOCAL runtime route rejected legacy
 if(!runtime.includes("Legacy activation resume is compatibility-only"))errors.push('resume_compatibility_fence');
 if(!runtime.includes("postAcceptBootstrapEvidence?.compatibility_only!==true"))errors.push('raw_activation_compatibility_fence');
 if(!pre.includes('export async function executeCanonicalSessionChatBootstrap')||!pre.includes("mod.runCanonicalSessionChat('I ACCEPT'"))errors.push('pre_runtime_to_runtime_edge');if(!pre.includes('export async function executeCanonicalColdBootstrap')||!pre.includes('export function issueCanonicalActivationExecutor')||!pre.includes('export function issueCanonicalRelayManifest'))errors.push('cold_producer_edge');const coldOwner=(R.surfaces||[]).find(x=>x.id==='C59_COMPOSITION_OWNER');if(coldOwner?.ref!=='src/runtime-root-verified.mjs#executeCanonicalColdBootstrap')errors.push('cold_producer_registry');
+// C136 is a pre-runtime byte-recovery surface, not a second C59 ACTIVE issuer.
+const c136Rows=(R.surfaces||[]).filter(x=>x.id==='C136_MANUAL_RECOVERY');
+const c136Code=src('src/c136-canonical-recovery.mjs');
+if(c136Rows.length!==1||
+   c136Rows[0]?.ref!=='src/c136-canonical-recovery.mjs#materializeC136ManualCarrier'||
+   c136Rows[0]?.classification!=='CANONICAL_PRE_RUNTIME_BYTE_ADAPTER'||
+   c136Rows[0]?.may_issue_canonical_active!==false||
+   !c136Code.includes('original_c59_handoff_authority_granted:false')||
+   !c136Code.includes('canonical_active:false')||
+   /export\s+(?:async\s+)?function\s+(?:runCanonicalSessionChat|canonicalActiveReadback|issueCanonicalSessionChatComposition)\b/.test(c136Code))
+  errors.push('c136_byte_recovery_noncanonical_boundary');
 if(!entry.includes('issueCanonicalCompositionHandoff(direct.handoff)')||!entry.includes('legacy_handoff:legacyHandoff'))errors.push('caller_owner_edge');
 if(!cli.includes('--canonical-composition-handoff-file')||!cli.includes('--compatibility-activation'))errors.push('cli_fence');
 if(!deployed.includes("composition_authority:'LEGACY_COMPATIBILITY',canonical_session_chat_local:false"))errors.push('deployed_legacy_label');
