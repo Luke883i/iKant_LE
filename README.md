@@ -39,7 +39,7 @@ Servono Node.js 20+ e Python 3. Il bundle e' un **candidato**, non una installaz
 
 Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commit `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`, mostra i Termini integralmente, si ferma e attende un nuovo messaggio `I ACCEPT`; poi presenta l'introduzione e richiede `EDU` o `CANONICAL`. Nessuna delle scelte installa da sola iKant.
 
-**S01:** C72/v2 e' il nuovo ingresso umano EDU/CANONICAL. I consumatori runtime legacy rimangono sulla v1 fino al gate S02: nessun adapter puo' fabbricare consenso o promuovere ACTIVE.
+**S01:** C72/v2 espone EDU/CANONICAL; i consumatori legacy rimangono v1 fino a S02, senza ACTIVE implicito.
 
 **Fonte unica:** `main` dopo merge e verifiche. Le PR conservano la storia, non sono release. Prompt e ZIP sono ricostruiti dallo stesso commit con impronte verificabili.
 
@@ -47,6 +47,6 @@ Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commi
 
 **Prove:** gli hash identificano i file, non certificano la verita' delle risposte. Il modello HOST resta sostituibile.
 
-**Compatibilita' storica:** il modulo C72/v1 conserva `EXPERIMENTAL` per ricevute e test precedenti; non e' una terza scelta pubblica. Il nuovo ingresso e' `host/c72-public-mode-admission.mjs`. CANONICAL richiede prove native, non la sola disponibilita' MCP. 
+**C59:** one canonical `SESSION_CHAT_LOCAL` composition. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; MCP da solo non attiva CANONICAL.
 
 **Invarianti:** `contracts/session-chat-composition-census.json`. GitHub DNS/egress from the container is not a dependency.
