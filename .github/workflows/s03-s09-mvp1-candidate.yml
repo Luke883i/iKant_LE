@@ -29,7 +29,7 @@ jobs:
           npm run runtime-root:verify
       - name: Per-slice software gates (NOT provider or user pilot)
         run: |
-          node --test --test-concurrency=1 tests/s03-host-slides.test.mjs tests/s04-project-reciprocity.test.mjs tests/s04-prompt-miniprompts.test.mjs tests/s04-bundle-negative.test.mjs tests/s05-first-run-metrics.test.mjs tests/s06-mcp-transport-security.test.mjs tests/s07-connection-gate.test.mjs tests/s08-canonical-boundary.test.mjs tests/s09-readiness.test.mjs tests/s09-semantic-dag.test.mjs tests/s03-s09-severe-dod.test.mjs
+          node --test --test-concurrency=1 tests/s03-host-slides.test.mjs tests/s04-project-reciprocity.test.mjs tests/s04-prompt-miniprompts.test.mjs tests/s04-bundle-negative.test.mjs tests/s05-first-run-metrics.test.mjs tests/s06-mcp-transport-security.test.mjs tests/s07-connection-gate.test.mjs tests/s08-canonical-boundary.test.mjs tests/s09-readiness.test.mjs tests/s09-semantic-dag.test.mjs tests/s03-s09-severe-dod.test.mjs tests/s03-s09-c59-edu-preview-fence.test.mjs
       - name: Two independently rebuilt Project bundles (not installed)
         shell: bash
         run: |
