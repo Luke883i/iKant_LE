@@ -28,3 +28,10 @@ test('project prompt + zip refer to app while preserving native non-installation
  assert.ok(builder.includes("add('adapter_source/host/p1-app-exclusive-shell.mjs','host/p1-app-exclusive-shell.mjs')"));
  assert.ok(builder.includes('PINNED_COMMIT_OBJECT.raw'));
 });
+
+test('PR candidate package is source-bound to actual PR head, never transient merge SHA',()=>{
+ const workflow=fs.readFileSync(new URL('../.github/workflows/p1-p7-oneshell-release.yml',import.meta.url),'utf8');
+ assert.ok(workflow.includes('ref: ${{ github.event.pull_request.head.sha || github.sha }}'));
+ assert.ok(workflow.includes('ikant-oneshell-v7-candidate-${{ github.event.pull_request.head.sha || github.sha }}'));
+ assert.ok(!workflow.includes('ikant-oneshell-v7-candidate-${{ github.sha }}'));
+});

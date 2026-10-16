@@ -36,6 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -74,7 +76,7 @@ jobs:
       - name: Upload source-locked candidate, not ChatGPT plugin or deployed Project
         uses: actions/upload-artifact@v4
         with:
-          name: ikant-oneshell-v7-candidate-${{ github.sha }}
+          name: ikant-oneshell-v7-candidate-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             ${{ runner.temp }}/oneshell-a/ONESHELL_PROJECT_V7.zip
             ${{ runner.temp }}/oneshell-a/PROMPT_INNESCO.txt
