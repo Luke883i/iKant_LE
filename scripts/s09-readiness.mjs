@@ -11,5 +11,5 @@ const missingCanonical=contract.CANONICAL_minimum.filter(x=>!local[x]);
 const r={schema:'ikant-le-s09-release-readiness/v1',source_kind:'LOCAL_PREPR',
  edu_pilot_qualified:missingEDU.length===0,canonical_qualified:missingCanonical.length===0,
  missing_EDU:missingEDU,missing_CANONICAL:missingCanonical,
- next:'S02_GENUINE_EDU_V2_OWNER_WIRING',authority:0};
+ next:'S03_C125_EXACT_A_AND_SIX_HOST_SLOTS',authority:0};
 console.log(JSON.stringify(r,null,2));

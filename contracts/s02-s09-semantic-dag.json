@@ -1,6 +1,6 @@
 {
   "schema": "ikant-le-prepr-s02-s09-semantic-dag/v1",
-  "source_tree_base": "8966d9c5c6341999e45feea55cb315aa704d1c03",
+  "source_tree_base": "ebeb44239d0dcb2ba7e832f5dbca816073a42296",
   "authority": 0,
   "nodes": {
     "S01": {
@@ -12,14 +12,19 @@
       "depends": [
         "S01"
       ],
-      "status": "BLOCKED_ORIGINAL_OWNER",
-      "gate": "30_SUCCESSFUL_SAME_INPUT_NONCE_SINGLE_C87_WRITER_REOPEN"
+      "status": "MERGED_MAIN_LOCAL_V2_OWNER_30_TURN_TESTED_NOT_PROVIDER",
+      "gate": "30_SUCCESSFUL_SAME_INPUT_NONCE_SINGLE_C87_WRITER_REOPEN",
+      "local_verified": true,
+      "remaining": [
+        "INDEPENDENT_CHATGPT_PROVIDER_DELIVERY",
+        "S05_30_REAL_HUMAN_TRIALS"
+      ]
     },
     "S03": {
       "depends": [
         "S01"
       ],
-      "status": "PROTOTYPE_PROJECTION_ONLY",
+      "status": "CANDIDATE_HOST_SIX_SLOT_PROJECTION",
       "gate": "C125_EXACT_A_AND_SIX_EVIDENCE_BOUND_HOST_SLOTS"
     },
     "S04": {
@@ -28,7 +33,7 @@
         "S02",
         "S03"
       ],
-      "status": "LOCAL_CANDIDATE_ONLY",
+      "status": "CANDIDATE_BUILDER_NOT_PROMOTED",
       "gate": "SAME_LIVE_MAIN_PROMPT_ZIP_HASH_NO_STALE_REPIN"
     },
     "S05": {
@@ -81,5 +86,6 @@
       "gate": "C137_REAL_BENCHMARK_CI_RELEASE_OWNER"
     }
   },
-  "status_is_evidence": false
+  "status_is_evidence": false,
+  "source_commit_base": "bcce020eef3458304c798f45b2118fd0e80c0af1"
 }
