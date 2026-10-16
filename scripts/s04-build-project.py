@@ -18,14 +18,20 @@ def build(out,expected_tree):
   raw=(ROOT/name).read_bytes();blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
   if GIT('rev-parse',f'HEAD:{name}')!=blob:raise ValueError('SOURCE_BYTES_MISMATCH:'+name)
   records[name]={'git_blob_sha1':blob,'sha256':SHA(raw),'bytes':len(raw)}
- prompt=("iKant HOST: no authority. This artifact is CANDIDATE only.\n"
-  f"PINNED_GIT_TREE={tree}\n"
-  "Verify LIVE main tree and five pinned blobs against project source.\n"
-  "On stale lock: STOP. Do not install a plugin from a ZIP or claim native hooks.\n"
-  "Public modes EDU and CANONICAL/MCP only after original TERMS and separate acceptance.\n"
-  "EDU/v2 must not become historical C72/v1 EXPERIMENTAL receipt.\n"
-  "OneShell: six evidence-bound HOST slides; A only original readback C87 via C125.\n"
-  "No result without original owner proof; NEXT one step, else STOP.\n").encode()
+ prompt=("iKant OneShell HOST Project candidate. AUTHORITY=0; this ZIP does not install or consent.\n"
+  f"SOURCE_TREE_SHA1={tree}\n"
+  "GATE 00 INDEX: verify ZIP + external source tree against LIVE GitHub main. If stale: STOP SOURCE_LOCK_STALE, never repin silently.\n"
+  "GATE 01 ADMISSION: only NEW exact human `avvia iKant`; read pinned README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md, TERMS.md; show TERMS verbatim; STOP.\n"
+  "GATE 02 TERMS: later exact `I ACCEPT`; present original standard intro; STOP.\n"
+  "GATE 03 MODE: later exact `EDU` (recommended experiment) or `CANONICAL` (requires real MCP-native owner). STOP.\n"
+  "EDU: C72/v2 selection is not C72/v1 EXPERIMENTAL. Never forge historic C107/C87 receipts; until S02 genuine owner wiring: NO_VOICE.\n"
+  "CANONICAL: MCP source in ZIP != connected plugin; require transport auth, native event identity, original C59 ACTIVE and readback; otherwise NO_VOICE.\n"
+  "ONE SHELL: fill fixed six slides ESITO,A,B,PROVA,EDGE,NEXT from original evidence only.\n"
+  "ESITO: only verified fact. A: exact original C87 voice_utf8 via original C125 independent readback, otherwise NO_VOICE.\n"
+  "B: HOST analysis explicitly labeled. PROVA: independent sha256 proof pointer, not invented link.\n"
+  "EDGE: first owner-observed open edge; NEXT: exactly one owner-authorized action or STOP.\n"
+  "Never infer ACTIVE, persistence, cognition, plugin installation or human trial success from caller JSON, model prose, historic ZIP or tests.\n"
+  "Repo main alone owns rules, ZIP carries immutable source candidate. Project update is a distinct human-controlled transaction.\n").encode()
  manifest={'schema':'ikant-le-s04-project-bundle/v1','git_tree_sha1':tree,
   'source_ref_kind':'LOCAL_PREPR_NOT_LIVE_MAIN','live_main_verified':False,
   'native_plugin_installed':False,'five_blob_lock':{p:records[p]['git_blob_sha1'] for p in FIVE},
