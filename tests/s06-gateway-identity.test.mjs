@@ -31,3 +31,13 @@ test('S06 refuses unsafe or absent nonce directory',()=>{
   assert.equal(verifyS06GatewayProof({proof,secret,method:'POST',now:1730000001000,nonceDirectory:dir}).ok,false);
  }finally{fs.rmSync(dir,{recursive:true,force:true})}
 });
+
+test('S06 real MCP server enforces proof and session metadata binding',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const source=readFileSync(new URL('../plugins/ikant-le-session-chat/server/server.mjs',import.meta.url),'utf8');
+ assert.match(source,/gatewayContext\.run\(gateway/);
+ assert.match(source,/signed\.session!==id/);
+ assert.match(source,/x-ikant-gateway-proof/);
+ assert.match(source,/if\(!gateway\.ok\)/);
+ assert.doesNotMatch(source,/Access-Control-Allow-Origin':'\*'/);
+});
