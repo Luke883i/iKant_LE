@@ -10,3 +10,5 @@
 * Impossibilità: in assenza di tool, mostra comunque sei slot e una risposta HOST utile, marcando limitazioni e un solo NEXT, senza chiedere segreti in chat.
 
 I mini-prompt per i singoli slot sono `04_FILLER.md`. Il rendering in linea è una richiesta di formato, non un widget o un ledger duraturo. I soli eventi provider originali attestano CANONICAL, mai i documenti Project.
+
+* **Pacchetto candidato:** `adapter_source/scripts/host-rehydrate-source-zip.py` viene distribuito nel Project ZIP insieme a `PINNED_COMMIT_OBJECT.raw`. Il Project non esegue automaticamente lo script: occorre un ambiente Node/Python realmente callable e il file ZIP umano caricato, sempre dopo i gate.

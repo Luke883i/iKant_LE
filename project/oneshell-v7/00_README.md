@@ -15,3 +15,5 @@ Questa è una **capsula candidata Project**, costruita su un Git tree verificato
 - `MANIFEST.json` e `SOURCE_LOCK.json`: dati verificabili, non autorità.
 
 Il file ZIP può non essere leggibile o montabile in una chat successiva. In quel caso non asserire di averlo verificato; A=`NO_VOICE`, FIRST_EDGE=`BUNDLE_NOT_READABLE`. Non risolvere silenziosamente drift rifissando `main`. Conserva prova storica ma non farla diventare stato corrente.
+
+**Trasporto guidato:** lo ZIP Project include il sorgente `adapter_source/scripts/host-rehydrate-source-zip.py` e l'oggetto Git `PINNED_COMMIT_OBJECT.raw`, ma non contiene l'intero runtime, non installa Node/plugin, non autorizza bypass del consenso e non testimonia l'interfaccia nativa.

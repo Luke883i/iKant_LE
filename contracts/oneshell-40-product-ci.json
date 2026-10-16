@@ -380,7 +380,7 @@
       "id": "UX34",
       "problem": "Output A troppo tecnico e non modificabile",
       "ci_scope": "RUNTIME_PARTIAL",
-      "local_test": "tests/p1-human-language.test.mjs",
+      "local_test": "tests/oneshell-identity-prewrite.test.mjs",
       "product_witness": null,
       "product_closed": false,
       "expected_behavior": "Contratto d'output humanistic lato languagePort prima di C87; non editare A.",
