@@ -18,12 +18,12 @@ export function projectS03HostSlides({c125=null,result=null,host=null,evidenceSh
   return Object.freeze({ok:false,reason:'S03_UNSAFE_SLOT',active:false});
  // C125 bytes are opaque and remain available separately, never embedded in generated prose.
  const original=c125?.emit??null;
- const slots={ESITO:result??'NON_ATTESTATO',A:original===null?'NO_VOICE':'C125_BYTES_OPAQUE',
+ const slots={ESITO:result??'NON_ATTESTATO',A:'NO_VOICE',
   B:host??'HOST_ONLY',PROVA:evidenceSha256===null?'NESSUNA_PROVA':`sha256:${evidenceSha256}`,
   EDGE:edge??'UNKNOWN',NEXT:next??'STOP'};
  return Object.freeze({ok:true,schema:contract.schema,mode:'HOST_PROJECTION',
   slots:Object.freeze(slots),slot_order:contract.slots.map(x=>x.id),
   c125_original_bytes:original,c125_original_sha256:original===null?null:digest(original),
-  c125_provenance_attested_by_host:false,native_delivery_attested:false,
+  c125_provenance_attested_by_host:false,c125_readback_attested:false,native_delivery_attested:false,
   evidence_inlined:false,active:false,authority:0});
 }

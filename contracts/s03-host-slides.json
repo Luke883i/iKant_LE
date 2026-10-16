@@ -12,6 +12,7 @@
     {"id":"NEXT","mini_prompt":"Use one owner-authorized step, otherwise STOP","fallback":"STOP"}
   ],
   "voice_bytes_owned_by":"C87_VIA_C125",
+  "A_without_independent_original_owner_readback":"NO_VOICE",
   "compress_evidence":"DIGEST_POINTER_NOT_TEXT_PARAPHRASE",
   "native_ui_delivery_claim":false,
   "miniprompt_grants_write":false,
