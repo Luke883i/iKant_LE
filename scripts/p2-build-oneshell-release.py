@@ -5,7 +5,7 @@ Uses only Python stdlib and a clean Git checkout. Caller independently confirms 
 import argparse,hashlib,json,subprocess,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
-DOCS=tuple(f'{i:02d}_{n}.md' for i,n in enumerate(('README','PHASES','PROOFS','SLIDES','FILLER','ANNEX','PLUGIN','ROADMAP','RELEASE_BOUNDARY','ADAPTER_RECIPES')))
+DOCS=tuple(f'{i:02d}_{n}.md' for i,n in enumerate(('README','PHASES','PROOFS','SLIDES','FILLER','ANNEX','PLUGIN','ROADMAP','RELEASE_BOUNDARY','ADAPTER_RECIPES','MVP_DO_D')))
 ORIENT=('README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md')
 PLUGIN=('README.md','plugin.json','mcp.template.json','server/package.json','server/public/ikant-le-app.html','server/server.mjs','server/transport-security.mjs','server/gateway-identity.mjs')
 sha256=lambda b:hashlib.sha256(b).hexdigest()
@@ -56,9 +56,22 @@ def verify(zip_path,expected_commit,expected_tree):
   if manifest['source_commit']!=expected_commit or manifest['source_tree']!=expected_tree or lock['source_commit']!=expected_commit or lock['source_tree']!=expected_tree:raise ValueError('SOURCE_LOCK_STALE')
   if manifest['source_live_main_verified'] or manifest['native_plugin_installed'] or manifest['project_applied'] or lock['source_is_live_main_attested'] or lock['plugin_connected'] or lock['owner_voice_executed']:raise ValueError('UNATTESTED_PROMOTION')
   if set(names)!=set(manifest['files'])|{'MANIFEST.json'}:raise ValueError('MEMBER_SET_DRIFT')
+  # A self-consistent manifest is NOT a signed source proof. Re-read every actual
+  # repository blob from the pinned checkout before accepting a Project release.
+  if git('rev-parse','HEAD')!=expected_commit or git('rev-parse','HEAD^{tree}')!=expected_tree:
+   raise ValueError('LOCAL_PINNED_REPOSITORY_UNAVAILABLE')
   for p,v in manifest['files'].items():
    b=z.read(p)
    if meta(b)!=v:raise ValueError('TAMPERED_MEMBER:'+p)
+   source=None
+   if p.startswith('orientation/'):source=p[len('orientation/'):]
+   elif p.startswith('plugin_source/'):source=p[len('plugin_source/'):]
+   elif p.startswith('slides/'):source='project/oneshell-v7/'+p[len('slides/'):]
+   elif p in ('contracts/p1-p7-product-closure.json','adapter_source/host/p1-semantic-annex.mjs'):
+    source=p.replace('adapter_source/','')
+   if source and git('rev-parse','HEAD:'+source)!=v['git_blob_sha1']:
+    raise ValueError('PINNED_GIT_BLOB_MISMATCH:'+p)
+
   for p in ORIENT:
    k='orientation/'+p
    if meta(z.read(k))['git_blob_sha1']!=lock['orientation_blobs'][p]:raise ValueError('ORIENTATION_DRIFT')
