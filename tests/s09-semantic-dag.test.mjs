@@ -5,5 +5,7 @@ test('S01-S09 graph is acyclic and canonical is independent of EDU trial gate',(
  assert.equal(visiting.has(n),false,'cycle');visiting.add(n);for(const v of x.nodes[n].depends)visit(v);visiting.delete(n);seen.add(n);}
  for(const n of Object.keys(x.nodes))visit(n);
  assert.equal(seen.size,10);assert.ok(!x.nodes.S09_CANONICAL.depends.includes('S05'));
- assert.equal(x.nodes.S02.status,'BLOCKED_ORIGINAL_OWNER');assert.equal(x.nodes.S08.status,'CANONICAL_NOT_ACTIVE');
+ assert.equal(x.nodes.S02.status,'LOCAL_V2_ORIGINAL_OWNER_30_TURN_TESTED_NOT_PROVIDER');
+ assert.equal(x.nodes.S02.local_verified,true);
+ assert.deepEqual(x.nodes.S02.remaining,['PUBLIC_MAIN_MERGE','PROVIDER_NATIVE_DELIVERY','HUMAN_TRIAL']);assert.equal(x.nodes.S08.status,'CANONICAL_NOT_ACTIVE');
 });
