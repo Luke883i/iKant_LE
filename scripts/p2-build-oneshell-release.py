@@ -27,11 +27,19 @@ def build(out,expected_commit,expected_tree):
  for name in ORIENT:add('orientation/'+name,name)
  for name in PLUGIN:add('plugin_source/plugins/ikant-le-session-chat/'+name,'plugins/ikant-le-session-chat/'+name)
  add('adapter_source/host/p1-semantic-annex.mjs','host/p1-semantic-annex.mjs')
+ add('adapter_source/host/p1-privacy-envelope.mjs','host/p1-privacy-envelope.mjs')
+ add('adapter_source/host/p1-app-exclusive-shell.mjs','host/p1-app-exclusive-shell.mjs')
  add('contracts/p1-p7-product-closure.json','contracts/p1-p7-product-closure.json')
+ add('contracts/oneshell-40-product-ci.json','contracts/oneshell-40-product-ci.json')
+ add('adapter_source/scripts/host-rehydrate-source-zip.py','scripts/host-rehydrate-source-zip.py')
  template=(ROOT/'project/oneshell-v7/PROMPT_TEMPLATE.txt').read_bytes()
  if gitblob(template)!=git('rev-parse','HEAD:project/oneshell-v7/PROMPT_TEMPLATE.txt'):raise ValueError('PROMPT_TEMPLATE_DRIFT')
  prompt=template.replace(b'@GIT_HEAD@',head.encode()).replace(b'@GIT_TREE@',tree.encode())
  if b'@GIT_' in prompt:raise ValueError('UNBOUND_PROMPT_MARKER')
+ commit_raw=subprocess.check_output(['git','-C',str(ROOT),'cat-file','commit',head])
+ obj=subprocess.run(['git','hash-object','-t','commit','--stdin'],input=commit_raw,capture_output=True,check=True).stdout.decode().strip()
+ if obj!=head:raise ValueError('COMMIT_OBJECT_DRIFT')
+ members['PINNED_COMMIT_OBJECT.raw']=commit_raw
  members['PROMPT_INNESCO.txt']=prompt
  lock={'schema':'ikant-le-project-source-lock/v7','source_commit':head,'source_tree':tree,
        'orientation_blobs':{p:meta(members['orientation/'+p])['git_blob_sha1'] for p in ORIENT},
@@ -67,11 +75,14 @@ def verify(zip_path,expected_commit,expected_tree):
    if p.startswith('orientation/'):source=p[len('orientation/'):]
    elif p.startswith('plugin_source/'):source=p[len('plugin_source/'):]
    elif p.startswith('slides/'):source='project/oneshell-v7/'+p[len('slides/'):]
-   elif p in ('contracts/p1-p7-product-closure.json','adapter_source/host/p1-semantic-annex.mjs'):
+   elif p in ('contracts/p1-p7-product-closure.json','contracts/oneshell-40-product-ci.json','adapter_source/host/p1-semantic-annex.mjs','adapter_source/host/p1-privacy-envelope.mjs','adapter_source/host/p1-app-exclusive-shell.mjs','adapter_source/scripts/host-rehydrate-source-zip.py'):
     source=p.replace('adapter_source/','')
    if source and git('rev-parse','HEAD:'+source)!=v['git_blob_sha1']:
     raise ValueError('PINNED_GIT_BLOB_MISMATCH:'+p)
 
+  commit_raw=z.read('PINNED_COMMIT_OBJECT.raw')
+  obj=subprocess.run(['git','hash-object','-t','commit','--stdin'],input=commit_raw,capture_output=True,check=True).stdout.decode().strip()
+  if obj!=expected_commit:raise ValueError('PINNED_COMMIT_OBJECT_DRIFT')
   for p in ORIENT:
    k='orientation/'+p
    if meta(z.read(k))['git_blob_sha1']!=lock['orientation_blobs'][p]:raise ValueError('ORIENTATION_DRIFT')

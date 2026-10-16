@@ -5,7 +5,21 @@ on:
       - 'project/oneshell-v7/**'
       - 'contracts/p1-p7-*'
       - 'contracts/p3p7-*'
+      - 'contracts/oneshell-40-product-ci.json'
+      - 'docs/ONESHell_HOST_40_ISSUES.csv'
+      - 'scripts/oneshell-ci-product-alignment.mjs'
+      - 'tests/oneshell-ci-product-alignment.test.mjs'
+      - 'tests/oneshell-human-ux.test.mjs'
+      - 'tests/oneshell-identity-prewrite.test.mjs'
       - 'host/p1-*'
+      - 'plugins/ikant-le-session-chat/server/public/ikant-le-app.html'
+      - 'plugins/ikant-le-session-chat/server/server.mjs'
+      - 'host/c135-edu-v2-owner.mjs'
+      - 'host/s02-edu-versioned-consumer.mjs'
+      - 'scripts/host-*'
+      - 'tests/host-handoff-*'
+      - 'tests/oneshell-*'
+      - 'docs/ONESHell_*'
       - 'host/p3p7-*'
       - 'scripts/p1p7-*'
       - 'scripts/p2-build-*'
@@ -22,6 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -32,6 +48,18 @@ jobs:
       - name: Exact repository source and local annex/owner boundaries
         run: |
           node --test --test-concurrency=1 tests/p1-semantic-annex.test.mjs tests/p2-project-release.test.mjs tests/p3p7-witness-boundary.test.mjs tests/p1p7-contract.test.mjs
+      - name: One hundred original-owner local restart scenarios and offline source transfer
+        run: |
+          node --test --test-concurrency=1 tests/p1-human-language.test.mjs tests/p1-privacy-envelope.test.mjs tests/oneshell-human-ux.test.mjs tests/p1-first-run-100.test.mjs tests/s02-edu-v2-original-owner-e2e.test.mjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tests/host-handoff-rehydrate.test.py
+      - name: Product CI alignment with 40 requirements and fail-closed negative mutants
+        run: |
+          node --test tests/oneshell-ci-product-alignment.test.mjs tests/oneshell-identity-prewrite.test.mjs tests/c72-public-mode-admission.test.mjs tests/s02-unknown-delivery-stop.test.mjs tests/s03-host-slides.test.mjs tests/s07-connection-gate.test.mjs tests/s09-readiness.test.mjs
+          node scripts/oneshell-ci-product-alignment.mjs --json
+      - name: OneShell six-slot app, original owner, 10M semantic mutations
+        run: |
+          node --test tests/p1-app-exclusive-shell.test.mjs tests/p1-app-ui-contract.test.mjs tests/c54-host-materialization.test.mjs
+          node scripts/p1-app-shell-falsify.mjs 10000000
       - name: One million synthetic protocol mutations; 10k composite checks
         run: node scripts/p1p7-closure-falsify.mjs 1000000
       - name: Deterministic Project builds, source-bound and NON-INSTALLED
@@ -48,7 +76,7 @@ jobs:
       - name: Upload source-locked candidate, not ChatGPT plugin or deployed Project
         uses: actions/upload-artifact@v4
         with:
-          name: ikant-oneshell-v7-candidate-${{ github.sha }}
+          name: ikant-oneshell-v7-candidate-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             ${{ runner.temp }}/oneshell-a/ONESHELL_PROJECT_V7.zip
             ${{ runner.temp }}/oneshell-a/PROMPT_INNESCO.txt

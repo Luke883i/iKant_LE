@@ -10,3 +10,5 @@ Il bundle include `plugin_source/plugins/ikant-le-session-chat/**` con i byte or
 5. Per CANONICAL richiedere C59 original owner, evento provider autentico, nonce/input identici, writer C87 unico, rilettura DOCX, delivery. Per `UNKNOWN` STOP e riconciliazione.
 
 **Il Project non è un bootstrap manager:** prompt e ZIP possono soltanto determinare quale percorso scegliere e come rappresentarne le prove. Se MCP non è callable, mostra EDU locale quando possibile, altrimenti risposta HOST con A=NO_VOICE.
+
+**Shell app:** l’HTML plugin incluso nello ZIP usa sei aree dedicate. Il server deriva la proiezione dalla ricevuta owner esistente: A resta NO_VOICE se manca una prova del medesimo turno. La finestra è mantenuta durante il ciclo di vita della app registrata, ma il solo ZIP non rende una finestra ChatGPT permanente.

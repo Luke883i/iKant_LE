@@ -7,7 +7,7 @@
 import {validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
 import {isProxy} from 'node:util/types';
 const H40=/^[a-f0-9]{40}$/;
-const stop=(edge)=>Object.freeze({schema:'ikant-le-s02-edu-bridge/v1',mode:'EDU',status:'BLOCKED',
+const stop=(edge)=>Object.freeze({schema:'ikant-le-s02-edu-bridge/v1',ok:false,mode:'EDU',status:'BLOCKED',
  first_edge:edge,dispatch_authorized:false,owner_receipt:null,writer_invocations:0,
  native_origin_attested:false,active:false,authority:0,next:'STOP'});
 export function qualifyS02EduIngress({selection,sourceHead,cacheEpoch}={}){

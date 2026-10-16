@@ -6,7 +6,7 @@ L'HOST riempie **solo slot informativi**, non emette voice_utf8, non certifica r
 |---|---|---|
 | ESITO | «Cosa è stato effettivamente completato per la richiesta umana in questo turno? Esplicita modo e limite in ≤12 parole.» | `NON_ATTESTATO` |
 | A | «Copia **solo** byte voice_utf8 originali dello stesso turno se l'owner ne ha già certificato scrittura, readback e invio; non generare mai parole mancanti.» | `NO_VOICE` |
-| B | «In una frase, che cosa può dire utilmente l'HOST? Marca OSSERVATO / DOCUMENTATO / INFERITO / NON ATTESTATO.» | `HOST · NESSUNA_NOTA` |
+| B | «Solo stato tecnico e artefatti: mai interpretare, commentare o sostituire il dialogo umano-iKant. Marca OSSERVATO / DOCUMENTATO / INFERITO / NON ATTESTATO.» | `HOST · NESSUNA_NOTA` |
 | PROVA | «Quale fonte è veramente disponibile, attribuibile e riapribile? Il file esiste adesso? Hash e span corrispondono? Se no, non creare link.» | `NON_ATTESTATO` |
 | EDGE | «Qual è la prima dipendenza senza ricevuta originale sufficiente? Una sola, indipendente dal desiderio dell'HOST.» | `UNKNOWN` |
 | NEXT | «Quale unica transizione è autorizzata da fase e owner? Se non lo sai, STOP.» | `STOP` |
