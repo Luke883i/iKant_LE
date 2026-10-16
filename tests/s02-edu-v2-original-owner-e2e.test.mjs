@@ -37,6 +37,11 @@ test('S02 EDU/v2: original C107 C70 C100 C87 and independent C125, 30 successes 
    assert.equal(r.original_turn.public_mode,'EDU');
    assert.equal(r.original_turn.original_c87_writer_executed,true);
    assert.equal(r.c125.send_callback_resolved,true);
+   assert.equal(r.s03_host_projection.ok,true);
+   assert.equal(r.s03_host_projection.slots.A,'HOST_BOUND');
+   assert.equal(r.s03_host_projection.c125_original_bytes,sent.at(-1));
+   assert.equal(r.s03_host_projection.original_voice_utf8,r.original_turn.voice_utf8);
+   assert.equal(r.s03_host_projection.native_delivery_attested,false);
    assert.equal(r.active,false);
   }
   assert.equal(sent.length,30);
