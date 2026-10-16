@@ -17,12 +17,12 @@ test('P2 exact source double-build and stale commit denied',()=>{
 p,q=sys.argv[1:]
 with zipfile.ZipFile(p) as z: d={x:z.read(x) for x in z.namelist()}
 k='plugin_source/plugins/ikant-le-session-chat/server/server.mjs'
-d[k]+=b'\n// attacker-added behavior\n'
+d[k]+=b'\\n// attacker-added behavior\\n'
 v=json.loads(d['MANIFEST.json']);lock=json.loads(d['SOURCE_LOCK.json'])
-b=d[k];h=lambda x:hashlib.sha1(b'blob '+str(len(x)).encode()+b'\0'+x).hexdigest()
+b=d[k];h=lambda x:hashlib.sha1(b'blob '+str(len(x)).encode()+b'\\0'+x).hexdigest()
 v['files'][k]={'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest(),'git_blob_sha1':h(b)}
 lock['plugin_source_blobs']['server/server.mjs']=h(b)
-d['MANIFEST.json']=(json.dumps(v)+'\n').encode();d['SOURCE_LOCK.json']=(json.dumps(lock)+'\n').encode()
+d['MANIFEST.json']=(json.dumps(v)+'\\n').encode();d['SOURCE_LOCK.json']=(json.dumps(lock)+'\\n').encode()
 with zipfile.ZipFile(q,'w') as z:
  for k,b in d.items():z.writestr(k,b)
 `;
