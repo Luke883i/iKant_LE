@@ -24,7 +24,7 @@ def build(out,expected_tree):
   "GATE 01 ADMISSION: only NEW exact human `avvia iKant`; read pinned README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md, TERMS.md; show TERMS verbatim; STOP.\n"
   "GATE 02 TERMS: later exact `I ACCEPT`; present original standard intro; STOP.\n"
   "GATE 03 MODE: later exact `EDU` (recommended experiment) or `CANONICAL` (requires real MCP-native owner). STOP.\n"
-  "EDU: C72/v2 selection is not C72/v1 EXPERIMENTAL. Never forge historic C107/C87 receipts; until S02 genuine owner wiring: NO_VOICE.\n"
+  "EDU: C72/v2 is not C72/v1. Require verified Git-source carrier, C135 EDU/v2 owner, original C107-v2/C70/C100/C87 with independent readback and C125; otherwise NO_VOICE.\n"
   "CANONICAL: MCP source in ZIP != connected plugin; require transport auth, native event identity, original C59 ACTIVE and readback; otherwise NO_VOICE.\n"
   "ONE SHELL: fill fixed six slides ESITO,A,B,PROVA,EDGE,NEXT from original evidence only.\n"
   "ESITO: only verified fact. A: exact original C87 voice_utf8 via original C125 independent readback, otherwise NO_VOICE.\n"
