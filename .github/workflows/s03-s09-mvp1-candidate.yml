@@ -1,0 +1,47 @@
+name: S03-S09 MVP1 candidate software qualification
+on:
+  pull_request:
+    paths:
+      - 'contracts/s0*-*'
+      - 'host/s03-*'
+      - 'pilot/s0*-*'
+      - 'scripts/s04-*'
+      - 'scripts/s09-*'
+      - 'scripts/s03-s09-*'
+      - 'plugins/ikant-le-session-chat/server/**'
+      - 'tests/s0*-*'
+      - '.github/workflows/s03-s09-mvp1-candidate.yml'
+  push:
+    branches: [main]
+jobs:
+  candidate-software-gates:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Repository invariant and immutable runtime root
+        run: |
+          npm run check
+          npm run runtime-root:verify
+      - name: Per-slice software gates (NOT provider or user pilot)
+        run: |
+          node --test --test-concurrency=1 tests/s03-host-slides.test.mjs tests/s04-project-reciprocity.test.mjs tests/s04-prompt-miniprompts.test.mjs tests/s04-bundle-negative.test.mjs tests/s05-first-run-metrics.test.mjs tests/s06-mcp-transport-security.test.mjs tests/s07-connection-gate.test.mjs tests/s08-canonical-boundary.test.mjs tests/s09-readiness.test.mjs tests/s09-semantic-dag.test.mjs tests/s03-s09-severe-dod.test.mjs
+      - name: Two independently rebuilt Project bundles (not installed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          TREE="$(git rev-parse 'HEAD^{tree}')"
+          python3 scripts/s04-build-project.py build --out "$RUNNER_TEMP/build1" --expected-tree "$TREE"
+          python3 scripts/s04-build-project.py build --out "$RUNNER_TEMP/build2" --expected-tree "$TREE"
+          cmp "$RUNNER_TEMP/build1/PROJECT_PREPR.zip" "$RUNNER_TEMP/build2/PROJECT_PREPR.zip"
+          cmp "$RUNNER_TEMP/build1/PROMPT_INNESCO_PREPR.txt" "$RUNNER_TEMP/build2/PROMPT_INNESCO_PREPR.txt"
+      - name: Report remaining REAL external gates (must remain blocked)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/s03-s09-dod-audit.mjs
+          node scripts/s09-readiness.mjs
