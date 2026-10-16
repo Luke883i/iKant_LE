@@ -14,6 +14,7 @@ import {qualifyC126Channels} from './edu-c126-channel-qualifier.mjs';
 import {compileC117SemanticGuide} from './c117-semantic-guidance.mjs';
 import {createC125HostOutputPort} from './c125-output-port.mjs';
 import {projectS03CompletedEduTurn} from './s03-owner-bound-presentation.mjs';
+import {qualifyHumanFacingIdentity} from './p1-public-language-guard.mjs';
 const sha=x=>crypto.createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const HEX=/^[a-f0-9]{40}$/;
 const NONCE=/^[a-zA-Z0-9_-]{12,96}$/;
@@ -123,6 +124,9 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       draft.input_sha256!==plan.input_sha256||draft.ack_plan_sha256!==guidance.plan_sha256||
       draft.ack_c124_channel_sha256!==plan.c124_language_channel_sha256)
       return no('S02_MODEL_ACK_INVALID');
+    // Lexical human-language veto before the sole original C87 writer; no rewriting.
+    if(!qualifyHumanFacingIdentity({method:plan.method,text:draft.text}).ok)
+      return no('S02_PUBLIC_IDENTITY_LANGUAGE_DENIED');
     const before=inspect(stage,ledger);if(before?.status!=='C107_LEDGER_REOPENED')return no('S02_PREWRITE_READBACK_DENIED');
     const turn=original.executeC107Turn({ledgerFile:ledger,nonce:frame.nonce,
       request:{...req,modelCandidate:{text:draft.text,input_sha256:plan.input_sha256}},

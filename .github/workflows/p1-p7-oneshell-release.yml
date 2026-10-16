@@ -6,6 +6,12 @@ on:
       - 'contracts/p1-p7-*'
       - 'contracts/p3p7-*'
       - 'host/p1-*'
+      - 'host/c135-edu-v2-owner.mjs'
+      - 'host/s02-edu-versioned-consumer.mjs'
+      - 'scripts/host-*'
+      - 'tests/host-handoff-*'
+      - 'tests/oneshell-*'
+      - 'docs/ONESHell_*'
       - 'host/p3p7-*'
       - 'scripts/p1p7-*'
       - 'scripts/p2-build-*'
@@ -32,6 +38,10 @@ jobs:
       - name: Exact repository source and local annex/owner boundaries
         run: |
           node --test --test-concurrency=1 tests/p1-semantic-annex.test.mjs tests/p2-project-release.test.mjs tests/p3p7-witness-boundary.test.mjs tests/p1p7-contract.test.mjs
+      - name: One hundred original-owner local restart scenarios and offline source transfer
+        run: |
+          node --test --test-concurrency=1 tests/p1-human-language.test.mjs tests/p1-first-run-100.test.mjs tests/s02-edu-v2-original-owner-e2e.test.mjs
+          python3 tests/host-handoff-rehydrate.test.py
       - name: One million synthetic protocol mutations; 10k composite checks
         run: node scripts/p1p7-closure-falsify.mjs 1000000
       - name: Deterministic Project builds, source-bound and NON-INSTALLED

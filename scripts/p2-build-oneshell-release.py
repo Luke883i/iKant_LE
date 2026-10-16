@@ -32,6 +32,10 @@ def build(out,expected_commit,expected_tree):
  if gitblob(template)!=git('rev-parse','HEAD:project/oneshell-v7/PROMPT_TEMPLATE.txt'):raise ValueError('PROMPT_TEMPLATE_DRIFT')
  prompt=template.replace(b'@GIT_HEAD@',head.encode()).replace(b'@GIT_TREE@',tree.encode())
  if b'@GIT_' in prompt:raise ValueError('UNBOUND_PROMPT_MARKER')
+ commit_raw=subprocess.check_output(['git','-C',str(ROOT),'cat-file','commit',head])
+ obj=subprocess.run(['git','hash-object','-t','commit','--stdin'],input=commit_raw,capture_output=True,check=True).stdout.decode().strip()
+ if obj!=head:raise ValueError('COMMIT_OBJECT_DRIFT')
+ members['PINNED_COMMIT_OBJECT.raw']=commit_raw
  members['PROMPT_INNESCO.txt']=prompt
  lock={'schema':'ikant-le-project-source-lock/v7','source_commit':head,'source_tree':tree,
        'orientation_blobs':{p:meta(members['orientation/'+p])['git_blob_sha1'] for p in ORIENT},
@@ -72,6 +76,9 @@ def verify(zip_path,expected_commit,expected_tree):
    if source and git('rev-parse','HEAD:'+source)!=v['git_blob_sha1']:
     raise ValueError('PINNED_GIT_BLOB_MISMATCH:'+p)
 
+  commit_raw=z.read('PINNED_COMMIT_OBJECT.raw')
+  obj=subprocess.run(['git','hash-object','-t','commit','--stdin'],input=commit_raw,capture_output=True,check=True).stdout.decode().strip()
+  if obj!=expected_commit:raise ValueError('PINNED_COMMIT_OBJECT_DRIFT')
   for p in ORIENT:
    k='orientation/'+p
    if meta(z.read(k))['git_blob_sha1']!=lock['orientation_blobs'][p]:raise ValueError('ORIENTATION_DRIFT')
