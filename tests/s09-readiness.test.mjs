@@ -5,4 +5,6 @@ test('S09 release cannot be claimed from local patches or synthetic trials',()=>
  assert.equal(d.edu_pilot_qualified,false);assert.equal(d.canonical_qualified,false);
  assert.ok(d.missing_EDU.includes('S02_ORIGINAL_EDU_V2_OWNER_30_SUCCESSFUL_TURNS'));
  assert.ok(d.missing_CANONICAL.includes('S08_C59_OWNER_NATIVE_PROVEN'));
+ assert.ok(!d.missing_CANONICAL.includes('S02_ORIGINAL_EDU_V2_OWNER_30_SUCCESSFUL_TURNS'));
+ assert.ok(!d.missing_CANONICAL.includes('S05_30_INDEPENDENT_USERS')); 
 });

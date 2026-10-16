@@ -7,7 +7,7 @@ const local={S01_MERGED_MAIN:true,S02_ORIGINAL_EDU_V2_OWNER_30_SUCCESSFUL_TURNS:
  S09_CI_FULL_GREEN:false,S09_HUMAN_RELEASE_APPROVAL:false,
  S06_MCP_SECURE:false,S07_NATIVE_PLUGIN_CONNECTED:false,S08_C59_OWNER_NATIVE_PROVEN:false};
 const missingEDU=contract.EDU_minimum.filter(x=>!local[x]);
-const missingCanonical=[...missingEDU,...contract.CANONICAL_additional.filter(x=>!local[x])];
+const missingCanonical=contract.CANONICAL_minimum.filter(x=>!local[x]);
 const r={schema:'ikant-le-s09-release-readiness/v1',source_kind:'LOCAL_PREPR',
  edu_pilot_qualified:missingEDU.length===0,canonical_qualified:missingCanonical.length===0,
  missing_EDU:missingEDU,missing_CANONICAL:missingCanonical,
