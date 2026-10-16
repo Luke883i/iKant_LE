@@ -12,6 +12,8 @@ on:
       - 'tests/oneshell-human-ux.test.mjs'
       - 'tests/oneshell-identity-prewrite.test.mjs'
       - 'host/p1-*'
+      - 'plugins/ikant-le-session-chat/server/public/ikant-le-app.html'
+      - 'plugins/ikant-le-session-chat/server/server.mjs'
       - 'host/c135-edu-v2-owner.mjs'
       - 'host/s02-edu-versioned-consumer.mjs'
       - 'scripts/host-*'
@@ -52,6 +54,10 @@ jobs:
         run: |
           node --test tests/oneshell-ci-product-alignment.test.mjs tests/oneshell-identity-prewrite.test.mjs tests/c72-public-mode-admission.test.mjs tests/s02-unknown-delivery-stop.test.mjs tests/s03-host-slides.test.mjs tests/s07-connection-gate.test.mjs tests/s09-readiness.test.mjs
           node scripts/oneshell-ci-product-alignment.mjs --json
+      - name: OneShell six-slot app, original owner, 10M semantic mutations
+        run: |
+          node --test tests/p1-app-exclusive-shell.test.mjs tests/p1-app-ui-contract.test.mjs tests/c54-host-materialization.test.mjs
+          node scripts/p1-app-shell-falsify.mjs 10000000
       - name: One million synthetic protocol mutations; 10k composite checks
         run: node scripts/p1p7-closure-falsify.mjs 1000000
       - name: Deterministic Project builds, source-bound and NON-INSTALLED

@@ -24,3 +24,5 @@ L'output ordinario **dopo i gate** contiene esattamente sei slot in ordine stabi
 **Persistenza:** per turno = richiesta di layout, non garanzia provider. Ledger fisico = solo l'owner realmente eseguito; UI persistente trans-turno = funzionalità da qualificare tramite app MCP registrata e non simulabile dal prompt.
 
 **Etichette visibili consentite per A:** `NO_VOICE`, `HOST_BOUND` solo con C87 originale e readback, `PROVIDER_VERIFIED` solo con owner provider autentico. Mai riutilizzare il campo A del turno precedente.
+
+**Unica superficie:** nessuna prosa ordinaria HOST fuori dai sei slot dopo i gate; messaggi tecnici del modello non valgono come voce A. La vera UI persistente dipende dalla app MCP registrata, non dal prompt/ZIP. La vista UI non riformula mai A: soltanto byte originali dal readback con prove coerenti.
