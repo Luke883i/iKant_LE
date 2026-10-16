@@ -10,6 +10,7 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {z} from 'zod';
 import {validateHostConsumptionFrame} from '../../../src/host-consumption-frame.mjs';
+import {projectP1AppExclusiveShell} from '../../../host/p1-app-exclusive-shell.mjs';
 import {verifyS06Transport} from './transport-security.mjs';
 import {verifyS06GatewayProof} from './gateway-identity.mjs';
 const gatewayContext=new AsyncLocalStorage();
@@ -24,7 +25,7 @@ function appPayload(x){
  for(const fa of frame?.artifacts||[]){const a=rawByName.get(fa.name),p=resolve(String(a?.path||a?.local_path||''));let valid=false,b=null;if(p&&(p===deploymentRoot||p.startsWith(deploymentRoot+sep))&&existsSync(p)){b=readFileSync(p);valid=b.length<=4*1024*1024&&digest(b)===fa.sha256&&b.length===fa.bytes&&fa.readback_verified===true;}if(!valid){if(fa.required_presentation===true)throw new Error('required host artifact bytes unavailable:'+fa.name);continue;}artifacts.push({name:fa.name,media_type:fa.media_type,bytes:b.length,sha256:fa.sha256,required_presentation:fa.required_presentation===true,data_base64:b.toString('base64')});}
  const shell=frame?.shell||null;const material={schema:'ikant-le-host-app-payload/v1',frame_receipt_sha256:frame?.receipt_sha256||null,shell_sha256:shell?.sha256||null,artifacts:artifacts.map(a=>({name:a.name,bytes:a.bytes,sha256:a.sha256,required_presentation:a.required_presentation})),authority:0};return{...material,artifacts,transport_receipt_sha256:digest(Buffer.from(JSON.stringify(material)))};
 }
-function result(x){const fv=validateHostConsumptionFrame(x?.host_frame);if(!fv.ok)throw new Error('invalid host consumption frame:'+fv.errors.join(','));const enriched={...x,host_app_payload:appPayload(x)};return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:enriched}};}
+function result(x){const fv=validateHostConsumptionFrame(x?.host_frame);if(!fv.ok)throw new Error('invalid host consumption frame:'+fv.errors.join(','));const enriched={...x,host_app_payload:appPayload(x),one_shell:projectP1AppExclusiveShell({result:x,frame:x.host_frame})};return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:enriched}};}
 function appMeta(resource=false){return resource?{ui:{resourceUri:URI,visibility:['app']},'openai/widgetAccessible':true}:{ui:{visibility:['app']},'openai/widgetAccessible':true};}
 function createMcp(){const s=new McpServer({name:'ikant-le-session-chat',version:'0.1.0'});
  registerAppResource(s,'ikant-le',URI,{},async()=>({contents:[{uri:URI,mimeType:RESOURCE_MIME_TYPE,text:widget,_meta:{ui:{prefersBorder:true},'openai/widgetDescription':'Legacy deployed compatibility surface; not canonical SESSION_CHAT_LOCAL activation'}}]}));
