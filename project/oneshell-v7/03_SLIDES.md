@@ -1,4 +1,4 @@
-# Sei diapositive di OneShell — V6
+# Sei diapositive di OneShell — V7
 
 L'output ordinario **dopo i gate** contiene esattamente sei slot in ordine stabile. Il contenuto della slide è breve tranne il testo originale A, che può essere arbitrariamente lungo e NON può essere compresso senza perdere i byte originali.
 

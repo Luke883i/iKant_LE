@@ -1,8 +1,8 @@
-# OneShell V6 — contenuto e responsabilità
+# OneShell V7 — contenuto e responsabilità
 
 Questa è una **capsula candidata Project**, costruita su un Git tree verificato, non il plugin installato, un ambiente Node, un owner canonico, una memoria di ChatGPT o un consenso.
 
-**Solo tre supporti logici, due risorse nel Project:** (1) `main` originale di `Luke883i/iKant_LE` come fonte normativa e runtime; (2) `PROMPT_INNESCO_NEXT.txt` incollato nelle istruzioni del Project; (3) *un unico* ZIP caricato nei file di progetto che contiene questo set di MD, il lock, gli snapshot e i sorgenti plugin originali. Il terzo elemento non è una terza autorità: è il trasporto della seconda risorsa del Project.
+**Solo tre supporti logici, due risorse nel Project:** (1) `main` originale di `Luke883i/iKant_LE` come fonte normativa e runtime; (2) `PROMPT_INNESCO.txt` incollato nelle istruzioni del Project; (3) *un unico* ZIP caricato nei file di progetto che contiene questo set di MD, il lock, gli snapshot e i sorgenti plugin originali. Il terzo elemento non è una terza autorità: è il trasporto della seconda risorsa del Project.
 
 ## Moduli locali, nomi senza ambiguità
 - `01_PHASES.md`: gate e STOP di ammissione.
