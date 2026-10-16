@@ -41,7 +41,7 @@ jobs:
       - name: One hundred original-owner local restart scenarios and offline source transfer
         run: |
           node --test --test-concurrency=1 tests/p1-human-language.test.mjs tests/p1-first-run-100.test.mjs tests/s02-edu-v2-original-owner-e2e.test.mjs
-          python3 tests/host-handoff-rehydrate.test.py
+          PYTHONDONTWRITEBYTECODE=1 python3 tests/host-handoff-rehydrate.test.py
       - name: One million synthetic protocol mutations; 10k composite checks
         run: node scripts/p1p7-closure-falsify.mjs 1000000
       - name: Deterministic Project builds, source-bound and NON-INSTALLED
