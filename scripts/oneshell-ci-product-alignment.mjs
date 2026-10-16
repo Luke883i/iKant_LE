@@ -1,17 +1,38 @@
 /** A checked CI boundary is not a real ChatGPT product release. */
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 export const ROOT=path.resolve(HERE,'..');
 const TYPES=['EXTERNAL','PROMPT_ONLY','RUNTIME','RUNTIME_PARTIAL','UNIMPLEMENTED'];
-export function inspectProductCi({registry,workflow,root=ROOT,slideVersion=null}={}){
+const REGISTRY_SHA256='f71908dfdfae004d6772569e2195791b0dfab3c7d62c22446e543e03221fd8e2';
+function csvRows(src){
+ const all=[];let row=[],field='',quoted=false;
+ for(let i=0;i<src.length;i++){const c=src[i];
+  if(c==='"'){if(quoted&&src[i+1]==='"'){field+='"';i++;}else quoted=!quoted;}
+  else if(c===','&&!quoted){row.push(field);field='';}
+  else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&src[i+1]==='\n')i++;row.push(field);if(row.some(Boolean))all.push(row);row=[];field='';}
+  else field+=c;
+ }
+ if(quoted)throw Error('UNTERMINATED_SOURCE_CSV');
+ if(field||row.length){row.push(field);all.push(row);}return all;
+}
+export function inspectProductCi({registry,workflow,root=ROOT,slideVersion=null,sourceCsv=null}={}){
  const failures=[];
  if(!registry||registry.schema!=='ikant-oneshell-product-ci-alignment/v1'||registry.authority!==0||
    registry.candidate_ci_is_not_product_release!==true||registry.external_witness_owner_only!==true||
    !Array.isArray(registry.issues)||registry.issues.length!==40)
    return {ok:false,first_edge:'REGISTRY_SCHEMA_OR_SIZE_DRIFT',failures:['REGISTRY_SCHEMA_OR_SIZE_DRIFT'],product_ready:false};
  const ids=new Set(),problems=new Set();
+ let canonical=[];
+ try{
+  const text=sourceCsv??fs.readFileSync(path.join(root,'docs/ONESHell_HOST_40_ISSUES.csv'),'utf8');
+  if(createHash('sha256').update(text).digest('hex')!==REGISTRY_SHA256)failures.push('CANONICAL_AUDIT_SOURCE_DRIFT');
+  const rows=csvRows(text),expected=['id','priority','problem','session_signal','existing_attempt','fix','falsification'];
+  if(rows.length!==41||JSON.stringify(rows[0])!==JSON.stringify(expected))failures.push('CANONICAL_CSV_SCHEMA_OR_SIZE');
+  else canonical=rows.slice(1);
+ }catch{failures.push('CANONICAL_CSV_UNREADABLE');}
  const invoked=workflow.split('\n').filter(line=>/^\s+(?:node --test|PYTHONDONTWRITEBYTECODE=1 python3 |python3 )/.test(line)&&
    !line.trimStart().startsWith('#')).join('\n');
  for(let i=0;i<40;i++){
@@ -20,6 +41,9 @@ export function inspectProductCi({registry,workflow,root=ROOT,slideVersion=null}
    failures.push('UNMAPPED_OR_DUPLICATE_PROBLEM:'+id);continue;
   }
   ids.add(x.id);problems.add(x.problem);
+  const row=canonical[i];
+  if(!row||row.length!==7||row[0]!==id||row[2]!==x.problem||row[5]!==x.expected_behavior||row[6]!==x.negative_case)
+   failures.push('PRODUCT_REQUIREMENT_DIFFERENT_FROM_AUDIT:'+id);
   if(typeof x.expected_behavior!=='string'||x.expected_behavior.length<18||
     typeof x.negative_case!=='string'||x.negative_case.length<18||
     x.reference!=='docs/ONESHell_HOST_40_ISSUES.csv') failures.push('UNTRACEABLE_REQUIREMENT:'+id);

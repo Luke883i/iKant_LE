@@ -21,6 +21,12 @@ test('CI must execute, not merely mention, every mapped test',()=>{
  const w2=workflow.replace('node --test tests/oneshell-ci-product-alignment.test.mjs','echo tests/oneshell-ci-product-alignment.test.mjs');
  assert.ok(inspectProductCi({registry:raw,workflow:w2}).failures.some(z=>z.includes('TEST_NOT_EXECUTED_IN_PRODUCT_CI')));
 });
+test('Source registry cannot be rewritten while CI stays green',()=>{
+ let x=clone();x.issues[1].negative_case='Mutazione semantica non autorizzata del requisito.';
+ assert.ok(inspectProductCi({registry:x,workflow}).failures.some(z=>z.includes('PRODUCT_REQUIREMENT_DIFFERENT_FROM_AUDIT')));
+ const changed=fs.readFileSync(path.join(ROOT,'docs/ONESHell_HOST_40_ISSUES.csv'),'utf8').replace('Shell non materializzata','Shell falsamente attestata');
+ assert.ok(inspectProductCi({registry:raw,workflow,sourceCsv:changed}).failures.includes('CANONICAL_AUDIT_SOURCE_DRIFT'));
+});
 test('Changed requirement, V6 drift or erased human witnesses fails',()=>{
  let x=clone();x.issues[1].negative_case='';assert.ok(inspectProductCi({registry:x,workflow}).failures.some(z=>z.includes('UNTRACEABLE_REQUIREMENT')));
  assert.ok(inspectProductCi({registry:raw,workflow,slideVersion:'OneShell V6'}).failures.includes('V7_DOCUMENTATION_DRIFT'));
