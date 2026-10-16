@@ -13,6 +13,7 @@ import {buildC107Package,stageC107Package} from '../scripts/c107-pack.mjs';
 import {qualifyC126Channels} from './edu-c126-channel-qualifier.mjs';
 import {compileC117SemanticGuide} from './c117-semantic-guidance.mjs';
 import {createC125HostOutputPort} from './c125-output-port.mjs';
+import {projectS03CompletedEduTurn} from './s03-owner-bound-presentation.mjs';
 const sha=x=>crypto.createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const HEX=/^[a-f0-9]{40}$/;
 const NONCE=/^[a-zA-Z0-9_-]{12,96}$/;
@@ -71,7 +72,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
    return no('S02_WITNESS_OR_CALLBACK_MISSING');
  const src=sourceVerified(sourceRoot,selection);
  if(!src)return no('S02_GIT_SOURCE_OR_V2_SELECTION_UNVERIFIED');
- const out=createC125HostOutputPort({send,afterAcceptWitness});
+ let lastOriginalC125=null;
+ const out=createC125HostOutputPort({send:async utf8=>{await send(utf8);lastOriginalC125=utf8},afterAcceptWitness});
  if(!out.ok)return no('S02_ORIGINAL_C125_UNAVAILABLE');
  let stage=null;
  try{
@@ -149,16 +151,22 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       surface_a:{origin:'HOST_BOUND',voice_utf8:turn.voice_utf8},
       original_c70_executed:true,original_c87_writer_executed:true,single_c87_writer:true,
       c126_status:channels.status,c126_channels:12,native_chatgpt_origin_attested:false,active:false};
+    lastOriginalC125=null;
     const result=await out.publish({eventId:frame.nonce,frame:{kind:'OWNER_VOICE',mode:'EDU',
       trace:after.last_hash,continuity:'C87_INDEPENDENT_REOPEN',edge:'NATIVE_CHATGPT_PER_TURN_DISPATCH',
       next:'QUALIFY_NATIVE_HOOK',nonce:frame.nonce,input_sha256:plan.input_sha256,
       ownerReceipt:evidence,independentReadback:after}});
     if(result.ok!==true)uncertain=true; // Unknown delivery after a C87 write: no new turns or blind retries.
-    return Object.freeze({ok:result.ok===true,source_head:src.head,source_tree:src.tree,
+    const delivered=Object.freeze({ok:result.ok===true,source_head:src.head,source_tree:src.tree,
      status:result.ok?'S02_EDU_V2_HOST_BOUND_LOCAL_READBACK':'S02_C125_OUTPUT_BLOCKED',
      first_edge:result.ok?'NATIVE_CHATGPT_PER_TURN_DISPATCH':result.reason,
      original_turn:turn,c87_before:before.count,c87_after:after.count,
      c125:result,active:false,native_event_attested:false});
+    const s03=delivered.ok&&lastOriginalC125!==null
+      ?projectS03CompletedEduTurn({ownerTurn:delivered,originalC125Text:lastOriginalC125})
+      :Object.freeze({ok:false,first_edge:'S03_C125_SEND_NOT_RESOLVED',active:false});
+    lastOriginalC125=null;
+    return Object.freeze({...delivered,s03_host_projection:s03});
    }finally{busy=false}
   }
   function close(){if(!closed){closed=true;out.close();fs.rmSync(stage,{recursive:true,force:true})}}

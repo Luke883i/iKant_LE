@@ -9,7 +9,9 @@ FIVE=('README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md')
 def zipwrite(z,name,content):
  info=zipfile.ZipInfo(name,(1980,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
  z.writestr(info,content)
-def build(out,expected_tree):
+def build(out,expected_tree,expected_commit=None):
+ head=GIT('rev-parse','HEAD')
+ if expected_commit is not None and expected_commit!=head:raise ValueError('SOURCE_COMMIT_STALE')
  tree=GIT('rev-parse','HEAD^{tree}')
  if expected_tree!=tree:raise ValueError('SOURCE_LOCK_STALE')
  if GIT('status','--porcelain'):raise ValueError('SOURCE_DIRTY_NOT_FROZEN')
@@ -32,8 +34,8 @@ def build(out,expected_tree):
   "EDGE: first owner-observed open edge; NEXT: exactly one owner-authorized action or STOP.\n"
   "Never infer ACTIVE, persistence, cognition, plugin installation or human trial success from caller JSON, model prose, historic ZIP or tests.\n"
   "Repo main alone owns rules, ZIP carries immutable source candidate. Project update is a distinct human-controlled transaction.\n").encode()
- manifest={'schema':'ikant-le-s04-project-bundle/v1','git_tree_sha1':tree,
-  'source_ref_kind':'LOCAL_PREPR_NOT_LIVE_MAIN','live_main_verified':False,
+ manifest={'schema':'ikant-le-s04-project-bundle/v1','git_tree_sha1':tree,'source_commit_sha1':head,
+  'source_ref_kind':'LOCAL_PINNED_TREE_REMOTE_MAIN_NOT_ATTESTED','live_main_verified':False,
   'native_plugin_installed':False,'five_blob_lock':{p:records[p]['git_blob_sha1'] for p in FIVE},
   'members':records,'prompt_sha256':SHA(prompt)}
  out.mkdir(parents=True,exist_ok=True);(out/'PROMPT_INNESCO_PREPR.txt').write_bytes(prompt)
@@ -58,6 +60,6 @@ def verify(path,expected_tree):
    if m['five_blob_lock'][p]!=m['members'][p]['git_blob_sha1']:raise ValueError('ORIENTATION_BLOB_DRIFT')
  return {'ok':True,'tree':expected_tree,'members':len(m['members']),'live_main_verified':False,'native_plugin_installed':False}
 if __name__=='__main__':
- a=argparse.ArgumentParser();a.add_argument('operation',choices=['build','verify']);a.add_argument('--out',required=True);a.add_argument('--expected-tree',required=True);o=a.parse_args();p=Path(o.out)
- if o.operation=='build':build(p,o.expected_tree)
+ a=argparse.ArgumentParser();a.add_argument('operation',choices=['build','verify']);a.add_argument('--out',required=True);a.add_argument('--expected-tree',required=True);a.add_argument('--expected-commit');o=a.parse_args();p=Path(o.out)
+ if o.operation=='build':build(p,o.expected_tree,o.expected_commit)
  print(json.dumps(verify(p/'PROJECT_PREPR.zip',o.expected_tree)))
