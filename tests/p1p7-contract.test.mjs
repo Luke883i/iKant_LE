@@ -15,5 +15,5 @@ test('V7 Project describes source lock, mini prompts, original A and verified an
  assert.match(read('project/oneshell-v7/03_SLIDES.md'),/sei canali informativi/i);
  assert.match(read('project/oneshell-v7/04_FILLER.md'),/Mini-prompt locali/);
  assert.match(read('project/oneshell-v7/05_ANNEX.md'),/registro/);
- assert.match(read('project/oneshell-v7/09_ADAPTER_RECIPES.md'),/non.*installazione/i);
+ assert.match(read('project/oneshell-v7/09_ADAPTER_RECIPES.md'),/nessuna installazione/i);
 });
