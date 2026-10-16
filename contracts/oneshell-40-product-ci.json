@@ -390,8 +390,8 @@
     {
       "id": "UX35",
       "problem": "Dati personali nei registri diagnostici",
-      "ci_scope": "UNIMPLEMENTED",
-      "local_test": "tests/oneshell-ci-product-alignment.test.mjs",
+      "ci_scope": "RUNTIME_PARTIAL",
+      "local_test": "tests/p1-privacy-envelope.test.mjs",
       "product_witness": null,
       "product_closed": false,
       "expected_behavior": "Minimizzare PII, citare solo input hash quando possibile, allegati esplicitamente autorizzati.",

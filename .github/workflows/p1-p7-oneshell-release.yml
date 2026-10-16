@@ -46,7 +46,7 @@ jobs:
           node --test --test-concurrency=1 tests/p1-semantic-annex.test.mjs tests/p2-project-release.test.mjs tests/p3p7-witness-boundary.test.mjs tests/p1p7-contract.test.mjs
       - name: One hundred original-owner local restart scenarios and offline source transfer
         run: |
-          node --test --test-concurrency=1 tests/p1-human-language.test.mjs tests/oneshell-human-ux.test.mjs tests/p1-first-run-100.test.mjs tests/s02-edu-v2-original-owner-e2e.test.mjs
+          node --test --test-concurrency=1 tests/p1-human-language.test.mjs tests/p1-privacy-envelope.test.mjs tests/oneshell-human-ux.test.mjs tests/p1-first-run-100.test.mjs tests/s02-edu-v2-original-owner-e2e.test.mjs
           PYTHONDONTWRITEBYTECODE=1 python3 tests/host-handoff-rehydrate.test.py
       - name: Product CI alignment with 40 requirements and fail-closed negative mutants
         run: |
