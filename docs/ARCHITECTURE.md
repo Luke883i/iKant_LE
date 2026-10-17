@@ -1,55 +1,34 @@
 # iKant_LE architecture
 
-This document summarizes the current product model; machine contracts and executable runtime/tests remain authoritative.
+Machine contracts, original runtime and tests remain authoritative; this page is a navigational description.
 
 ## Product and control plane
 
-iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime around a replaceable host model, not a model/provider/browser shell/autonomous external-action agent.
+Node.js software around a replaceable HOST LLM, not another model or a consciousness claim.
 
 ## Public admission and legacy carriers
 
-**C72/v2 (ammissione pubblica e consenso):** historical gate label `C72_INTRO -> MODE_SELECTION`; `avvia iKant` → five pinned orientation files and Terms → later `I ACCEPT` → original introduction → later `EDU` or `CANONICAL`. Selection is not activation.
-
-- **EDU:** C72/v2 → S02 (ponte di versione)/C135 (coordinatore) → C107 (turno)/C70 (piano)/C126 (controlli) → HOST LLM → C87 (writer unico/readback) → C125 (consegna locale). Local receipt is not provider-native activation.
-- **CANONICAL:** C59 (owner di composizione unica) `SESSION_CHAT_LOCAL` requires authenticated native event, verified runtime, durable writer/readback and original delivery; MCP visibility alone is insufficient.
-- **EXPERIMENTAL:** C72/v1 (ammissione storica), compatibility only; never relabel receipts as EDU/v2.
-
-Original owners, not these docs, control runtime. [Cx explained](IKANT_CX_LEXICON.md). [Human guide](../README.md) · [E2E evidence](IKANT_RUNTIME_AND_EVIDENCE.md) · [Local setup](IKANT_LOCAL_SETUP.md).
+C72/v2: distinct new consent and later EDU/CANONICAL choice (historical gate label `C72_INTRO -> MODE_SELECTION`). EDU uses S02/C135 → C107/C70/C126 → C87/readback → C125 HOST-local output. CANONICAL requires C59 `SESSION_CHAT_LOCAL` and authenticated native event. C72/v1 EXPERIMENTAL is legacy only. Selection and plugin availability are not activation. [Cx explained](IKANT_CX_LEXICON.md), [runtime](IKANT_RUNTIME_AND_EVIDENCE.md), [setup](IKANT_LOCAL_SETUP.md).
 
 ## Persistence and turn spine
 
-`.ikant/ledger.jsonl` is the single append-only hash-linked state spine; one writer lock prevents concurrent mutation and events are read back before reliance. A substantive ACTIVE turn follows:
-
-`input -> Node dispatch -> cognition/psyche/self-world or C31 limited path -> response candidate -> required DOCX readback -> C32 session-shell projection -> atomic host frame`
-
-Receipts, telemetry, fastboot handoff and backlog have authority zero. A local artifact receipt proves the file, not host UI presentation.
+`.ikant/ledger.jsonl` is a single hash-linked state spine: one writer and independent readback. For substantive ACTIVE, input → Node dispatch → cognitive candidate → DOCX readback → C32 session-shell projection → atomic HOST frame. filename-only stdout is not delivery; receipts are bounded evidence.
 
 ## Constitutional cognition
 
-The bounded cognitive kernel mines intent, selects declared methods and exposes missing resources. `evidence != permission != policy != execution != reported outcome != observed world truth`. Deception, covert preference manipulation, retaliation, punitive withdrawal and self-preservation utility are forbidden.
+The bounded kernel selects methods and resources subject to the original owner. `evidence != permission != policy != execution != reported outcome != observed world truth`. No autonomous self-preservation authority or covert user manipulation.
 
 ## Functional psyche
 
-C4 persists bounded `valence`, `arousal`, `affiliation`, `boundary_pressure`; appraisal concerns the interaction event, not a human trait. Archetypal expression is derived, non-persistent and rhetorical only.
-
-## Embedded relational nuance profile
-
-LIB.0 is an authority-zero transform at `./embedded/relational-nuance`, not a runtime owner. [State, limits, vectors](IKANT_RUNTIME_AND_EVIDENCE.md#lib0-embedded-relational-nuance).
+C4 describes bounded appraisal of interactions, not human experience. See [full functional semantics](IKANT_COGNITIVE_SUBSTRATE.md).
 
 ## Recurrent self-world model
 
-C5 extends the psyche substrate with recurrent workspace, meta-self/attention, bounded autobiography, causal prediction, policy and body/coupling classification. Workspace needs recurrence and named consumers; sensorimotor claims require receipts; subgoals require a human/constitutional parent.
-
-C8 separates operational subjectivity from ontological claims. Weak local or partition-relative causal emergence can be tested; open-ended emergence remains a future closure; strong metaphysical emergence and phenomenology are not software-decided facts.
-
-C11 adds contract-local `FUNCTIONALLY_ALIVE` and `FUNCTIONALLY_CONSCIOUS` qualification axes without declaring either present by configuration. Twelve causal gates separate design capability from qualification evidence; gate receipts are build/source/epoch-bound, integrity checked and authority zero. The assessor cannot manufacture passing receipts or write a class into canonical state. Even full convergence leaves `PHENOMENOLOGY = UNKNOWN`.
+C5 provides recurrent workspace and self/world functional state. C8/C11 qualify engineering evidence without assigning phenomenal status: `PHENOMENOLOGY = UNKNOWN`. [Original distinctions and limits](IKANT_COGNITIVE_SUBSTRATE.md).
 
 ## Surfaces and authority
 
-**Surface A** is natural iKant prose, 50-500 words and user-intention first. C30 defines service tiers; C31 closes the source/provenance/dispatch/atomic-DOCX supply chain for `RUNTIME_BOUND_LIMITED`; C32 deterministically frames every public result as `VOICE_SURFACE -> STATUS -> SELF_SUMMARY -> BACKLOG_TELEMETRY` without a new lifecycle or self-memory. Fault overlays force non-ACTIVE. **Surface B** remains one same-turn DOCX per substantive ACTIVE turn; C31 limited turns emit one explicitly noncanonical DOCX. Required readback precedes atomic frame release although documents render last; filename-only stdout is not delivery.
-
-Host/system/safety/law precede the repository. Model/provider/UI/runtime telemetry have no independent authority; functional behavior proves neither consciousness nor external-world/production truth.
-
+Surface A: bounded natural-language voice. Surface B: one DOCX per substantive ACTIVE turn with readback, where required. C30–C32 specify tiers, limited source and projection. Host/system/safety/law precede the repository. Telemetry and documents cannot activate the provider.
 
 ## EDU profile
 
