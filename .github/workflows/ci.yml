@@ -45,12 +45,45 @@ jobs:
           files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "79,91p")
           test -n "$files"
           node --test --test-concurrency=1 $files
-      - name: Diagnostic shard 2.4 (92-104)
+      - name: Individual source regression 01 c74-postmerge-bootstrap
         if: always()
-        run: |
-          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "92,104p")
-          test -n "$files"
-          node --test --test-concurrency=1 $files
+        run: node --test --test-concurrency=1 tests/c74-postmerge-bootstrap.test.mjs
+      - name: Individual source regression 02 c77-standalone-capsule
+        if: always()
+        run: node --test --test-concurrency=1 tests/c77-standalone-capsule.test.mjs
+      - name: Individual source regression 03 c78-host-relay
+        if: always()
+        run: node --test --test-concurrency=1 tests/c78-host-relay.test.mjs
+      - name: Individual source regression 04 c79-native-chat-surface
+        if: always()
+        run: node --test --test-concurrency=1 tests/c79-native-chat-surface.test.mjs
+      - name: Individual source regression 05 c80-field-witness
+        if: always()
+        run: node --test --test-concurrency=1 tests/c80-field-witness.test.mjs
+      - name: Individual source regression 06 c81-runtime-projection-100k
+        if: always()
+        run: node --test --test-concurrency=1 tests/c81-runtime-projection-100k.test.mjs
+      - name: Individual source regression 07 c81-source-reachability
+        if: always()
+        run: node --test --test-concurrency=1 tests/c81-source-reachability.test.mjs
+      - name: Individual source regression 08 c82-parallel-carriers
+        if: always()
+        run: node --test --test-concurrency=1 tests/c82-parallel-carriers.test.mjs
+      - name: Individual source regression 09 c82-semantic-runtime
+        if: always()
+        run: node --test --test-concurrency=1 tests/c82-semantic-runtime.test.mjs
+      - name: Individual source regression 10 c83-relevance-gates
+        if: always()
+        run: node --test --test-concurrency=1 tests/c83-relevance-gates.test.mjs
+      - name: Individual source regression 11 c84-host-composition-qualify
+        if: always()
+        run: node --test --test-concurrency=1 tests/c84-host-composition-qualify.test.mjs
+      - name: Individual source regression 12 c84-real-runtime-positive
+        if: always()
+        run: node --test --test-concurrency=1 tests/c84-real-runtime-positive.test.mjs
+      - name: Individual source regression 13 c84-runtime-convergence
+        if: always()
+        run: node --test --test-concurrency=1 tests/c84-runtime-convergence.test.mjs
       - name: Diagnostic test shard 3 (105-156)
         if: always()
         run: |
