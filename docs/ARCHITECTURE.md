@@ -34,9 +34,7 @@ C4 persists bounded `valence`, `arousal`, `affiliation`, `boundary_pressure`; ap
 
 ## Embedded relational nuance profile
 
-LIB.0 exposes a separate package subpath, `./embedded/relational-nuance`, for hosts that want only the bounded relational/expression transform. It does not export the iKant_LE admission lifecycle, identity, persistence, intent mining, planner, Surface A/B, or execution ownership. The host supplies normalized appraisal plus canonical `valence/arousal`; the library may retain only `affiliation`, `boundary_pressure`, interaction count and the last appraisal/outcome. Its result is derivational, authority-zero and side-effect-free with respect to network, filesystem writes, host state and execution. A host remains the sole writer and may reject the enrichment without failing its canonical turn.
-
-Boundary and vectors are machine-owned by `contracts/embedded-library*.json`; standalone LE keeps full C4.
+LIB.0 is an authority-zero transform at `./embedded/relational-nuance`, not a runtime owner. [State, limits, vectors](IKANT_RUNTIME_AND_EVIDENCE.md#lib0-embedded-relational-nuance).
 
 ## Recurrent self-world model
 

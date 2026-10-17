@@ -50,3 +50,10 @@ Ogni passaggio deve arrestarsi quando manca una precondizione. Il protocollo **n
 ## Dove verificare autonomamente
 
 Il punto di ingresso tecnico resta [ARCHITECTURE.md](ARCHITECTURE.md); i requisiti attuali sono in [`contracts/`](../contracts/) e negli owner originali di [`host/`](../host/). I controlli standard includono `git rev-parse HEAD`, `git rev-parse HEAD^{tree}`, `git status --porcelain`, `node --test` su test mirati, `npm run check` e `npm run runtime-root:verify`. Eseguire i comandi nella versione effettiva da verificare, non trasferire meccanicamente un esito da un commit precedente. [Ricerca falsificabile →](IKANT_RESEARCH_QUESTIONS.md).
+
+## LIB0 embedded relational nuance
+
+LIB.0 exposes a separate package subpath, `./embedded/relational-nuance`, for hosts that want only the bounded relational/expression transform. It does not export the iKant_LE admission lifecycle, identity, persistence, intent mining, planner, Surface A/B, or execution ownership. The host supplies normalized appraisal plus canonical `valence/arousal`; the library may retain only `affiliation`, `boundary_pressure`, interaction count and the last appraisal/outcome. Its result is derivational, authority-zero and side-effect-free with respect to network, filesystem writes, host state and execution. A host remains the sole writer and may reject the enrichment without failing its canonical turn.
+
+Boundary and vectors are machine-owned by `contracts/embedded-library*.json`; standalone LE keeps full C4.
+
