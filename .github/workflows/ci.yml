@@ -15,6 +15,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Isolate document atlas tests
+        run: node --test tests/ikant-document-atlas.test.mjs
+      - name: Isolate Cx post-edit tests
+        run: node --test tests/ikant-cx-postedit-review.test.mjs
+      - name: Isolate editorial contract tests
+        run: node --test tests/readme-editorial-contract.test.mjs
       - name: Deterministic tests
         run: npm test
       - name: Contract and lifecycle check
