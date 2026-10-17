@@ -21,12 +21,15 @@
 - [TERMS.md](../TERMS.md): Regole e descrizioni di radice. Stato di review: **da verificare**.
 - [docs/ARCHITECTURE.md](ARCHITECTURE.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/GOVERNANCE.md](GOVERNANCE.md): Modelli e prove. Stato di review: **da verificare**.
+- [docs/IKANT_COGNITIVE_SUBSTRATE.md](IKANT_COGNITIVE_SUBSTRATE.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_CX_LEXICON.md](IKANT_CX_LEXICON.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_CX_POST_EDIT_REVIEW.md](IKANT_CX_POST_EDIT_REVIEW.md): Modelli e prove. Stato di review: **da verificare**.
+- [docs/IKANT_DEVELOPMENT_HISTORY.md](IKANT_DEVELOPMENT_HISTORY.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_DOCUMENT_ONTOLOGY_DOD.md](IKANT_DOCUMENT_ONTOLOGY_DOD.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md](IKANT_EDITORIAL_CONTRACT_AUDIT.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_RESEARCH_QUESTIONS.md](IKANT_RESEARCH_QUESTIONS.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_RUNTIME_AND_EVIDENCE.md](IKANT_RUNTIME_AND_EVIDENCE.md): Modelli e prove. Stato di review: **da verificare**.
+- [docs/IKANT_SEMANTIC_RETICULUM.md](IKANT_SEMANTIC_RETICULUM.md): Modelli e prove. Stato di review: **da verificare**.
 - [iKant_UI_shell.md](../iKant_UI_shell.md): Regole e descrizioni di radice. Stato di review: **da verificare**.
 - [stile_comunicativo.md](../stile_comunicativo.md): Regole e descrizioni di radice. Stato di review: **da verificare**.
 
