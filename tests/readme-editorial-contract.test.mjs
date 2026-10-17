@@ -29,6 +29,13 @@ test('100 altered semantic anchors fail closed, never accepted as original contr
  assert.equal(v.accepted,0);
  assert.equal(v.unique_mutated_texts,100);
 });
+test('semantic deletion handles repeated required anchors in a standalone README',()=>{
+ const redundant=readme+'\n\ninfrastruttura cognitiva verificabile\nUmano:\nLLM:\niKant:\nHOST:\nRQ1\n';
+ const v=falsifyReadme(redundant,root);
+ assert.equal(v.count,100);
+ assert.equal(v.rejected,100);
+ assert.equal(v.accepted,0);
+});
 test('false ACTIVE and imaginary consciousness are rejected',()=>{
  assert.equal(verifyReadme(readme+'\nMCP connesso implica ACTIVE',root).ok,false);
  assert.equal(verifyReadme(readme+'\nè una coscienza dimostrata',root).ok,false);
