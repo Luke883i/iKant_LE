@@ -11,11 +11,11 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 ## Cosa ottieni oggi
 
-Una guida sperimentale alle risposte, alle prove e ai limiti: non un servizio nativo già installato.
+Guida sperimentale, non servizio nativo già installato.
 
 ## Cosa non e (ovvero: cosa non è)
 
-Non è attestato che sia cosciente; non è un prodotto rilasciato né una garanzia di verità.
+Coscienza, rilascio e verità non sono attestati.
 
 ### Tre modi per capire iKant
 
@@ -33,15 +33,17 @@ Non è attestato che sia cosciente; non è un prodotto rilasciato né una garanz
 - **HOST:** fornisce strumenti e interfaccia; non può inventare identità nativa o ricevute.
 - **Verificatore:** distingue ciò che il software ha fatto da ciò che una risposta sostiene.
 
-Il modello genera; iKant verifica. [Architettura](docs/ARCHITECTURE.md) · [Limiti](docs/PRODUCT_POSITIONING.md).
+[Architettura](docs/ARCHITECTURE.md) · [Limiti](docs/PRODUCT_POSITIONING.md).
 
 ## Modalità e bootstrap
 
-**EDU** — laboratorio sperimentale consigliato: la selezione non produce `ACTIVE` o memoria tra chat. **CANONICAL** — percorso MCP con identità nativa e un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59); MCP connesso non significa `ACTIVE`. `EXPERIMENTAL` è storico C72/v1, non terza modalità pubblica C72/v2 (ingresso e consenso).
+**EDU** — laboratorio consigliato: scegliere non attiva `ACTIVE` né memoria tra chat. **CANONICAL** — identità MCP e un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59); MCP connesso non significa `ACTIVE`. `EXPERIMENTAL` è storico C72/v1, non terza modalità pubblica C72/v2 (ingresso e consenso).
 
-Per entrare, **tre messaggi nuovi e separati**: `avvia iKant` → lettura dei cinque originali e Termini → `I ACCEPT` → introduzione originale → `EDU` o `CANONICAL`. Orientamento originale: `README.md -> BOOTSTRAP.json` → `ADMISSION.json` → `AGENTS.md` → `TERMS.md`. Al primo ingresso: **GitHub API only**; mai consenso storico.
+C59 censisce i percorsi in [`session-chat-composition-census.json`](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency: i byte arrivano dal piano HOST con verifica.
 
-[Prompt di innesco, bundle ZIP, sorgenti e installazione](docs/IKANT_LOCAL_SETUP.md): file Project e prompt **non installano Node**, plugin o UI persistenti. Per verificare codice nel checkout: Node.js **20+**, Python 3; `npm test`, `npm run check`, `npm run runtime-root:verify`.
+Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I ACCEPT` (solo dopo) → `EDU` o `CANONICAL` (dopo introduzione). Ordine: `README.md -> BOOTSTRAP.json` → `ADMISSION.json` → `AGENTS.md` → `TERMS.md`. Primo ingresso: **GitHub API only**; mai consenso storico.
+
+[Prompt di innesco, bundle ZIP, sorgenti e installazione](docs/IKANT_LOCAL_SETUP.md): file Project e prompt **non installano Node**, plugin o UI persistenti. Audit del codice: Node.js **20+**, Python 3; `npm test`, `npm run check`, `npm run runtime-root:verify`.
 
 ## Tre domande di ricerca
 
@@ -49,6 +51,6 @@ Per entrare, **tre messaggi nuovi e separati**: `avvia iKant` → lettura dei ci
 
 ## Stato e autorità
 
-**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO** sono classi diverse. Identità dei file non è correttezza; sonde sintetiche non sono esperimenti umani. Il `main` verificato è fonte; una PR non è release. [Dashboard](docs/PRODUCT_DASHBOARD.md) · [Decisioni V1](docs/V1_PRODUCT_DECISIONS.md) · [Tracciabilità V1](docs/V1_E2E_TRACEABILITY.md) · [Catalogo](release/catalog.json) · [Contratti](contracts/) · [Test](tests/) · [Audit dei 100 contratti editoriali](docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md).
+**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**: distinguere fonti e prove. `main` è fonte; una PR non è release. [Dashboard](docs/PRODUCT_DASHBOARD.md) · [Decisioni V1](docs/V1_PRODUCT_DECISIONS.md) · [Tracciabilità V1](docs/V1_E2E_TRACEABILITY.md) · [Catalogo](release/catalog.json) · [Contratti](contracts/) · [Test](tests/) · [Audit dei 100 contratti editoriali](docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md).
 
 **Progressione:** problema → persone → runtime → prove → ricerca → rilascio. [Sigle Cx spiegate](docs/IKANT_CX_LEXICON.md).
