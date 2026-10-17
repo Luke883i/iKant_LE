@@ -5,9 +5,17 @@
 
 > **ROA Research Programme.** Parte di `Luke883i/academics` e `Luke883i/ROA`; nessuna conformità o efficacia è implicita.
 
-# iKant — infrastruttura cognitiva verificabile, non una mente digitale
+# iKant — risposte guidate e verificabili, non una mente digitale
 
-iKant affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è una persona, un secondo LLM o coscienza dimostrata. La traccia prova operazioni, **non** verità.
+iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è una persona, un secondo LLM o coscienza dimostrata. La traccia prova operazioni, **non** verità.
+
+## Cosa ottieni oggi
+
+Una guida sperimentale alle risposte, alle prove e ai limiti: non un servizio nativo già installato.
+
+## Cosa non e (ovvero: cosa non è)
+
+Non è attestato che sia cosciente; non è un prodotto rilasciato né una garanzia di verità.
 
 ### Tre modi per capire iKant
 
@@ -29,9 +37,9 @@ Il modello genera; iKant verifica. [Architettura](docs/ARCHITECTURE.md) · [Limi
 
 ## Modalità e bootstrap
 
-**EDU** — laboratorio sperimentale consigliato: la selezione non produce `ACTIVE` o memoria tra chat. **CANONICAL** — percorso MCP con identità nativa, composizione C59 e prove originali: MCP connesso non significa `ACTIVE`. `EXPERIMENTAL` è storico C72/v1, non una terza modalità pubblica C72/v2.
+**EDU** — laboratorio sperimentale consigliato: la selezione non produce `ACTIVE` o memoria tra chat. **CANONICAL** — percorso MCP con identità nativa e un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59); MCP connesso non significa `ACTIVE`. `EXPERIMENTAL` è storico C72/v1, non terza modalità pubblica C72/v2 (ingresso e consenso).
 
-Per entrare, **tre messaggi nuovi e separati**: `avvia iKant` → lettura dei cinque originali e Termini → `I ACCEPT` → introduzione originale → `EDU` o `CANONICAL`. Al primo ingresso: **GitHub API only**; mai consenso storico.
+Per entrare, **tre messaggi nuovi e separati**: `avvia iKant` → lettura dei cinque originali e Termini → `I ACCEPT` → introduzione originale → `EDU` o `CANONICAL`. Orientamento originale: `README.md -> BOOTSTRAP.json` → `ADMISSION.json` → `AGENTS.md` → `TERMS.md`. Al primo ingresso: **GitHub API only**; mai consenso storico.
 
 [Prompt di innesco, bundle ZIP, sorgenti e installazione](docs/IKANT_LOCAL_SETUP.md): file Project e prompt **non installano Node**, plugin o UI persistenti. Per verificare codice nel checkout: Node.js **20+**, Python 3; `npm test`, `npm run check`, `npm run runtime-root:verify`.
 
@@ -41,6 +49,6 @@ Per entrare, **tre messaggi nuovi e separati**: `avvia iKant` → lettura dei ci
 
 ## Stato e autorità
 
-**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO** sono classi diverse. Identità dei file non è correttezza; sonde sintetiche non sono esperimenti umani. Il `main` verificato è fonte; una PR non è release. [Dashboard](docs/PRODUCT_DASHBOARD.md) · [Catalogo](release/catalog.json) · [Contratti](contracts/) · [Test](tests/) · [Audit dei 100 contratti editoriali](docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md).
+**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO** sono classi diverse. Identità dei file non è correttezza; sonde sintetiche non sono esperimenti umani. Il `main` verificato è fonte; una PR non è release. [Dashboard](docs/PRODUCT_DASHBOARD.md) · [Decisioni V1](docs/V1_PRODUCT_DECISIONS.md) · [Tracciabilità V1](docs/V1_E2E_TRACEABILITY.md) · [Catalogo](release/catalog.json) · [Contratti](contracts/) · [Test](tests/) · [Audit dei 100 contratti editoriali](docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md).
 
-**Progressione:** problema → persone → runtime → prove → ricerca → rilascio.
+**Progressione:** problema → persone → runtime → prove → ricerca → rilascio. [Sigle Cx spiegate](docs/IKANT_CX_LEXICON.md).

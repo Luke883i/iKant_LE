@@ -2,6 +2,8 @@
 
 > **Questo è un protocollo prospettico, non risultati di esperimenti umani già eseguiti.** I limiti e le prove software sono descritti nella [mappa runtime](IKANT_RUNTIME_AND_EVIDENCE.md). Definire gli esiti *prima* di vedere i dati e rendere disponibili materiali ripetibili nei limiti della privacy.
 
+Le sigle dei moduli citati più avanti (`C70`, `C114`, `C87`) sono [spiegate con esempi e fonti](IKANT_CX_LEXICON.md), senza presumerne la conoscenza.
+
 ## RQ1 — La verificabilità aggiunta è reale o solo narrativa?
 
 **Domanda:** a parità di input e modello, l'infrastruttura iKant aumenta la frazione di affermazioni di esecuzione sostenute da prove riapribili e riduce le dichiarazioni di funzioni non effettivamente svolte?

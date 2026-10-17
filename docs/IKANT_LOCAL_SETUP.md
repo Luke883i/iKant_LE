@@ -12,6 +12,8 @@ Questa guida distingue **la preparazione dei file** dall'**esecuzione del codice
 
 **Nota:** `PROMPT_INNESCO.md`, `INSTALLAZIONE.md` e `MANIFEST.json` del bundle OneShell allegato sono *proiezioni HOST*. Non sono automaticamente file presenti nella radice del repository e non sostituiscono `TERMS.md`, C72/v2 o gli owner originali. Non usare una vecchia selezione come nuovo consenso.
 
+Per chi non conosce le sigle: `C72/v2` è il controllo di consenso, non l’installazione; [glossario tecnico illustrato](IKANT_CX_LEXICON.md).
+
 ## Percorso B — Audit ed esecuzione da checkout Git verificato
 
 Prerequisiti: Git, **Node.js 20+**, Python 3, permessi locali appropriati. Un esempio riproducibile di audit è:

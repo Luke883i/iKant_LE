@@ -16,6 +16,10 @@ Per una prova guidata, scegli **EDU**, modalità sperimentale. Sono necessari tr
 
 Leggi [come configurare un Project e il runtime locale](IKANT_LOCAL_SETUP.md); nessuno ZIP installa automaticamente plugin o interfacce. [La differenza fra programma, runtime e prove](IKANT_RUNTIME_AND_EVIDENCE.md) è illustrata con una mappa dell'intero turno.
 
+## Prima il significato, poi le sigle
+
+Se incontri `C72`, `C87` o `C59`, non sono nomi di un modello né livelli di intelligenza: indicano contratti e passaggi verificabili. [Dizionario completo con esempi semplici, link e limiti](IKANT_CX_LEXICON.md). Non devi conoscerli per iniziare; i tecnici non devono darli per scontati.
+
 ## Scegli la lettura successiva
 
 - **Mi interessa l'essere umano e la coscienza:** [le tre domande confutabili](IKANT_RESEARCH_QUESTIONS.md).

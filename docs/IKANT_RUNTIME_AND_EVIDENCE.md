@@ -10,6 +10,8 @@ Non si devono sommare **righe di codice, parametri del modello e sinapsi** come 
 
 ## Mappa end-to-end: cinque confini distinti
 
+**Come leggere le sigle:** `C72/v2` gestisce il consenso; `S02/C135` qualificano la versione e coordinano EDU; `C107/C70/C126` preparano e controllano il piano; `C87` registra una sola volta; `C125` consegna; `C59` governa il confine CANONICAL. [Significato e fonti di ogni sigla](IKANT_CX_LEXICON.md).
+
 | Fase | Chi decide o esegue | Prova ammissibile | Cosa non consegue |
 |---|---|---|---|
 | 1. Orientamento e consenso | Persona + originali `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md`, `TERMS.md`; C72/v2 | Nuovi messaggi distinti e ricevute C72/v2 | Consenso da una vecchia chat o da un ZIP |
