@@ -11,7 +11,7 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 ## Cosa ottieni oggi
 
-Guida sperimentale.
+Guida.
 
 ## Cosa non e (ovvero: cosa non è)
 
@@ -33,15 +33,15 @@ Modalità: **EDU** e **CANONICAL**.
 - **LLM:** genera il testo; iKant non aggiunge nuovi pesi o una soggettività provata.
 - **iKant:** applica percorsi, verifiche, un writer originale e rilettura quando realmente eseguiti.
 - **HOST:** fornisce strumenti e interfaccia; non può inventare identità nativa o ricevute.
-- **Verificatore:** distingue ciò che il software ha fatto da ciò che una risposta sostiene.
+- **Verificatore:** distingue ciò che fa il software da ciò che dichiara.
 
 [Architettura](docs/ARCHITECTURE.md) · [Limiti](docs/PRODUCT_POSITIONING.md).
 
 ## Modalità e bootstrap
 
-**EDU (sperimentale, consigliata)** — consenso non significa `ACTIVE` né memoria tra chat. **CANONICAL (via MCP)** — un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59). MCP da solo non attiva CANONICAL. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; l'ingresso pubblico corrente è C72/v2 (ingresso e consenso).
+**EDU (sperimentale, consigliata)** — consenso non significa `ACTIVE` né memoria tra chat. **CANONICAL (via MCP)** — richiede identita' nativa dell'evento; un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59). MCP da solo non attiva CANONICAL. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; l'ingresso pubblico corrente è C72/v2 (ingresso e consenso).
 
-C59: [censimento dei canali](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency; il relay HOST verifica i byte.
+C59: [canali](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency; il relay HOST verifica i byte.
 
 Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I ACCEPT` (solo dopo) → `EDU` o `CANONICAL` (dopo introduzione). Ordine: `README.md -> BOOTSTRAP.json` → `ADMISSION.json` → `AGENTS.md` → `TERMS.md`. Primo ingresso: **GitHub API only**; mai consenso storico.
 
@@ -49,7 +49,7 @@ Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I 
 
 ## Tre domande di ricerca
 
-**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). Nessun beneficio generale o status ontologico è già dimostrato.
+**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). Benefici e status ontologico non dimostrati.
 
 ## Stato e autorità
 
