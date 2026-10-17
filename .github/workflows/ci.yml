@@ -21,7 +21,32 @@ jobs:
         run: node --test tests/ikant-cx-postedit-review.test.mjs
       - name: Isolate editorial contract tests
         run: node --test tests/readme-editorial-contract.test.mjs
+      - name: Diagnostic test shard 1 (1-52)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "1,52p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
+      - name: Diagnostic test shard 2 (53-104)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "53,104p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
+      - name: Diagnostic test shard 3 (105-156)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "105,156p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
+      - name: Diagnostic test shard 4 (157-999)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "157,999p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
       - name: Deterministic tests
+        if: always()
         run: npm test
       - name: Contract and lifecycle check
         run: npm run check
