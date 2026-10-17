@@ -1,19 +1,33 @@
-# iKant — inizia qui
+# iKant — una guida per chiunque
 
-**Che cos'e'?** iKant e' un metodo sperimentale che prova ad aiutare un modello linguistico a ragionare con tracce verificabili. Non e' una persona, ne' un secondo modello di intelligenza artificiale.
+Immagina di chiedere a un assistente: **«Come lo sai?»** Una risposta fluida può essere utile, ma da sola non prova da dove arrivi, quali controlli siano stati eseguiti o se sia stata conservata correttamente. iKant nasce per affrontare questo problema **di processo**.
 
-**Qual e' la versione ufficiale?** La fonte integrata e' il branch `main` di questo repository, identificato ogni volta dal commit esatto. Le PR mostrano come e perche' il prodotto e' cambiato, ma non costituiscono altre versioni ufficiali.
+**Che cos'è?** È software che circonda un modello linguistico, guidando e verificando alcuni passaggi del dialogo. Non è un altro cervello, una persona o un modo per dimostrare che l'AI è cosciente. Il modello genera frasi; il programma tenta di rendere verificabili percorso e limiti; l'essere umano decide a che cosa affidarsi.
 
-**Cosa posso usare?** Una modalita' sperimentale che verifica file e registra localmente le risposte quando il programma viene realmente eseguito. Il percorso canonico richiede ulteriori prove native che non possono essere garantite da un prompt o da uno ZIP.
+**Che cosa NON promette?** Non trasforma un'affermazione falsa in vera, un file caricato in una installazione, una traccia in una memoria autobiografica né un test sintetico in una prova sull'esperienza soggettiva. Se una verifica manca, il sistema deve dichiararlo.
 
-**Come si inizia?** Alla versione esatta di main si leggono i Termini originali, si risponde in un nuovo turno esattamente `I ACCEPT`, quindi si seleziona in un altro turno `EDU` (consigliata) oppure `CANONICAL` (via MCP). Per l'esperimento EDU si fornisce un solo pacchetto esatto e verificabile. Un file allegato, da solo, non installa il runtime.
+## Un esempio quotidiano
 
-**Come controllo il progetto?** Consulta la [dashboard](PRODUCT_DASHBOARD.md) per distinguere integrato, proposto, verificato e ancora da provare. I riferimenti tecnici sono opzionali e devono essere accompagnati dal loro significato in linguaggio comune.
+Chiedi: «Confronta due ipotesi scientifiche». Un normale LLM può dare una risposta. iKant, quando l'owner originale viene realmente eseguito, può documentare input, piano, verifiche, registrazione e rilettura. **Questo non certifica il confronto scientifico**: per quello servono fonti, metodi e validazione separati. Il vantaggio potenziale da misurare è sapere meglio **quali passaggi sono successi e quali no**.
 
-**[Come presentarlo sul mercato](PRODUCT_POSITIONING.md)**: promesse controllabili e limiti verificabili.
+## Da dove iniziare
 
-**Se sono un ingegnere**: [architettura](ARCHITECTURE.md), [contratti](../contracts/), [verifiche](../tests/), [governo release](../release/catalog.json).
+Per una prova guidata, scegli **EDU**, modalità sperimentale. Sono necessari tre nuovi messaggi distinti: `avvia iKant`, poi `I ACCEPT` dopo i Termini, poi `EDU` dopo l'introduzione. Per CANONICAL, che richiede ingressi autentici e servizio MCP, serve un'integrazione verificata; selezionarlo non lo accende.
 
-**Limite**: il controllo degli hash prova l'identita' dei file; non prova che una risposta del modello sia corretta o che il sistema possieda esperienza soggettiva.
+Leggi [come configurare un Project e il runtime locale](IKANT_LOCAL_SETUP.md); nessuno ZIP installa automaticamente plugin o interfacce. [La differenza fra programma, runtime e prove](IKANT_RUNTIME_AND_EVIDENCE.md) è illustrata con una mappa dell'intero turno.
 
-**Questa versione:** `1.0.0-edu.1` indica la prima linea sperimentale verificabile; non significa che iKant sia pubblicato o nativamente collegato alla chat. [Decisioni](V1_PRODUCT_DECISIONS.md) e [prove](V1_E2E_TRACEABILITY.md) distinguono le funzioni disponibili dai lavori ancora aperti.
+## Prima il significato, poi le sigle
+
+Se incontri `C72`, `C87` o `C59`, non sono nomi di un modello né livelli di intelligenza: indicano contratti e passaggi verificabili. [Dizionario completo con esempi semplici, link e limiti](IKANT_CX_LEXICON.md). Non devi conoscerli per iniziare; i tecnici non devono darli per scontati.
+
+## Una mappa completa, dal primo giorno
+
+[Atlante navigabile di tutti i documenti](IKANT_DOCUMENT_ATLAS.md) e [DoD ontologico, metriche e checklist](IKANT_DOCUMENT_ONTOLOGY_DOD.md) distinguono ruolo, prove e limiti. Ogni file ha una classificazione; la review umana resta necessaria.
+
+## Scegli la lettura successiva
+
+- **Mi interessa l'essere umano e la coscienza:** [le tre domande confutabili](IKANT_RESEARCH_QUESTIONS.md).
+- **Devo verificare un'affermazione tecnica:** [osservazioni, limiti e prove](IKANT_RUNTIME_AND_EVIDENCE.md) e [dashboard](PRODUCT_DASHBOARD.md).
+- **Devo contribuire al codice:** [architettura](ARCHITECTURE.md), [contratti](../contracts/) e [test](../tests/).
+
+La versione ufficiale è identificata dal commit di `main`, non dal nome di una chat o di un allegato. [Torna al quadro d'insieme](../README.md).

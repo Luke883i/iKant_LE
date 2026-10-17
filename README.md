@@ -3,50 +3,56 @@
 
 <!-- roa-programme-header:v1 hub=Luke883i/academics framework=Luke883i/ROA role=COMPRESSED_RUNTIME_KERNEL -->
 
-> **ROA Research Programme.** Component of the programme coordinated in `Luke883i/academics` and anchored by `Luke883i/ROA`. Repository-local contracts/evidence remain authoritative; membership alone implies neither ROA conformance/derivation, empirical validation nor production readiness.
+> **ROA Research Programme.** Parte di `Luke883i/academics` e `Luke883i/ROA`; nessuna conformità o efficacia è implicita.
 
-# iKant — risposte guidate, prove verificabili
+# iKant — risposte guidate e verificabili, non una mente digitale
 
-**iKant guida le risposte di un assistente linguistico e verifica le operazioni eseguite.** E' sperimentale, non una persona, un modello separato o un hook nativo ChatGPT.
+iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è una persona, un secondo LLM o coscienza dimostrata. La traccia prova operazioni, **non** verità.
 
-**Cosa ottieni oggi:** laboratorio Node.js, file verificato, bozze e registrazione locale riletta. **Cosa non e' dimostrato:** miglioramento cognitivo generale, memoria fra chat, attivazione canonica.
+## Cosa ottieni oggi
 
-| Voglio... | Apri |
-|---|---|
-| Capire e provare iKant | [Inizia qui](docs/START_HERE.md) |
-| Sapere cosa funziona e cosa manca | [Dashboard](docs/PRODUCT_DASHBOARD.md) |
-| Capire quale versione e' ufficiale | [Catalogo e regole di rilascio](release/catalog.json) |
-| Valutare il progetto tecnicamente | [Architettura](docs/ARCHITECTURE.md) · [Prove V1](docs/V1_E2E_TRACEABILITY.md) |
-| Capire il posizionamento | [Cosa possiamo promettere](docs/PRODUCT_POSITIONING.md) |
+Guida.
 
-## Due livelli, non due prodotti
+## Cosa non e (ovvero: cosa non è)
 
-- **EDU (sperimentale, consigliata):** dopo Termini, selezione e autorizzazione specifica alle bozze, usa un file verificato. La prova locale non e' integrazione nativa della chat.
-- **CANONICAL (via MCP):** richiede identita' nativa dell'evento, Node, stato durevole e rilettura, documento del turno e ricevuta di consegna. Senza ricevute originali resta inattivo; la presenza di MCP non e' ACTIVE.
+Coscienza, rilascio e verità non attestati.
 
-## Come riprodurre una verifica
+### Tre modi per capire iKant
 
-```bash
-npm test
-npm run check
-npm run runtime-root:verify
-npm run bundle:edu
-```
+Modalità: **EDU** e **CANONICAL**.
 
-Servono Node.js 20+ e Python 3. Il bundle e' un **candidato**, non una installazione o release.
+| Per chi | Da leggere | Domanda |
+|---|---|---|
+| Persona curiosa | [Guida in parole semplici](docs/START_HERE.md) | A che cosa serve? |
+| Ricercatore | [Tre domande confutabili](docs/IKANT_RESEARCH_QUESTIONS.md) | Come provarlo e smentirlo? |
+| Tecnico/auditor | [Mappa E2E ed evidenze](docs/IKANT_RUNTIME_AND_EVIDENCE.md) | Che cosa è realmente eseguito? |
 
-## Da dove arrivano le regole
+## Dall'umano alla prova
 
-Al primo contatto il protocollo usa **GitHub API only**: legge allo stesso commit `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`, mostra i Termini integralmente, si ferma e attende un nuovo messaggio `I ACCEPT`; poi presenta l'introduzione e richiede `EDU` o `CANONICAL`. Nessuna delle scelte installa da sola iKant.
+- **Umano:** formula la domanda, presta consenso e valuta il risultato; ha corpo, storia, relazioni.
+- **LLM:** genera il testo; iKant non aggiunge nuovi pesi o una soggettività provata.
+- **iKant:** applica percorsi, verifiche, un writer originale e rilettura quando realmente eseguiti.
+- **HOST:** fornisce strumenti e interfaccia; non può inventare identità nativa o ricevute.
+- **Verificatore:** distingue ciò che fa il software da ciò che dichiara.
 
-**S01:** C72/v2 espone EDU/CANONICAL; i consumatori legacy rimangono v1 fino a S02, senza ACTIVE implicito.
+[Architettura](docs/ARCHITECTURE.md) · [Limiti](docs/PRODUCT_POSITIONING.md).
 
-**Fonte unica:** `main` dopo merge e verifiche. Le PR conservano la storia, non sono release. Prompt e ZIP sono ricostruiti dallo stesso commit con impronte verificabili.
+## Modalità e bootstrap
 
-**Per gli ingegneri:** [decisioni](docs/V1_PRODUCT_DECISIONS.md), [governance](docs/GOVERNANCE.md), [contratti](contracts/), [test](tests/).
+**EDU (sperimentale, consigliata)** — consenso non significa `ACTIVE` né memoria tra chat. **CANONICAL (via MCP)** — richiede identita' nativa dell'evento; un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59). MCP da solo non attiva CANONICAL. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; l'ingresso pubblico corrente è C72/v2 (ingresso e consenso).
 
-**Prove:** gli hash identificano i file, non certificano la verita' delle risposte. Il modello HOST resta sostituibile.
+C59: [canali](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency; il relay HOST verifica i byte.
 
-**C59:** one canonical `SESSION_CHAT_LOCAL` composition. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; MCP da solo non attiva CANONICAL.
+Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I ACCEPT` (solo dopo) → `EDU` o `CANONICAL` (dopo introduzione). Ordine: `README.md -> BOOTSTRAP.json` → `ADMISSION.json` → `AGENTS.md` → `TERMS.md`. Primo ingresso: **GitHub API only**; mai consenso storico.
 
-**Invarianti:** `contracts/session-chat-composition-census.json`. GitHub DNS/egress from the container is not a dependency.
+[Prompt di innesco, bundle ZIP, sorgenti e installazione](docs/IKANT_LOCAL_SETUP.md): file Project e prompt **non installano Node**, plugin o UI persistenti. Audit del codice: Node.js **20+**, Python 3; `npm test`, `npm run check`, `npm run runtime-root:verify`.
+
+## Tre domande di ricerca
+
+**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). Benefici e status ontologico non dimostrati.
+
+## Stato e autorità
+
+**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**: distinguere fonti e prove. `main` è fonte; una PR non è release. [Dashboard](docs/PRODUCT_DASHBOARD.md) · [Decisioni V1](docs/V1_PRODUCT_DECISIONS.md) · [Tracciabilità V1](docs/V1_E2E_TRACEABILITY.md) · [Catalogo](release/catalog.json) · [Contratti](contracts/) · [Test](tests/) · [Audit dei 100 contratti editoriali](docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md).
+
+**Progressione:** problema → persone → runtime → prove → ricerca → rilascio. [Sigle Cx spiegate](docs/IKANT_CX_LEXICON.md).

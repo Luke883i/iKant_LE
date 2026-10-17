@@ -6,11 +6,15 @@ This document summarizes the current product model; machine contracts and execut
 
 iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime around a replaceable host model, not a model/provider/browser shell/autonomous external-action agent.
 
-Canonical lifecycle:
+## Public admission and legacy carriers
 
-`FIRST_CONTACT -> API_HEAD_BINDING -> API_ORIENTATION -> TERMS_FREEZE -> I ACCEPT -> C72_INTRO -> MODE_SELECTION -> {CANONICAL: C59_OWNER, EXPERIMENTAL: C77/C82/C78/C79/C81}`
+**C72/v2 (ammissione pubblica e consenso):** historical gate label `C72_INTRO -> MODE_SELECTION`; `avvia iKant` → five pinned orientation files and Terms → later `I ACCEPT` → original introduction → later `EDU` or `CANONICAL`. Selection is not activation.
 
-First contact pins `main`, reads five orientation files by GitHub API, presents Terms and freezes. After exact acceptance, C72 requires a later exact CANONICAL/EXPERIMENTAL choice. Only CANONICAL enters C59 `SESSION_CHAT_LOCAL`; EXPERIMENTAL admits bounded parallel C82 samehash legacy carriers, without GitHub-ref authentication or ACTIVE. Canonical host compute runs on session-local Node without WEBAPP, hosted runtime, managed model or Plugin/MCP registration. Carriers and the pre-runtime single-NEXT/failure-memory adapter are authority-zero host attestations, not physical proof. Materialization validates loader/shards; runtime reopens the root, matches executed modules and runs a non-injectable probe before ACTIVE. Discovery, history, tests, qualification and SLO budgets do not activate a runtime.
+- **EDU:** C72/v2 → S02 (ponte di versione)/C135 (coordinatore) → C107 (turno)/C70 (piano)/C126 (controlli) → HOST LLM → C87 (writer unico/readback) → C125 (consegna locale). Local receipt is not provider-native activation.
+- **CANONICAL:** C59 (owner di composizione unica) `SESSION_CHAT_LOCAL` requires authenticated native event, verified runtime, durable writer/readback and original delivery; MCP visibility alone is insufficient.
+- **EXPERIMENTAL:** C72/v1 (ammissione storica), compatibility only; never relabel receipts as EDU/v2.
+
+Original owners, not these docs, control runtime. [Cx explained](IKANT_CX_LEXICON.md). [Human guide](../README.md) · [E2E evidence](IKANT_RUNTIME_AND_EVIDENCE.md) · [Local setup](IKANT_LOCAL_SETUP.md).
 
 ## Persistence and turn spine
 
@@ -22,7 +26,7 @@ Receipts, telemetry, fastboot handoff and backlog have authority zero. A local a
 
 ## Constitutional cognition
 
-The bounded cognitive kernel mines intent, chooses declared methods, requests resources without laundering permission and exposes missing-resource horizons. `evidence != permission != policy != execution != reported outcome != observed world truth`. Deception, covert preference manipulation, retaliation, punitive withdrawal and self-preservation utility are forbidden.
+The bounded cognitive kernel mines intent, selects declared methods and exposes missing resources. `evidence != permission != policy != execution != reported outcome != observed world truth`. Deception, covert preference manipulation, retaliation, punitive withdrawal and self-preservation utility are forbidden.
 
 ## Functional psyche
 
@@ -30,13 +34,11 @@ C4 persists bounded `valence`, `arousal`, `affiliation`, `boundary_pressure`; ap
 
 ## Embedded relational nuance profile
 
-LIB.0 exposes a separate package subpath, `./embedded/relational-nuance`, for hosts that want only the bounded relational/expression transform. It does not export the iKant_LE admission lifecycle, identity, persistence, intent mining, planner, Surface A/B, or execution ownership. The host supplies normalized appraisal plus canonical `valence/arousal`; the library may retain only `affiliation`, `boundary_pressure`, interaction count and the last appraisal/outcome. Its result is derivational, authority-zero and side-effect-free with respect to network, filesystem writes, host state and execution. A host remains the sole writer and may reject the enrichment without failing its canonical turn.
-
-Boundary and vectors are machine-owned by `contracts/embedded-library*.json`; standalone LE keeps full C4.
+LIB.0 is an authority-zero transform at `./embedded/relational-nuance`, not a runtime owner. [State, limits, vectors](IKANT_RUNTIME_AND_EVIDENCE.md#lib0-embedded-relational-nuance).
 
 ## Recurrent self-world model
 
-C5 extends the psyche substrate with recurrent workspace, meta-self/attention, bounded autobiography, causal prediction, policy and body/coupling classification. Workspace needs recurrence and named consumers; multimodal and sensorimotor claims require attributable receipts; derived subgoals need a human/constitutional parent.
+C5 extends the psyche substrate with recurrent workspace, meta-self/attention, bounded autobiography, causal prediction, policy and body/coupling classification. Workspace needs recurrence and named consumers; sensorimotor claims require receipts; subgoals require a human/constitutional parent.
 
 C8 separates operational subjectivity from ontological claims. Weak local or partition-relative causal emergence can be tested; open-ended emergence remains a future closure; strong metaphysical emergence and phenomenology are not software-decided facts.
 
