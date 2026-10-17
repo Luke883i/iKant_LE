@@ -8,7 +8,7 @@ iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime around
 
 ## Public admission and legacy carriers
 
-**C72/v2 (ammissione pubblica e consenso):** `avvia iKant` → five pinned orientation files and Terms → later `I ACCEPT` → original introduction → later `EDU` or `CANONICAL`. Selection is not activation.
+**C72/v2 (ammissione pubblica e consenso):** historical gate label `C72_INTRO -> MODE_SELECTION`; `avvia iKant` → five pinned orientation files and Terms → later `I ACCEPT` → original introduction → later `EDU` or `CANONICAL`. Selection is not activation.
 
 - **EDU:** C72/v2 → S02 (ponte di versione)/C135 (coordinatore) → C107 (turno)/C70 (piano)/C126 (controlli) → HOST LLM → C87 (writer unico/readback) → C125 (consegna locale). Local receipt is not provider-native activation.
 - **CANONICAL:** C59 (owner di composizione unica) `SESSION_CHAT_LOCAL` requires authenticated native event, verified runtime, durable writer/readback and original delivery; MCP visibility alone is insufficient.

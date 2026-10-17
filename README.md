@@ -11,13 +11,15 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 ## Cosa ottieni oggi
 
-Guida sperimentale, non servizio nativo già installato.
+Guida sperimentale, non servizio installato.
 
 ## Cosa non e (ovvero: cosa non è)
 
-Coscienza, rilascio e verità non sono attestati.
+Coscienza, rilascio e verità non attestati.
 
 ### Tre modi per capire iKant
+
+Modalità: **EDU** e **CANONICAL**.
 
 | Per chi | Da leggere | Domanda |
 |---|---|---|
@@ -37,9 +39,9 @@ Coscienza, rilascio e verità non sono attestati.
 
 ## Modalità e bootstrap
 
-**EDU** — laboratorio consigliato: scegliere non attiva `ACTIVE` né memoria tra chat. **CANONICAL** — identità MCP e un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59); MCP connesso non significa `ACTIVE`. `EXPERIMENTAL` è storico C72/v1, non terza modalità pubblica C72/v2 (ingresso e consenso).
+**EDU (sperimentale, consigliata)** — consenso non significa `ACTIVE` né memoria tra chat. **CANONICAL (via MCP)** — richiede identita' nativa dell'evento e one canonical `SESSION_CHAT_LOCAL` composition (C59). MCP da solo non attiva CANONICAL. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; l'ingresso pubblico corrente è C72/v2.
 
-C59 censisce i percorsi in [`session-chat-composition-census.json`](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency: i byte arrivano dal piano HOST con verifica.
+C59: [censimento dei canali](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency; il relay HOST verifica i byte.
 
 Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I ACCEPT` (solo dopo) → `EDU` o `CANONICAL` (dopo introduzione). Ordine: `README.md -> BOOTSTRAP.json` → `ADMISSION.json` → `AGENTS.md` → `TERMS.md`. Primo ingresso: **GitHub API only**; mai consenso storico.
 
