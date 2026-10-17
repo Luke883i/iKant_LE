@@ -11,7 +11,7 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 ## Cosa ottieni oggi
 
-Guida sperimentale, non servizio installato.
+Guida sperimentale.
 
 ## Cosa non e (ovvero: cosa non è)
 
@@ -39,7 +39,7 @@ Modalità: **EDU** e **CANONICAL**.
 
 ## Modalità e bootstrap
 
-**EDU (sperimentale, consigliata)** — consenso non significa `ACTIVE` né memoria tra chat. **CANONICAL (via MCP)** — richiede identita' nativa dell'evento e one canonical `SESSION_CHAT_LOCAL` composition (C59). MCP da solo non attiva CANONICAL. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; l'ingresso pubblico corrente è C72/v2.
+**EDU (sperimentale, consigliata)** — consenso non significa `ACTIVE` né memoria tra chat. **CANONICAL (via MCP)** — un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition (C59). MCP da solo non attiva CANONICAL. C72/v1 conserva `EXPERIMENTAL` solo come ricevuta storica; l'ingresso pubblico corrente è C72/v2 (ingresso e consenso).
 
 C59: [censimento dei canali](contracts/session-chat-composition-census.json). GitHub DNS/egress from the container is not a dependency; il relay HOST verifica i byte.
 

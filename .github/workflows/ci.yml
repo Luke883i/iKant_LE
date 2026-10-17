@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  issues: write # for one bounded, reviewable PR-only failure diagnostic
 jobs:
   qualify:
     runs-on: ubuntu-latest
@@ -17,40 +16,7 @@ jobs:
         with:
           node-version: '20'
       - name: Deterministic tests
-        run: |
-          npm test > "$RUNNER_TEMP/ikant-deterministic.tap" 2>&1 || {
-            status=$?
-            cat "$RUNNER_TEMP/ikant-deterministic.tap"
-            exit "$status"
-          }
-          cat "$RUNNER_TEMP/ikant-deterministic.tap"
-      - name: Record bounded PR diagnostic (test names only)
-        if: ${{ failure() && github.event_name == 'pull_request' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          node --input-type=module - <<'NODE'
-          import fs from 'node:fs';
-          import {spawnSync} from 'node:child_process';
-          const f=process.env.RUNNER_TEMP+'/ikant-deterministic.tap';
-          if(!fs.existsSync(f)) process.exit(0);
-          const contents=fs.readFileSync(f,'utf8');
-          const names=contents.split(/\r?\n/).filter(x=>/^not ok [0-9]+ - /.test(x))
-            .slice(0,20).map(x=>x.slice(0,200));
-          const body=['<!-- ikant-pr141-bounded-ci-diagnostic -->',
-            'CI diagnostic — test names only (no payloads, tracebacks or secrets).',
-            'Run: '+process.env.GITHUB_RUN_ID,
-            'Checkout: '+spawnSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).stdout.trim(),
-            'GITHUB_SHA: '+process.env.GITHUB_SHA,
-            ...((names.length)?names:['No TAP `not ok` line; inspect authorized CI log manually.'])]
-            .join('\n');
-          const out=spawnSync('gh',['api','repos/'+process.env.GITHUB_REPOSITORY+
-            '/issues/'+process.env.ISSUE_NUMBER+'/comments','--method','POST','-f','body='+body],
-            {encoding:'utf8'});
-          if(out.status!==0){console.error('Bounded PR diagnostic publish failed');process.exitCode=1;}
-          else console.log('Bounded PR diagnostic published for this run.');
-          NODE
+        run: npm test
       - name: Contract and lifecycle check
         run: npm run check
       - name: C5 one-million recurrent self-world semantic falsification
