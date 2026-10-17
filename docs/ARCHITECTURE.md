@@ -6,11 +6,15 @@ This document summarizes the current product model; machine contracts and execut
 
 iKant_LE is a zero-runtime-dependency Node.js constitutional chat runtime around a replaceable host model, not a model/provider/browser shell/autonomous external-action agent.
 
-Canonical lifecycle:
+## Current public admission versus historical carriers
 
-`FIRST_CONTACT -> API_HEAD_BINDING -> API_ORIENTATION -> TERMS_FREEZE -> I ACCEPT -> C72_INTRO -> MODE_SELECTION -> {CANONICAL: C59_OWNER, EXPERIMENTAL: C77/C82/C78/C79/C81}`
+**Public C72/v2 lifecycle:** `FIRST_CONTACT -> SOURCE_HEAD_BINDING -> five original orientation files -> TERMS_FREEZE -> later exact I ACCEPT -> C72/v2 introduction -> later exact EDU or CANONICAL`. Selection is not activation.
 
-First contact pins `main`, reads five orientation files by GitHub API, presents Terms and freezes. After exact acceptance, C72 requires a later exact CANONICAL/EXPERIMENTAL choice. Only CANONICAL enters C59 `SESSION_CHAT_LOCAL`; EXPERIMENTAL admits bounded parallel C82 samehash legacy carriers, without GitHub-ref authentication or ACTIVE. Canonical host compute runs on session-local Node without WEBAPP, hosted runtime, managed model or Plugin/MCP registration. Carriers and the pre-runtime single-NEXT/failure-memory adapter are authority-zero host attestations, not physical proof. Materialization validates loader/shards; runtime reopens the root, matches executed modules and runs a non-injectable probe before ACTIVE. Discovery, history, tests, qualification and SLO budgets do not activate a runtime.
+- **EDU:** `C72/v2 -> S02 -> C135 -> C107/C70/C126 -> HOST language -> C87 single writer/readback -> C125 host-bound output`, when every owner requirement is genuinely met. The result is local and `active:false`; absence of provider-native ingress must be reported.
+- **CANONICAL:** only a genuinely connected provider path with authenticated native event identity, C59 `SESSION_CHAT_LOCAL` composition, verified runtime, durable writer/readback and original delivery permits an appropriate ACTIVE claim.
+- **Historical C72/v1 `EXPERIMENTAL`:** legacy contracts and carrier receipts remain available for compatibility. They must never be relabeled as EDU/v2 or used to fabricate current activation.
+
+An earlier architecture snapshot described only `CANONICAL/EXPERIMENTAL`. That is **historical**, not the current public admission choice. The repository's C72/v2 and runtime owners govern present behavior. Documentation cannot create a new owner, install a plugin or supply a missing provider hook. For the human-first view see [README](../README.md), for phase-by-phase evidence [runtime map](IKANT_RUNTIME_AND_EVIDENCE.md), and for installation limits [bootstrap guide](IKANT_LOCAL_SETUP.md).
 
 ## Persistence and turn spine
 
