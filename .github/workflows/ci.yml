@@ -27,10 +27,28 @@ jobs:
           files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "1,52p")
           test -n "$files"
           node --test --test-concurrency=1 $files
-      - name: Diagnostic test shard 2 (53-104)
+      - name: Diagnostic shard 2.1 (53-65)
         if: always()
         run: |
-          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "53,104p")
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "53,65p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
+      - name: Diagnostic shard 2.2 (66-78)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "66,78p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
+      - name: Diagnostic shard 2.3 (79-91)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "79,91p")
+          test -n "$files"
+          node --test --test-concurrency=1 $files
+      - name: Diagnostic shard 2.4 (92-104)
+        if: always()
+        run: |
+          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "92,104p")
           test -n "$files"
           node --test --test-concurrency=1 $files
       - name: Diagnostic test shard 3 (105-156)
