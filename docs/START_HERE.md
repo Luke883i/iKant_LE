@@ -20,6 +20,10 @@ Leggi [come configurare un Project e il runtime locale](IKANT_LOCAL_SETUP.md); n
 
 Se incontri `C72`, `C87` o `C59`, non sono nomi di un modello né livelli di intelligenza: indicano contratti e passaggi verificabili. [Dizionario completo con esempi semplici, link e limiti](IKANT_CX_LEXICON.md). Non devi conoscerli per iniziare; i tecnici non devono darli per scontati.
 
+## Una mappa completa, dal primo giorno
+
+[Atlante navigabile di tutti i documenti](IKANT_DOCUMENT_ATLAS.md) e [DoD ontologico, metriche e checklist](IKANT_DOCUMENT_ONTOLOGY_DOD.md) distinguono ruolo, prove e limiti. Ogni file ha una classificazione; la review umana resta necessaria.
+
 ## Scegli la lettura successiva
 
 - **Mi interessa l'essere umano e la coscienza:** [le tre domande confutabili](IKANT_RESEARCH_QUESTIONS.md).
