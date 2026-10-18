@@ -20,7 +20,20 @@ test('README invites a beginner first then gives exact technical provenance',()=
  const r=text('README.md');assert.match(r,/# iKant.*risposte guidate/u);
  for(const x of ['Cosa ottieni oggi','Cosa non e','docs/START_HERE.md','docs/PRODUCT_DASHBOARD.md','docs/V1_PRODUCT_DECISIONS.md','docs/V1_E2E_TRACEABILITY.md','TERMS.md','npm test','npm run check'])assert.ok(r.includes(x),x);
  assert.ok(!r.includes('CANONICAL ACTIVE ottenuto'), 'unproven claim');
- assert.ok(Buffer.byteLength(r)<4300);
+ // Full standalone root README explicitly approved by the human owner.
+ // The former <4300 byte shortcut has been replaced by a bounded content DoD:
+ // no unlimited prose, no source/authority promotion, and all four pillars.
+ assert.ok(Buffer.byteLength(r,'utf8')<12000, 'README standalone editorial envelope');
+ for(const required of [
+  'natura, ratio e utilità', 'Cosa non e', 'infrastruttura cognitiva verificabile',
+  '## Modalità e bootstrap', '## Tre domande di ricerca',
+  '## Metodo end-to-end, sviluppo e lettori', 'Node.js **20+**',
+  'C4', 'C5', 'C8/C11', 'neuroni', 'sinapsi', 'UNKNOWN',
+  'C87', 'C125', 'docs/IKANT_COGNITIVE_SUBSTRATE.md',
+  'docs/IKANT_DEVELOPMENT_HISTORY.md', 'docs/IKANT_SEMANTIC_RETICULUM.md'
+ ])assert.ok(r.includes(required),'standalone DoD missing '+required);
+ assert.match(r,/<details>[\s\S]*<summary>[\s\S]*<\/details>/);
+ assert.ok(!r.includes('CANONICAL ACTIVE ottenuto'),'no unproven native activation');
 });
 test('documentation links and declared local witnesses exist, but proofs are graded',()=>{
  for(const f of ['docs/V1_PRODUCT_DECISIONS.md','docs/V1_E2E_TRACEABILITY.md','docs/START_HERE.md','release/catalog.json','contracts/v1-product-baseline.json'])assert.ok(fs.statSync(path.join(root,f)).isFile(),f);

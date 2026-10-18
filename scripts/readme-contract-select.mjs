@@ -62,7 +62,9 @@ export function falsifyReadme(readme,root=ROOT){
   // but cap at 100 variations (actual altered text, not duplicate invocations).
   for(let i=0;i<100;i++){
     const anchor=requiredFragments[i%requiredFragments.length];
-    const mut=readme.replace(anchor,`[MUTATED_${i}_${anchor.length}]`);
+    // Delete every copy: a long standalone README can legitimately repeat an anchor.
+    // Removing one copy must not be mistaken for deleting the underlying claim.
+    const mut=readme.replaceAll(anchor,`[MUTATED_${i}_${anchor.length}]`);
     const verdict=verifyReadme(mut,root);
     outcomes.push({id:i+1,anchor,rejected:!verdict.ok,first_error:verdict.errors[0]||null});
   }
