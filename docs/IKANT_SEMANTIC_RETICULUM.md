@@ -1,10 +1,12 @@
 # Semantic reticulum: sources, responsibilities, limits and verification
 
-> Advisory editorial map at Git commit `5b064fd8415702d8c0684c6fa171a8f1da993070`. This document does not add runtime owners or modify admission. Exact contracts, code and validated receipts take precedence over narrative. The original Markdown remains available from Git history.
+> Advisory editorial map based on LE Git commit `8e80ac52d5630cded7eaa5619e47d359cf40e831`. This document does not add runtime owners or modify admission. Exact contracts, code and validated receipts take precedence over narrative. The original Markdown remains available from Git history.
 
 ## Starting point: an understandable standalone README
 
 The root [README](../README.md) answers **1) nature, 2) ratio, 3) objectives, 4) methods/instruments** without requiring another file. It introduces the human, the LLM, iKant as procedural cognitive infrastructure, and the HOST as a distinct executor/presenter. It explains C4 functional appraisal, C5 recurrent self/world, C8/C11 epistemic limits, C72 admission, C87 single writer, C125 delivery and C59 native identity. Neuroscience terms are analogies of *functions*, never claims of neuronal homology, biological equivalence or first-person experience.
+
+For the scientific-humanistic bridge across human cognition, the private parent design and the bounded LE implementation, use [neuroscience, diagrams and falsifiers](IKANT_NEUROCOGNITIVE_BRIDGE.md). The parent repository is access-restricted; its conceptual lineage cannot be promoted to LE runtime evidence.
 
 Each reader can stop at the root or go deeper: [public guide](START_HERE.md), [causal research questions](IKANT_RESEARCH_QUESTIONS.md), [architecture](ARCHITECTURE.md), [runtime evidence](IKANT_RUNTIME_AND_EVIDENCE.md), [Cx dictionary](IKANT_CX_LEXICON.md) and [complete document atlas](IKANT_DOCUMENT_ATLAS.md).
 

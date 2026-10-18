@@ -27,6 +27,7 @@
 - [docs/IKANT_DEVELOPMENT_HISTORY.md](IKANT_DEVELOPMENT_HISTORY.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_DOCUMENT_ONTOLOGY_DOD.md](IKANT_DOCUMENT_ONTOLOGY_DOD.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md](IKANT_EDITORIAL_CONTRACT_AUDIT.md): Modelli e prove. Stato di review: **da verificare**.
+- [docs/IKANT_NEUROCOGNITIVE_BRIDGE.md](IKANT_NEUROCOGNITIVE_BRIDGE.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_RESEARCH_QUESTIONS.md](IKANT_RESEARCH_QUESTIONS.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_RUNTIME_AND_EVIDENCE.md](IKANT_RUNTIME_AND_EVIDENCE.md): Modelli e prove. Stato di review: **da verificare**.
 - [docs/IKANT_SEMANTIC_RETICULUM.md](IKANT_SEMANTIC_RETICULUM.md): Modelli e prove. Stato di review: **da verificare**.
