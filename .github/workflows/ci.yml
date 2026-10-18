@@ -15,32 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Diagnostic regression segment 1 (1-55)
-        if: always()
-        run: |
-          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "1,55p")
-          test -n "$files"
-          node --test --test-concurrency=1 $files
-      - name: Diagnostic regression segment 2 (56-110)
-        if: always()
-        run: |
-          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "56,110p")
-          test -n "$files"
-          node --test --test-concurrency=1 $files
-      - name: Diagnostic regression segment 3 (111-165)
-        if: always()
-        run: |
-          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "111,165p")
-          test -n "$files"
-          node --test --test-concurrency=1 $files
-      - name: Diagnostic regression segment 4 (166-999)
-        if: always()
-        run: |
-          files=$(find tests -type f -name "*.test.mjs" | LC_ALL=C sort | sed -n "166,999p")
-          test -n "$files"
-          node --test --test-concurrency=1 $files
       - name: Deterministic tests
-        if: always()
         run: npm test
       - name: Contract and lifecycle check
         run: npm run check

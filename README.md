@@ -25,7 +25,7 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 ### Tre modi per capire iKant
 
-Modalità: **EDU** e **CANONICAL**. Le etichette Cx sono numeri di contratti, non stadi di coscienza.
+Modalità: **EDU** e **CANONICAL**. Le etichette Cx sono numeri di contratti, non stadi di coscienza. [Glossario Cx](docs/IKANT_CX_LEXICON.md).
 
 | Per chi | Da leggere | Domanda |
 |---|---|---|
