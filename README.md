@@ -35,11 +35,7 @@ Modalità: **EDU** e **CANONICAL**. Le etichette Cx sono numeri di contratti, no
 
 ## Dall'umano alla prova
 
-- **Umano:** corpo, storia, consenso e giudizio.
-- **LLM:** testo candidato, non autorità o soggettività provata.
-- **iKant:** piani, limiti, writer e rilettura verificabili se eseguiti.
-- **HOST:** connessione con modello e interfaccia, senza prove inventate.
-- **Verificatore:** distingue operazione e dichiarazione.
+**Ruoli:** l'umano autorizza e giudica; l'LLM propone; iKant controlla e registra; l'HOST connette; il verificatore distingue fatti e dichiarazioni.
 
 **Struttura cognitiva.** C4 misura valutazioni dell'interazione, non emozioni vissute; C5 organizza ricorrenza, attenzione e *self-world* funzionale; C8/C11 vincolano le pretese ontologiche. Sono analogie operative con la ricerca cognitiva, non un cervello riprodotto.
 
