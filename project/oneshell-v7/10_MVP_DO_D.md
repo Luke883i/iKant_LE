@@ -11,3 +11,10 @@
 | P7 | test/CI software e readiness EDU vs CANONICAL distinte | C137 su modello reale, CI post-merge e owner release |
 
 **Semantica della chiusura**: `SOFTWARE_CANDIDATE_PASS` ≠ `MVP_PRODUCT_RELEASE`. Un `sha256` prova integrità del byte noto, non copertura assoluta degli atomi, presenza di utenti, installazione, personhood o vantaggio cognitivo.
+
+## Session panel P8 — candidate addition (not a new owner)
+
+- Read-only session snapshot and local sequence regression: `host/oneshell-thread-session.mjs`; original A stays byte-identical, B technical, six slots fixed.
+- Adapter opt-in flag: `IKANT_ONESHELL_THREAD_PANEL=1`; native thread panel must be proven installed, authorized, persistently visible and reconciled in ChatGPT.
+- Post-mode first-source UX guard: `host/p1-postmode-source-handoff.mjs`; zero pre-mode ZIP demands.
+- Refer to `docs/ONESHELL_THREAD_SESSION_V1.md` for software vs. real-client gates and post-merge prompt+ZIP rotation.
