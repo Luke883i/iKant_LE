@@ -76,7 +76,7 @@ Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I 
 
 ## Tre domande di ricerca
 
-**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). **Ingegneria:** sorgenti vincolate, writer unico, rilettura e fallimenti attribuibili. **Prodotto:** ingresso, modalità, consegna e percorsi comprensibili. Falsificatori: falso `ACTIVE`, doppia scrittura, assenza di beneficio misurabile o blocco indebito. Status ontologico non dimostrato.
+**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). **Obiettivi ingegneristici:** sorgenti vincolate, writer unico, rilettura e fallimenti attribuibili. **Obiettivi di prodotto:** ingresso, modalità, consegna e percorsi comprensibili. Falsificatori: falso `ACTIVE`, doppia scrittura, assenza di beneficio misurabile o blocco indebito. Status ontologico non dimostrato.
 
 ## Metodo end-to-end, sviluppo e lettori
 
