@@ -26,3 +26,7 @@ L'output ordinario **dopo i gate** contiene esattamente sei slot in ordine stabi
 **Etichette visibili consentite per A:** `NO_VOICE`, `HOST_BOUND` solo con C87 originale e readback, `PROVIDER_VERIFIED` solo con owner provider autentico. Mai riutilizzare il campo A del turno precedente.
 
 **Unica superficie:** nessuna prosa ordinaria HOST fuori dai sei slot dopo i gate; messaggi tecnici del modello non valgono come voce A. La vera UI persistente dipende dalla app MCP registrata, non dal prompt/ZIP. La vista UI non riformula mai A: soltanto byte originali dal readback con prove coerenti.
+
+## Vista business opzionale S05 (non normativa) — riflessione 1/3
+
+[Contratto, prova CIL e PoC](../../docs/S05_CIL_HUMAN_SHELL_POC.md): `Risultato` (ESITO, `target`), `La risposta di iKant` (A, `message-square-text`), `Controlli operativi` (B, `settings-2`), `Evidenze` (PROVA, `file-check-2`), `Punto aperto` (EDGE, `shield-alert`), `Prossima azione` (NEXT, `arrow-right`). I sei ID, l'ordine, le prove e l'esclusivita' di A restano invariati. `IUI.TEXT` + `co_present` (CIL v1) esprime solo un piano visuale; nessun rendering nativo attestato.

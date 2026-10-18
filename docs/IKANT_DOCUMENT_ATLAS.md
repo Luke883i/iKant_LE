@@ -157,6 +157,7 @@
 - [docs/RESEARCH_LEDGER.md](RESEARCH_LEDGER.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md](S01_PUBLIC_EDU_CANONICAL_ADMISSION.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/S03_S09_POST137_RUNTIME_COMPLETION.md](S03_S09_POST137_RUNTIME_COMPLETION.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/S05_CIL_HUMAN_SHELL_POC.md](S05_CIL_HUMAN_SHELL_POC.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/SESSION_CHAT_LOCAL_PROMPT.md](SESSION_CHAT_LOCAL_PROMPT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/V1_E2E_TRACEABILITY.md](V1_E2E_TRACEABILITY.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/V1_GOLD_MIGRATION.md](V1_GOLD_MIGRATION.md): Documentazione specialistica. Stato di review: **da verificare**.

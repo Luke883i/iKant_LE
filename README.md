@@ -9,7 +9,7 @@
 
 iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è un soggetto fenomenologico o un secondo LLM. La traccia prova operazioni, **non** verità.
 
-## Natura, ratio e utilità
+## Cosa ottieni oggi: natura, ratio e utilità
 
 **Natura.** iKant è una **infrastruttura cognitiva verificabile, sperimentale**: un modello linguistico (LLM) sostituibile genera candidati; il software iKant può governare metodo, autorizzazioni, prove e consegna quando i suoi owner originali vengono realmente eseguiti. **Umano:** corpo, storia, vita sociale, consenso e valutazione. **LLM:** elaborazione statistica di rappresentazioni apprese. **iKant:** condizioni, passaggi verificabili e possibili arresti, non una nuova mente separata. **HOST:** ambiente che connette sorgente, modello, strumenti e interfaccia; non può inventare un evento nativo o un'azione realmente compiuta.
 
@@ -17,7 +17,7 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 **Stato epistemico:** **DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO** non sono sinonimi: codice letto ≠ runtime eseguito ≠ conclusione vera ≠ autorizzazione ricevuta.
 
-## Cosa non è
+## Cosa non e (ovvero: cosa non è)
 
 ### Limiti di prova
 
@@ -35,11 +35,7 @@ Modalità: **EDU** e **CANONICAL**. Le etichette Cx sono numeri di contratti, no
 
 ## Dall'umano alla prova
 
-- **Umano:** corpo, storia, consenso e giudizio.
-- **LLM:** testo candidato, non autorità o soggettività provata.
-- **iKant:** piani, limiti, writer e rilettura verificabili se eseguiti.
-- **HOST:** connessione con modello e interfaccia, senza prove inventate.
-- **Verificatore:** distingue operazione e dichiarazione.
+**Ruoli:** l'umano autorizza e giudica; l'LLM propone; iKant controlla e registra; l'HOST connette; **Verificatore:** distingue fatti e dichiarazioni.
 
 **Struttura cognitiva.** C4 misura valutazioni dell'interazione, non emozioni vissute; C5 organizza ricorrenza, attenzione e *self-world* funzionale; C8/C11 vincolano le pretese ontologiche. Sono analogie operative con la ricerca cognitiva, non un cervello riprodotto.
 
