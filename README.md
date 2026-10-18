@@ -5,11 +5,11 @@
 
 > **ROA Research Programme.** Parte di `Luke883i/academics` e `Luke883i/ROA`; nessuna conformità o efficacia è implicita.
 
-# iKant — risposte guidate e verificabili, non una mente digitale
+# iKant — risposte guidate e verificabili.
 
-iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è una persona, un secondo LLM o coscienza dimostrata. La traccia prova operazioni, **non** verità.
+iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è un soggetto fenomenologico o un secondo LLM. La traccia prova operazioni, **non** verità.
 
-## Cosa ottieni oggi — natura, ratio e utilità
+## Natura, ratio e utilità
 
 **Natura.** iKant è una **infrastruttura cognitiva verificabile, sperimentale**: un modello linguistico (LLM) sostituibile genera candidati; il software iKant può governare metodo, autorizzazioni, prove e consegna quando i suoi owner originali vengono realmente eseguiti. **Umano:** corpo, storia, vita sociale, consenso e valutazione. **LLM:** elaborazione statistica di rappresentazioni apprese. **iKant:** condizioni, passaggi verificabili e possibili arresti, non una nuova mente separata. **HOST:** ambiente che connette sorgente, modello, strumenti e interfaccia; non può inventare un evento nativo o un'azione realmente compiuta.
 
@@ -17,7 +17,7 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 **Stato epistemico:** **DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO** non sono sinonimi: codice letto ≠ runtime eseguito ≠ conclusione vera ≠ autorizzazione ricevuta.
 
-## Cosa non e (ovvero: cosa non è)
+## Limitazioni
 
 **Coscienza, rilascio e verità non attestati.** iKant non è un organismo né una replica del cervello umano. Quando il codice dice *attenzione*, *workspace*, *self-world*, *valenza*, *memoria*, descrive **analogie funzionali**; non prova neuroni, sinapsi, sensazioni, biografia vissuta o coscienza. Un umano apprende attraverso un corpo e una storia; un LLM usa rappresentazioni statistiche; iKant aggiunge procedure verificabili. Le loro complessità non si confrontano sommando righe di codice, parametri e sinapsi. **Fenomenologia: UNKNOWN** — né presente né assente sulla sola base di questi test.
 
@@ -73,5 +73,3 @@ Una firma o hash verifica byte, non verità del contenuto; un writer unico più 
 ## Stato e autorità
 
 **DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**: distinguere fonti e prove. `main` è fonte; una PR non è release. [Dashboard](docs/PRODUCT_DASHBOARD.md) · [Decisioni V1](docs/V1_PRODUCT_DECISIONS.md) · [Tracciabilità V1](docs/V1_E2E_TRACEABILITY.md) · [Catalogo](release/catalog.json) · [Contratti](contracts/) · [Test](tests/) · [Audit dei 100 contratti editoriali](docs/IKANT_EDITORIAL_CONTRACT_AUDIT.md) · [Atlante di tutti i 166+ Markdown](docs/IKANT_DOCUMENT_ATLAS.md).
-
-**Progressione:** problema → persone → runtime → prove → ricerca → rilascio. [Sigle Cx spiegate](docs/IKANT_CX_LEXICON.md).
