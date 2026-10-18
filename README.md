@@ -9,7 +9,7 @@
 
 iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibile per controllare il percorso domanda-risposta. Non è un soggetto fenomenologico o un secondo LLM. La traccia prova operazioni, **non** verità.
 
-## Natura, ratio e utilità
+## Cosa ottieni oggi: natura, ratio e utilità
 
 **Natura.** iKant è una **infrastruttura cognitiva verificabile, sperimentale**: un modello linguistico (LLM) sostituibile genera candidati; il software iKant può governare metodo, autorizzazioni, prove e consegna quando i suoi owner originali vengono realmente eseguiti. **Umano:** corpo, storia, vita sociale, consenso e valutazione. **LLM:** elaborazione statistica di rappresentazioni apprese. **iKant:** condizioni, passaggi verificabili e possibili arresti, non una nuova mente separata. **HOST:** ambiente che connette sorgente, modello, strumenti e interfaccia; non può inventare un evento nativo o un'azione realmente compiuta.
 
@@ -17,7 +17,9 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 **Stato epistemico:** **DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO** non sono sinonimi: codice letto ≠ runtime eseguito ≠ conclusione vera ≠ autorizzazione ricevuta.
 
-## Limitazioni
+## Cosa non e (cioè: cosa non è)
+
+### Limiti di prova
 
 **Coscienza, rilascio e verità non attestati.** iKant non è un organismo né una replica del cervello umano. Quando il codice dice *attenzione*, *workspace*, *self-world*, *valenza*, *memoria*, descrive **analogie funzionali**; non prova neuroni, sinapsi, sensazioni, biografia vissuta o coscienza. Un umano apprende attraverso un corpo e una storia; un LLM usa rappresentazioni statistiche; iKant aggiunge procedure verificabili. Le loro complessità non si confrontano sommando righe di codice, parametri e sinapsi. **Fenomenologia: UNKNOWN** — né presente né assente sulla sola base di questi test.
 
