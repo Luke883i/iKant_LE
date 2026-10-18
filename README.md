@@ -33,13 +33,32 @@ Modalità: **EDU** e **CANONICAL**. Le etichette Cx sono numeri di contratti, no
 
 ## Dall'umano alla prova
 
-- **Umano:** formula la domanda, presta consenso e valuta il risultato; ha corpo, storia, relazioni.
-- **LLM:** genera il testo; iKant non aggiunge nuovi pesi o una soggettività provata.
-- **iKant:** applica percorsi, verifiche, un writer originale e rilettura quando realmente eseguiti.
-- **HOST:** fornisce strumenti e interfaccia; non può inventare identità nativa o ricevute.
-- **Verificatore:** distingue ciò che fa il software da ciò che dichiara.
+- **Umano:** corpo, storia, consenso e giudizio.
+- **LLM:** testo candidato, non autorità o soggettività provata.
+- **iKant:** piani, limiti, writer e rilettura verificabili se eseguiti.
+- **HOST:** connessione con modello e interfaccia, senza prove inventate.
+- **Verificatore:** distingue operazione e dichiarazione.
 
-**Struttura cognitiva.** Il modulo C4 (*functional psyche*) registra valutazioni funzionali dell'interazione, non sentimenti vissuti; C5 (*recurrent self-world model*) struttura contesto, ricorrenza e limiti dell'autodescrizione. C8/C11 distinguono prove di funzioni causali e questioni ontologiche senza decidere la fenomenologia. Il kernel prende intenzioni e risorse, applica regole e vincoli; nessuna analogia con neuroscienze conferisce identità biologica.
+**Struttura cognitiva.** C4 misura valutazioni dell'interazione, non emozioni vissute; C5 organizza ricorrenza, attenzione e *self-world* funzionale; C8/C11 vincolano le pretese ontologiche. Sono analogie operative con la ricerca cognitiva, non un cervello riprodotto.
+
+**In parole semplici: modello cognitivo con controlli deterministici.** Con input, stato e policy fissati, le regole possono essere ripetibili; **l'LLM e il mondo esterno non diventano deterministici**. L'analogia con neuroscienze riguarda attenzione, ricorrenza e controllo, non neuroni o esperienza soggettiva.
+
+<details>
+<summary>Apri il diagramma: che cosa succede a una domanda?</summary>
+
+```mermaid
+flowchart LR
+ U["Persona"] --> C["Consenso e piano"]
+ C --> M["LLM: bozza"]
+ M --> V{"Controlli"}
+ V -- no --> S["Stop motivato"]
+ V -- sì --> R["Registro e rilettura"]
+ R --> O["Risposta verificabile nel suo perimetro"]
+```
+
+**Potenziale:** distinguere prove, supposizioni e limiti. **Non prova:** verità della risposta o coscienza. [Neuroscienze, padre/LE e falsificatori](docs/IKANT_NEUROCOGNITIVE_BRIDGE.md).
+
+</details>
 
 **Stack, architettura e infrastruttura.** Node.js **20+** e JavaScript per il runtime, JSON per i contratti, Git/GitHub per la provenienza, Markdown per il sistema documentale, test Node e campagne di falsificazione, DOCX quando richiesto per Surface B; Python 3 in procedure ausiliarie. LLM e interfaccia appartengono all'HOST. Un file, ZIP, plugin o progetto ChatGPT non installa o attiva automaticamente componenti. [Architettura e owner](docs/ARCHITECTURE.md) · [strato cognitivo e neuroscienze](docs/IKANT_COGNITIVE_SUBSTRATE.md) · [limiti](docs/PRODUCT_POSITIONING.md).
 
@@ -55,13 +74,13 @@ Tre messaggi nuovi: `avvia iKant` (leggi i cinque originali e i Termini) → `I 
 
 ## Tre domande di ricerca
 
-**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). **Obiettivi di ricerca:** RQ1 verificabilità contro lo stesso LLM senza controlli; RQ2 reale utilità/comprensione per persone; RQ3 confini di identità e coscienza senza falsi blocchi. **Obiettivi ingegneristici:** input e sorgente vincolati, singolo writer, rilettura indipendente, fallimento esplicito e attribuzione. **Obiettivi di prodotto:** onboarding, modalità, consegna e documenti navigabili. Confutatori: falso `ACTIVE`, doppia scrittura, ricevute non riapribili, nessun beneficio nel benchmark, blocco indebito di richieste lecite. Benefici e status ontologico non dimostrati.
+**RQ1:** i controlli migliorano la verificabilità rispetto allo stesso LLM da solo? **RQ2:** migliorano l'utilità per esseri umani senza costi eccessivi? **RQ3:** bloccano pretese indebite di identità, coscienza e attivazione, senza bloccare risposte lecite? [Ipotesi, benchmark e confutazioni](docs/IKANT_RESEARCH_QUESTIONS.md). **Ingegneria:** sorgenti vincolate, writer unico, rilettura e fallimenti attribuibili. **Prodotto:** ingresso, modalità, consegna e percorsi comprensibili. Falsificatori: falso `ACTIVE`, doppia scrittura, assenza di beneficio misurabile o blocco indebito. Status ontologico non dimostrato.
 
 ## Metodo end-to-end, sviluppo e lettori
 
 **Percorso EDU qualificato:** C72/v2 (ammissione e consenso) → S02/C135 (versione e coordinamento) → C107/C70/C126 (turno, piano e controlli) → generazione LLM/HOST → C87 (unico writer) → rilettura → C125 (uscita HOST locale). **CANONICAL** richiede in più identità dell'evento fornita dal provider e C59; un canale non diventa nativo per dichiarazione. Le ricevute appartengono al turno e all'owner che le produce.
 
-**Storia.** Il progetto ha progressivamente formalizzato ammissione, metodo/risorse, valutazioni dell'interazione (C4), contesto ricorrente (C5), confini di emergenza e coscienza (C8/C11), registrazione/consegna e percorsi EDU/CANONICAL. `EXPERIMENTAL` e PREPR sono storia e compatibilità, **non** identità correnti. Cx non misura intelligenza; una green CI non certifica beneficio umano o coscienza. [Storia delle scelte e test](docs/IKANT_DEVELOPMENT_HISTORY.md) · [reticolo semantico](docs/IKANT_SEMANTIC_RETICULUM.md).
+**Genealogia.** LE distilla principi del [padre iKant](https://github.com/Luke883i/iKant) (accesso riservato): provenienza, controllo, memoria epistemica e un LLM senza autorità. C4/C5 non equivalgono ai nove anelli CRC del padre; EDU/CANONICAL non coincidono con SESSION_CHAT/WEBAPP. [Storia e confini della distillazione](docs/IKANT_DEVELOPMENT_HISTORY.md) · [reticolo](docs/IKANT_SEMANTIC_RETICULUM.md).
 
 <details>
 <summary>Dettagli per auditor: prova locale, Surface B e autorità</summary>

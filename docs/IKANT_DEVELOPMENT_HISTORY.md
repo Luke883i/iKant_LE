@@ -42,3 +42,20 @@ C28 anti-entropy: add evidence below existing owners where possible; every repos
 
 
 [Current governance](GOVERNANCE.md) · [Human overview](../README.md).
+
+## Genealogia: padre iKant → distillazione iKant_LE
+
+**Provenienza osservata:** LE `8e80ac52d5630cded7eaa5619e47d359cf40e831`, repository padre `Luke883i/iKant` a `43ce861a552d44821ffce455f6237905f0994936`, lettura della sua [introduzione](https://github.com/Luke883i/iKant/blob/43ce861a552d44821ffce455f6237905f0994936/README.md) e del [Digital-Neuro-Cognitive Model v0.2](https://github.com/Luke883i/iKant/blob/43ce861a552d44821ffce455f6237905f0994936/docs/DIGITAL_NEURO_COGNITIVE_MODEL.md). Il padre è privato: i riferimenti non sono leggibili da ogni visitatore e non sostituiscono i file pubblici di LE. Un commit consultato è una fotografia, non una prova di deploy attivo.
+
+| Genealogia concettuale | Padre (dichiarato) | LE (distillazione verificabile) |
+|---|---|---|
+| Proposta | Runtime agente epistemico locale con controllo di prodotto e ingegneria | Runtime costituzionale a contratti e confini espliciti |
+| Cognizione | CRC R0–R8: segnale, salienza, memoria, previsione, metacognizione, sé funzionale, ipotesi deboli, centro regolativo | C1 metodo/risorse, C4 psyche funzionale, C5 ricorrenza self/world; qualifiche C8/C11 |
+| Generazione | Modello sostituibile senza autorità epistemica o di esecuzione | LLM/HOST produce candidato; owner e validatori possono bloccare o attestare il turno |
+| Forme di prodotto | SESSION_CHAT e WEBAPP con differenti limiti di hosting | EDU e CANONICAL come modalità pubbliche C72/v2; non sinonimi delle forme del padre |
+| Misura di maturità | Implementato / wired / UI canonica / utilizzabile dall'utente sono stati distinti | Contratti, test, eventi, writer, readback, consegna e prove native hanno gate distinti |
+| Storia | Milestone e piste di ricerca separate dalla produzione | GENESIS.0 → C1–C38 → owner C59/C72/C87/C125/C135 e libreria LIB.0; ricostruzione puntuale nella tabella sopra |
+
+**Ciò che si conserva:** centralità della fonte, separazione fra modello e autorità, aggiornamenti controllabili, provenienza, falsificatori e rifiuto di confondere software con fenomenologia umana. **Ciò che non si può dedurre:** che ogni anello CRC del padre sia presente o attivo in LE, che il padre e LE condividano stato e writer, che le modalità siano equivalenti o che il successo della CI sia un benchmark neuroscientifico.
+
+La storia precedente alla distillazione è ricostruita da documenti del padre; la storia LE è registrata qui dagli owner e dai contratti. Non mescolare etichette come S21/S26 del padre con slice Cx di LE senza un ponte di prove. [Diagrammi per chiunque e confronto con neuroscienze](IKANT_NEUROCOGNITIVE_BRIDGE.md).

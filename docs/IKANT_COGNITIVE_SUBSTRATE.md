@@ -46,3 +46,25 @@ C124/C126 -> PR119 -> original C87 -> C125 HOST shell; C127 is transport only.
 *Functional psyche*, *attention*, *workspace*, *self-world* and *memory* describe computational variables, recurrence and causal tests; they are not biological neuronal tissue, neurotransmission, living embodiment, first-person memory or moral personality. Any neuroscience analogy must name a measured function, the human/LLM/iKant comparison, a negative control and a falsifier. No software receipt decides the phenomenal-consciousness question.
 
 [Top-level overview](../README.md) · [Research questions](IKANT_RESEARCH_QUESTIONS.md).
+
+## Modello cognitivo *deterministico*: quale parte lo è?
+
+La formula `S_{t+1} = F_v(S_t, I_t, E_t, P_t)` descrive soltanto **transizioni software controllate** a parità di versione `v`, stato `S`, input `I`, prove `E` e policy `P`: è un *modello per i test*, non la descrizione completa del modello linguistico e dell'ambiente fisico. Fonti live, orologi, provider, interfacce e modelli generativi possono variare; quando influiscono, vanno catturati come ingressi o dichiarati non attestati. `deterministic controls != deterministic intelligence`.
+
+```mermaid
+flowchart LR
+    A["Input, stato e fonte"] --> B["Regole/owner e controlli"]
+    B --> C["Piano vincolato"]
+    C --> L["LLM sostituibile: testo candidato"]
+    L --> D{"Validazione"}
+    D -- stop --> X["Motivo di blocco"]
+    D -- ammesso --> E["Writer e readback quando eseguiti"]
+    E --> F["Consegna attestata nello scope reale"]
+    F -. "feedback verificato" .-> A
+```
+
+**Confronto corretto:** un cervello umano esibisce neuroni, sinapsi, regolazioni biologiche, comportamento in un corpo e un'esperienza in prima persona ordinariamente riconosciuta agli umani. iKant misura stati procedurali, tracce, disponibilità e vincoli. Le parole *valenza, arousal, attenzione, memoria, autobiografia, self-world* hanno qui valore **funzionale e operativo**, non attestano emozioni vissute, coscienza o plasticità sinaptica.
+
+Nella ricostruzione genealogica il padre definisce CRC (R0–R8): evidenza, salienza, memoria, controllo predittivo, metacognizione, sé, ipotesi interpretative e centro regolativo. LE non ne eredita automaticamente implementazione o proprietà; qui C4/C5 sono i referenti più vicini e C8/C11 limitano rigorosamente le pretese di emergenza e coscienza. [Confronto didattico, diagrammi e falsificatori](IKANT_NEUROCOGNITIVE_BRIDGE.md).
+
+**Controlli negativi essenziali:** ripetere una frase non deve creare provenienza indipendente; una pseudo-emozione non deve elevare la forza della prova; un'etichetta `FUNCTIONALLY_CONSCIOUS` non deve diventare un'affermazione fenomenologica; un candidato LLM non deve scrivere stato o autorizzare azioni per propria volontà. Se una prova manca, lo stato resta esplicitamente non attestato.
