@@ -11,7 +11,7 @@ On pinned source `a5a8e3ae491a0f0f7012dff1e9ff027ed3ea2cf7`, an ordinary questio
 - C137 policy: only an *original guarded non-ontology* C70 plan with a SHA-bound, bounded request about the process of response generation and an ordinary C132 shadow classification can qualify. C132 is a rejecting heuristic, **never** a cognition owner or permission grant.
 - C137 language: five mandatory labeled disclosures: observed output, documented architecture, bounded inference, unverifiable inner-state assertions, and why plausible explanations need not be faithful internal traces. Closed-form format checks, negative disclosure and denial of positive self-consciousness/native/access claims; **no semantic truth oracle**.
 - C135 (existing EDU/v2 session owner) chooses original C107 for all non-C137 routes, C137 for eligible routes. No host-side rewrite or fallback after C87. Both use **the same C87 module**, the same single ledger path, same atomic nonce guard and independent reopen, and the **existing** C125 controlled delivery. C137 is carried only as SHA-verified members of the original C107 package. No parallel writer.
-- New source epoch requires new source-bound C72/v2 admission. No old receipt is silently re-labeled; no new runtime is auto-deployed. C114 remains authoritative for ontology; its route is never bypassed through C137.
+- Every C137 invocation (including direct callers) requires EDU/v2 selection, source/plan SHA-256, C124 channel digest and explicit HOST language flag; legacy C72/v1 is rejected. New source epoch requires new source-bound C72/v2 admission. No old receipt is silently re-labeled; no new runtime is auto-deployed. C114 remains authoritative for ontology; its route is never bypassed through C137.
 
 ## Falsifiers and limitations
 

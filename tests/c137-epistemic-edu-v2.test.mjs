@@ -6,6 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {issueC72V2TermsOffer,acceptC72V2Terms,presentC72V2Introduction,selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
+import {issueC72TermsOffer,acceptC72Terms,presentC72Introduction,selectC72Mode} from '../host/c72-unified-mode-admission.mjs';
 import {previewC107CognitivePlan,executeC107Turn,inspectC107Ledger} from '../host/c107-edu-v2-turn.mjs';
 import {executeC137EpistemicTurn} from '../host/c137-edu-v2-turn.mjs';
 import {qualifyC137EpistemicCandidate,qualifyC137EpistemicRoute} from '../host/c137-epistemic-policy.mjs';
@@ -62,6 +63,31 @@ test('C137 direct: original C107 blocks before write, C137 single C87 write, ind
   assert.equal(inspectC107Ledger(x.ledger).latest_state.c137_epistemic_guard,true);
   assert.equal(executeC137EpistemicTurn(args).status,'C107_STOP');
   assert.equal(inspectC107Ledger(x.ledger).count,1);
+ }finally{fs.rmSync(x.dir,{recursive:true,force:true})}
+});
+test('C137 denies missing channel/plan, missing owner language and C72/v1 without append',()=>{
+ const x=tempLedger();try{
+  const p=preview();const args={ledgerFile:x.ledger,nonce:'c137-binding-denial-0001',
+   request:{...request(),modelCandidate:{input_sha256:H(input),text:answer}},
+   resetContext:true,requireHostLanguage:true,expectedC70OutputSha256:p.c70_output_sha256,
+   expectedC124ChannelSha256:p.c124_language_channel_sha256};
+  for(const mutate of [
+   a=>({...a,expectedC124ChannelSha256:null}),
+   a=>({...a,expectedC70OutputSha256:null}),
+   a=>({...a,requireHostLanguage:false}),
+   a=>({...a,expectedC124ChannelSha256:'f'.repeat(64)})]){
+   const o=executeC137EpistemicTurn(mutate(args));
+   assert.equal(o.status,'C107_STOP',JSON.stringify(o));
+   assert.equal(inspectC107Ledger(x.ledger).count,0);
+  }
+  const termsDigest=H(fs.readFileSync(path.join(root,'TERMS.md')));
+  const offer=issueC72TermsOffer({sourceHead:head,termsDigest});
+  const accepted=acceptC72Terms({offer,humanMessage:'I ACCEPT',termsPresented:true});
+  const legacy=selectC72Mode({accepted,orientation:presentC72Introduction(accepted),humanMessage:'EXPERIMENTAL'});
+  const denied=executeC137EpistemicTurn({...args,request:{...args.request,selection:legacy}});
+  assert.equal(denied.status,'C107_STOP');
+  assert.equal(denied.first_unclosed_edge,'C137_C72_V2_EDU_AND_OPTIN_REQUIRED');
+  assert.equal(inspectC107Ledger(x.ledger).count,0);
  }finally{fs.rmSync(x.dir,{recursive:true,force:true})}
 });
 test('C137 adversarial route and language mutations fail closed before C87',()=>{

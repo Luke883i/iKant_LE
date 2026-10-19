@@ -4,7 +4,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import {validateC72ModeSelection} from './c72-unified-mode-admission.mjs';
 import {validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
 import {issueC69ExperimentalOffer} from './c69-edu-v2-preview.mjs';
 import {runC70ExperimentalComputePreview} from '../src/c70-edu-v2-compute-preview.mjs';
@@ -25,8 +24,7 @@ const denials={active:false,authority:0,canonical_runtime:false,native_event_att
  source_origin_attested:false,cognitive_persistence_attested:false,model_provider_attested:false};
 const stop=e=>({schema,status:'C107_STOP',first_unclosed_edge:e,...denials});
 const disallow=/(?:\bpassword\s*[:=]|\bapi[_ -]?key\s*[:=]|\bbearer\s+[a-z0-9._~+-]{12,}|\bprivate[_ -]?key\s*[:=])/i;
-const selected=(s,head)=>validateC72ModeSelection(s,{mode:'EXPERIMENTAL',sourceHead:head})||
-  validateC72V2ModeSelection(s,{mode:'EDU',sourceHead:head});
+const selected=(s,head)=>validateC72V2ModeSelection(s,{mode:'EDU',sourceHead:head});
 export function preflightC107Shape({head,nonce,humanInput,priorMessages,modelCandidate,resetContext}={}){
  if(!headOk(head)||!nonceOk(nonce)||!inputOk(humanInput)||disallow.test(humanInput))return 'SOURCE_NONCE_OR_INPUT';
  if(!Array.isArray(priorMessages)||priorMessages.length>4||priorMessages.some(x=>!inputOk(x)||disallow.test(x)))return 'BOUNDED_COGNITIVE_WINDOW';
@@ -54,13 +52,16 @@ export function inspectC107Ledger(file){
 }
 export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false,expectedC70OutputSha256=null,expectedC124ChannelSha256=null}={}){
  if(!ledgerOk(ledgerFile))return stop('HOST_PRIVATE_LEDGER_PATH');
- if(typeof requireHostLanguage!=='boolean')return stop('HOST_LANGUAGE_REQUIRED_FLAG');
+ if(requireHostLanguage!==true)return stop('C137_HOST_LANGUAGE_REQUIRED');
+ if(!/^[a-f0-9]{64}$/.test(expectedC70OutputSha256||'')||
+    !/^[a-f0-9]{64}$/.test(expectedC124ChannelSha256||''))
+   return stop('C137_PLAN_AND_C124_ATTESTATION_REQUIRED');
  const x=request||{};const head=x.sourceHead;
  const bad=preflightC107Shape({head,nonce,humanInput:x.humanInput,priorMessages,
   modelCandidate:x.modelCandidate,resetContext});
  if(bad)return stop(bad);
  if(x.optIn!==true||!selected(x.selection,head))
-  return stop('C72_EXPERIMENTAL_AND_SEPARATE_OPTIN_REQUIRED');
+  return stop('C137_C72_V2_EDU_AND_OPTIN_REQUIRED');
  try{
   const before=reopenC87Ledger(ledgerFile);
   if(before.status!=='C87_LEDGER_CHAIN_VALID'||before.latest_state?.source_head&&before.latest_state.source_head!==head)
@@ -82,9 +83,7 @@ export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages
   if(expectedC70OutputSha256!==null&&
    (typeof expectedC70OutputSha256!=='string'||expectedC70OutputSha256!==t.output_sha256))
    return stop('C107_COMPUTE_FIRST_C70_PLAN_DRIFT');
-  // C124 binding is mandatory ONLY for the new source epoch, never for frozen C107.
-  // C124 verification is explicitly activated by the verified composite owner;
-  // legacy main-head packages must remain backward-compatible.
+  // C137 mandates an exact C124 acknowledgement; historic C107 stays unchanged.
   const sourceEpochC124=expectedC124ChannelSha256!==null;
   if(sourceEpochC124){
    if(!verifyC124LanguageChannels(t.c124_language_channels,t.input_sha256))return stop('C124_SOURCE_CHANNEL_INVALID');
