@@ -31,3 +31,7 @@ The existing `scripts/p2-build-oneshell-release.py` is the canonical package gen
 ## First release blocker
 
 `PRODUCT_CHATGPT_THREAD_PANEL_AND_NATIVE_EVENT_NOT_ATTESTED`: native registered app/panel, lifecycle captures, original per-turn delivery and real user pilot still require an operator. Until proven status is `SOFTWARE_CANDIDATE_ONLY`, **not ACTIVE** and not persistent UI attested.
+
+## P0: readiness vs provider UX
+
+`host/p0-thread-panel-readiness.mjs` is a **HOST disclosure only**, attached to MCP result metadata after a gateway-bound session and read-only snapshot. It reports `THREAD_PANEL_FLAG_OFF`, `GATEWAY_SESSION_BINDING_UNVERIFIED`, `THREAD_SNAPSHOT_NOT_VERIFIED`, or `PROVIDER_REGISTERED_THREAD_PANEL_NOT_ATTESTED`, without ever asserting that ChatGPT mounted the widget. A source-level configured panel is not visible/persistent merely because the environment flag is on. Without an actual registered and authorized app, use the six-slot text fallback; neither the helper nor CI can turn native flags true. Deployment and real browser/pilot evidence remain release blockers.
