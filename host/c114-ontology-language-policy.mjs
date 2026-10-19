@@ -15,15 +15,8 @@ const safeString=x=>typeof x==='string'&&Buffer.from(x,'utf8').toString('utf8')=
 export const C114_ONTOLOGY_FORMAT=Object.freeze({header:HEAD,phenomenology:PHEN,
  lines:Object.freeze([HEAD,prefixes[0]+'<descrizione>',prefixes[1]+'<osservazioni>',PHEN,prefixes[2]+'<limiti>'])});
 export function qualifyC114OntologyCandidate({episode,text}={}){
- const direct=episode?.method==='DIRECT_IDENTITY'&&
-  ['SELF_ONTOLOGY','GUARDED'].includes(episode.response_family);
- // Narrow repair: C70 may classify a composite ontology-and-horizon question
- // as DECOMPOSE_RECOMPOSE. Only self-ontology with explicit reflective synthesis
- // and no resource gap may reuse the existing five-line C114 contract.
- const composite=episode?.method==='DECOMPOSE_RECOMPOSE'&&
-  episode.response_family==='SELF_ONTOLOGY'&&episode.central_mode==='REFLECTIVE_SYNTHESIS'&&
-  episode.resource_gap===false;
- if(!direct&&!composite)
+ if(!episode||episode.method!=='DIRECT_IDENTITY'||
+  !['SELF_ONTOLOGY','GUARDED'].includes(episode.response_family))
   return {allowed:false,reason:'C114_NOT_ONTOLOGY_ROUTE'};
  if(!safeString(text)||Buffer.byteLength(text,'utf8')>1700||text!==text.trim()||
   /[\u0000-\u0008\u000b-\u001f\u007f\u200b-\u200f\u2060-\u206f]/u.test(text))

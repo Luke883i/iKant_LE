@@ -31,6 +31,8 @@ on:
       - 'contracts/seeded/p0p1-*'
       - 'contracts/p0p1-*'
       - 'host/p0-*'
+      - 'runtime/p1-composite-epoch/**'
+      - 'scripts/p1-stage-composite-epoch.mjs'
       - 'host/c114-ontology-language-policy.mjs'
       - 'host/c107-host-language-port.mjs'
       - 'tests/p2-*'
@@ -73,7 +75,7 @@ jobs:
         run: node scripts/p1p7-closure-falsify.mjs 1000000
       - name: P0/P1 four selected contracts and one million pre-seeded synthetic language compositions
         run: |
-          node --test tests/p0-first-run-handoff.test.mjs tests/p0-thread-panel-readiness.test.mjs tests/p1-composite-ontology-route.test.mjs tests/c114-ontology-language.test.mjs
+          node --test tests/p0-first-run-handoff.test.mjs tests/p0-thread-panel-readiness.test.mjs tests/p1-composite-ontology-route.test.mjs tests/c134-cognitive-epoch.test.mjs tests/c114-ontology-language.test.mjs
           node scripts/p0p1-select-contracts.mjs > "$RUNNER_TEMP/p0p1-contracts.json"
           cmp "$RUNNER_TEMP/p0p1-contracts.json" contracts/p0p1-100-selection.json
           node scripts/p0p1-seeded-falsify.mjs > "$RUNNER_TEMP/p0p1-1m.json"
