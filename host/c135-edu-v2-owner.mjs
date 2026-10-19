@@ -85,6 +85,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   if(staged.status!=='C107_PACKAGE_REOPENED_NOT_EXECUTED')throw Error('S02_PACKAGE_NOT_REOPENED');
   stage=staged.install_root;
   const original=await import(pathToFileURL(path.join(stage,'host/c107-edu-v2-turn.mjs')).href);
+  const epistemic=await import(pathToFileURL(path.join(stage,'host/c139-edu-v2-turn.mjs')).href);
+  const c139=await import(pathToFileURL(path.join(stage,'host/c139-epistemic-policy.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
   const ledger=path.join(d,'c107-observations.jsonl');
   let busy=false,closed=false,uncertain=false;const seen=new Set();
@@ -114,9 +116,12 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
      response_family:plan.response_family,resource_gap:plan.resource_gap,
      cognitive_window_length:plan.cognitive_window_length};
     const guidance=compileC117SemanticGuide(scope);
+    const route=c139.qualifyC139EpistemicRoute({episode:{...scope,input_sha256:plan.input_sha256},humanInput:frame.humanInput});
+    const useC139=route.allowed===true;
     let draft;try{draft=await languagePort(Object.freeze({schema:'ikant-edu-v2-language-task/v1',
       source_head:src.head,current_input_utf8:frame.humanInput,plan:scope,guidance,
-      channels:plan.c124_language_channels}));}catch{return no('S02_HOST_LANGUAGE_FAILED')}
+      channels:plan.c124_language_channels,
+      ...(useC139?{c139_epistemic_format:c139.C139_EPISTEMIC_FORMAT}:{} )}));}catch{return no('S02_HOST_LANGUAGE_FAILED')}
     if(closed)return no('S02_CLOSED_AFTER_LANGUAGE');
     if(!clean(draft)||Object.keys(draft).sort().join(',')!==
       'ack_c124_channel_sha256,ack_plan_sha256,input_sha256,text'||
@@ -127,13 +132,18 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     // Lexical human-language veto before the sole original C87 writer; no rewriting.
     if(!qualifyHumanFacingIdentity({method:plan.method,text:draft.text}).ok)
       return no('S02_PUBLIC_IDENTITY_LANGUAGE_DENIED');
+    // C139 is a bounded, versioned alternate route; never relax original C114.
+    if(useC139&&!c139.qualifyC139EpistemicCandidate({
+      episode:{...scope,input_sha256:plan.input_sha256},humanInput:frame.humanInput,text:draft.text}).allowed)
+      return no('S02_C139_EPISTEMIC_LANGUAGE_DENIED');
     const before=inspect(stage,ledger);if(before?.status!=='C107_LEDGER_REOPENED')return no('S02_PREWRITE_READBACK_DENIED');
-    const turn=original.executeC107Turn({ledgerFile:ledger,nonce:frame.nonce,
+    const turn=(useC139?epistemic.executeC139EpistemicTurn:original.executeC107Turn)({ledgerFile:ledger,nonce:frame.nonce,
       request:{...req,modelCandidate:{text:draft.text,input_sha256:plan.input_sha256}},
       priorMessages:frame.priorMessages,resetContext:frame.resetContext,requireHostLanguage:true,
       expectedC70OutputSha256:plan.c70_output_sha256,
       expectedC124ChannelSha256:plan.c124_language_channel_sha256});
-    if(turn.status!=='C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK'||turn.voice_utf8!==draft.text||
+    if(turn.status!==(useC139?'C139_ORIGINAL_C70_C100_C87_LOCAL_READBACK':'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK')||
+       (useC139&&turn.c139_epistemic_guard!==true)||turn.voice_utf8!==draft.text||
        !turn.original_c87_writer_executed||!turn.original_c70_executed||turn.public_mode!=='EDU'||
        turn.public_selection_receipt_sha256!==selection.receipt_sha256){
       uncertain=true;return no(turn.first_unclosed_edge||'S02_ORIGINAL_C107_STOP');}
@@ -145,7 +155,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
        after.latest_state?.public_selection_receipt_sha256!==selection.receipt_sha256||
        after.latest_state?.visible_voice_sha256!==turn.output_sha256||
        after.latest_state?.c124_language_channel_sha256!==plan.c124_language_channel_sha256||
-       after.latest_state?.host_language_used!==true){
+       after.latest_state?.host_language_used!==true||
+       (useC139&&after.latest_state?.c139_epistemic_guard!==true)){
       uncertain=true;return no('S02_INDEPENDENT_C87_REOPEN_MISMATCH');}
     const evidence={schema:'ikant-c135-edu-v2-owner-evidence/v1',
       status:'C135_EDU_V2_ORIGINAL_C107_C87_READBACK',public_mode:'EDU',

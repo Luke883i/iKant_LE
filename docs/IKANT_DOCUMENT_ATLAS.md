@@ -57,6 +57,7 @@
 - [docs/C135_EDU_COGNITIVE_OWNER.md](C135_EDU_COGNITIVE_OWNER.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C136_CANONICAL_RECOVERY.md](C136_CANONICAL_RECOVERY.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C136_P0_POST133.md](C136_P0_POST133.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
+- [docs/C139_EDU_EPISTEMIC_ROUTE.md](C139_EDU_EPISTEMIC_ROUTE.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C1_DOD.md](C1_DOD.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C24_CI_TIMEOUT_FIX.md](C24_CI_TIMEOUT_FIX.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C28_FULL_IKANT_ABSORPTION.md](C28_FULL_IKANT_ABSORPTION.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.

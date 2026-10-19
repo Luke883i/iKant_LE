@@ -77,7 +77,13 @@ export function emitC125Shell(frame){
     /^[0-9a-f]{64}$/.test(r.public_selection_receipt_sha256||'')&&
     w.latest_state?.admission_schema==='ikant-le-c72-public-selection/v2'&&
     w.latest_state?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
-    r.original_turn?.status==='C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK'&&
+    (r.original_turn?.status==='C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK'&&
+     w.latest_state?.c139_epistemic_guard!==true ||
+     r.original_turn?.status==='C139_ORIGINAL_C70_C100_C87_LOCAL_READBACK'&&
+     r.original_turn?.c139_epistemic_guard===true&&
+     r.original_turn?.c114_limited_ontology_policy===false&&
+     w.latest_state?.c139_epistemic_guard===true&&
+     w.latest_state?.c114_limited_ontology_policy===false)&&
     r.original_turn?.public_mode==='EDU'&&r.original_turn?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
     r.original_turn?.original_c70_executed===true&&r.original_turn?.original_c87_writer_executed===true&&
     r.original_turn?.model_draft_used===true&&r.original_turn?.ledger_event_sha256===trace&&
