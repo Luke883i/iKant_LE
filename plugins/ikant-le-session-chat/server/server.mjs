@@ -12,6 +12,7 @@ import {z} from 'zod';
 import {validateHostConsumptionFrame} from '../../../src/host-consumption-frame.mjs';
 import {projectP1AppExclusiveShell} from '../../../host/p1-app-exclusive-shell.mjs';
 import {projectOneShellThreadSnapshot} from '../../../host/oneshell-thread-session.mjs';
+import {assessP0ThreadPanelReadiness} from '../../../host/p0-thread-panel-readiness.mjs';
 import {verifyS06Transport} from './transport-security.mjs';
 import {verifyS06GatewayProof} from './gateway-identity.mjs';
 const gatewayContext=new AsyncLocalStorage();
@@ -33,7 +34,7 @@ function presentationSequence(sessionId,receipt){
  if(prev?.receipt===receipt)return prev.sequence;
  const sequence=prev?prev.sequence+1:0;presentationFrames.set(sessionId,{receipt,sequence});return sequence;
 }
-function result(x,ctx){const boundSession=session(ctx);const fv=validateHostConsumptionFrame(x?.host_frame);if(!fv.ok)throw new Error('invalid host consumption frame:'+fv.errors.join(','));const enriched={...x,host_app_payload:appPayload(x),one_shell:projectP1AppExclusiveShell({result:x,frame:x.host_frame}),one_shell_thread:projectOneShellThreadSnapshot({result:x,frame:x.host_frame,sessionRef:boundSession,presentationSequence:presentationSequence(boundSession,x.host_frame.receipt_sha256)})};return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:enriched}};}
+function result(x,ctx){const boundSession=session(ctx);const fv=validateHostConsumptionFrame(x?.host_frame);if(!fv.ok)throw new Error('invalid host consumption frame:'+fv.errors.join(','));const thread=projectOneShellThreadSnapshot({result:x,frame:x.host_frame,sessionRef:boundSession,presentationSequence:presentationSequence(boundSession,x.host_frame.receipt_sha256)});const enriched={...x,host_app_payload:appPayload(x),one_shell:projectP1AppExclusiveShell({result:x,frame:x.host_frame}),one_shell_thread:thread,thread_panel_readiness:assessP0ThreadPanelReadiness({panelRequested:threadPanelRequested,sessionBound:true,snapshotOk:thread.ok===true})};return{content:[],structuredContent:{state:x.state||'READY'},_meta:{ikant_le:enriched}};}
 // Opt-in thread panel requires a real installed plugin and native browser qualification.
 const threadPanelRequested=process.env.IKANT_ONESHELL_THREAD_PANEL==='1';
 function appMeta(resource=false){return resource?{ui:{resourceUri:URI,visibility:['app']},'openai/widgetAccessible':true}:{ui:{visibility:['app']},'openai/widgetAccessible':true};}
