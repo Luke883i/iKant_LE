@@ -44,6 +44,22 @@ def build(out,expected_commit,expected_tree):
  if obj!=head:raise ValueError('COMMIT_OBJECT_DRIFT')
  members['PINNED_COMMIT_OBJECT.raw']=commit_raw
  members['PROMPT_INNESCO.txt']=prompt
+ # Generate human onboarding from the same verified source epoch; never hardcode old commit filenames.
+ instructions=(
+  'iKant | Installazione semplice | Fonte '+head+'\n\n'
+  '1. Nel Project di ChatGPT incolla PROMPT_INNESCO.txt nelle istruzioni e carica ONESHELL_PROJECT_V7.zip tra i file.\n'
+  '2. In una nuova chat scrivi esattamente avvia iKant. Leggi i Termini: il sistema si ferma.\n'
+  '3. In un NUOVO messaggio scrivi esattamente I ACCEPT. Il sistema mostra la presentazione e si ferma.\n'
+  '4. In un TERZO messaggio scrivi esattamente EDU (consigliato) o CANONICAL.\n'
+  '5. Subito dopo la scelta, il sistema controlla il codice gia disponibile. Se manca, apri\n'
+  '   https://github.com/Luke883i/iKant_LE/archive/'+head+'.zip\n'
+  '   e allega direttamente lo ZIP scaricato a questa chat. Non serve Git o terminale.\n'
+  '   Il bundle OneShell NON e lo ZIP completo dei sorgenti; se presenti i sorgenti verificati, non allegare nulla.\n'
+  '6. Il codice non installa un plugin: per vedere il pannello grafico serve un app MCP registrata e autorizzata.\n'
+  '   Senza app la visualizzazione resta una shell di testo a sei aree; nessuna UI persistente attestata.\n'
+  'Stato iniziale: EDU non avviato; CANONICAL non attivo. HEAD='+head+' TREE='+tree+'\n'
+ ).encode('utf8')
+ members['INSTALLAZIONE.md']=instructions
  lock={'schema':'ikant-le-project-source-lock/v7','source_commit':head,'source_tree':tree,
        'orientation_blobs':{p:meta(members['orientation/'+p])['git_blob_sha1'] for p in ORIENT},
        'plugin_source_blobs':{p:meta(members['plugin_source/plugins/ikant-le-session-chat/'+p])['git_blob_sha1'] for p in PLUGIN},
@@ -55,6 +71,7 @@ def build(out,expected_commit,expected_tree):
  'files':{p:meta(b) for p,b in sorted(members.items())}}
  out.mkdir(parents=True,exist_ok=True)
  (out/'PROMPT_INNESCO.txt').write_bytes(prompt)
+ (out/'INSTALLAZIONE.md').write_bytes(instructions)
  with zipfile.ZipFile(out/'ONESHELL_PROJECT_V7.zip','w') as z:
   for p,b in sorted(members.items()):zipwrite(z,p,b)
   zipwrite(z,'MANIFEST.json',(json.dumps(manifest,indent=2,sort_keys=True)+'\n').encode())
@@ -93,6 +110,7 @@ def verify(zip_path,expected_commit,expected_tree):
    k='plugin_source/plugins/ikant-le-session-chat/'+p
    if meta(z.read(k))['git_blob_sha1']!=lock['plugin_source_blobs'][p]:raise ValueError('PLUGIN_DRIFT')
   if expected_commit.encode() not in z.read('PROMPT_INNESCO.txt') or expected_tree.encode() not in z.read('PROMPT_INNESCO.txt'):raise ValueError('PROMPT_SOURCE_BINDING')
+  if expected_commit.encode() not in z.read('INSTALLAZIONE.md') or expected_tree.encode() not in z.read('INSTALLAZIONE.md'):raise ValueError('INSTALLER_SOURCE_BINDING')
  return {'ok':True,'source_commit':expected_commit,'source_tree':expected_tree,'file_count':len(manifest['files']),
          'zip_sha256':sha256(zip_path.read_bytes()),'plugin_installed':False,'project_applied':False}
 if __name__=='__main__':
