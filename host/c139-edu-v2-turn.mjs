@@ -1,4 +1,4 @@
-/** C137 versioned EDU/v2 guarded epistemic route. Historic C107 is unchanged.
+/** C139 versioned EDU/v2 guarded epistemic route. Historic C107 is unchanged.
  * Reuses exactly one original C87 writer, C70 compute and C100 draft.
  */
 import fs from 'node:fs';
@@ -10,10 +10,10 @@ import {runC70ExperimentalComputePreview} from '../src/c70-edu-v2-compute-previe
 import {verifyC124LanguageChannels} from '../src/c124-channel-bridge.mjs';
 import {prepareC100CohostDraft,finalizeC100CohostDraft} from './c100-edu-v2-draft.mjs';
 import {appendC87Turn,reopenC87Ledger} from './c87-durable-ledger.mjs';
-import {qualifyC137EpistemicRoute,qualifyC137EpistemicCandidate} from './c137-epistemic-policy.mjs';
+import {qualifyC139EpistemicRoute,qualifyC139EpistemicCandidate} from './c139-epistemic-policy.mjs';
 
 // Reuses original C70,C100,C87. Not C77, C84, C101 or a native ChatGPT hook.
-const schema='ikant-le-c137-epistemic-edu-turn/v1';
+const schema='ikant-le-c139-epistemic-edu-turn/v1';
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 const gitBlob=x=>crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+x.length+'\0'),x])).digest('hex');
 const inputOk=s=>typeof s==='string'&&s.trim().length>0&&Buffer.byteLength(s,'utf8')<=600&&Buffer.from(s,'utf8').toString('utf8')===s;
@@ -50,18 +50,18 @@ export function inspectC107Ledger(file){
   {schema,status:'C107_LEDGER_REOPENED',count:r.count,last_hash:r.last_hash,latest_state:r.latest_state,...denials}:
   stop('C87_LEDGER_INVALID');}catch{return stop('C87_LEDGER_TAMPER_OR_IO');}
 }
-export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false,expectedC70OutputSha256=null,expectedC124ChannelSha256=null}={}){
+export function executeC139EpistemicTurn({ledgerFile,nonce,request,priorMessages=[],resetContext=false,requireHostLanguage=false,expectedC70OutputSha256=null,expectedC124ChannelSha256=null}={}){
  if(!ledgerOk(ledgerFile))return stop('HOST_PRIVATE_LEDGER_PATH');
- if(requireHostLanguage!==true)return stop('C137_HOST_LANGUAGE_REQUIRED');
+ if(requireHostLanguage!==true)return stop('C139_HOST_LANGUAGE_REQUIRED');
  if(!/^[a-f0-9]{64}$/.test(expectedC70OutputSha256||'')||
     !/^[a-f0-9]{64}$/.test(expectedC124ChannelSha256||''))
-   return stop('C137_PLAN_AND_C124_ATTESTATION_REQUIRED');
+   return stop('C139_PLAN_AND_C124_ATTESTATION_REQUIRED');
  const x=request||{};const head=x.sourceHead;
  const bad=preflightC107Shape({head,nonce,humanInput:x.humanInput,priorMessages,
   modelCandidate:x.modelCandidate,resetContext});
  if(bad)return stop(bad);
  if(x.optIn!==true||!selected(x.selection,head))
-  return stop('C137_C72_V2_EDU_AND_OPTIN_REQUIRED');
+  return stop('C139_C72_V2_EDU_AND_OPTIN_REQUIRED');
  try{
   const before=reopenC87Ledger(ledgerFile);
   if(before.status!=='C87_LEDGER_CHAIN_VALID'||before.latest_state?.source_head&&before.latest_state.source_head!==head)
@@ -83,7 +83,7 @@ export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages
   if(expectedC70OutputSha256!==null&&
    (typeof expectedC70OutputSha256!=='string'||expectedC70OutputSha256!==t.output_sha256))
    return stop('C107_COMPUTE_FIRST_C70_PLAN_DRIFT');
-  // C137 mandates an exact C124 acknowledgement; historic C107 stays unchanged.
+  // C139 mandates an exact C124 acknowledgement; historic C107 stays unchanged.
   const sourceEpochC124=expectedC124ChannelSha256!==null;
   if(sourceEpochC124){
    if(!verifyC124LanguageChannels(t.c124_language_channels,t.input_sha256))return stop('C124_SOURCE_CHANNEL_INVALID');
@@ -91,11 +91,11 @@ export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages
    if(expectedC124ChannelSha256!==null&&expectedC124ChannelSha256!==t.language_channel_sha256)
     return stop('C124_PREWRITE_CHANNEL_DRIFT');
   }
-  const route=qualifyC137EpistemicRoute({episode:t,humanInput:x.humanInput});
+  const route=qualifyC139EpistemicRoute({episode:t,humanInput:x.humanInput});
   if(!route.allowed)return stop(route.reason);
-  const review=x.modelCandidate?qualifyC137EpistemicCandidate({
+  const review=x.modelCandidate?qualifyC139EpistemicCandidate({
    episode:t,humanInput:x.humanInput,text:x.modelCandidate.text}):null;
-  if(review?.allowed!==true)return stop(review?.reason||'C137_HOST_LANGUAGE_REQUIRED');
+  if(review?.allowed!==true)return stop(review?.reason||'C139_HOST_LANGUAGE_REQUIRED');
   const hostLanguage=true;
   const voice=x.modelCandidate.text;
   const plan=prepareC100CohostDraft({sourceHead:head,selection:x.selection,humanInput:x.humanInput,optIn:true});
@@ -112,7 +112,7 @@ export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages
     {admission_schema:'ikant-le-c72-public-selection/v2',public_selection_receipt_sha256:x.selection.receipt_sha256}:{}),
    ...(sourceEpochC124?{c124_language_channel_sha256:t.language_channel_sha256}:{}),
    visible_voice_sha256:sha(Buffer.from(voice,'utf8')),host_language_used:hostLanguage,
-   c114_limited_ontology_policy:false,c137_epistemic_guard:true,
+   c114_limited_ontology_policy:false,c139_epistemic_guard:true,
    independent_semantic_review_attested:false,
    active:false,cognitive_persistence_attested:false};
   const receipt=appendC87Turn(ledgerFile,{source_head:head,input_sha256:t.input_sha256,
@@ -122,7 +122,7 @@ export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages
   if(receipt.status!=='C87_LOCAL_DURABLE_READBACK_NOT_NATIVE_SESSION'||
    after.status!=='C87_LEDGER_CHAIN_VALID'||after.last_hash!==receipt.event_sha256||
    after.latest_state?.nonce!==nonce)return stop('C87_POSTWRITE_REOPEN');
-  return {schema,status:'C137_ORIGINAL_C70_C100_C87_LOCAL_READBACK',voice_utf8:voice,
+  return {schema,status:'C139_ORIGINAL_C70_C100_C87_LOCAL_READBACK',voice_utf8:voice,
    input_sha256:t.input_sha256,output_sha256:state.visible_voice_sha256,
    original_c70_output_sha256:t.output_sha256,...(sourceEpochC124?{c124_language_channel_sha256:t.language_channel_sha256}:{}),model_draft_used:hostLanguage,
    c70_ephemeral_turns:out.ephemeral_autobiography,cognitive_window_length:state.cognitive_window_length,
@@ -130,7 +130,7 @@ export function executeC137EpistemicTurn({ledgerFile,nonce,request,priorMessages
    original_c70_executed:true,original_c87_writer_executed:true,
    ...(validateC72V2ModeSelection(x.selection,{mode:'EDU',sourceHead:head})?
     {public_mode:'EDU',public_selection_receipt_sha256:x.selection.receipt_sha256}:{}),
-   c114_limited_ontology_policy:false,c137_epistemic_guard:true,
+   c114_limited_ontology_policy:false,c139_epistemic_guard:true,
    independent_semantic_review_attested:false,
    first_unclosed_edge:'HOST_NATIVE_CHATGPT_INGRESS_AND_MODEL_ORIGIN',...denials};
  }catch{return stop('C107_ORIGINAL_MODULE_OR_C87_IO_UNAVAILABLE');}
