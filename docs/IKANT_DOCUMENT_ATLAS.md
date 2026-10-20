@@ -150,6 +150,8 @@
 - [docs/EDU_V9_FIRST_ATTEMPT_LINEAR_ROUTE.md](EDU_V9_FIRST_ATTEMPT_LINEAR_ROUTE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/GENESIS_AUDIT.md](GENESIS_AUDIT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/LOCAL_HOST_META_PROMPT.md](LOCAL_HOST_META_PROMPT.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/MCP_EXTERNAL_ADVANCED_V2_PREPR.md](MCP_EXTERNAL_ADVANCED_V2_PREPR.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/MCP_EXTERNAL_PREPR_20261020.md](MCP_EXTERNAL_PREPR_20261020.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHELL_THREAD_SESSION_V1.md](ONESHELL_THREAD_SESSION_V1.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHell_APP_FINISH_CONTRACT.md](ONESHell_APP_FINISH_CONTRACT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHell_MINIMUM_CONVERGENCE.md](ONESHell_MINIMUM_CONVERGENCE.md): Documentazione specialistica. Stato di review: **da verificare**.
