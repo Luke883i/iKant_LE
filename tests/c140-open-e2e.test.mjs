@@ -10,6 +10,7 @@ import {issueC72V2TermsOffer,acceptC72V2Terms,presentC72V2Introduction,selectC72
 import {c140OpenPolicy} from '../host/c140-open-edu-turn.mjs';
 import {qualifyC140Lattice} from '../scripts/c140-qualify.mjs';
 import {C107_FILES} from '../scripts/c107-pack.mjs';
+import {emitC125Shell} from '../host/c125-exclusive-shell.mjs';
 const root=path.resolve(new URL('../',import.meta.url).pathname);
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 const head=()=>execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
@@ -94,5 +95,28 @@ test('C140 does not hijack original C114 self-ontology route or C139 response-ge
   // A direct question about iKant must never be promoted to a claimed self-introspection by C140.
   const noOpen=await x.session.publishTurn({humanInput:'Chi sei? Descrivi la tua identita.',nonce:'c140-old-route-00000001',priorMessages:[],resetContext:true});
   assert.notEqual(noOpen.original_turn?.status,'C140_ORIGINAL_C100_C87_LOCAL_READBACK');
+ }finally{x.done()}
+});
+
+test('C125 refuses forged C140 original receipts before any send',()=>{
+ const f=emitC125Shell({afterAccept:true,kind:'OWNER_VOICE',mode:'EDU',
+  trace:'a'.repeat(64),continuity:'C87_INDEPENDENT_REOPEN',
+  edge:'NATIVE_CHATGPT_PER_TURN_DISPATCH',next:'QUALIFY_NATIVE_HOOK',
+  nonce:'c140-fake-receipt-00001',input_sha256:'b'.repeat(64),
+  ownerReceipt:{schema:'ikant-c140-edu-v2-owner-evidence/v1',
+   status:'C140_EDU_V2_C100_C87_READBACK',active:false,
+   surface_a:{origin:'HOST_BOUND',voice_utf8:answer}},
+  independentReadback:{status:'C107_LEDGER_REOPENED',
+   last_hash:'a'.repeat(64),latest_state:{nonce:'c140-fake-receipt-00001'}}});
+ assert.equal(f.status,'REJECTED');assert.equal(f.origin,'NO_VOICE');
+});
+test('C140 longer direct self-identity cannot borrow general route',async()=>{
+ let sends=0;const x=await setup({send:async()=>{sends++}});
+ try{const long='Chi sei? Descrivi la tua identita. '+'filosofia '.repeat(90);
+  assert.ok(Buffer.byteLength(long,'utf8')>600);
+  const r=await x.session.publishTurn({humanInput:long,nonce:'c140-long-self-00000001',
+   priorMessages:[],resetContext:true,openScope:true});
+  assert.equal(r.ok,false);assert.equal(r.first_edge,'C140_SELF_IDENTITY_OWNER_BOUNDED_STOP');
+  assert.equal(sends,0);
  }finally{x.done()}
 });
