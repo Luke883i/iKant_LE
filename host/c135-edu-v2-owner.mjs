@@ -88,12 +88,18 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const epistemic=await import(pathToFileURL(path.join(stage,'host/c139-edu-v2-turn.mjs')).href);
   const c139=await import(pathToFileURL(path.join(stage,'host/c139-epistemic-policy.mjs')).href);
   const c140=await import(pathToFileURL(path.join(stage,'host/c140-open-edu-turn.mjs')).href);
+  const c141=await import(pathToFileURL(path.join(stage,'host/c141-semantic-shadow.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
   const ledger=path.join(d,'c107-observations.jsonl');
   let busy=false,closed=false,uncertain=false;const seen=new Set();
   async function publishTurn(frame){
    if(uncertain)return no('S02_UNCERTAIN_WRITE_OR_DELIVERY_RECONCILE');
    if(closed||busy)return no('S02_CLOSED_OR_BUSY');
+   // S02 cannot silently truncate a caller's input or grant infinite compute.
+   // Expose a typed, pre-callback budget edge without producing any C87 event.
+   if(clean(frame)&&typeof frame.humanInput==='string'&&
+      Buffer.byteLength(frame.humanInput,'utf8')>12000)
+    return no('C141_EXACT_INPUT_REQUIRES_BUDGET_NEGOTIATION');
    if(!safeDeep(frame)||!clean(frame)||Object.keys(frame).some(k=>!['humanInput','nonce','priorMessages','resetContext','openScope'].includes(k))||
       typeof frame.humanInput!=='string'||!frame.humanInput.trim()||
       Buffer.byteLength(frame.humanInput,'utf8')>12000||!NONCE.test(frame.nonce)||seen.has(frame.nonce)||
@@ -112,14 +118,20 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     const planShort=!tooLong?original.previewC107CognitivePlan({request:req,
       priorMessages:frame.priorMessages,resetContext:frame.resetContext}):null;
     const shadow=!tooLong?await import(pathToFileURL(path.join(stage,'host/c132-reasoning-candidate.mjs')).href):null;
-    // Shadow C132 may call 'chi sei?' general: identity language wins over
-    // generic GENERAL_ONTOLOGY so frozen C114 keeps its original jurisdiction.
-    const explicitSelf=/(?:\bchi\s+sei\b|\bcosa\s+sei\b|\btua\s+identit[aà]\b|\btua\s+coscienza\b|\byour\s+(?:identity|consciousness)\b|\bwhat\s+are\s+you\b)/iu.test(frame.humanInput);
+    // C141 arbiter is a child of C135: it is not an independent authority.
+    // Explicit self-identity retains frozen C114; C139 owns qualified process
+    // questions. C132 alone never grants permission to use C140.
     const c139Eligible=!!planShort&&c139.qualifyC139EpistemicRoute({episode:planShort,humanInput:frame.humanInput}).allowed===true;
-    const generalConflict=!!planShort&&planShort.response_family==='SELF_ONTOLOGY'&&
-      shadow.classifyC132Candidate(frame.humanInput).route==='GENERAL_ONTOLOGY'&&!explicitSelf;
-    if(tooLong&&explicitSelf)return no('C140_SELF_IDENTITY_OWNER_BOUNDED_STOP');
-    const openScope=!explicitSelf&&!c139Eligible&&(tooLong||frame.openScope===true||generalConflict);
+    const c132Route=shadow?shadow.classifyC132Candidate(frame.humanInput).route:'UNCLASSIFIED';
+    const ownerGeneralConflict=!!planShort&&planShort.response_family==='SELF_ONTOLOGY'&&c132Route==='GENERAL_ONTOLOGY';
+    const decision=c141.arbitrateC141({humanInput:frame.humanInput,
+      c107Family:planShort?.response_family??'UNCLASSIFIED',c132Route,
+      c139Qualified:c139Eligible,openScope:frame.openScope===true||ownerGeneralConflict,
+      physicalLimitBytes:12000});
+    // Preserve the existing public stop edge for bounded original C114.
+    if(decision.code==='C141_LONG_IDENTITY_OWNER_GAP')return no('C140_SELF_IDENTITY_OWNER_BOUNDED_STOP');
+    if(decision.status==='STOP')return no(decision.code);
+    const openScope=decision.route==='C140_OPEN_EDU_CANDIDATE';
     if(openScope){
       const plan=c140.planC140OpenTurn({humanInput:frame.humanInput,sourceHead:src.head,
         selection,priorMessages:frame.priorMessages,resetContext:frame.resetContext});
@@ -173,6 +185,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       const delivered=Object.freeze({ok:result.ok===true,source_head:src.head,source_tree:src.tree,
        status:result.ok?'S02_EDU_V2_HOST_BOUND_LOCAL_READBACK':'S02_C125_OUTPUT_BLOCKED',
        first_edge:result.ok?'NATIVE_CHATGPT_PER_TURN_DISPATCH':result.reason,
+       c141_disclosure:c141.c141EpistemicDisclosure({answer:turn.voice_utf8}),
        original_turn:turn,c87_before:before.count,c87_after:after.count,c125:result,
        active:false,native_event_attested:false});
       const s03=delivered.ok&&lastOriginalC125!==null
