@@ -140,7 +140,7 @@ def build(repo, baseline, destination):
         "head":HEAD,"tree":TREE,"authorized_by_human":True,
         "native_provider_attested":False,"runtime_admission_carried":False,
         "active":False,"historical_head":OLD_HEAD})
-    output["AUDIT_PR132_151.md"] = (repo/"docs/ONESHELL_V1_MATERIALIZATION.md").read_bytes()
+    output["AUDIT_PR132_151.md"] = (repo/"docs/ONESHELL_V1_MATERIALIZATION.txt").read_bytes()
     output["PINNED_COMMIT_OBJECT.raw"] = commit
     output["VERIFICA_BUNDLE.py"] = pathlib.Path(__file__).with_name("oneshell-v1-verify.py").read_bytes()
     output["MATERIALIZATION_RULES.md"] = (

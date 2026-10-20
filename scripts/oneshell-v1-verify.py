@@ -79,7 +79,7 @@ def verify(path,repo,baseline=None):
         commit=z.read("PINNED_COMMIT_OBJECT.raw")
         if hashlib.sha1(b"commit " + str(len(commit)).encode() + b"\0" + commit).hexdigest()!=HEAD:
             raise ValueError("COMMIT_HASH_MISMATCH")
-        if ("tree "+TREE+"\n").encode() not in commit.split(b"\nauthor ")[0]:
+        if not commit.splitlines() or commit.splitlines()[0] != ("tree "+TREE).encode():
             raise ValueError("COMMIT_TREE_MISMATCH")
         if baseline is not None:
             if sha(baseline.read_bytes()) != BASELINE_SHA256:
