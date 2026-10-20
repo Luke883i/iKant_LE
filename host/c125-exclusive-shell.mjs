@@ -90,7 +90,29 @@ export function emitC125Shell(frame){
     r.original_turn?.input_sha256===input_sha256&&r.original_turn?.output_sha256===digest(r.surface_a.voice_utf8)&&
     r.original_turn?.voice_utf8===r.surface_a.voice_utf8&&
     r.original_turn?.c124_language_channel_sha256===w.latest_state?.c124_language_channel_sha256;
-  if(!common||!(legacy||c135||eduV2))return blocked('ORIGINAL_READBACK_NOT_QUALIFIED');
+  // C140 is an independently tagged EDU child. C70 was NOT executed; never
+  // promote this path into the C107/C139 C70/C124 receipt family.
+  const openEdu=mode==='EDU'&&r?.schema==='ikant-c140-edu-v2-owner-evidence/v1'&&
+    r.status==='C140_EDU_V2_C100_C87_READBACK'&&r.public_mode==='EDU'&&
+    r.active===false&&r.source_kind==='LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN'&&
+    /^[a-f0-9]{40}$/.test(r.source_head||'')&&r.source_head===w.latest_state?.source_head&&
+    r.input_sha256===input_sha256&&r.original_c70_executed===false&&
+    r.original_c87_writer_executed===true&&r.single_c87_writer===true&&
+    r.native_chatgpt_origin_attested===false&&
+    /^[a-f0-9]{64}$/.test(r.public_selection_receipt_sha256||'')&&
+    w.latest_state?.admission_schema==='ikant-le-c72-public-selection/v2'&&
+    w.latest_state?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
+    w.latest_state?.c140_open_route===true&&w.latest_state?.c140_original_c70_executed===false&&
+    w.latest_state?.c114_limited_ontology_policy===false&&
+    r.original_turn?.status==='C140_ORIGINAL_C100_C87_LOCAL_READBACK'&&
+    r.original_turn?.public_mode==='EDU'&&r.original_turn?.c140_open_route===true&&
+    r.original_turn?.original_c70_executed===false&&
+    r.original_turn?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
+    r.original_turn?.original_c87_writer_executed===true&&r.original_turn?.model_draft_used===true&&
+    r.original_turn?.ledger_event_sha256===trace&&r.original_turn?.input_sha256===input_sha256&&
+    r.original_turn?.output_sha256===digest(r.surface_a.voice_utf8)&&
+    r.original_turn?.voice_utf8===r.surface_a.voice_utf8;
+  if(!common||!(legacy||c135||eduV2||openEdu))return blocked('ORIGINAL_READBACK_NOT_QUALIFIED');
   voice=r.surface_a.voice_utf8;origin='HOST_BOUND';
  }else if(ownerReceipt!==null||independentReadback!==null)return blocked('RECEIPT_ON_NONVOICE_STATUS');
  let notes={FATTO:'—',LETTURA:'—',LIMITE:'—'};

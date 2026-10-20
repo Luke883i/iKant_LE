@@ -87,23 +87,101 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const original=await import(pathToFileURL(path.join(stage,'host/c107-edu-v2-turn.mjs')).href);
   const epistemic=await import(pathToFileURL(path.join(stage,'host/c139-edu-v2-turn.mjs')).href);
   const c139=await import(pathToFileURL(path.join(stage,'host/c139-epistemic-policy.mjs')).href);
+  const c140=await import(pathToFileURL(path.join(stage,'host/c140-open-edu-turn.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
   const ledger=path.join(d,'c107-observations.jsonl');
   let busy=false,closed=false,uncertain=false;const seen=new Set();
   async function publishTurn(frame){
    if(uncertain)return no('S02_UNCERTAIN_WRITE_OR_DELIVERY_RECONCILE');
    if(closed||busy)return no('S02_CLOSED_OR_BUSY');
-   if(!safeDeep(frame)||!clean(frame)||Object.keys(frame).some(k=>!['humanInput','nonce','priorMessages','resetContext'].includes(k))||
+   if(!safeDeep(frame)||!clean(frame)||Object.keys(frame).some(k=>!['humanInput','nonce','priorMessages','resetContext','openScope'].includes(k))||
       typeof frame.humanInput!=='string'||!frame.humanInput.trim()||
-      Buffer.byteLength(frame.humanInput,'utf8')>600||!NONCE.test(frame.nonce)||seen.has(frame.nonce)||
+      Buffer.byteLength(frame.humanInput,'utf8')>12000||!NONCE.test(frame.nonce)||seen.has(frame.nonce)||
       !Array.isArray(frame.priorMessages)||frame.priorMessages.length>4||
-      frame.priorMessages.some(x=>typeof x!=='string'||!x.trim()||Buffer.byteLength(x,'utf8')>600)||
-      typeof frame.resetContext!=='boolean'||(frame.resetContext&&frame.priorMessages.length))
+      frame.priorMessages.some(x=>typeof x!=='string'||!x.trim()||Buffer.byteLength(x,'utf8')>12000)||
+      typeof frame.resetContext!=='boolean'||(frame.resetContext&&frame.priorMessages.length)||
+      (frame.openScope!==undefined&&typeof frame.openScope!=='boolean'))
     return no('S02_FRAME_OR_NONCE_DENIED');
    // Consume event ID before all side effects, including the model callback.
    seen.add(frame.nonce);busy=true;
    try{
     const req={sourceHead:src.head,selection,humanInput:frame.humanInput,optIn:true};
+    // C140 is an isolated child route; C70's 600-byte input never receives a truncation.
+    // No self-identity policy is bypassed: explicit self-descriptions stay with C114.
+    const tooLong=Buffer.byteLength(frame.humanInput,'utf8')>600;
+    const planShort=!tooLong?original.previewC107CognitivePlan({request:req,
+      priorMessages:frame.priorMessages,resetContext:frame.resetContext}):null;
+    const shadow=!tooLong?await import(pathToFileURL(path.join(stage,'host/c132-reasoning-candidate.mjs')).href):null;
+    // Shadow C132 may call 'chi sei?' general: identity language wins over
+    // generic GENERAL_ONTOLOGY so frozen C114 keeps its original jurisdiction.
+    const explicitSelf=/(?:\bchi\s+sei\b|\bcosa\s+sei\b|\btua\s+identit[aà]\b|\btua\s+coscienza\b|\byour\s+(?:identity|consciousness)\b|\bwhat\s+are\s+you\b)/iu.test(frame.humanInput);
+    const c139Eligible=!!planShort&&c139.qualifyC139EpistemicRoute({episode:planShort,humanInput:frame.humanInput}).allowed===true;
+    const generalConflict=!!planShort&&planShort.response_family==='SELF_ONTOLOGY'&&
+      shadow.classifyC132Candidate(frame.humanInput).route==='GENERAL_ONTOLOGY'&&!explicitSelf;
+    if(tooLong&&explicitSelf)return no('C140_SELF_IDENTITY_OWNER_BOUNDED_STOP');
+    const openScope=!explicitSelf&&!c139Eligible&&(tooLong||frame.openScope===true||generalConflict);
+    if(openScope){
+      const plan=c140.planC140OpenTurn({humanInput:frame.humanInput,sourceHead:src.head,
+        selection,priorMessages:frame.priorMessages,resetContext:frame.resetContext});
+      if(plan.status!=='C140_PLAN_UNLEDGERED')return no(plan.first_unclosed_edge||'C140_PREVIEW_DENIED');
+      const guidance=Object.freeze({schema:'ikant-le-c140-open-guidance/v1',
+        method:'Separate observed evidence from inference; expose uncertainty and possible falsifiers. Do not claim internal consciousness or native provider execution.',
+        plan_sha256:plan.plan_sha256});
+      let draft;
+      try{draft=await languagePort(Object.freeze({schema:'ikant-edu-v2-open-language-task/v1',
+        source_head:src.head,current_input_utf8:frame.humanInput,plan:Object.freeze({
+          input_sha256:plan.input_sha256,plan_sha256:plan.plan_sha256,original_c70_executed:false}),
+        guidance,channels:null,topic_whitelist:false}));}
+      catch{return no('C140_HOST_LANGUAGE_FAILED')}
+      if(closed)return no('S02_CLOSED_AFTER_LANGUAGE');
+      if(!clean(draft)||Object.keys(draft).sort().join(',')!=='ack_plan_sha256,input_sha256,text'||
+         draft.input_sha256!==plan.input_sha256||draft.ack_plan_sha256!==plan.plan_sha256||
+         !c140.c140OpenPolicy({humanInput:frame.humanInput,text:draft.text}).allowed||
+         !qualifyHumanFacingIdentity({method:'RETRIEVE',text:draft.text}).ok)
+        return no('C140_MODEL_ACK_OR_EPISTEMIC_DENIED');
+      const before=inspect(stage,ledger);
+      if(before?.status!=='C107_LEDGER_REOPENED')return no('C140_PREWRITE_READBACK_DENIED');
+      const turn=c140.executeC140OpenTurn({ledgerFile:ledger,nonce:frame.nonce,request:req,
+        priorMessages:frame.priorMessages,resetContext:frame.resetContext,
+        modelCandidate:{text:draft.text,input_sha256:draft.input_sha256,ack_plan_sha256:draft.ack_plan_sha256},
+        expectedPlanSha256:plan.plan_sha256});
+      if(turn.status!=='C140_ORIGINAL_C100_C87_LOCAL_READBACK'||turn.voice_utf8!==draft.text||
+         turn.original_c70_executed!==false||turn.original_c87_writer_executed!==true){
+        uncertain=true;return no(turn.first_unclosed_edge||'C140_ORIGINAL_WRITER_STOP');}
+      const after=inspect(stage,ledger);
+      if(after?.status!=='C107_LEDGER_REOPENED'||after.count!==before.count+1||
+         after.last_hash!==turn.ledger_event_sha256||after.latest_state?.nonce!==frame.nonce||
+         after.latest_state?.source_head!==src.head||after.latest_state?.c140_open_route!==true||
+         after.latest_state?.c140_original_c70_executed!==false||
+         after.latest_state?.public_selection_receipt_sha256!==selection.receipt_sha256||
+         after.latest_state?.visible_voice_sha256!==turn.output_sha256){
+        uncertain=true;return no('C140_INDEPENDENT_C87_REOPEN_MISMATCH');}
+      const evidence={schema:'ikant-c140-edu-v2-owner-evidence/v1',
+        status:'C140_EDU_V2_C100_C87_READBACK',public_mode:'EDU',
+        source_kind:'LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN',source_head:src.head,
+        source_tree:src.tree,public_selection_receipt_sha256:selection.receipt_sha256,
+        input_sha256:plan.input_sha256,original_turn:turn,
+        surface_a:{origin:'HOST_BOUND',voice_utf8:turn.voice_utf8},
+        original_c70_executed:false,original_c87_writer_executed:true,single_c87_writer:true,
+        native_chatgpt_origin_attested:false,active:false};
+      lastOriginalC125=null;
+      const result=await out.publish({eventId:frame.nonce,frame:{kind:'OWNER_VOICE',mode:'EDU',
+        trace:after.last_hash,continuity:'C87_INDEPENDENT_REOPEN',edge:'NATIVE_CHATGPT_PER_TURN_DISPATCH',
+        next:'QUALIFY_NATIVE_HOOK',nonce:frame.nonce,input_sha256:plan.input_sha256,
+        ownerReceipt:evidence,independentReadback:after}});
+      if(result.ok!==true)uncertain=true;
+      const delivered=Object.freeze({ok:result.ok===true,source_head:src.head,source_tree:src.tree,
+       status:result.ok?'S02_EDU_V2_HOST_BOUND_LOCAL_READBACK':'S02_C125_OUTPUT_BLOCKED',
+       first_edge:result.ok?'NATIVE_CHATGPT_PER_TURN_DISPATCH':result.reason,
+       original_turn:turn,c87_before:before.count,c87_after:after.count,c125:result,
+       active:false,native_event_attested:false});
+      const s03=delivered.ok&&lastOriginalC125!==null
+       ?projectS03CompletedEduTurn({ownerTurn:delivered,originalC125Text:lastOriginalC125})
+       :Object.freeze({ok:false,first_edge:'S03_C125_SEND_NOT_RESOLVED',active:false});
+      lastOriginalC125=null;
+      return Object.freeze({...delivered,s03_host_projection:s03});
+    }
+
     const plan=original.previewC107CognitivePlan({request:req,priorMessages:frame.priorMessages,
       resetContext:frame.resetContext});
     if(plan.status!=='C107_C70_PLAN_COMPUTED_NOT_LEDGERED'||plan.c70_original_executed!==true||

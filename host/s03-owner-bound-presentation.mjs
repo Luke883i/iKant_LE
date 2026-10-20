@@ -16,7 +16,8 @@ export function projectS03CompletedEduTurn({ownerTurn,originalC125Text,host='HOS
     ownerTurn.active!==false||ownerTurn.native_event_attested!==false||
     !Number.isSafeInteger(ownerTurn.c87_before)||ownerTurn.c87_after!==ownerTurn.c87_before+1||
     t?.public_mode!=='EDU'||t?.original_c87_writer_executed!==true||
-    t?.original_c70_executed!==true||typeof t?.voice_utf8!=='string'||
+    !(t?.original_c70_executed===true||t?.status==='C140_ORIGINAL_C100_C87_LOCAL_READBACK'&&
+      t?.original_c70_executed===false&&t?.c140_open_route===true)||typeof t?.voice_utf8!=='string'||
     p?.ok!==true||p?.origin!=='HOST_BOUND'||p?.send_callback_resolved!==true||
     p?.native_exclusive_attested!==false||p?.platform_delivery_attested!==false||
     p?.frame_sha256!==H(originalC125Text)||p?.voice_sha256!==H(t.voice_utf8))
