@@ -89,6 +89,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const c139=await import(pathToFileURL(path.join(stage,'host/c139-epistemic-policy.mjs')).href);
   const c140=await import(pathToFileURL(path.join(stage,'host/c140-open-edu-turn.mjs')).href);
   const c141=await import(pathToFileURL(path.join(stage,'host/c141-semantic-shadow.mjs')).href);
+  const c142=await import(pathToFileURL(path.join(stage,'host/c142-semantic-owner-guard.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
   const ledger=path.join(d,'c107-observations.jsonl');
   let busy=false,closed=false,uncertain=false;const seen=new Set();
@@ -131,7 +132,10 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     // Preserve the existing public stop edge for bounded original C114.
     if(decision.code==='C141_LONG_IDENTITY_OWNER_GAP')return no('C140_SELF_IDENTITY_OWNER_BOUNDED_STOP');
     if(decision.status==='STOP')return no(decision.code);
-    const openScope=decision.route==='C140_OPEN_EDU_CANDIDATE';
+    const guarded=c142.qualifyC142OwnerGuard({humanInput:frame.humanInput,c141Decision:decision});
+    if(guarded.code==='C141_LONG_IDENTITY_OWNER_GAP')return no('C140_SELF_IDENTITY_OWNER_BOUNDED_STOP');
+    if(guarded.status==='STOP')return no(guarded.code);
+    const openScope=guarded.route==='C140_OPEN_EDU_CANDIDATE';
     if(openScope){
       const plan=c140.planC140OpenTurn({humanInput:frame.humanInput,sourceHead:src.head,
         selection,priorMessages:frame.priorMessages,resetContext:frame.resetContext});
