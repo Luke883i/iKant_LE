@@ -29,6 +29,11 @@ Una persona scrive «Chi sei?». Per **EDU**, il sistema deve prima verificare i
 
 | Sigla | Significato immediato | Dove cercare la fonte |
 |---|---|---|
+| **C20** | Runtime di compatibilità per sessione/turn in un deployment esterno. | [Deployment](../src/session-chat-deployment.mjs), [server MCP](../plugins/ikant-le-session-chat/server/server.mjs). | Trasporto HTTP non significa C59 o identità nativa. |
+| **C140** | Percorso EDU di risposta aperta candidato, sottoposto agli owner e ai budget qualificati. | [Owner C140](../host/c140-open-edu-turn.mjs), [contratto](C140_SEMANTIC_RUNTIME_PR.md). | Route presente ≠ C87 eseguito o prodotto live. |
+| **C141** | Shadow: valuta strade alternative senza autorità di decisione o scrittura. | [Shadow](../host/c141-semantic-shadow.mjs). | Shadow ≠ owner del turno. |
+| **C142** | Guardia semantica negativa e multilingue, vincolata a test bounded. | [Guard](../host/c142-semantic-owner-guard.mjs). | Guard = vincolo, non soluzione di tutte le issue. |
+| **S01** | Ingresso umano pubblico con documenti orientativi e consenso distinto. | [Ammissione pubblica](S01_PUBLIC_EDU_CANONICAL_ADMISSION.md). | Consenso storico e citazioni non costituiscono un nuovo ingresso. |
 | **C4** | Profilo funzionale di espressione/valenza, non emozioni vissute. | [Architettura](ARCHITECTURE.md), [`src/`](../src/) e [test](../tests/). |
 | **C5** | Modello ricorrente «sé/mondo» del software: stati funzionali e continuità limitata. | [Architettura](ARCHITECTURE.md), [`tests/c5.test.mjs`](../tests/c5.test.mjs). |
 | **C8** | Distinzione fra emergenza/operatività misurabile e fenomenologia non dimostrata. | [Architettura](ARCHITECTURE.md), [`tests/`](../tests/). |

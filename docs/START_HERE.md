@@ -12,7 +12,7 @@ Chiedi: «Confronta due ipotesi scientifiche». Un normale LLM può dare una ris
 
 ## Da dove iniziare
 
-Per una prova guidata, scegli **EDU**, modalità sperimentale. Sono necessari tre nuovi messaggi distinti: `avvia iKant`, poi `I ACCEPT` dopo i Termini, poi `EDU` dopo l'introduzione. Per CANONICAL, che richiede ingressi autentici e servizio MCP, serve un'integrazione verificata; selezionarlo non lo accende.
+Per una prova guidata, scegli **EDU**, modalità sperimentale. Sono necessari tre nuovi messaggi distinti: `avvia iKant`, poi `I ACCEPT` dopo i Termini, poi `EDU` dopo l'introduzione. Per **CANONICAL** servono la composizione originale C59, un evento autentico del provider e ricevute verificabili: selezionarlo non lo accende. Il [server MCP esterno](MCP_STANDALONE_RENDER_RUNBOOK.txt) ha OAuth e deployment propri; collegarlo a ChatGPT non è una terza modalità C72 e non crea identità CANONICAL.
 
 Leggi [come configurare un Project e il runtime locale](IKANT_LOCAL_SETUP.md); nessuno ZIP installa automaticamente plugin o interfacce. [La differenza fra programma, runtime e prove](IKANT_RUNTIME_AND_EVIDENCE.md) è illustrata con una mappa dell'intero turno.
 

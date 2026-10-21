@@ -46,8 +46,8 @@ test('post-edit: all Cx/S02 abbreviations have explicit linked meanings',()=>{
 });
 test('post-edit: actual first encounters explain scope and route users to lexicon',()=>{
  const r=read('README.md'),a=read('docs/ARCHITECTURE.md'),n=read('docs/START_HERE.md');
- assert.match(r,/un solo canale che può attestare l’attivazione: one canonical `SESSION_CHAT_LOCAL` composition \(C59\)/);
- assert.match(r,/C72\/v2 \(ingresso e consenso\)/);
+ assert.match(r,/one canonical `SESSION_CHAT_LOCAL` composition \(C59\)/);
+ assert.match(r,/C72\/v2/);assert.match(r,/MCP_EXTERNAL/);assert.doesNotMatch(r,/CANONICAL \(via MCP\)/);
  assert.match(a,/S02 \(ponte di versione\)\/C135 \(coordinatore\)/);
  assert.match(n,/non sono nomi di un modello né livelli di intelligenza/);
 });
