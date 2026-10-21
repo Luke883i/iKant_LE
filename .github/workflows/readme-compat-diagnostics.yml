@@ -57,3 +57,21 @@ jobs:
       - name: "Semantics: ${{ steps.neuro.outputs.answer }}"
         if: always()
         run: 'test "${{ steps.neuro.outputs.answer }}" = "PASS"'
+
+      - name: Full standalone npm test inspect
+        id: full
+        shell: bash
+        if: always()
+        run: |
+          set +e
+          npm test > /tmp/standalone.log 2>&1
+          status=$?
+          if [ "$status" -eq 0 ]; then answer=PASS
+          else
+            answer="FAIL_$(grep '^ *not ok' /tmp/standalone.log | head -3 | tr -cd 'A-Za-z0-9_ ,:.-' | head -c 175)"
+            if [ "$answer" = "FAIL_" ]; then answer="FAIL_$(tail -n 5 /tmp/standalone.log | tr -cd 'A-Za-z0-9_ ,:.-' | head -c 160)"; fi
+          fi
+          echo "answer=$answer" >> "$GITHUB_OUTPUT"
+      - name: "Full suite result: ${{ steps.full.outputs.answer }}"
+        if: always()
+        run: 'test "${{ steps.full.outputs.answer }}" = "PASS"'
