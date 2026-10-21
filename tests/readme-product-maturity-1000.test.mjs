@@ -29,6 +29,11 @@ test('PRODUCT: bounded cognitive model, real full stack, original authority sepa
  assert.ok(home.indexOf('## MCP esterno')<home.indexOf('## Tre domande di ricerca'));
  assert.doesNotMatch(home,/CANONICAL \(via MCP\)|MCP connesso implica ACTIVE|è una coscienza dimostrata/);
 });
+test('PUBLIC: START_HERE does not launder external MCP into C59 CANONICAL',()=>{
+ const intro=fs.readFileSync(path.join(root,'docs/START_HERE.md'),'utf8');
+ assert.match(intro,/CANONICAL/);assert.match(intro,/C59/);assert.match(intro,/MCP esterno/);
+ assert.doesNotMatch(intro,/CANONICAL[^.]{0,100}servizio MCP/i);
+});
 test('MCP: documented Render deployment and ChatGPT connection remain qualified',()=>{
  for(const term of ['render.mcp-standalone.candidate.yaml','docs/MCP_STANDALONE_RENDER_RUNBOOK.txt',
   'plugins/ikant-le-session-chat/mcp.standalone.template.json','IKANT_MCP_DEPLOYMENT_PROFILE',
