@@ -19,7 +19,7 @@ test('SOURCE: original V1 compact envelope, existing editorial and neuro invaria
   assert.ok(home.includes(s),'legacy standalone source '+s);
 });
 test('PRODUCT: bounded cognitive model, real full stack, original authority separation',()=>{
- for(const term of ['ricorrenza','attenzione','valenza','Provenienza',
+ for(const term of ['ricorrenza','attenzione','valenza','provenienza',
  'Full stack reale','MCP_EXTERNAL','**EDU**','**CANONICAL**',
  'Fenomenologia: UNKNOWN','PRODUCT_NO_GO','RQ1','RQ2','RQ3',
  'C87','C125','C59','non installano Node'])

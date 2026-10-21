@@ -112,7 +112,7 @@ La scelta di ammissione C72/v2 ha **esattamente due opzioni, EDU e CANONICAL**. 
 
 **Non confondere il lessico storico:** C72/v1 esponeva `EXPERIMENTAL` come ricevuta legacy. C72/v1 ≠ C72/v2 (ingresso e consenso) e `EXPERIMENTAL` non è una terza modalità pubblica attuale. Esiste **one canonical `SESSION_CHAT_LOCAL` composition (C59)**: richiede eventi autentici e verifiche che una configurazione MCP esterna non può autocertificare.
 
-**Come iniziare EDU:** in una *nuova* chat, dopo aver caricato Project e sorgenti effettivamente disponibili, inviare **tre messaggi distinti e in ordine**: `avvia iKant` → lettura dei cinque originali e Terms → `I ACCEPT` → introduzione originale → `EDU` o `CANONICAL`. La scelta non anticipa l'esito dei gate. Ordine dei cinque documenti: [README](README.md) → [BOOTSTRAP](BOOTSTRAP.json) → [ADMISSION](ADMISSION.json) → [AGENTS](AGENTS.md) → [TERMS](TERMS.md). Prompt e ZIP **non installano Node** o un plugin. [Guida Project passo passo](docs/IKANT_LOCAL_SETUP.md) · [Ammissione C72](docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md).
+**Come iniziare EDU:** in una *nuova* chat, dopo aver caricato Project e sorgenti effettivamente disponibili, inviare **tre messaggi distinti e in ordine**: `avvia iKant` → lettura dei cinque originali e Terms → `I ACCEPT` → introduzione originale → `EDU` o `CANONICAL`. La scelta non anticipa l'esito dei gate. Ordine dei cinque documenti: [README](README.md) → [BOOTSTRAP](BOOTSTRAP.json) → [ADMISSION](ADMISSION.json) → [AGENTS](AGENTS.md) → [TERMS](TERMS.md). Identificatori del percorso per l'audit: `README.md -> BOOTSTRAP.json -> ADMISSION.json -> AGENTS.md -> TERMS.md`. Prompt e ZIP **non installano Node** o un plugin. [Guida Project passo passo](docs/IKANT_LOCAL_SETUP.md) · [Ammissione C72](docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md).
 
 ## MCP esterno: Render e ChatGPT
 
@@ -205,6 +205,8 @@ Surface A è testo/voce vincolati; Surface B è un artefatto DOCX con readback q
 </details>
 
 ## Stato e autorità
+
+Il [catalogo pubblico di prodotto](release/catalog.json) è un riferimento di versione, non una pubblicazione. Il [censimento dei canali C59](contracts/session-chat-composition-census.json) esplicita il perimetro di composizione: GitHub DNS/egress from the container is not a dependency per la relay HOST originale, non per il server OAuth esterno.
 
 **La fonte è il commit di `main` effettivamente verificato**, non il nome di una chat, ZIP, branch o README. Una PR merged attesta disponibilità di codice nel repository, non deployment. **PRODUCT_NO_GO** resta applicabile al servizio MCP esterno e alle pretese di disponibilità generalizzata finché gli esperimenti esterni non chiudono i gate. Ordine di autorità: sicurezza/legge e controllo umano → owner e runtime originali → contratti e prove versionate → documentazione; quest'ultima non introduce un secondo writer.
 
