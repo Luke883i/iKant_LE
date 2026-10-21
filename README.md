@@ -58,7 +58,7 @@ Nel codice e nei contratti LE queste funzioni attraversano, fra gli altri, il pr
 <details>
 <summary>Diagramma: richiesta, ricorrenza, prova e decisione umana</summary>
 
-~~~mermaid
+```mermaid
 flowchart TD
  H["Umano: obiettivo e consenso"] --> G{"Fonte, modo e permesso validi?"}
  G -- "No" --> STOP["Stop e primo blocco"]
@@ -71,7 +71,7 @@ flowchart TD
  W --> O["Consegna nel perimetro provato"]
  O --> H2["Umano: giudizio e correzione"]
  H2 -. "Nuovi input, se ammessi" .-> C
-~~~
+```
 
 Una freccia è una **relazione di disegno**, non una testimonianza che tutte le sue operazioni siano state eseguite qui. Un diagramma o un ledger non certificano la verità di una risposta.
 
@@ -108,7 +108,7 @@ La scelta di ammissione C72/v2 ha **esattamente due opzioni, EDU e CANONICAL**. 
 
 **Non confondere il lessico storico:** C72/v1 esponeva \`EXPERIMENTAL\` come ricevuta legacy. C72/v1 ≠ C72/v2 (ingresso e consenso) e \`EXPERIMENTAL\` non è una terza modalità pubblica attuale. Esiste **one canonical \`SESSION_CHAT_LOCAL\` composition (C59)**: richiede eventi autentici e verifiche che una configurazione MCP esterna non può autocertificare.
 
-**Come iniziare EDU:** in una *nuova* chat, dopo aver caricato Project e sorgenti effettivamente disponibili, inviare **tre messaggi distinti e in ordine**: \`avvia iKant\` → lettura dei cinque originali e Terms → \`I ACCEPT\` → introduzione originale → \`EDU\` o \`CANONICAL\`. La scelta non anticipa l'esito dei gate. Ordine dei cinque documenti: [README](README.md) → [BOOTSTRAP](BOOTSTRAP.json) → [ADMISSION](ADMISSION.json) → [AGENTS](AGENTS.md) → [TERMS](TERMS.md). Né prompt né ZIP **non installano Node** o un plugin. [Guida Project passo passo](docs/IKANT_LOCAL_SETUP.md) · [Ammissione C72](docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md).
+**Come iniziare EDU:** in una *nuova* chat, dopo aver caricato Project e sorgenti effettivamente disponibili, inviare **tre messaggi distinti e in ordine**: \`avvia iKant\` → lettura dei cinque originali e Terms → \`I ACCEPT\` → introduzione originale → \`EDU\` o \`CANONICAL\`. La scelta non anticipa l'esito dei gate. Ordine dei cinque documenti: [README](README.md) → [BOOTSTRAP](BOOTSTRAP.json) → [ADMISSION](ADMISSION.json) → [AGENTS](AGENTS.md) → [TERMS](TERMS.md). Prompt e ZIP **non installano Node** o un plugin. [Guida Project passo passo](docs/IKANT_LOCAL_SETUP.md) · [Ammissione C72](docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md).
 
 ## MCP esterno: Render e ChatGPT
 
