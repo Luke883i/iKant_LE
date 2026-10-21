@@ -13,7 +13,7 @@ iKant è un’infrastruttura cognitiva verificabile: affianca un LLM sostituibil
 
 **Natura.** iKant è una **infrastruttura cognitiva verificabile, sperimentale** intorno a un LLM sostituibile: regola metodo e prove solo quando gli owner sono eseguiti. **Umano:** scopi, consenso, giudizio. **LLM:** proposta statistica fallibile. **iKant:** controlli, esiti e stop. **HOST:** collega sorgente, modello e interfaccia senza inventare eventi nativi.
 
-**Ratio.** Il testo fluido non rivela fonti, autorizzazioni e azioni effettive. iKant lega *domanda → metodo → esecuzione → traccia → verifica indipendente*. Una ricevuta prova operazioni, **non** verità; l'efficacia richiede confronti esterni.
+**Ratio e obiettivi.** Il testo fluido non rivela fonti, autorizzazioni e azioni effettive. iKant lega *domanda → metodo → esecuzione → traccia → verifica indipendente*. Una ricevuta prova operazioni, **non** verità; l'efficacia richiede confronti esterni.
 
 **Stato epistemico:** **DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**: codice ≠ esecuzione ≠ verità ≠ permesso.
 
