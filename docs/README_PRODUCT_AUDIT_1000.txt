@@ -79,3 +79,14 @@ OpenAI: https://developers.openai.com/plugins/build/mcp-server
 Render: https://render.com/docs/blueprint-spec
 Render: https://render.com/docs/disks
 Only a human can approve merging this documentation; merging doesn't deploy MCP.
+
+SOURCE-BOUND POLICY CHANGE — PR #154, 2026-10-21
+The initial compressed README was rejected as a product/documentation regression. The revised
+root README is a full explanatory map (target ~27 KB): completeness and reader pathways take
+priority over an outdated 12 KB root cap. C7 and the original check use distinct scoped limits:
+root at least 16 KB, root at most 48 KB, supporting constitutional/historical Markdown at
+most 25 KB, combined at most 73 KB. These are guard rails against absent or unbounded content,
+not evidence of semantic correctness. 1000 factorial variant generation and 1000 paired source-
+atom removals are preserved; prior original authority and no-false-ACTIVE gates remain.
+The old 61,013-byte precompression measure remains a historical reference, NOT a DoD for
+current publication. The C7 bloat mutant now exceeds the new total cap and must be killed.

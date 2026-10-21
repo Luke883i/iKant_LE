@@ -60,7 +60,11 @@ jobs:
           if(r.cases!==1_000_000 || r.survivors!==0) throw new Error('C7 1M mismatch');
           if(r.categories.typical!==500_000 || r.categories.edge!==300_000 || r.categories.stress!==200_000) throw new Error('C7 strata mismatch');
           if(r.family_count!==41 || r.unexercised_families.length!==0 || r.violations.length!==0) throw new Error('C7 family/violation mismatch');
-          if(r.documentation.as_is_bytes!==61013 || r.documentation.to_be_bytes>25000 || r.documentation.reduction_ratio<0.60) throw new Error('C7 compression boundary');
+          if(r.documentation.as_is_bytes!==61013 ||
+             r.documentation.readme_bytes<16000 || r.documentation.readme_bytes>48000 ||
+             r.documentation.support_bytes>25000 || r.documentation.to_be_bytes>73000 ||
+             r.documentation.limits?.readme_max!==48000)
+              throw new Error('C7 scoped completeness and authority budget');
           if(r.claim_boundary.mutation_proves_document_semantic_perfection!==false || r.claim_boundary.mutation_proves_universal_host_compliance!==false || r.claim_boundary.mutation_proves_api_availability!==false) throw new Error('C7 claim boundary missing');
           console.log(`IKANT_LE_C7_SOURCE=${r.source_binding.digest}`);
           console.log(`IKANT_LE_C7_RECEIPT=${r.receipt_sha256}`);
