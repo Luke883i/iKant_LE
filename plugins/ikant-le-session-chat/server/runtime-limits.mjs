@@ -1,6 +1,6 @@
 /** Bounds the C20 subprocess bridge. Failure after send has UNKNOWN write outcome. */
 import {spawn} from 'node:child_process';
-export const WRITE_OPS=new Set(['accept','turn','accept-limited','limited-turn']);
+export const WRITE_OPS=new Set(['open','accept','turn','accept-limited','limited-turn']);
 export const DEFAULT_TIMEOUT_MS=45_000;
 export const MAX_STDIN_BYTES=256*1024;
 export const MAX_STDOUT_BYTES=8*1024*1024;
@@ -19,7 +19,7 @@ export function runtimeBridgeError(op,reason){
 export function invokeRuntime({op,payload,cli,repoRoot,env=process.env,
  timeoutMs=DEFAULT_TIMEOUT_MS,spawnImpl=spawn}={}){
  return new Promise((resolve,reject)=>{
-  if(typeof op!=='string'||!['open',...WRITE_OPS].includes(op)||
+  if(typeof op!=='string'||![...WRITE_OPS].includes(op)||
     !Number.isSafeInteger(timeoutMs)||timeoutMs<1000||timeoutMs>300000){
    reject(runtimeBridgeError(op,'invalid_operation_or_budget'));return;
   }
