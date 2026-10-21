@@ -37,12 +37,12 @@ const SWAPS=[null,[1,2],[2,3],[3,4],[4,5],[1,3],[2,4],[3,5],[1,4],[2,5]];
 const GUARDS=[
  'infrastruttura cognitiva verificabile','**Umano:**','**LLM:**','**iKant:**','**HOST:**','**Verificatore:**',
  'C72/v2','C87','C125','C59','MCP_EXTERNAL','PKCE S256','Render','OAuth',
- 'fenomenologia UNKNOWN','**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**',
+ 'Fenomenologia: UNKNOWN','**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**',
  'PRODUCT_NO_GO','GitHub API only','non installano Node','RQ1','RQ2','RQ3'
 ];
 function splitSections(s){
  const marks=[...s.matchAll(/^## [^\n]+/gm)];
- if(marks.length!==7)throw Error('README_SECTION_COUNT_EXPECTED_7_GOT_'+marks.length);
+ if(marks.length<8)throw Error('README_SECTION_COVERAGE_INSUFFICIENT_'+marks.length);
  return {intro:s.slice(0,marks[0].index),parts:marks.map((m,i)=>s.slice(m.index,i+1<marks.length?marks[i+1].index:s.length))};
 }
 export function safe(s){

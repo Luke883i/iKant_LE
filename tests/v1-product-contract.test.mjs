@@ -23,7 +23,8 @@ test('README invites a beginner first then gives exact technical provenance',()=
  // Full standalone root README explicitly approved by the human owner.
  // The former <4300 byte shortcut has been replaced by a bounded content DoD:
  // no unlimited prose, no source/authority promotion, and all four pillars.
- assert.ok(Buffer.byteLength(r,'utf8')<12000, 'README standalone editorial envelope');
+ const rootBytes=Buffer.byteLength(r,'utf8');
+ assert.ok(rootBytes>=16000&&rootBytes<=48000, 'README complete but bounded product/architecture envelope');
  for(const required of [
   'natura, ratio e utilità', 'Cosa non e', 'infrastruttura cognitiva verificabile',
   '## Modalità e bootstrap', '## Tre domande di ricerca',

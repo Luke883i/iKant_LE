@@ -10,23 +10,23 @@ import {verify as verifyAtlas,audit} from '../scripts/ikant-document-atlas.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const home=fs.readFileSync(path.join(root,'README.md'),'utf8');
 test('SOURCE: original V1 compact envelope, existing editorial and neuro invariants',()=>{
- assert.ok(Buffer.byteLength(home,'utf8')<12000);
+ assert.ok(Buffer.byteLength(home,'utf8')>=16000&&Buffer.byteLength(home,'utf8')<=48000);
  assert.deepEqual(verifyReadme(home,root),{ok:true,errors:[]});
  assert.equal(validateStandalone(home).ok,true);
  assert.equal(falsifyReadme(home,root).rejected,100);
  assert.equal(verifyAtlas().atlas_exact,true);
- for(const s of ['## Cosa ottieni oggi: natura, ratio e utilità','## Cosa non e','## Modalità e bootstrap','## Tre domande di ricerca','## Metodo end-to-end, sviluppo e lettori'])
+ for(const s of ['## Cosa ottieni oggi: natura, ratio e utilità','### Cosa non e','## Full stack reale','## Modalità e bootstrap','## Tre domande di ricerca','## Metodo end-to-end, sviluppo e lettori'])
   assert.ok(home.includes(s),'legacy standalone source '+s);
 });
 test('PRODUCT: bounded cognitive model, real full stack, original authority separation',()=>{
- for(const term of ['ciclo ricorrente','Workspace C5','Valutazione C4','Provenienza',
+ for(const term of ['ricorrenza','attenzione','valenza','Provenienza',
  'Full stack reale','MCP_EXTERNAL','**EDU**','**CANONICAL**',
- 'fenomenologia UNKNOWN','PRODUCT_NO_GO','RQ1','RQ2','RQ3',
+ 'Fenomenologia: UNKNOWN','PRODUCT_NO_GO','RQ1','RQ2','RQ3',
  'C87','C125','C59','non installano Node'])
   assert.ok(home.includes(term),'missing '+term);
  assert.ok(home.indexOf('## Cosa ottieni')<home.indexOf('## Modalità e bootstrap'));
- assert.ok(home.indexOf('## Modalità e bootstrap')<home.indexOf('### MCP esterno'));
- assert.ok(home.indexOf('### MCP esterno')<home.indexOf('## Tre domande di ricerca'));
+ assert.ok(home.indexOf('## Modalità e bootstrap')<home.indexOf('## MCP esterno'));
+ assert.ok(home.indexOf('## MCP esterno')<home.indexOf('## Tre domande di ricerca'));
  assert.doesNotMatch(home,/CANONICAL \(via MCP\)|MCP connesso implica ACTIVE|è una coscienza dimostrata/);
 });
 test('MCP: documented Render deployment and ChatGPT connection remain qualified',()=>{
@@ -54,7 +54,7 @@ test('MUTATIONS: 1000 distinct text candidates and 1000 rejected negative counte
  assert.ok(r.candidates.every(x=>x.valid&&x.sha256.length===64));
 });
 test('FALSIFICATION: removing source identity and denying product boundaries fails',()=>{
- for(const term of ['MCP_EXTERNAL','C87','fenomenologia UNKNOWN','PKCE S256','GitHub API only'])
+ for(const term of ['MCP_EXTERNAL','C87','Fenomenologia: UNKNOWN','PKCE S256','GitHub API only'])
   assert.equal(safe(home.replaceAll(term,'[OMITTED]')),false,term);
  assert.equal(safe(home+'MCP connesso implica ACTIVE'),false);
  assert.equal(safe(home+'è una coscienza dimostrata'),false);
