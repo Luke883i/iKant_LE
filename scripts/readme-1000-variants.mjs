@@ -33,23 +33,23 @@ const SCENARIOS=[
  'Un nuovo utente deve avviare il percorso EDU da zero.',
  'Un operatore deve ripristinare il servizio senza retry ciechi.'
 ];
-const SWAPS=[null,[2,3],[1,2],[3,4],[4,5],[5,6],[6,7],[1,3],[2,5],[3,6]];
+const SWAPS=[null,[1,2],[2,3],[3,4],[4,5],[1,3],[2,4],[3,5],[1,4],[2,5]];
 const GUARDS=[
  'infrastruttura cognitiva verificabile','**Umano:**','**LLM:**','**iKant:**','**HOST:**','**Verificatore:**',
  'C72/v2','C87','C125','C59','MCP_EXTERNAL','PKCE S256','Render','OAuth',
- 'Fenomenologia: UNKNOWN','**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**',
- 'PRODUCT_NO_GO','SOURCE_EXACT','non installano Node','RQ1','RQ2','RQ3'
+ 'fenomenologia UNKNOWN','**DOCUMENTATO / OSSERVATO / INFERITO / NON ATTESTATO**',
+ 'PRODUCT_NO_GO','GitHub API only','non installano Node','RQ1','RQ2','RQ3'
 ];
 function splitSections(s){
  const marks=[...s.matchAll(/^## [^\n]+/gm)];
- if(marks.length!==8)throw Error('README_SECTION_COUNT_EXPECTED_8_GOT_'+marks.length);
+ if(marks.length!==7)throw Error('README_SECTION_COUNT_EXPECTED_7_GOT_'+marks.length);
  return {intro:s.slice(0,marks[0].index),parts:marks.map((m,i)=>s.slice(m.index,i+1<marks.length?marks[i+1].index:s.length))};
 }
 export function safe(s){
  return GUARDS.every(k=>s.includes(k))&&
   !s.includes('MCP connesso implica ACTIVE')&&
   !s.includes('è una coscienza dimostrata')&&
-  s.indexOf('## Stato e autorità')>s.indexOf('## Natura, ratio')&&
+  s.indexOf('## Stato e autorità')>s.indexOf('## Cosa ottieni oggi')&&
   s.includes(String.fromCharCode(96,96,96)+'mermaid')&&
   s.includes('docs/IKANT_DOCUMENT_ATLAS.md');
 }
