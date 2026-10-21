@@ -7,7 +7,7 @@ on:
       - 'tests/mcp-standalone-*.test.mjs'
       - 'scripts/mcp-standalone-semantic-10k.mjs'
       - 'render.mcp-standalone.candidate.yaml'
-      - 'docs/MCP_STANDALONE_RENDER_RUNBOOK.md'
+      - 'docs/MCP_STANDALONE_RENDER_RUNBOOK.txt'
       - '.github/workflows/mcp-standalone-assurance.yml'
   workflow_dispatch:
 jobs:
@@ -32,7 +32,7 @@ jobs:
       - name: Install exact declared direct MCP SDK dependencies (not a lockfile claim)
         run: npm install --ignore-scripts --no-audit --no-fund --prefix plugins/ikant-le-session-chat/server
       - name: Real SDK HTTP transport with SYNTHETIC local OAuth server
-        run: node --test tests/mcp-standalone-http-qualification.test.mjs
+        run: node --test tests/mcp-standalone-http-qualification.probe.mjs
       - name: Materialize ten thousand scenario questions
         run: node scripts/mcp-standalone-semantic-10k.mjs mcp-standalone-10k.jsonl > mcp-standalone-10k-evidence.json
       - uses: actions/upload-artifact@v4
