@@ -102,45 +102,45 @@ La scelta di ammissione C72/v2 ha **esattamente due opzioni, EDU e CANONICAL**. 
 
 | Forma | Che cos'è | Ingresso e prova richiesti | Che cosa NON comporta |
 |---|---|---|---|
-| **EDU** (sperimentale, raccomandata) | Percorso guidato nel Project o in un HOST che disponga davvero degli adapter e degli owner EDU. | Ammissione umana nuova C72/v2, fonte verificata, runtime eseguito, C87/readback/C125 per la voce. | Non implica \`ACTIVE\`, identità nativa o stato persistente fra chat. |
-| **CANONICAL** (owner nativo) | Composizione originale \`SESSION_CHAT_LOCAL\` capace di pretendere il grado canonico solo quando qualificata. | Evento autentico del provider, C59, gates C72/C87 e prova della consegna. | La selezione o un generico server MCP **non** attivano CANONICAL. |
-| **MCP_EXTERNAL** (servizio indipendente) | Server Node/Streamable HTTP con OAuth, strumenti e un runtime di compatibilità C20; deploy candidato Render. | Installazione autonoma, IdP reale, TLS, disco, test HTTP/SDK e collegamento umano del client. | Non è modo C72, non è C59 e non prova UI nativa o \`ACTIVE\` canonico. |
+| **EDU** (sperimentale, raccomandata) | Percorso guidato nel Project o in un HOST che disponga davvero degli adapter e degli owner EDU. | Ammissione umana nuova C72/v2, fonte verificata, runtime eseguito, C87/readback/C125 per la voce. | Non implica `ACTIVE`, identità nativa o stato persistente fra chat. |
+| **CANONICAL** (owner nativo) | Composizione originale `SESSION_CHAT_LOCAL` capace di pretendere il grado canonico solo quando qualificata. | Evento autentico del provider, C59, gates C72/C87 e prova della consegna. | La selezione o un generico server MCP **non** attivano CANONICAL. |
+| **MCP_EXTERNAL** (servizio indipendente) | Server Node/Streamable HTTP con OAuth, strumenti e un runtime di compatibilità C20; deploy candidato Render. | Installazione autonoma, IdP reale, TLS, disco, test HTTP/SDK e collegamento umano del client. | Non è modo C72, non è C59 e non prova UI nativa o `ACTIVE` canonico. |
 
-**Non confondere il lessico storico:** C72/v1 esponeva \`EXPERIMENTAL\` come ricevuta legacy. C72/v1 ≠ C72/v2 (ingresso e consenso) e \`EXPERIMENTAL\` non è una terza modalità pubblica attuale. Esiste **one canonical \`SESSION_CHAT_LOCAL\` composition (C59)**: richiede eventi autentici e verifiche che una configurazione MCP esterna non può autocertificare.
+**Non confondere il lessico storico:** C72/v1 esponeva `EXPERIMENTAL` come ricevuta legacy. C72/v1 ≠ C72/v2 (ingresso e consenso) e `EXPERIMENTAL` non è una terza modalità pubblica attuale. Esiste **one canonical `SESSION_CHAT_LOCAL` composition (C59)**: richiede eventi autentici e verifiche che una configurazione MCP esterna non può autocertificare.
 
-**Come iniziare EDU:** in una *nuova* chat, dopo aver caricato Project e sorgenti effettivamente disponibili, inviare **tre messaggi distinti e in ordine**: \`avvia iKant\` → lettura dei cinque originali e Terms → \`I ACCEPT\` → introduzione originale → \`EDU\` o \`CANONICAL\`. La scelta non anticipa l'esito dei gate. Ordine dei cinque documenti: [README](README.md) → [BOOTSTRAP](BOOTSTRAP.json) → [ADMISSION](ADMISSION.json) → [AGENTS](AGENTS.md) → [TERMS](TERMS.md). Prompt e ZIP **non installano Node** o un plugin. [Guida Project passo passo](docs/IKANT_LOCAL_SETUP.md) · [Ammissione C72](docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md).
+**Come iniziare EDU:** in una *nuova* chat, dopo aver caricato Project e sorgenti effettivamente disponibili, inviare **tre messaggi distinti e in ordine**: `avvia iKant` → lettura dei cinque originali e Terms → `I ACCEPT` → introduzione originale → `EDU` o `CANONICAL`. La scelta non anticipa l'esito dei gate. Ordine dei cinque documenti: [README](README.md) → [BOOTSTRAP](BOOTSTRAP.json) → [ADMISSION](ADMISSION.json) → [AGENTS](AGENTS.md) → [TERMS](TERMS.md). Prompt e ZIP **non installano Node** o un plugin. [Guida Project passo passo](docs/IKANT_LOCAL_SETUP.md) · [Ammissione C72](docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md).
 
 ## MCP esterno: Render e ChatGPT
 
-**Stato:** codice server e Blueprint candidate presenti su \`main\`; **non è attestato un servizio Render già pubblico, un OAuth provider connesso né un plugin installato nel tuo ChatGPT**. I test con IdP sintetico verificano una parte del protocollo, non il collegamento reale. L'IdP *non* è contenuto nel repository. Per installazione autonoma, preferire il [runbook aggiornato](docs/MCP_STANDALONE_RENDER_RUNBOOK.txt), il [Blueprint candidato](render.mcp-standalone.candidate.yaml) e il [server](plugins/ikant-le-session-chat/server/server.mjs).
+**Stato:** codice server e Blueprint candidate presenti su `main`; **non è attestato un servizio Render già pubblico, un OAuth provider connesso né un plugin installato nel tuo ChatGPT**. I test con IdP sintetico verificano una parte del protocollo, non il collegamento reale. L'IdP *non* è contenuto nel repository. Per installazione autonoma, preferire il [runbook aggiornato](docs/MCP_STANDALONE_RENDER_RUNBOOK.txt), il [Blueprint candidato](render.mcp-standalone.candidate.yaml) e il [server](plugins/ikant-le-session-chat/server/server.mjs).
 
 ### Da sorgente a URL pubblico (Render)
 
-1. **Qualifica la versione:** scegli un commit intenzionale, controlla \`main\`, i test e la compatibilità della persistenza. Per l'app standalone serve **l'intero repository**, non il solo file \`server.mjs\`.
-2. **Prepara l'Identity Provider OAuth** (esterno): HTTPS, discovery del server di autorizzazione, *authorization code* + **PKCE S256**, CIMD oppure registrazione dinamica/predefinita, issuer e audience/resource esatti; token di accesso RS256 verificabili su JWKS e scope \`ikant:connect\` (lettura) / \`ikant:write\` (scrittura). Configura gli URI di redirect effettivamente indicati da ChatGPT.
-3. **Crea un Web Service Render** dal repository, usando [\`render.mcp-standalone.candidate.yaml\`](render.mcp-standalone.candidate.yaml) o impostazioni equivalenti: Node 20+, root del repository, build npm delle dipendenze del server, start \`node plugins/ikant-le-session-chat/server/server.mjs\`, HTTPS pubblico e controllo \`/healthz\`. Il processo ascolta \`0.0.0.0:$PORT\`.
-4. **Attacca un disco persistente a pagamento** montato in \`/var/data/ikant-le\`, un'istanza unica, backup e rollback controllati. Render non conserva file fuori dal volume e un disco collegato esclude lo scaling a più istanze e il deploy zero-downtime.
+1. **Qualifica la versione:** scegli un commit intenzionale, controlla `main`, i test e la compatibilità della persistenza. Per l'app standalone serve **l'intero repository**, non il solo file `server.mjs`.
+2. **Prepara l'Identity Provider OAuth** (esterno): HTTPS, discovery del server di autorizzazione, *authorization code* + **PKCE S256**, CIMD oppure registrazione dinamica/predefinita, issuer e audience/resource esatti; token di accesso RS256 verificabili su JWKS e scope `ikant:connect` (lettura) / `ikant:write` (scrittura). Configura gli URI di redirect effettivamente indicati da ChatGPT.
+3. **Crea un Web Service Render** dal repository, usando [`render.mcp-standalone.candidate.yaml`](render.mcp-standalone.candidate.yaml) o impostazioni equivalenti: Node 20+, root del repository, build npm delle dipendenze del server, start `node plugins/ikant-le-session-chat/server/server.mjs`, HTTPS pubblico e controllo `/healthz`. Il processo ascolta `0.0.0.0:$PORT`.
+4. **Attacca un disco persistente a pagamento** montato in `/var/data/ikant-le`, un'istanza unica, backup e rollback controllati. Render non conserva file fuori dal volume e un disco collegato esclude lo scaling a più istanze e il deploy zero-downtime.
 5. **Imposta in Render le variabili** (mai segreti in Git/chat):
 
 | Variabile | Valore o significato |
 |---|---|
-| \`IKANT_MCP_DEPLOYMENT_PROFILE\` | \`standalone\` |
-| \`IKANT_MCP_AUTH_MODE\` | \`oauth\` |
-| \`IKANT_MCP_PERSISTENCE_ROOT\` | \`/var/data/ikant-le\` |
-| \`IKANT_LE_DEPLOYMENT_ROOT\` | \`/var/data/ikant-le/deployment\` |
-| \`IKANT_MCP_ALLOWED_ORIGIN\` | \`https://chatgpt.com\` |
-| \`IKANT_MCP_OAUTH_RESOURCE\` | \`https://<host-pubblico>/mcp\` |
-| \`IKANT_MCP_OAUTH_ISSUER\` | URL HTTPS *esatto* dell'issuer dell'IdP |
-| \`IKANT_MCP_OAUTH_JWKS_URL\` | URL HTTPS JWKS dell'issuer |
-| \`IKANT_ONESHELL_THREAD_PANEL\` | \`0\` finché l'interfaccia nativa non è attestata |
+| `IKANT_MCP_DEPLOYMENT_PROFILE` | `standalone` |
+| `IKANT_MCP_AUTH_MODE` | `oauth` |
+| `IKANT_MCP_PERSISTENCE_ROOT` | `/var/data/ikant-le` |
+| `IKANT_LE_DEPLOYMENT_ROOT` | `/var/data/ikant-le/deployment` |
+| `IKANT_MCP_ALLOWED_ORIGIN` | `https://chatgpt.com` |
+| `IKANT_MCP_OAUTH_RESOURCE` | `https://<host-pubblico>/mcp` |
+| `IKANT_MCP_OAUTH_ISSUER` | URL HTTPS *esatto* dell'issuer dell'IdP |
+| `IKANT_MCP_OAUTH_JWKS_URL` | URL HTTPS JWKS dell'issuer |
+| `IKANT_ONESHELL_THREAD_PANEL` | `0` finché l'interfaccia nativa non è attestata |
 
-6. **Falsifica prima di collegare:** \`GET /healthz\` deve attestare la rilettura del deployment; \`GET /.well-known/oauth-protected-resource/mcp\` pubblica la configurazione; \`POST /mcp\` senza token deve produrre **401** con \`WWW-Authenticate\`. Prova \`initialize\`, \`tools/list\`, scopes insufficienti, token scaduti/audience errata, restart e persistenza. Non interpretare il solo HTTP 200 come successo del prodotto.
+6. **Falsifica prima di collegare:** `GET /healthz` deve attestare la rilettura del deployment; `GET /.well-known/oauth-protected-resource/mcp` pubblica la configurazione; `POST /mcp` senza token deve produrre **401** con `WWW-Authenticate`. Prova `initialize`, `tools/list`, scopes insufficienti, token scaduti/audience errata, restart e persistenza. Non interpretare il solo HTTP 200 come successo del prodotto.
 
 ### Collegamento manuale a ChatGPT
 
-Apri **Plugins → Add custom MCP server** (l'etichetta può variare), inserisci l'URL HTTPS \`https://<host-pubblico>/mcp\`, seleziona **OAuth** e segui il collegamento. Configura nell'IdP l'esatto client metadata document o client ID e il redirect indicati dalla schermata, non URI indovinati. ChatGPT richiede autorizzazione tramite discovery/challenge e può chiedere scope aggiuntivi per le scritture. Il [template MCP](plugins/ikant-le-session-chat/mcp.standalone.template.json) è solo un esempio, **non** un'installazione.
+Apri **Plugins → Add custom MCP server** (l'etichetta può variare), inserisci l'URL HTTPS `https://<host-pubblico>/mcp`, seleziona **OAuth** e segui il collegamento. Configura nell'IdP l'esatto client metadata document o client ID e il redirect indicati dalla schermata, non URI indovinati. ChatGPT richiede autorizzazione tramite discovery/challenge e può chiedere scope aggiuntivi per le scritture. Il [template MCP](plugins/ikant-le-session-chat/mcp.standalone.template.json) è solo un esempio, **non** un'installazione.
 
-Un collegamento riuscito richiede **prove esterne**: handshake MCP, elenco tool, token davvero emesso dal provider, consenso umano, turn e receipt di esito riaperti. La metadata \`openai/session\` non è da sola identità firmata di un messaggio. Dopo un esito di scrittura sconosciuto: **STOP, riconciliazione read-only, mai retry cieco**.
+Un collegamento riuscito richiede **prove esterne**: handshake MCP, elenco tool, token davvero emesso dal provider, consenso umano, turn e receipt di esito riaperti. La metadata `openai/session` non è da sola identità firmata di un messaggio. Dopo un esito di scrittura sconosciuto: **STOP, riconciliazione read-only, mai retry cieco**.
 
 **Render-like:** qualsiasi altro host può eseguire lo stesso server solo se offre TLS pubblico stabile, Node, controllo dei segreti, un volume durevole, writer unico, restart/rollback verificati e un IdP compatibile. Una replica stateless o un volume effimero non è equivalente. Fonti esterne: [OpenAI, MCP e OAuth](https://developers.openai.com/plugins/build/auth) · [OpenAI, costruire un server MCP](https://developers.openai.com/plugins/build/mcp-server) · [Render Blueprint](https://render.com/docs/blueprint-spec) · [Render dischi](https://render.com/docs/disks).
 
@@ -150,7 +150,7 @@ Un collegamento riuscito richiede **prove esterne**: handshake MCP, elenco tool,
 
 | Affermazione | Prova che serve | Limite |
 |---|---|---|
-| \`SOURCE_EXACT\` | Commit/tree, hash del blob e riapertura indipendente. | Prova i byte; non sicurezza o verità. |
+| `SOURCE_EXACT` | Commit/tree, hash del blob e riapertura indipendente. | Prova i byte; non sicurezza o verità. |
 | Writer unico e persistenza | Esecuzione originale, conteggio delle scritture, ledger/readback fisico. | La prova locale non è delivery provider. |
 | Consenso valido | Nuovi messaggi umani esatti, nell'ordine e nell'epoca corretta. | Una citazione o vecchia chat non valgono. |
 | Routing cognitivo | Trace dell'owner qualificato, stati e controesempi; niente shadow promosso a owner. | La spiegazione teorica non dimostra che ogni modulo fosse attivo. |
@@ -158,7 +158,7 @@ Un collegamento riuscito richiede **prove esterne**: handshake MCP, elenco tool,
 | Deploy e integrazione MCP | Log server, OAuth reale, restart disco, chiamate ChatGPT e osservazione del client. | **Non attestato** dal solo repository. |
 | Esperienza soggettiva | Ipotesi, misure e criteri scientifici esterni appropriati. | La fenomenologia non è decidibile da hash o comportamento soltanto. |
 
-**Confutazioni decisive:** asserire \`ACTIVE\` senza ricevuta originale e identità nativa, doppia scrittura, riuso silenzioso di consenso storico, URL o file spacciato per installazione, classificazioni che bloccano tutto, risposte semanticamente false ma soltanto tracciate, plugin MCP dichiarato collegato senza test umano.
+**Confutazioni decisive:** asserire `ACTIVE` senza ricevuta originale e identità nativa, doppia scrittura, riuso silenzioso di consenso storico, URL o file spacciato per installazione, classificazioni che bloccano tutto, risposte semanticamente false ma soltanto tracciate, plugin MCP dichiarato collegato senza test umano.
 
 **Tre research questions:** **RQ1** — la verificabilità migliora rispetto allo stesso LLM? **RQ2** — migliora gli esiti umani senza costi eccessivi? **RQ3** — le barriere contro pretese ontologiche e native improprie funzionano senza falsi blocchi sistematici? [Protocolli di confronto e falsificazione](docs/IKANT_RESEARCH_QUESTIONS.md).
 
@@ -188,6 +188,6 @@ Surface A è testo/voce vincolati; Surface B è un artefatto DOCX con readback q
 
 ## Stato e autorità
 
-**La fonte è il commit di \`main\` effettivamente verificato**, non il nome di una chat, ZIP, branch o README. Una PR merged attesta disponibilità di codice nel repository, non deployment. **PRODUCT_NO_GO** resta applicabile al servizio MCP esterno e alle pretese di disponibilità generalizzata finché gli esperimenti esterni non chiudono i gate. Ordine di autorità: sicurezza/legge e controllo umano → owner e runtime originali → contratti e prove versionate → documentazione; quest'ultima non introduce un secondo writer.
+**La fonte è il commit di `main` effettivamente verificato**, non il nome di una chat, ZIP, branch o README. Una PR merged attesta disponibilità di codice nel repository, non deployment. **PRODUCT_NO_GO** resta applicabile al servizio MCP esterno e alle pretese di disponibilità generalizzata finché gli esperimenti esterni non chiudono i gate. Ordine di autorità: sicurezza/legge e controllo umano → owner e runtime originali → contratti e prove versionate → documentazione; quest'ultima non introduce un secondo writer.
 
 Per contribuire: preserva le distinzioni tra *documentato, eseguito, verificato e rilasciato*, aggiungi una prova negativa quando correggi una promessa, e consulta [Governance](docs/GOVERNANCE.md), [test](tests/) e [atlante](docs/IKANT_DOCUMENT_ATLAS.md).
