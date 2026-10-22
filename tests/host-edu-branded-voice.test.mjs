@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 import {projectBrandedEduHostTurn} from '../host/ikant-edu-branded-host.mjs';
 const H=s=>createHash('sha256').update(s,'utf8').digest('hex');
 const voice='Voce locale originale, prova byte esatti.';
-const c125='PRE\\n<<<VOICE_UTF8_START>>>\\n'+voice+'\\n<<<VOICE_UTF8_END>>>\\nMODE  | EDU\\n'.replaceAll('\\n','\n');
+const c125='PRE\n<<<VOICE_UTF8_START>>>\n'+voice+'\n<<<VOICE_UTF8_END>>>\nMODE  | EDU\n';
 const original=()=>({ok:true,status:'S02_EDU_V2_HOST_BOUND_LOCAL_READBACK',active:false,native_event_attested:false,c87_before:2,c87_after:3,original_turn:{public_mode:'EDU',original_c87_writer_executed:true,original_c70_executed:true,voice_utf8:voice},c125:{ok:true,origin:'HOST_BOUND',send_callback_resolved:true,native_exclusive_attested:false,platform_delivery_attested:false,frame_sha256:H(c125),voice_sha256:H(voice)}});
 const cases=[
 x=>x.ownerTurn.original_turn.public_mode='CANONICAL',
