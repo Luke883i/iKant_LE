@@ -24,7 +24,11 @@
         "defaultPrompt": [
           "Open iKant_LE",
           "Initialize iKant_LE"
-        ]
+        ],
+        "logo": "./assets/ikant-light.svg",
+        "logoDark": "./assets/ikant-dark-square.svg",
+        "composerIcon": "./assets/ikant-light.svg",
+        "composerIconDark": "./assets/ikant-dark-square.svg"
       }
     }
   }
