@@ -1,0 +1,31 @@
+name: OneShell HEAD-only prompt
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/project-oneshell-prompt.test.mjs
+      - name: Build immutable HEAD-only prompt
+        shell: bash
+        run: |
+          HEAD=$(git rev-parse HEAD)
+          TREE=$(git rev-parse 'HEAD^{tree}')
+          MODE=candidate
+          if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF" = refs/heads/main ]; then MODE=canonical; fi
+          node scripts/build-project-oneshell-prompt.mjs --mode "$MODE" --head "$HEAD" --tree "$TREE" --out "$RUNNER_TEMP/ikant-prompt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oneshell-prompt-head
+          path: ${{ runner.temp }}/ikant-prompt/
+          retention-days: 30
+          if-no-files-found: error
