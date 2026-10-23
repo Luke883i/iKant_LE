@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
+import {verifyLocalProjectSource} from './project-repo-loader.mjs';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const gitBlob=b=>crypto.createHash('sha1').update(Buffer.concat([Buffer.from('blob '+b.length+'\0'),b])).digest('hex');
 const S='ikant-le-c107-minimal-package/v1';
@@ -31,16 +32,17 @@ export const C107_FILES=Object.freeze([
 ]);
 const stop=e=>({schema:S,status:'C107_PACKAGE_STOP',first_unclosed_edge:e,active:false,native_delivery_attested:false});
 const safe=p=>typeof p==='string'&&/^(?:README\.md|TERMS\.md|(?:host|src|scripts|contracts)\/[a-zA-Z0-9_.\/-]+)$/.test(p)&&p.split('/').every(v=>v&&v!=='.'&&v!=='..');
-export function buildC107Package({root,expectedHead}={}){
+export function buildC107Package({root,expectedHead,sourceTree=null}={}){
  try{
   if(!path.isAbsolute(root)||!/^[a-f0-9]{40}$/.test(expectedHead||''))return stop('ABSOLUTE_ROOT_AND_PINNED_HEAD');
-  const head=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+  const api=sourceTree!==null?verifyLocalProjectSource(root,{head:expectedHead,tree:sourceTree}):null;
+  const head=api?api.source_head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
   if(head!==expectedHead)return stop('SOURCE_EPOCH_DRIFT');
   const files=[];
   for(const p of C107_FILES){
    if(!safe(p))return stop('INVALID_PATH');
    const b=fs.readFileSync(path.join(root,p));
-   const git=execFileSync('git',['rev-parse','HEAD:'+p],{cwd:root,encoding:'utf8'}).trim();
+   const git=api?api.files.find(e=>e.path===p)?.git_blob_sha1:execFileSync('git',['rev-parse','HEAD:'+p],{cwd:root,encoding:'utf8'}).trim();
    if(gitBlob(b)!==git)return stop('WORKTREE_VERSUS_GIT_BLOB_DRIFT');
    files.push({path:p,bytes:b.length,sha256:sha(b),git_blob_sha1:git,content_base64:b.toString('base64')});
   }

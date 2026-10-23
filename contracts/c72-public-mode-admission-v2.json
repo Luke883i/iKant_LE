@@ -48,5 +48,13 @@
     "provider_event_identity_required": true,
     "owner_active_readback_required": true
   },
-  "ui_claims_are_projections_only": true
+  "ui_claims_are_projections_only": true,
+  "linked_terms_presentation": {
+    "owner": "host/c72-public-mode-admission.mjs",
+    "issue": "issueC72V2LinkedTermsOffer",
+    "accept": "acceptC72V2LinkedTerms",
+    "terms_body_presented": false,
+    "terms_read_attested": false,
+    "legacy_verbatim_unchanged": true
+  }
 }

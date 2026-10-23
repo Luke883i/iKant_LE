@@ -32,6 +32,7 @@ export function validateC72V2Offer(x){return is(x,'ikant-le-c72-public-terms-off
  x.origin_authentication==='UNVERIFIED'&&x.active===false&&x.native_event_attested===false;}
 export function acceptC72V2Terms({offer,humanMessage,termsPresented}={}){
  if(!validateC72V2Offer(offer))return denied('INVALID_OFFER');
+ if(offer.presentation==='PINNED_DOCUMENT_LINK')return denied('LINK_PRESENTATION_OWNER_REQUIRED');
  if(termsPresented!==true)return denied('TERMS_NOT_PRESENTED');
  if(humanMessage!=='I ACCEPT')return denied('EXACT_ACCEPTANCE_REQUIRED');
  return seal({schema:'ikant-le-c72-public-accepted/v2',source_head:offer.source_head,
@@ -41,9 +42,35 @@ export function acceptC72V2Terms({offer,humanMessage,termsPresented}={}){
   active:false,canonical_runtime:false,persistent:false,native_event_attested:false,
   owner_receipt_issued:false,authority:0});
 }
+/** Explicit link-presentation path. Availability is not a claim of document reading. */
+export function issueC72V2LinkedTermsOffer({sourceHead,termsDigest}={}){
+ const original=issueC72V2TermsOffer({sourceHead,termsDigest});
+ const {receipt_sha256,...body}=original;
+ return seal({...body,presentation:'PINNED_DOCUMENT_LINK',
+  terms_link:`https://github.com/Luke883i/iKant_LE/blob/${sourceHead}/TERMS.md`,
+  terms_body_presented:false,terms_read_attested:false});
+}
+export function acceptC72V2LinkedTerms({offer,humanMessage,termsLinkPresented}={}){
+ if(!validateC72V2Offer(offer)||offer.presentation!=='PINNED_DOCUMENT_LINK'||
+  offer.terms_link!==`https://github.com/Luke883i/iKant_LE/blob/${offer.source_head}/TERMS.md`||
+  offer.terms_body_presented!==false||offer.terms_read_attested!==false)return denied('INVALID_LINK_OFFER');
+ if(termsLinkPresented!==true)return denied('TERMS_LINK_NOT_PRESENTED');
+ if(humanMessage!=='I ACCEPT')return denied('EXACT_ACCEPTANCE_REQUIRED');
+ return seal({schema:'ikant-le-c72-public-accepted/v2',source_head:offer.source_head,
+  terms_digest:offer.terms_digest,offer_sha256:offer.receipt_sha256,
+  human_message_sha256:hash('I ACCEPT'),terms_presented_host_claim:false,
+  terms_link_presented_host_claim:true,terms_link:offer.terms_link,
+  terms_body_presented:false,terms_read_attested:false,
+  selection_pending:true,selected_mode:null,origin_authentication:'UNVERIFIED',
+  active:false,canonical_runtime:false,persistent:false,native_event_attested:false,
+  owner_receipt_issued:false,authority:0});
+}
 export function validateC72V2Accepted(x){return is(x,'ikant-le-c72-public-accepted/v2')&&
  H40.test(x.source_head||'')&&H64.test(x.terms_digest||'')&&H64.test(x.offer_sha256||'')&&
- x.human_message_sha256===hash('I ACCEPT')&&x.terms_presented_host_claim===true&&
+ x.human_message_sha256===hash('I ACCEPT')&&(x.terms_presented_host_claim===true||
+  x.terms_presented_host_claim===false&&x.terms_link_presented_host_claim===true&&
+  x.terms_body_presented===false&&x.terms_read_attested===false&&
+  x.terms_link===`https://github.com/Luke883i/iKant_LE/blob/${x.source_head}/TERMS.md`)&&
  x.selection_pending===true&&x.selected_mode===null&&x.origin_authentication==='UNVERIFIED'&&
  x.active===false&&x.canonical_runtime===false&&x.persistent===false&&
  x.native_event_attested===false&&x.owner_receipt_issued===false;}

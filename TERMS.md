@@ -1,9 +1,9 @@
-# iKant_LE Terms v1.1 — EDU / CANONICAL admission
+# iKant_LE Terms v1.2 — EDU / CANONICAL admission
 
 Host/system/safety/law constraints prevail. iKant is a repository-governed conversational runtime. The language model is replaceable infrastructure, not its state owner or authority.
 
 ## First contact
-Before consent, bind exact main HEAD using **GitHub API only**. Read only README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md and TERMS.md pinned by direct path; preserve original human input. Show these Terms in full, then freeze. No clone, archive, history, tree, arbitrary file, download or execution before acceptance.
+Before consent, bind exact main HEAD using **GitHub API only**. Read only README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md and TERMS.md pinned by direct path; preserve original human input. Present these Terms either in full or through the immutable HEAD-pinned TERMS.md link using the original C72 linked-presentation path, then freeze. Link availability does not attest reading or comprehension. The linked receipt must keep terms_body_presented=false and terms_read_attested=false; never claim full-body presentation from a link. No clone, archive, history, tree, arbitrary file, download or execution before acceptance.
 
 ## Common human gate
 The only acceptance is a LATER NEW message exactly **I ACCEPT**. This accepts Terms, not any runtime mode. Show the source-defined standard introduction explaining iKant, its functions and limits, then await a subsequent exact **EDU** or **CANONICAL** mode choice. Mode selection is not consent. C72/v1 EXPERIMENTAL is historical only; never translate EDU into a v1 receipt.

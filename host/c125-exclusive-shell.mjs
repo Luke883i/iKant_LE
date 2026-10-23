@@ -1,4 +1,14 @@
 /** C125: host-controlled text shell only; no native UI, admission or original writer ownership. */
+
+function qualifiedOriginalSource(r){
+ if(r.source_kind==='LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN')return true;
+ const b=r.api_source_binding;
+ return r.source_kind==='API_GIT_TREE_BOUND_SOURCE_NOT_PROVIDER_ORIGIN'&&
+  b?.schema==='ikant-le-api-source-owner-binding/v1'&&b.source_head===r.source_head&&
+  b.source_tree===r.source_tree&&/^[a-f0-9]{40}$/.test(r.source_tree||'')&&
+  /^[a-f0-9]{64}$/.test(b.readback_receipt_sha256||'')&&b.gate==='API_GIT_TREE_AND_BLOB_REOPEN'&&
+  b.authority===0&&b.provider_attested===false;
+}
 import {createHash} from 'node:crypto';
 import {isProxy} from 'node:util/types';
 const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -68,7 +78,7 @@ export function emitC125Shell(frame){
     r.original_turn?.c124_language_channel_sha256===w.latest_state?.c124_language_channel_sha256;
   const eduV2=mode==='EDU'&&r?.schema==='ikant-c135-edu-v2-owner-evidence/v1'&&
     r.status==='C135_EDU_V2_ORIGINAL_C107_C87_READBACK'&&r.public_mode==='EDU'&&
-    r.active===false&&r.source_kind==='LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN'&&
+    r.active===false&&qualifiedOriginalSource(r)&&
     /^[0-9a-f]{40}$/.test(r.source_head||'')&&r.source_head===w.latest_state?.source_head&&
     r.input_sha256===input_sha256&&r.original_c70_executed===true&&
     r.original_c87_writer_executed===true&&r.c126_channels===12&&
@@ -94,7 +104,7 @@ export function emitC125Shell(frame){
   // promote this path into the C107/C139 C70/C124 receipt family.
   const openEdu=mode==='EDU'&&r?.schema==='ikant-c140-edu-v2-owner-evidence/v1'&&
     r.status==='C140_EDU_V2_C100_C87_READBACK'&&r.public_mode==='EDU'&&
-    r.active===false&&r.source_kind==='LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN'&&
+    r.active===false&&qualifiedOriginalSource(r)&&
     /^[a-f0-9]{40}$/.test(r.source_head||'')&&r.source_head===w.latest_state?.source_head&&
     r.input_sha256===input_sha256&&r.original_c70_executed===false&&
     r.original_c87_writer_executed===true&&r.single_c87_writer===true&&

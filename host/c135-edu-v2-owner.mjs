@@ -15,6 +15,7 @@ import {compileC117SemanticGuide} from './c117-semantic-guidance.mjs';
 import {createC125HostOutputPort} from './c125-output-port.mjs';
 import {projectS03CompletedEduTurn} from './s03-owner-bound-presentation.mjs';
 import {qualifyHumanFacingIdentity} from './p1-public-language-guard.mjs';
+import {verifyLocalProjectSource} from '../scripts/project-repo-loader.mjs';
 const sha=x=>crypto.createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const HEX=/^[a-f0-9]{40}$/;
 const NONCE=/^[a-zA-Z0-9_-]{12,96}$/;
@@ -40,10 +41,20 @@ function safeDeep(v,depth=0){
  }catch{return false}
 }
 
-function sourceVerified(sourceRoot,selection){
+function sourceVerified(sourceRoot,selection,sourceBinding=null){
  try{
   if(typeof sourceRoot!=='string'||!path.isAbsolute(sourceRoot)||
      path.resolve(sourceRoot)!==fs.realpathSync(sourceRoot))return null;
+  if(sourceBinding!==null){
+   if(!safeDeep(sourceBinding))return null;
+   const verified=verifyLocalProjectSource(sourceRoot,{head:sourceBinding.head,tree:sourceBinding.tree});
+   if(!safeDeep(selection)||!validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead:verified.source_head})||
+    selection.terms_digest!==sha(fs.readFileSync(path.join(sourceRoot,'TERMS.md'),'utf8')))return null;
+   return{head:verified.source_head,tree:verified.source_tree,kind:'API_GIT_TREE_BOUND_SOURCE_NOT_PROVIDER_ORIGIN',
+    api_source_binding:{schema:'ikant-le-api-source-owner-binding/v1',source_head:verified.source_head,
+     source_tree:verified.source_tree,readback_receipt_sha256:sha(fs.readFileSync(path.join(sourceRoot,'.project-source-readback.json'),'utf8')),
+     gate:'API_GIT_TREE_AND_BLOB_REOPEN',authority:0,provider_attested:false}};
+  }
   const g=args=>execFileSync('git',args,{cwd:sourceRoot,encoding:'utf8',timeout:4000}).trim();
   const head=g(['rev-parse','HEAD']),tree=g(['rev-parse','HEAD^{tree}']);
   if(!HEX.test(head)||!HEX.test(tree)||!safeDeep(selection)||
@@ -64,21 +75,21 @@ const inspect=(dir,ledger)=>{
  if(p.status!==0||p.signal||p.error)return null;
  try{return JSON.parse(p.stdout)}catch{return null}
 };
-export async function createC135EduV2Session({selection,sourceRoot,privateParent,languagePort,send,afterAcceptWitness}={}){
+export async function createC135EduV2Session({selection,sourceRoot,privateParent,languagePort,send,afterAcceptWitness,sourceBinding=null}={}){
  if(!clean(afterAcceptWitness)||afterAcceptWitness.accepted!==true||
    afterAcceptWitness.scope!=='HOST_WITNESSED_ONLY'||typeof languagePort!=='function'||
    typeof send!=='function'||typeof privateParent!=='string'||!path.isAbsolute(privateParent)||
    !fs.existsSync(privateParent)||fs.realpathSync(privateParent)!==privateParent||
    !fs.statSync(privateParent).isDirectory())
    return no('S02_WITNESS_OR_CALLBACK_MISSING');
- const src=sourceVerified(sourceRoot,selection);
+ const src=sourceVerified(sourceRoot,selection,sourceBinding);
  if(!src)return no('S02_GIT_SOURCE_OR_V2_SELECTION_UNVERIFIED');
  let lastOriginalC125=null;
  const out=createC125HostOutputPort({send:async utf8=>{await send(utf8);lastOriginalC125=utf8},afterAcceptWitness});
  if(!out.ok)return no('S02_ORIGINAL_C125_UNAVAILABLE');
  let stage=null;
  try{
-  const pkg=buildC107Package({root:sourceRoot,expectedHead:src.head});
+  const pkg=buildC107Package({root:sourceRoot,expectedHead:src.head,sourceTree:sourceBinding===null?null:src.tree});
   if(pkg.status!=='C107_PACKAGE_BUILT_NOT_TRANSPORTED')throw Error(pkg.first_unclosed_edge||'S02_PACKAGE_STOP');
   const staged=stageC107Package({payload:pkg.payload,expectedSha256:pkg.sha256,
    expectedHead:src.head,privateParent});
@@ -174,7 +185,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
         uncertain=true;return no('C140_INDEPENDENT_C87_REOPEN_MISMATCH');}
       const evidence={schema:'ikant-c140-edu-v2-owner-evidence/v1',
         status:'C140_EDU_V2_C100_C87_READBACK',public_mode:'EDU',
-        source_kind:'LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN',source_head:src.head,
+        source_kind:src.kind||'LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN',...(src.api_source_binding?{api_source_binding:src.api_source_binding}:{}),source_head:src.head,
         source_tree:src.tree,public_selection_receipt_sha256:selection.receipt_sha256,
         input_sha256:plan.input_sha256,original_turn:turn,
         surface_a:{origin:'HOST_BOUND',voice_utf8:turn.voice_utf8},
@@ -255,7 +266,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       uncertain=true;return no('S02_INDEPENDENT_C87_REOPEN_MISMATCH');}
     const evidence={schema:'ikant-c135-edu-v2-owner-evidence/v1',
       status:'C135_EDU_V2_ORIGINAL_C107_C87_READBACK',public_mode:'EDU',
-      source_kind:'LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN',source_head:src.head,
+      source_kind:src.kind||'LOCAL_GIT_COMMIT_SOURCE_NOT_PROVIDER_ORIGIN',...(src.api_source_binding?{api_source_binding:src.api_source_binding}:{}),source_head:src.head,
       source_tree:src.tree,public_selection_receipt_sha256:selection.receipt_sha256,
       input_sha256:plan.input_sha256,original_turn:turn,
       surface_a:{origin:'HOST_BOUND',voice_utf8:turn.voice_utf8},
@@ -282,6 +293,11 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   function close(){if(!closed){closed=true;out.close();fs.rmSync(stage,{recursive:true,force:true})}}
   return Object.freeze({ok:true,mode:'EDU',source_head:src.head,source_tree:src.tree,
     runtime_ready:true,active:false,native_event_attested:false,owner:'C135_EDU_V2',
-    publishTurn,close,status:()=>Object.freeze({closed,busy,uncertain,attempted:seen.size,port:out.status()})});
+    publishTurn,close,
+    readSessionState:()=>closed||busy||uncertain?no('S02_READBACK_NOT_STABLE'):Object.freeze({
+     owner:'C135_EDU_V2',source_head:src.head,source_tree:src.tree,
+     selection_receipt_sha256:selection.receipt_sha256,ledger_file:ledger,
+     original_c87_readback:inspect(stage,ledger),active:false,authority:0}),
+    status:()=>Object.freeze({closed,busy,uncertain,attempted:seen.size,port:out.status()})});
  }catch(e){if(stage)fs.rmSync(stage,{recursive:true,force:true});out.close();return no(e?.message||'S02_STAGE_DENIED')}
 }
