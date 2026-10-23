@@ -11,22 +11,25 @@ const BRIDGES=new Set(['AVAILABLE','DEFINITIVELY_UNAVAILABLE','UNKNOWN']);
 const plain=s=>typeof s==='string'&&s.length<=500&&!/[\x00-\x08\x0b-\x1f]/u.test(s);
 const failure=edge=>oneShellFrame({esito:'BLOCCATO',b:'Nessuna esecuzione originale attestata.',edge,next:'STOP'});
 /** Frames are HOST views. The only permitted non-NO_VOICE A is genuine same-turn S03 evidence. */
-export function oneShellFrame({esito,b,prova='NON_ATTESTATA',edge='UNKNOWN',next='STOP',s03=null}={}){
+export function oneShellFrame({esito,b,prova='NON_ATTESTATA',edge='UNKNOWN',next='STOP'}={}){
  if(![esito,b,prova,edge,next].every(plain))throw Error('ONESHELL_FIELD_INVALID');
- let a='NO_VOICE',origin='NO_VOICE',voiceSha=null;
- if(s03!==null){
-  if(s03.ok!==true||s03.same_turn_local_owner_evidence_checked!==true||
-     s03.slots?.A!=='HOST_BOUND'||typeof s03.original_voice_utf8!=='string'||
-     s03.original_voice_sha256!==digest(s03.original_voice_utf8)||
-     typeof s03.c125_original_bytes!=='string'||
-     s03.c125_original_sha256!==digest(s03.c125_original_bytes))
-    throw Error('ONESHELL_OWNER_VOICE_NOT_VERIFIED');
-  a=s03.original_voice_utf8;origin='HOST_BOUND_LOCAL';voiceSha=s03.original_voice_sha256;
- }
+ const a='NO_VOICE',origin='NO_VOICE',voiceSha=null;
  const slots=Object.freeze({ESITO:esito,A:a,B:b,PROVA:prova,EDGE:edge,NEXT:next});
  return Object.freeze({schema:'ikant-le-project-oneshell/v1',authority:0,active:false,
   native_ui_attested:false,provider_delivery_attested:false,slot_order:KEYS,
   slots,voice_origin:origin,original_voice_sha256:voiceSha});
+}
+/** Private S03 projection path: only the original C135 invocation reaches this code. */
+function originalOwnerFrame({esito,b,prova,edge,next,s03}){
+ if(s03?.ok!==true||s03.same_turn_local_owner_evidence_checked!==true||
+   s03.slots?.A!=='HOST_BOUND'||typeof s03.original_voice_utf8!=='string'||
+   s03.original_voice_sha256!==digest(s03.original_voice_utf8)||
+   typeof s03.c125_original_bytes!=='string'||
+   s03.c125_original_sha256!==digest(s03.c125_original_bytes))
+  throw Error('ONESHELL_OWNER_VOICE_NOT_VERIFIED');
+ const f=oneShellFrame({esito,b,prova,edge,next});
+ return Object.freeze({...f,slots:Object.freeze({...f.slots,A:s03.original_voice_utf8}),
+  voice_origin:'HOST_BOUND_LOCAL',original_voice_sha256:s03.original_voice_sha256});
 }
 /** Layout does not edit or truncate A; Markdown-only view never implies native UI. */
 export function renderOneShell(frame){
@@ -89,7 +92,7 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
    return failure(turn.first_edge||turn.s03_host_projection?.first_edge||'C125_EVIDENCE_MISSING');
   }
   const s=turn.s03_host_projection;
-  return oneShellFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Voce HOST_BOUND verificata localmente; consegna nativa non attestata.',
+  return originalOwnerFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Voce HOST_BOUND verificata localmente; consegna nativa non attestata.',
    prova:'sha256:'+s.c125_original_sha256,edge:'NATIVE_CHATGPT_DELIVERY_NOT_ATTESTED',
    next:'WAIT_NEXT_HUMAN_INPUT',s03:s});
  }
