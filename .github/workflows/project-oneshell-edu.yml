@@ -1,0 +1,29 @@
+name: OneShell EDU bootstrap runtime candidate
+on:
+  pull_request:
+    paths:
+      - 'host/project-oneshell-edu.mjs'
+      - 'scripts/project-manual-source.py'
+      - 'scripts/project-source-manifest.mjs'
+      - 'contracts/project-session-source.json'
+      - 'tests/project-oneshell-edu.test.mjs'
+      - 'tests/project-session-e2e.test.mjs'
+      - 'tests/test_project_manual_source.py'
+      - 'scripts/project-oneshell-falsify.mjs'
+      - '.github/workflows/project-oneshell-edu.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node scripts/project-source-manifest.mjs verify
+      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-session-e2e.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
+      - run: python3 tests/test_project_manual_source.py
+      - run: node scripts/project-oneshell-falsify.mjs 100000

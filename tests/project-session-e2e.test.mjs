@@ -41,3 +41,34 @@ test('original C135 accepts API-tree source without Git and its actual C87 reope
  assert.equal(dashboard.capsule.axes.edu.original_c87_readback.count,1);assert.equal(dashboard.capsule.axes.admission.mode,'EDU');assert.equal(dashboard.capsule.voice,'NO_VOICE');assert.equal(session.readSessionState().original_c87_readback.count,1);
  }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
 });
+
+test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn after API source verification',async()=>{
+ const {plan,expected}=sourceFixture(),parent=fs.mkdtempSync(path.join(os.tmpdir(),'oneshell-edu-start-')),destination=path.join(parent,'source');
+ let session;
+ try{
+  materializeRepositoryPlan(plan,{...expected,destination});
+  const digest=createHash('sha256').update(fs.readFileSync(path.join(destination,'TERMS.md'))).digest('hex');
+  const o=issueC72V2LinkedTermsOffer({sourceHead:expected.head,termsDigest:digest});
+  const a=acceptC72V2LinkedTerms({offer:o,humanMessage:'I ACCEPT',termsLinkPresented:true});
+  const selection=selectC72V2Mode({accepted:a,orientation:presentC72V2Introduction(a),humanMessage:'EDU'});
+  const {startOneShellEdu,renderOneShell}=await import('../host/project-oneshell-edu.mjs');
+  session=await startOneShellEdu({selection,sourceRoot:destination,sourceBinding:expected,privateParent:parent,
+   afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'},
+   languagePort:async task=>({text:'Risposta originale EDU verificata con un readback locale.',
+     input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,
+     ack_c124_channel_sha256:task.channels.channel_sha256})});
+  assert.equal(session.ok,true,JSON.stringify(session));
+  assert.equal(session.frame.slots.A,'NO_VOICE');
+  assert.equal(session.frame.slots.NEXT,'AWAIT_HUMAN_INPUT');
+  const s=await session.publishTurn({humanInput:'Spiega come verificare una fonte.',nonce:'oneshell-original-test-nonce-0001',
+     priorMessages:[],resetContext:true});
+  assert.equal(s.voice_origin,'HOST_BOUND_LOCAL');
+  assert.equal(s.slots.A,'Risposta originale EDU verificata con un readback locale.');
+  assert.equal(s.slot_order.length,6);
+  assert(renderOneShell(s).includes(s.slots.A));
+  assert.equal(session.readSessionState().original_c87_readback.count,1);
+  session.close();
+  assert.equal((await session.publishTurn({humanInput:'Ancora',nonce:'oneshell-original-test-nonce-0002',
+    priorMessages:[],resetContext:true})).slots.A,'NO_VOICE');
+ }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
+});
