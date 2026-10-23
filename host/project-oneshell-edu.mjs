@@ -6,6 +6,7 @@ import {createC135EduV2Session} from './c135-edu-v2-owner.mjs';
 
 const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
 const KEYS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
+const genuineOwnerFrames=new WeakSet();
 const SOURCE_STATES=new Set(['FULL_SOURCE_VERIFIED','PARTIAL_SOURCE_ONLY','SOURCE_ABSENT','SOURCE_UNKNOWN']);
 const BRIDGES=new Set(['AVAILABLE','DEFINITIVELY_UNAVAILABLE','UNKNOWN']);
 const plain=s=>typeof s==='string'&&s.length<=4096&&!/[\x00-\x08\x0b-\x1f]/u.test(s);
@@ -28,8 +29,10 @@ function originalOwnerFrame({esito,b,prova,edge,next,s03}){
    s03.c125_original_sha256!==digest(s03.c125_original_bytes))
   throw Error('ONESHELL_OWNER_VOICE_NOT_VERIFIED');
  const f=oneShellFrame({esito,b,prova,edge,next});
- return Object.freeze({...f,slots:Object.freeze({...f.slots,A:s03.original_voice_utf8}),
+ const approved=Object.freeze({...f,slots:Object.freeze({...f.slots,A:s03.original_voice_utf8}),
   voice_origin:'HOST_BOUND_LOCAL',original_voice_sha256:s03.original_voice_sha256});
+ genuineOwnerFrames.add(approved);
+ return approved;
 }
 /** Layout does not edit or truncate A; Markdown-only view never implies native UI. */
 export function renderOneShell(frame){
@@ -39,7 +42,7 @@ export function renderOneShell(frame){
  if(!['ESITO','B','PROVA','EDGE','NEXT'].every(k=>plain(s?.[k])))throw Error('ONESHELL_FRAME_INVALID');
  if(frame.voice_origin==='NO_VOICE'&&s.A!=='NO_VOICE')throw Error('ONESHELL_VOICE_UNVERIFIED');
  if(frame.voice_origin==='HOST_BOUND_LOCAL'&&
-    (typeof s.A!=='string'||digest(s.A)!==frame.original_voice_sha256))throw Error('ONESHELL_VOICE_UNVERIFIED');
+    (!genuineOwnerFrames.has(frame)||typeof s.A!=='string'||digest(s.A)!==frame.original_voice_sha256))throw Error('ONESHELL_VOICE_UNVERIFIED');
  return KEYS.map(k=>k+' · '+s[k]).join('\n\n');
 }
 /** Source routing consumes observed HOST capabilities, not guesses from a prompt.
@@ -73,7 +76,7 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
   return Object.freeze({ok:false,frame:failure('C72_EDU_SELECTION_REQUIRED')});
  if(typeof languagePort!=='function')
   return Object.freeze({ok:false,frame:failure('EDU_LANGUAGE_PORT_NOT_CALLABLE')});
- let c125=null,blocked=false;
+ let c125=null,blocked=false,publishing=false,lastEvidence=null;
  const original=await createC135EduV2Session({selection,sourceRoot,sourceBinding,privateParent,
   languagePort,afterAcceptWitness,send:async bytes=>{
    if(blocked||c125!==null||typeof bytes!=='string'){blocked=true;throw Error('C125_CAPTURE_AMBIGUOUS');}
@@ -83,8 +86,10 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
   return Object.freeze({ok:false,frame:failure(original.first_edge||'C135_EDU_RUNTIME_NOT_READY')});
  let closed=false;
  async function publishTurn(frame){
-  if(closed||blocked)return failure('EDU_SESSION_CLOSED_OR_UNCERTAIN');
-  c125=null;
+  if(closed||blocked||publishing)return failure('EDU_SESSION_CLOSED_BUSY_OR_UNCERTAIN');
+  publishing=true;
+  try{
+  c125=null;lastEvidence=null;
   const turn=await original.publishTurn(frame);
   if(turn.ok!==true||turn.s03_host_projection?.ok!==true||
      c125===null||turn.s03_host_projection.c125_original_bytes!==c125){
@@ -92,13 +97,20 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
    return failure(turn.first_edge||turn.s03_host_projection?.first_edge||'C125_EVIDENCE_MISSING');
   }
   const s=turn.s03_host_projection;
+  const readback=original.readSessionState();
+  if(readback?.original_c87_readback?.count!==turn.c87_after){blocked=true;return failure('EDU_INDEPENDENT_LEDGER_REOPEN_REQUIRED');}
+  lastEvidence=Object.freeze({source_head:turn.source_head,source_tree:turn.source_tree,
+    original_c125_utf8:s.c125_original_bytes,original_c125_sha256:s.c125_original_sha256,
+    original_c87_readback:readback.original_c87_readback,authority:0,native_delivery_attested:false});
   return originalOwnerFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Voce HOST_BOUND verificata localmente; consegna nativa non attestata.',
    prova:'sha256:'+s.c125_original_sha256,edge:'NATIVE_CHATGPT_DELIVERY_NOT_ATTESTED',
    next:'WAIT_NEXT_HUMAN_INPUT',s03:s});
+  }finally{publishing=false;}
  }
  return Object.freeze({ok:true,mode:'EDU',runtime_ready:true,active:false,provider_delivery_attested:false,
   frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'Owner originale C135 avviato; nessuna voce emessa.',
    edge:'FIRST_EDU_TURN_PENDING',next:'AWAIT_HUMAN_INPUT'}),
-  publishTurn,readSessionState:()=>original.readSessionState(),status:()=>original.status(),
+  publishTurn,readSessionState:()=>original.readSessionState(),
+  getLastEvidence:()=>lastEvidence,status:()=>original.status(),
   close:()=>{if(!closed){closed=true;original.close();}},owner:'C135_EDU_V2'});
 }

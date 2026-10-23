@@ -1,0 +1,32 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {issueC72V2LinkedTermsOffer,acceptC72V2LinkedTerms,
+ presentC72V2Introduction,selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
+import {oneShellOrientation,oneShellAccepted,oneShellSelected,oneShellMaterialized,
+ ONE_SHELL_PHASES} from '../host/project-oneshell-phases.mjs';
+const head='a'.repeat(40),tree='b'.repeat(40),terms=createHash('sha256').update('verified terms').digest('hex');
+const offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest:terms});
+const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
+const orientation=presentC72V2Introduction(accepted);
+const edu=selectC72V2Mode({accepted,orientation,humanMessage:'EDU'});
+const canonical=selectC72V2Mode({accepted,orientation,humanMessage:'CANONICAL'});
+test('all eight semantic phases have owner scope and six stable OneShell slots',()=>{
+ assert.equal(ONE_SHELL_PHASES.length,8);
+ const p=oneShellOrientation({head,tree,offer});
+ assert.equal(p.slots.NEXT,'AWAIT_I_ACCEPT');assert.equal(p.slots.A,'NO_VOICE');
+ assert.equal(p.slots.PROVA.split('\n').length,5);
+ assert(p.slots.PROVA.includes('/'+head+'/TERMS.md'));
+ assert.equal(oneShellOrientation({head:'f'.repeat(40),tree,offer}).slots.NEXT,'STOP');
+ assert.equal(oneShellOrientation({head,tree,offer:{...offer,terms_read_attested:true}}).slots.NEXT,'STOP');
+ const a=oneShellAccepted({accepted,orientation});
+ assert.equal(a.slots.B,orientation.text);assert.equal(a.slots.NEXT,'AWAIT_EDU_OR_CANONICAL');
+ assert.equal(oneShellAccepted({accepted:{...accepted,receipt_sha256:'f'.repeat(64)},orientation}).slots.NEXT,'STOP');
+ const e=oneShellSelected({selection:edu,accepted,orientation});
+ assert.equal(e.slots.NEXT,'VERIFY_SOURCE');
+ const c=oneShellSelected({selection:canonical,accepted,orientation});
+ assert.equal(c.slots.NEXT,'C59_ORIGINAL_CANONICAL_GATE');assert.equal(c.slots.A,'NO_VOICE');
+ assert.equal(oneShellSelected({selection:{...edu,selected_mode:'CANONICAL'},accepted,orientation}).slots.NEXT,'STOP');
+ const missing=oneShellMaterialized({selection:edu,sourceRoot:'/not/a/materialized/source',head,tree});
+ assert.equal(missing.slots.NEXT,'STOP');
+});
