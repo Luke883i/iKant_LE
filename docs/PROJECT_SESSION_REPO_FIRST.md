@@ -1,12 +1,12 @@
 # Project session: one prompt, repository-owned execution
 
-The Project artifact is `project/session-chat/PROMPT.txt`. No local bundle is required. A callable GitHub API adapter, Node 20+ and a writable session filesystem are prerequisites; a prompt cannot create them. Missing capability yields a typed STOP, never an upload request or a fake ACTIVE state. No external service or plugin installation is added by this route.
+The Project artifact is `project/session-chat/PROMPT.txt`. No local bundle is required. A callable GitHub API adapter, Node 20+ and a writable session filesystem are prerequisites; a prompt cannot create them. Missing Node or an unavailable execution plane yields a typed STOP, never a fake ACTIVE state. A verified source-transport blocker after EDU selection may instead request an exact pinned source ZIP, distinct from the Project bundle. UNKNOWN bridge capability cannot authorize manual handoff. No external service or plugin installation is added by this route.
 
 ## Acquisition and admission
 
 On fresh `avvia iKant`, resolve main once, freeze HEAD and TREE, and read the five orientation files by exact path. Display their five immutable links and one next action. Do not dump README or machine JSON into the dialogue. Terms v1.2 explicitly supports linked presentation. Original C72 issues the linked offer and acceptance, preserving `terms_presented_host_claim=false`, `terms_body_presented=false`, `terms_read_attested=false`. The HOST claims link presentation only. The two later human messages remain exact `I ACCEPT` then `EDU` or `CANONICAL`; selection is not activation. Legacy verbatim offers remain supported. No old acceptance transfers to a new source epoch.
 
-After acceptance, retrieve and verify original `host/c72-public-mode-admission.mjs` and its contract before invoking it. After mode selection retrieve `contracts/project-session-source.json`, `scripts/project-repo-loader.mjs`, the immutable API recursive tree and the source files named by the manifest. Use API base64 contents, not model reconstruction. The HOST must compare the loader itself against its exact tree blob before executing it. Source symbols do not establish actual callability.
+After acceptance, retrieve and verify original `host/c72-public-mode-admission.mjs` and its contract before invoking it. After mode selection use OneShell for every visible transition and the actual EDU start via host/project-oneshell-edu.mjs. The control-only scripts/project-session.mjs is not a substitute for a running C135 owner. After mode selection retrieve `contracts/project-session-source.json`, `scripts/project-repo-loader.mjs`, the immutable API recursive tree and the source files named by the manifest. Use API base64 contents, not model reconstruction. The HOST must compare the loader itself against its exact tree blob before executing it. Source symbols do not establish actual callability.
 
 Assemble `{source_head, source_tree, live_head, truncated:false, tree, files:[{path,encoding:"base64",content}]}` from actual API results. Pass the independently frozen head/tree to:
 
@@ -40,3 +40,21 @@ C135 and the C107 packer accept the verified API-tree source binding as an expli
 ## Validation status for this change
 
 The source closure is generated and verified, and runtime-root remains unchanged. Focused tests exercise linked admission, tampering, exact evidence recovery, API ingress and original C135/C87/C125 execution with a fixture language callback. This is a synthetic software test, not a real model efficacy result or native ChatGPT pilot. The qualification command runs the finite 10k experiment and emits a replayable JSONL trace (plus compressed copy); the repository summary binds its digest. Full-repository test execution is left to CI; only scoped dependencies were materialized locally from exact API blobs.
+
+## EDU manual source handoff without a Project bundle
+
+The initial ChatGPT Project requires only one prompt. This does NOT prohibit a later manual handoff of original source after C72/v2 EDU selection. planOneShellEduSource() reuses historical P1 only after EDU, Node, source state and machine bridge classification. SOURCE_UNKNOWN and bridge UNKNOWN require first-edge verification. API read access without an actual Node byte sink is not an executable bridge. CANONICAL remains C59 only.
+
+If the bridge is demonstrably unavailable and Python 3 plus Node are callable, OneShell offers the direct commit-pinned GitHub ZIP link. The user may attach it after EDU selection. The HOST must obtain a separately verified, exact GitHub API recursive tree for the already frozen HEAD/TREE and compare main before each new operation. An archive must never supply its own authoritative tree.
+
+Commands (replace uppercase positional placeholders with actual files and frozen SHA):
+  python3 scripts/project-manual-source.py --source-zip SOURCE.zip --api-tree API_TREE.json --head HEAD --tree TREE --output-plan FRESH_PLAN.json
+  node scripts/project-repo-loader.mjs FRESH_PLAN.json FRESH_SOURCE_DIRECTORY HEAD TREE
+
+The Python stage only inspects ZIP members and converts them into an API-style plan after preliminary Git blob checks. The existing Node loader revalidates the entire tree, every required blob, the closed member set and physical readback. Wrong source, special members, symlinks, missing files, tampering and uncertain writes stop. No historical Project ZIP or invented commit object is necessary. ZIP is never C59 authority.
+
+## OneShell EDU original start and turns
+
+Inside the fully verified source, startOneShellEdu({selection,sourceRoot,sourceBinding:{head,tree},privateParent,languagePort,afterAcceptWitness}) needs a real callable host language port and original C72 selection. The returned start frame has A=NO_VOICE; actual C135 must return runtime_ready. Each subsequent human turn calls publishTurn with exact humanInput, nonce, priorMessages and resetContext on the SAME live C135 session object. Its original C125 callback is buffered once, never shown as a second visible host message. The returned six-slot OneShell view contains exact S03-qualified original C87 voice; buffer resolution is not evidence of native ChatGPT delivery. The client must physically present the returned frame, and real native delivery is a separate gate.
+
+If the original Node session is lost, do not mint continuity from chat text or start another owner and replay old voice. STOP and reconcile original ledger read-only. The project-session.mjs read-only capsule remains a technical dashboard (NO_VOICE), never a turn or activation. No Project prompt installs native UI, model capability or persistent memory; PRODUCT_NO_GO persists until independent host and human gates close.
