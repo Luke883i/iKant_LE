@@ -72,6 +72,7 @@
     "prompt:session-chat-local": "node scripts/session-chat-local-prompt.mjs",
     "bundle:edu": "python3 scripts/c131-build-project-bundle.py dist/iKant_OneShell_EDU_C131_CANDIDATE.zip",
     "falsify:c131": "node scripts/c131-falsify-release-gate.mjs 1000000",
-    "qualify:v1:product": "node --test tests/v1-workflow-retention.test.mjs tests/v1-product-contract.test.mjs tests/c131-product-release.test.mjs tests/c130-architecture.test.mjs tests/edu-c129-manual-entry.test.mjs && node scripts/v1-product-audit.mjs"
+    "qualify:v1:product": "node --test tests/v1-workflow-retention.test.mjs tests/v1-product-contract.test.mjs tests/c131-product-release.test.mjs tests/c130-architecture.test.mjs tests/edu-c129-manual-entry.test.mjs && node scripts/v1-product-audit.mjs",
+    "qualify:project-session": "node --test tests/project-session-capsule.test.mjs tests/project-repo-loader.test.mjs tests/project-linked-admission.test.mjs tests/project-session-e2e.test.mjs tests/c72-public-mode-admission.test.mjs tests/c32-session-shell.test.mjs && node scripts/project-source-manifest.mjs verify && node scripts/runtime-root.mjs verify && node scripts/project-session-select.mjs"
   }
 }

@@ -161,6 +161,7 @@
 - [docs/POST118_RISK_AND_SCOPE.md](POST118_RISK_AND_SCOPE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PRODUCT_DASHBOARD.md](PRODUCT_DASHBOARD.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_META_PROMPT_COBOL.md](PROJECT_META_PROMPT_COBOL.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/PROJECT_SESSION_REPO_FIRST.md](PROJECT_SESSION_REPO_FIRST.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/QUALIFICATION.md](QUALIFICATION.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/RESEARCH_LEDGER.md](RESEARCH_LEDGER.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/S01_PUBLIC_EDU_CANONICAL_ADMISSION.md](S01_PUBLIC_EDU_CANONICAL_ADMISSION.md): Documentazione specialistica. Stato di review: **da verificare**.

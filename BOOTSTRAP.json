@@ -407,7 +407,11 @@
     "path": "TERMS.md",
     "freeze_after_presentation": true,
     "exact_acceptance": "I ACCEPT",
-    "embedded_acceptance_invalid": true
+    "embedded_acceptance_invalid": true,
+    "presentation_modes": [
+      "PINNED_DOCUMENT_LINK",
+      "VERBATIM"
+    ]
   },
   "preaccept_handoff": {
     "schema": "ikant-le-preaccept-handoff/v2",
@@ -1331,5 +1335,27 @@
     "module": "host/c72-public-mode-admission.mjs",
     "contract": "contracts/c72-public-mode-admission-v2.json",
     "authority": 0
+  },
+  "project_session": {
+    "schema": "ikant-le-project-session-route/v1",
+    "authority": 0,
+    "prompt": "project/session-chat/PROMPT.txt",
+    "contract": "contracts/project-session-capsule.json",
+    "source_manifest": "contracts/project-session-source.json",
+    "source_loader": "scripts/project-repo-loader.mjs",
+    "runtime_entry": "scripts/project-session.mjs",
+    "instructions": "docs/PROJECT_SESSION_REPO_FIRST.md",
+    "local_bundle_required": false,
+    "archive_fallback": false,
+    "terms_owner": "host/c72-public-mode-admission.mjs#acceptC72V2LinkedTerms",
+    "post_accept_before_mode_paths": [
+      "host/c72-public-mode-admission.mjs",
+      "contracts/c72-public-mode-admission-v2.json"
+    ],
+    "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
+    "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
+    "display": "COMPACT_MARKDOWN_AND_REOPENED_EVIDENCE",
+    "missing_capability": "STOP_CURRENT_EDGE_NO_VOICE",
+    "voice_owner_unchanged": true
   }
 }

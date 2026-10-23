@@ -98,6 +98,10 @@ Il *full stack* non è solo un server web. I livelli interagiscono ma non hanno 
 
 **Altro percorso di esecuzione:** il runtime C20 può sostenere un servizio MCP di compatibilità *deployed* con sessioni e disco persistente. Il C20 external/legacy e il canale C59 CANONICAL **non sono lo stesso owner**: riutilizzare componenti o chiamare un tool non trasferisce attestazioni. [Codice di deployment](src/session-chat-deployment.mjs) · [stato della sessione](docs/ONESHELL_THREAD_SESSION_V1.md).
 
+## Project ChatGPT: solo un prompt
+
+Il percorso repo-first usa [un solo prompt Project](project/session-chat/PROMPT.txt): nessun bundle locale da caricare. Dopo i gate umani, GitHub API e Node acquisiscono e verificano i sorgenti originali, poi il runtime produce una vista compatta di stato iKant, osservazioni HOST e backlog/telemetria con evidenze riapribili. Accesso API, Node e capacità file effettive restano prerequisiti: il prompt non li installa. La vista di controllo non genera voce né ACTIVE e non garantisce un pannello nativo o persistenza fra chat. [Contratto e istruzioni](docs/PROJECT_SESSION_REPO_FIRST.md). Gli altri pacchetti Project restano distribuzioni legacy, non una dipendenza di questa via.
+
 ## Modalità e bootstrap
 
 ### Tre superfici, due modalità pubbliche

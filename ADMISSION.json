@@ -126,7 +126,14 @@
     "legacy_c72_v1_receipts": "HISTORICAL_COMPATIBILITY_ONLY",
     "no_mode_aliasing": true,
     "selection_not_runtime_activation": true,
-    "authority": 0
+    "authority": 0,
+    "terms_presentation": {
+      "default": "PINNED_DOCUMENT_LINK",
+      "owner": "host/c72-public-mode-admission.mjs#acceptC72V2LinkedTerms",
+      "body_presented": false,
+      "read_attested": false,
+      "legacy_verbatim_supported": true
+    }
   },
   "automatic_after_acceptance_legacy_compatibility": [
     "ACCEPTANCE_ORIGIN_COMMIT",
