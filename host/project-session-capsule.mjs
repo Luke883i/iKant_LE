@@ -54,7 +54,7 @@ export function renderSessionCapsule(c,{evidenceHref}={}){
  if(!verifySessionCapsule(c))throw Error('PROJECT_CAPSULE_INVALID');
  if(typeof evidenceHref!=='string'||! /^(sandbox:\/|https:\/\/)/.test(evidenceHref)||/[\s<>\[\]()]/.test(evidenceHref))throw Error('PROJECT_EVIDENCE_HREF_REQUIRED');
  const s=c.axes.ikant,docs=c.axes.backlog.artifacts.length;
- return `**iKant · ${cell(c.axes.admission.mode??'Modo non attestato')} · core ${cell(s.display_status)}**\n\n`+
+ return `ESITO · **iKant · ${cell(c.axes.admission.mode??'Modo non attestato')} · core ${cell(s.display_status)}**\n\n`+
   `A · NO_VOICE\n\n`+
   `B · EDU: ${cell(c.axes.edu.status)}. HOST locale: Node ${cell(c.axes.host.node)}. UI nativa e persistenza tra chat: non attestate.\n\n`+
   `PROVA · [Stato completo e backlog (${docs} documenti)](${evidenceHref})\n\n`+

@@ -13,7 +13,8 @@ test('capsule keeps complete original public owner output while separating HOST 
  assert(verifySessionCapsule(c));assert.deepEqual(c.payload.original_session_shell,shell);
  assert.equal(c.axes.host.native_ui.status,'UNKNOWN');assert(!JSON.stringify(c).includes('secret'));
  assert.equal(c.voice,'NO_VOICE');assert.equal(c.active,false);
- assert.match(renderSessionCapsule(c,{evidenceHref:'sandbox:/verified.json'}),/NEXT/);
+ const text=renderSessionCapsule(c,{evidenceHref:'sandbox:/verified.json'});
+ for(const id of ['ESITO','A','B','PROVA','EDGE','NEXT'])assert.match(text,new RegExp('^'+id+' ·','m'));
  assert.throws(()=>renderSessionCapsule(c,{evidenceHref:'javascript:alert(1)'}));
 });
 test('derived capsule tampering, altered status, truncated backlog and source rebinding fail',()=>{
