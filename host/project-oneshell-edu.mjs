@@ -8,7 +8,7 @@ const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex')
 const KEYS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
 const SOURCE_STATES=new Set(['FULL_SOURCE_VERIFIED','PARTIAL_SOURCE_ONLY','SOURCE_ABSENT','SOURCE_UNKNOWN']);
 const BRIDGES=new Set(['AVAILABLE','DEFINITIVELY_UNAVAILABLE','UNKNOWN']);
-const plain=s=>typeof s==='string'&&s.length<=500&&!/[\x00-\x08\x0b-\x1f]/u.test(s);
+const plain=s=>typeof s==='string'&&s.length<=4096&&!/[\x00-\x08\x0b-\x1f]/u.test(s);
 const failure=edge=>oneShellFrame({esito:'BLOCCATO',b:'Nessuna esecuzione originale attestata.',edge,next:'STOP'});
 /** Frames are HOST views. The only permitted non-NO_VOICE A is genuine same-turn S03 evidence. */
 export function oneShellFrame({esito,b,prova='NON_ATTESTATA',edge='UNKNOWN',next='STOP'}={}){

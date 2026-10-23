@@ -34,3 +34,13 @@ test('cannot start EDU without original owner selection or callable language por
  assert.equal((await startOneShellEdu({selection:canonical})).ok,false);
  assert.equal((await startOneShellEdu({selection:edu})).frame.slots.EDGE,'EDU_LANGUAGE_PORT_NOT_CALLABLE');
 });
+
+test('immutable five-document orientation evidence fits in OneShell without truncation',()=>{
+ const head='a'.repeat(40);
+ const paths=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md'];
+ const links=paths.map(p=>'https://github.com/Luke883i/iKant_LE/blob/'+head+'/'+p).join('\n');
+ const f=oneShellFrame({esito:'ORIENTAMENTO',b:'Cinque documenti originali con source lock.',prova:links,edge:'C72_LINKED_TERMS',next:'AWAIT_I_ACCEPT'});
+ assert.equal(f.slots.PROVA,links);
+ assert.equal(renderOneShell(f).includes(links),true);
+ assert.equal(f.slots.A,'NO_VOICE');
+});

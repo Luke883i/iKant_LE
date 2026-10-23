@@ -58,3 +58,38 @@ The Python stage only inspects ZIP members and converts them into an API-style p
 Inside the fully verified source, startOneShellEdu({selection,sourceRoot,sourceBinding:{head,tree},privateParent,languagePort,afterAcceptWitness}) needs a real callable host language port and original C72 selection. The returned start frame has A=NO_VOICE; actual C135 must return runtime_ready. Each subsequent human turn calls publishTurn with exact humanInput, nonce, priorMessages and resetContext on the SAME live C135 session object. Its original C125 callback is buffered once, never shown as a second visible host message. The returned six-slot OneShell view contains exact S03-qualified original C87 voice; buffer resolution is not evidence of native ChatGPT delivery. The client must physically present the returned frame, and real native delivery is a separate gate.
 
 If the original Node session is lost, do not mint continuity from chat text or start another owner and replay old voice. STOP and reconcile original ledger read-only. The project-session.mjs read-only capsule remains a technical dashboard (NO_VOICE), never a turn or activation. No Project prompt installs native UI, model capability or persistent memory; PRODUCT_NO_GO persists until independent host and human gates close.
+
+## Cold manual source bootstrapping without preinstalled repository scripts
+
+An unavailable GitHub-to-Node byte bridge can leave the runtime directory empty. The two transport utilities therefore must not be assumed already installed. After EDU selection and physical source-ZIP upload, the HOST may use *only* Python stdlib and the independently obtained, pinned API tree to extract the two original utility blobs. This is a HOST adapter with authority zero; it does not execute iKant, accept Terms, or attest native identity. Set SOURCE_ZIP, FROZEN_HEAD, FROZEN_TREE, API_TREE_JSON and FRESH_TOOL_DIR to observed values. Never let the ZIP or human choose the trusted API tree. The following block is the complete minimal extraction recipe; fail closed on every exception.
+
+```python
+import hashlib, json, os, pathlib, stat, zipfile
+head=os.environ['FROZEN_HEAD']; tree=os.environ['FROZEN_TREE']
+api=json.loads(pathlib.Path(os.environ['API_TREE_JSON']).read_text())
+assert (api['source_head'],api['source_tree'],api['live_head'],api['truncated'])==(head,tree,head,False)
+refs={e['path']:e for e in api['tree']}
+out=pathlib.Path(os.environ['FRESH_TOOL_DIR'])
+assert not out.exists() and out.parent.is_dir()
+names=['scripts/project-manual-source.py','scripts/project-repo-loader.mjs']
+with zipfile.ZipFile(os.environ['SOURCE_ZIP']) as z:
+    verified=[]
+    for name in names:
+        info=z.getinfo('iKant_LE-'+head+'/'+name)
+        assert info.file_size<200000 and not(info.flag_bits & 1)
+        mode=(info.external_attr>>16)&0o170000
+        assert mode in (0,stat.S_IFREG) and info.compress_type in (0,8)
+        raw=z.read(info)
+        blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+        assert len(raw)==info.file_size and blob==refs[name]['sha'] and refs[name]['type']=='blob'
+        verified.append((pathlib.Path(name).name,raw))
+    out.mkdir(mode=0o700)
+    for name,raw in verified:
+        target=out/name
+        with target.open('xb') as f:
+            f.write(raw);f.flush();os.fsync(f.fileno())
+        assert target.read_bytes()==raw
+
+```
+
+Then run the verified FRESH_TOOL_DIR/project-manual-source.py with the ZIP and original API tree to create FRESH_PLAN.json. Run the verified FRESH_TOOL_DIR/project-repo-loader.mjs against that plan and a new destination. Only after original full-tree and every-file readback may the host import host/project-oneshell-edu.mjs from the materialized destination. If Python, Node, independently authenticated API tree, or a writable sink is missing, STOP that edge: an upload does not install capabilities. The control dashboard scripts/project-session.mjs remains independent of bootstrap completion.

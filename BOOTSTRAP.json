@@ -1343,7 +1343,7 @@
     "contract": "contracts/project-session-capsule.json",
     "source_manifest": "contracts/project-session-source.json",
     "source_loader": "scripts/project-repo-loader.mjs",
-    "runtime_entry": "scripts/project-session.mjs",
+    "runtime_entry": "host/project-oneshell-edu.mjs",
     "instructions": "docs/PROJECT_SESSION_REPO_FIRST.md",
     "local_bundle_required": false,
     "archive_fallback": false,
@@ -1374,6 +1374,8 @@
       "verified_reentry": "scripts/project-repo-loader.mjs",
       "kind": "PINNED_GITHUB_SOURCE_ZIP_NOT_PROJECT_BUNDLE",
       "canonical_active_authority": false
-    }
+    },
+    "control_entry": "scripts/project-session.mjs",
+    "runtime_entry_kind": "ESM_FACTORY_REQUIRES_ORIGINAL_CALLBACKS"
   }
 }
