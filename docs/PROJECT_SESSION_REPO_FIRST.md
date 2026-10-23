@@ -69,6 +69,21 @@ head=os.environ['FROZEN_HEAD']; tree=os.environ['FROZEN_TREE']
 api=json.loads(pathlib.Path(os.environ['API_TREE_JSON']).read_text())
 assert (api['source_head'],api['source_tree'],api['live_head'],api['truncated'])==(head,tree,head,False)
 refs={e['path']:e for e in api['tree']}
+assert len(refs)==len(api['tree'])
+def git_tree(directory):
+    items=[e for e in api['tree'] if pathlib.PurePosixPath(e['path']).parent.as_posix()==directory]
+    items.sort(key=lambda e: (pathlib.PurePosixPath(e['path']).name+('/' if e['type']=='tree' else '')).encode())
+    parts=[]
+    for e in items:
+        assert e['type'] in ('tree','blob','commit')
+        if e['type']=='tree':
+            assert git_tree(e['path'])==e['sha']
+        mode='40000' if e['type']=='tree' else e['mode']
+        assert mode in ('40000','100644','100755','120000','160000')
+        parts.append(mode.encode()+b' '+pathlib.PurePosixPath(e['path']).name.encode()+b'\0'+bytes.fromhex(e['sha']))
+    raw=b''.join(parts)
+    return hashlib.sha1(b'tree '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+assert git_tree('.')==tree
 out=pathlib.Path(os.environ['FRESH_TOOL_DIR'])
 assert not out.exists() and out.parent.is_dir()
 names=['scripts/project-manual-source.py','scripts/project-repo-loader.mjs']
