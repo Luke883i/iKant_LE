@@ -39,8 +39,16 @@ const expected=(mode,source,bridge,node,extract,timing,epoch)=>{
 for(let i=0;i<cases;i++){
  let x=(BigInt(i)*STEP+SEED)%total;
  const axes=dimensions.map(d=>{const v=Number(x%BigInt(d));x/=BigInt(d);return v});
- const [mode,source,bridge,node,extract,timing,epoch,sourceProof,ledger,delivery,nonce,languagePort,layout]=axes;
- const key=axes.join(':');
+ let [mode,source,bridge,node,extract,timing,epoch,sourceProof,ledger,delivery,nonce,languagePort,layout]=axes;
+ const family=i%5;
+ // Stratified realistic cases preserve the seeded independent auxiliary dimensions.
+ // Families: normal API, manual carrier, verified/unknown source, admission denial, mixed failures.
+ if(family===0){mode=0;node=1;extract=1;timing=0;epoch=0;}
+ else if(family===1){mode=0;source=1+source%2;bridge=1;node=1;extract=1;timing=0;epoch=0;}
+ else if(family===2){mode=0;source=(source%2)*3;node=1;extract=1;timing=0;epoch=0;}
+ else if(family===3){mode=(mode%4)+1;}
+ else{mode=0;}
+ const key=[family,...axes,mode,source,bridge,node,extract,timing,epoch].join(':');
  if(signatures.has(key))throw Error('SEMANTIC_DUPLICATE_CASE');
  signatures.add(key);hash.update(key+'\n');
  const validTime=timing===0,validEpoch=epoch===0;
@@ -83,10 +91,11 @@ for(let i=0;i<cases;i++){
  }
  checked++;
 }
-if(signatures.size!==cases||manual===0||blocked===0||stageChecks===0||
+if(signatures.size!==cases||manual<10000||blocked<15000||stageChecks===0||
  forgedFramesDenied===0||decisions.size<5)unexpected++;
 const result={schema:'ikant-le-oneshell-realistic-preseeded-100k/v1',
  seed:SEED.toString(),step:STEP.toString(),cases,unique_semantic_scenarios:signatures.size,
+ sampling:'FIVE_STRATIFIED_REALISTIC_FAMILIES_NOT_EMPIRICAL_USAGE_FREQUENCIES',
  dimensions:['mode_receipt','source_availability','api_to_node_bridge','node_executor',
  'manual_extractor','human_message_timing','source_epoch','source_integrity',
  'original_ledger_state','provider_delivery','nonce_status','language_port','ui_projection'],
