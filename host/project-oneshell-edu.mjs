@@ -105,7 +105,8 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
   return originalOwnerFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Voce HOST_BOUND verificata localmente; consegna nativa non attestata.',
    prova:'sha256:'+s.c125_original_sha256,edge:'NATIVE_CHATGPT_DELIVERY_NOT_ATTESTED',
    next:'WAIT_NEXT_HUMAN_INPUT',s03:s});
-  }finally{publishing=false;}
+  }catch{blocked=true;lastEvidence=null;return failure('EDU_TURN_OUTCOME_UNKNOWN_RECONCILE_READ_ONLY');}
+  finally{publishing=false;}
  }
  return Object.freeze({ok:true,mode:'EDU',runtime_ready:true,active:false,provider_delivery_attested:false,
   frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'Owner originale C135 avviato; nessuna voce emessa.',

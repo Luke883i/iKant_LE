@@ -52,6 +52,9 @@ test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn afte
   const a=acceptC72V2LinkedTerms({offer:o,humanMessage:'I ACCEPT',termsLinkPresented:true});
   const selection=selectC72V2Mode({accepted:a,orientation:presentC72V2Introduction(a),humanMessage:'EDU'});
   const {startOneShellEdu,renderOneShell}=await import('../host/project-oneshell-edu.mjs');
+  const {oneShellMaterialized}=await import('../host/project-oneshell-phases.mjs');
+  const sourceFrame=oneShellMaterialized({selection,sourceRoot:destination,head:expected.head,tree:expected.tree});
+  assert.equal(sourceFrame.slots.NEXT,'START_C135_EDU');assert.equal(sourceFrame.slots.A,'NO_VOICE');
   session=await startOneShellEdu({selection,sourceRoot:destination,sourceBinding:expected,privateParent:parent,
    afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'},
    languagePort:async task=>({text:'Risposta originale EDU verificata con un readback locale.',
@@ -67,6 +70,9 @@ test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn afte
   assert.equal(s.slot_order.length,6);
   assert(renderOneShell(s).includes(s.slots.A));
   assert.equal(session.readSessionState().original_c87_readback.count,1);
+  const ev=session.getLastEvidence();
+  assert.equal(ev.original_c87_readback.count,1);assert.equal(ev.native_delivery_attested,false);
+  assert.equal(ev.original_c125_sha256,createHash('sha256').update(ev.original_c125_utf8).digest('hex'));
   session.close();
   assert.equal((await session.publishTurn({humanInput:'Ancora',nonce:'oneshell-original-test-nonce-0002',
     priorMessages:[],resetContext:true})).slots.A,'NO_VOICE');
