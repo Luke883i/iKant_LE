@@ -30,5 +30,16 @@
   "post_mode_manual_source_allowed": true,
   "one_voice_only_with_original_s03": true,
   "native_ui_unattested": true,
-  "scope": "SOFTWARE_CANDIDATE_NOT_PROVIDER_INSTALLED"
+  "scope": "SOFTWARE_CANDIDATE_NOT_PROVIDER_INSTALLED",
+  "semantic_slides": "contracts/project-oneshell-semantic-slides.json",
+  "prompt_generation": "contracts/project-prompt-generation.json",
+  "source_manifest_has_all_phase_code": true,
+  "prompt_is_canonical_only_after_main_verification": true,
+  "dod": {
+    "software": "GATED_ON_CI_PR_SHA",
+    "client_host": "UNATTESTED",
+    "native_ui": "UNATTESTED",
+    "human_ux": "NOT_TESTED",
+    "product_release": "PRODUCT_NO_GO"
+  }
 }

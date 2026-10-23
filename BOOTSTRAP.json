@@ -1376,6 +1376,10 @@
       "canonical_active_authority": false
     },
     "control_entry": "scripts/project-session.mjs",
-    "runtime_entry_kind": "ESM_FACTORY_REQUIRES_ORIGINAL_CALLBACKS"
+    "runtime_entry_kind": "ESM_FACTORY_REQUIRES_ORIGINAL_CALLBACKS",
+    "oneshell_semantic_slides": "contracts/project-oneshell-semantic-slides.json",
+    "prompt_generation_matrix": "contracts/project-prompt-generation.json",
+    "prompt_builder": "scripts/build-project-oneshell-prompt.mjs",
+    "prompt_release": "POST_MERGE_EXACT_MAIN_SHA_ONLY"
   }
 }
