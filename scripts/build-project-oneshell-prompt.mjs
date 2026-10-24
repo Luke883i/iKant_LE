@@ -26,7 +26,7 @@ const CRITICAL=['contracts/project-oneshell-compact-continuity.json',
  'contracts/project-oneshell-visual-v2.json'];
 if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.runtime_head_preflight!=='AFTER_ORIGINAL_C72_MODE_GATE_BEFORE_EDU_MATERIALIZATION'||
- matrix.orientation_read_scope!=='FIVE_DOCUMENT_BODIES_ONLY_PROMPT_BLOB_TREE_METADATA_ALLOWED'||
+ matrix.orientation_read_scope!=='ONLY_HEAD_AND_FIVE_PINNED_DOCUMENTS_PREACCEPT_NO_TREE_OR_BLOBS'||
  matrix.installed_prompt_equality!=='ONLY_IF_ACTUAL_PROJECT_PROMPT_BYTES_ACCESSIBLE_ELSE_UNKNOWN'||
  matrix.explicit_repin!=='FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER')
  throw Error('PROMPT_HEAD_GUARD_MATRIX_INVALID');
