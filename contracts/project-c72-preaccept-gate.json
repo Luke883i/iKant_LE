@@ -1,0 +1,30 @@
+{
+  "schema": "ikant-le-project-c72-preaccept-gate/v1",
+  "authority": 0,
+  "target_owner": "host/c72-public-mode-admission.mjs",
+  "gateway": "host/project-c72-preaccept-gate.mjs",
+  "preinstalled_only": true,
+  "fetching_gateway_code_before_acceptance": "FORBIDDEN",
+  "allowed_external_operations_before_acceptance": [
+    "READ_BRANCH_HEAD_ONCE",
+    "READ_PINNED_README_ONCE",
+    "READ_PINNED_BOOTSTRAP_ONCE",
+    "READ_PINNED_ADMISSION_ONCE",
+    "READ_PINNED_AGENTS_ONCE",
+    "READ_PINNED_TERMS_ONCE"
+  ],
+  "direct_reads_ordered": true,
+  "pinned_sha_verification_required": true,
+  "terms_display": "HOST_CLAIM_NOT_HUMAN_READING_EVIDENCE",
+  "freeze": "AFTER_TERMS_DISPLAY_UNTIL_DISTINCT_EXACT_I_ACCEPT",
+  "acceptance": "ORIGINAL_C72_V2_ONLY",
+  "intro": "ORIGINAL_C72_V2_ONLY_NO_RECONSTRUCTION",
+  "unverified_owner": "NO_C72_RECEIPT_NO_INTRODUCTION",
+  "breach_classification": "ORIGINAL_ADMISSION_TRACE_REQUIRED",
+  "read_only_overread_not_always_hard": true,
+  "gateway_can_prove_global_host_tool_exclusivity": false,
+  "gateway_can_authenticate_provider_human_event": false,
+  "source_lock_after_merge": "FRESH_EPOCH_REQUIRES_EXPLICIT_REPIN_C72",
+  "ci_scope": "LOCAL_SOFTWARE_FALSIFICATION_NOT_PLATFORM_COMPLIANCE",
+  "product_release": "PRODUCT_NO_GO"
+}

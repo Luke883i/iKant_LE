@@ -25,7 +25,7 @@
     "contracts/project-oneshell-visual-v2.json"
   ],
   "runtime_head_preflight": "AFTER_ORIGINAL_C72_MODE_GATE_BEFORE_EDU_MATERIALIZATION",
-  "orientation_read_scope": "FIVE_DOCUMENT_BODIES_ONLY_PROMPT_BLOB_TREE_METADATA_ALLOWED",
+  "orientation_read_scope": "ONLY_HEAD_AND_FIVE_PINNED_DOCUMENTS_PREACCEPT_NO_TREE_OR_BLOBS",
   "installed_prompt_equality": "ONLY_IF_ACTUAL_PROJECT_PROMPT_BYTES_ACCESSIBLE_ELSE_UNKNOWN",
   "explicit_repin": "FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER",
   "canonical_freshness": "MAIN_PUSH_HEAD_MATCH_TREE_AND_CRITICAL_BLOBS",
