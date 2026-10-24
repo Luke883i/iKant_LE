@@ -6,9 +6,9 @@ import {createC135EduV2Session} from './c135-edu-v2-owner.mjs';
 
 const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
 const KEYS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
-// Display aliases only; machine slot keys and original C125 bytes remain unchanged.
-const TITLES=Object.freeze({ESITO:'ESITO',A:'Superficie A (iKant)',
- B:'Superficie B (HOST)',PROVA:'PROVA',EDGE:'EDGE',NEXT:'NEXT'});
+// Human-visible aliases only: original evidence keys and C125 bytes stay unchanged.
+const TITLES=Object.freeze({ESITO:'ESITO',A:'iKant (Superficie A)',
+ B:'Host (Superficie B)',PROVA:'PROVA',EDGE:'EDGE',NEXT:'NEXT'});
 const genuineOwnerFrames=new WeakSet();
 const SOURCE_STATES=new Set(['FULL_SOURCE_VERIFIED','PARTIAL_SOURCE_ONLY','SOURCE_ABSENT','SOURCE_UNKNOWN']);
 const BRIDGES=new Set(['AVAILABLE','DEFINITIVELY_UNAVAILABLE','UNKNOWN']);
@@ -53,6 +53,11 @@ export function renderOneShell(frame){
     (!genuineOwnerFrames.has(frame)||typeof s.A!=='string'||digest(s.A)!==frame.original_voice_sha256))
   throw Error('ONESHELL_VOICE_UNVERIFIED');
  return KEYS.map(k=>TITLES[k]+' | '+s[k]).join('\n\n');
+}
+/** Six logical slots on six consecutive lines; original values and A bytes remain intact. */
+export function renderOneShellCompact(frame){
+ renderOneShell(frame); // Original validator (including unforgeable same-turn A gate).
+ return KEYS.map(k=>TITLES[k]+' | '+frame.slots[k]).join('\n');
 }
 /** Source routing consumes observed HOST capabilities, not guesses from a prompt.
  * The existing P1 helper is deliberately invoked only for public EDU/v2. */
