@@ -63,5 +63,8 @@
     "selection_script": "scripts/oneshell-compact-select-100.mjs",
     "seed": "DECLARED_FINITE_ENUMERATION",
     "product_release": "PRODUCT_NO_GO"
-  }
+  },
+  "visual_contract": "contracts/project-oneshell-visual-v2.json",
+  "visual_owner": "host/project-oneshell-visual.mjs",
+  "visual_native_guarantee": false
 }

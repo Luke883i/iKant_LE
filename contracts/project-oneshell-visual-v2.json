@@ -1,0 +1,76 @@
+{
+  "schema": "ikant-le-oneshell-visual/v2",
+  "authority": 0,
+  "purpose": "HOST_PRESENTATION_ONLY_NOT_NATIVE_CHATGPT_UI",
+  "layout": {
+    "container": "SINGLE_UNBROKEN_BORDER_ALL_SIX_SLOTS",
+    "border_width_px": 1,
+    "border_color": "neutral-subtle",
+    "border_radius_px": 16,
+    "padding_px": 12,
+    "inter_slot_gap_px": 10,
+    "separator_count": 2,
+    "header": "iKant · OneShell",
+    "responsive": "LABEL_ABOVE_VALUE_ON_NARROW_CLIENT",
+    "no_independent_cards": true,
+    "truncation_allowed": false
+  },
+  "machine_order": [
+    "ESITO",
+    "A",
+    "B",
+    "PROVA",
+    "EDGE",
+    "NEXT"
+  ],
+  "human_display": {
+    "ESITO": {
+      "primary": "ESITO"
+    },
+    "A": {
+      "primary": "iKant",
+      "secondary": "Superficie A",
+      "primary_weight": 700,
+      "primary_prominent": true
+    },
+    "B": {
+      "primary": "Host",
+      "secondary": "Superficie B",
+      "primary_weight": 700,
+      "primary_prominent": true
+    },
+    "PROVA": {
+      "primary": "PROVA"
+    },
+    "EDGE": {
+      "primary": "EDGE"
+    },
+    "NEXT": {
+      "primary": "NEXT"
+    }
+  },
+  "exit": {
+    "placement": "HEADER_TOP_RIGHT",
+    "label": "EXIT IKANT",
+    "role": "REQUEST_ONLY_NO_DIRECT_KILL",
+    "background_css": "rgba(194, 37, 46, 0.10)",
+    "border_css": "rgba(194, 37, 46, 0.24)",
+    "foreground_css": "rgb(160, 35, 43)",
+    "warning_text_exact": "ATTENZIONE: L'INFRASTRUTTURA IKANT VERRA CHIUSA",
+    "confirmation_exact": "CONFERMO EXIT IKANT",
+    "cancel_exact": "ANNULLA EXIT IKANT",
+    "explicit_separate_human_turn_required": true,
+    "physical_worker_termination_required": true
+  },
+  "fidelity": {
+    "source": "VALIDATED_ONESHELL_FRAME",
+    "reference": "host/project-oneshell-compact.mjs",
+    "original_value_bytes_unchanged": true,
+    "visual_model_not_new_receipt_owner": true,
+    "rich_host_must_bind_action_to_real_human_message": true,
+    "text_fallback": "host/project-oneshell-visual.mjs#renderOneShellVisualText",
+    "native_component_availability": "NOT_ATTESTED",
+    "persistent_chatgpt_ui": "NOT_ATTESTED",
+    "semantic_retention_without_readback": "NOT_ATTESTED"
+  }
+}
