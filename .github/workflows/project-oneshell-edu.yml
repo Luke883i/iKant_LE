@@ -4,6 +4,9 @@ on:
     paths:
       - 'host/project-oneshell-edu.mjs'
       - 'host/project-oneshell-autopilot.mjs'
+      - 'host/project-oneshell-continuity.mjs'
+      - 'host/project-oneshell-compact.mjs'
+      - 'contracts/project-oneshell-compact-continuity.json'
       - 'host/p1-public-language-guard.mjs'
       - 'host/project-oneshell-phases.mjs'
       - 'contracts/project-oneshell-semantic-slides.json'
@@ -13,6 +16,9 @@ on:
       - 'contracts/project-session-source.json'
       - 'tests/project-oneshell-edu.test.mjs'
       - 'tests/project-oneshell-autopilot-100k.test.mjs'
+      - 'tests/project-oneshell-continuity.test.mjs'
+      - 'tests/project-oneshell-compact.test.mjs'
+      - 'scripts/oneshell-compact-select-100.mjs'
       - 'tests/p1-human-language.test.mjs'
       - 'tests/project-session-e2e.test.mjs'
       - 'tests/project-oneshell-full-source.test.mjs'
@@ -32,7 +38,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node scripts/project-source-manifest.mjs verify
-      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
+      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-continuity.test.mjs tests/project-oneshell-compact.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
+      - run: node scripts/oneshell-compact-select-100.mjs "$RUNNER_TEMP/oneshell-compact-100.json"
       - run: python3 tests/test_project_manual_source.py
       - name: Trace 100k seeded semantic scenarios
         run: |

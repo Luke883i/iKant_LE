@@ -6,10 +6,10 @@ const boot=JSON.parse(fs.readFileSync(path.join(root,'BOOTSTRAP.json'),'utf8'));
 const roots=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md','stile_comunicativo.md',
  'host/c72-public-mode-admission.mjs','contracts/c72-public-mode-admission-v2.json',
  'host/s02-edu-versioned-consumer.mjs','host/c135-edu-v2-owner.mjs','host/c125-exclusive-shell.mjs',
- 'host/project-session-capsule.mjs','host/project-oneshell-edu.mjs','host/project-oneshell-autopilot.mjs','host/project-oneshell-phases.mjs',
+ 'host/project-session-capsule.mjs','host/project-oneshell-edu.mjs','host/project-oneshell-autopilot.mjs','host/project-oneshell-compact.mjs','host/project-oneshell-continuity.mjs','host/project-oneshell-phases.mjs',
  'host/p1-postmode-source-handoff.mjs','scripts/project-manual-source.py',
  'scripts/project-session.mjs','scripts/project-repo-loader.mjs',
- 'contracts/project-session-capsule.json','contracts/project-oneshell-do-d.json','contracts/project-oneshell-semantic-slides.json',
+ 'contracts/project-session-capsule.json','contracts/project-oneshell-compact-continuity.json','contracts/project-oneshell-do-d.json','contracts/project-oneshell-semantic-slides.json',
  'docs/PROJECT_SESSION_REPO_FIRST.md',
  boot.post_accept_fastboot.runtime_root.loader.path,...boot.post_accept_fastboot.remote_paths,
  ...boot.post_accept_fastboot.runtime_root.members.map(x=>x.path),...C107_FILES];

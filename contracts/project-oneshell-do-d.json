@@ -41,5 +41,8 @@
     "native_ui": "UNATTESTED",
     "human_ux": "NOT_TESTED",
     "product_release": "PRODUCT_NO_GO"
-  }
+  },
+  "compact_continuity_contract": "contracts/project-oneshell-compact-continuity.json",
+  "explicit_exit_requires_original_c135_readback": true,
+  "compact_semantic_retention": "BYTE_EXACT_ORIGINAL_SIX_SLOTS"
 }
