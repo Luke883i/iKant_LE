@@ -1380,6 +1380,16 @@
     "oneshell_semantic_slides": "contracts/project-oneshell-semantic-slides.json",
     "prompt_generation_matrix": "contracts/project-prompt-generation.json",
     "prompt_builder": "scripts/build-project-oneshell-prompt.mjs",
-    "prompt_release": "POST_MERGE_EXACT_MAIN_SHA_ONLY"
+    "prompt_release": "POST_MERGE_EXACT_MAIN_SHA_ONLY",
+    "first_contact_trigger": "ANY_FIRST_HUMAN_MESSAGE_IN_NEW_IKANT_PROJECT_CHAT",
+    "first_contact_authorizes": "ORIENTATION_ONLY",
+    "first_contact_non_authorities": [
+      "C72_ACCEPTANCE",
+      "C72_MODE",
+      "EDU_LANGUAGE_TURN",
+      "CANONICAL_ACTIVE"
+    ],
+    "project_scoped": true,
+    "prompt_portable_release": "EXACT_GIT_HEAD_SOURCE_PROMPT_UNPINNED_OUTPUT"
   }
 }

@@ -67,5 +67,12 @@
   "no_new_ledger": true,
   "native_ui_attested": false,
   "terms_read_attested": false,
-  "product_release": "PRODUCT_NO_GO"
+  "product_release": "PRODUCT_NO_GO",
+  "first_contact": {
+    "scope": "IKANT_PROJECT_NEW_CHAT_ONLY",
+    "trigger": "ANY_FIRST_HUMAN_MESSAGE",
+    "transition": "ORIENTATION_ONLY",
+    "consent_inferred": false,
+    "initial_input_executed": false
+  }
 }
