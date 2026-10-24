@@ -15,6 +15,14 @@ test('OneShell has exactly six slots and no caller-supplied voice',()=>{
  assert.deepEqual(x.slot_order,['ESITO','A','B','PROVA','EDGE','NEXT']);
  assert.match(renderOneShell(x),/^ESITO · TEST/m);
  assert.throws(()=>renderOneShell({...x,voice_origin:'HOST_BOUND_LOCAL'}));
+ assert.throws(()=>renderOneShell({...x,voice_origin:'PROVIDER_VERIFIED',
+   original_voice_sha256:createHash('sha256').update('fake').digest('hex'),
+   slots:{...x.slots,A:'fake'}}));
+ assert.throws(()=>renderOneShell({...x,voice_origin:'UNKNOWN',
+   slots:{...x.slots,A:'fake'}}));
+ assert.throws(()=>renderOneShell({...x,active:true}));
+ assert.throws(()=>renderOneShell({...x,native_ui_attested:true}));
+ assert.throws(()=>renderOneShell({...x,provider_delivery_attested:true}));
 });
 test('OneShell routes only EDU/v2 post-mode to original P1 handoff',()=>{
  const args={selection:edu,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE',nodeReady:true,manualExtractorReady:true};

@@ -37,12 +37,18 @@ function originalOwnerFrame({esito,b,prova,edge,next,s03}){
 /** Layout does not edit or truncate A; Markdown-only view never implies native UI. */
 export function renderOneShell(frame){
  if(frame?.schema!=='ikant-le-project-oneshell/v1'||frame.authority!==0||
+    frame.active!==false||frame.native_ui_attested!==false||
+    frame.provider_delivery_attested!==false||
     JSON.stringify(frame.slot_order)!==JSON.stringify(KEYS))throw Error('ONESHELL_FRAME_INVALID');
  const s=frame.slots;
  if(!['ESITO','B','PROVA','EDGE','NEXT'].every(k=>plain(s?.[k])))throw Error('ONESHELL_FRAME_INVALID');
- if(frame.voice_origin==='NO_VOICE'&&s.A!=='NO_VOICE')throw Error('ONESHELL_VOICE_UNVERIFIED');
+ if(frame.voice_origin!=='NO_VOICE'&&frame.voice_origin!=='HOST_BOUND_LOCAL')
+  throw Error('ONESHELL_VOICE_ORIGIN_UNKNOWN');
+ if(frame.voice_origin==='NO_VOICE'&&(s.A!=='NO_VOICE'||frame.original_voice_sha256!==null))
+  throw Error('ONESHELL_VOICE_UNVERIFIED');
  if(frame.voice_origin==='HOST_BOUND_LOCAL'&&
-    (!genuineOwnerFrames.has(frame)||typeof s.A!=='string'||digest(s.A)!==frame.original_voice_sha256))throw Error('ONESHELL_VOICE_UNVERIFIED');
+    (!genuineOwnerFrames.has(frame)||typeof s.A!=='string'||digest(s.A)!==frame.original_voice_sha256))
+  throw Error('ONESHELL_VOICE_UNVERIFIED');
  return KEYS.map(k=>k+' · '+s[k]).join('\n\n');
 }
 /** Source routing consumes observed HOST capabilities, not guesses from a prompt.

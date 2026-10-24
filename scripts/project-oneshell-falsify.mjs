@@ -86,6 +86,14 @@ for(let i=0;i<cases;i++){
   const tampered={...synthetic,slots:{...synthetic.slots,A:'forged voice'},
     voice_origin:'HOST_BOUND_LOCAL',original_voice_sha256:SHA('forged voice')};
   try{renderOneShell(tampered);unexpected++;}catch{forgedFramesDenied++;}
+  for(const origin of ['PROVIDER_VERIFIED','UNKNOWN','HOST_ONLY']){
+   try{renderOneShell({...tampered,voice_origin:origin});unexpected++;}
+   catch{forgedFramesDenied++;}
+  }
+  for(const key of ['active','native_ui_attested','provider_delivery_attested']){
+   try{renderOneShell({...synthetic,[key]:true});unexpected++;}
+   catch{forgedFramesDenied++;}
+  }
  }
  if((i%251)===0){
   // Original C72 receipts, six-slide contract and contradictory mode/offer cases.
