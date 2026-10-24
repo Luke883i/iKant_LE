@@ -18,7 +18,7 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
    assert.deepEqual(fs.readFileSync(path.join(a,p)),fs.readFileSync(path.join(b,p)));
   const p=fs.readFileSync(path.join(a,'PROMPT_INNESCO.txt'),'utf8');
   const receipt=JSON.parse(fs.readFileSync(path.join(a,'RECEIPT.json')));
-  const matrix=JSON.parse(execFileSync('git',['show','HEAD:contracts/project-prompt-generation.json'],'utf8'));
+  const matrix=JSON.parse(execFileSync('git',['show','HEAD:contracts/project-prompt-generation.json'],{encoding:'utf8'}));
   assert.deepEqual(matrix.head_critical_contracts,
    ['contracts/project-oneshell-compact-continuity.json','contracts/project-oneshell-visual-v2.json']);
   for(const p of matrix.head_critical_contracts){
