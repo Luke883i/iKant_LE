@@ -22,9 +22,17 @@ if(matrix.schema!=='ikant-le-project-prompt-generation/v1'||
  matrix.oneshell_contract!==route.oneshell_contract||
  route.local_bundle_required!==false||route.manual_edu_handoff?.post_mode_only!==true||
  route.manual_edu_handoff?.canonical_active_authority!==false)throw Error('PROMPT_ROUTE_DRIFT');
+const CRITICAL=['contracts/project-oneshell-compact-continuity.json',
+ 'contracts/project-oneshell-visual-v2.json'];
+if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
+ matrix.runtime_head_preflight!=='AFTER_ORIGINAL_C72_MODE_GATE_BEFORE_EDU_MATERIALIZATION'||
+ matrix.orientation_read_scope!=='FIVE_DOCUMENT_BODIES_ONLY_PROMPT_BLOB_TREE_METADATA_ALLOWED'||
+ matrix.installed_prompt_equality!=='ONLY_IF_ACTUAL_PROJECT_PROMPT_BYTES_ACCESSIBLE_ELSE_UNKNOWN'||
+ matrix.explicit_repin!=='FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER')
+ throw Error('PROMPT_HEAD_GUARD_MATRIX_INVALID');
 const members=[...new Set([...matrix.required_orientation,matrix.source_prompt,
- matrix.oneshell_contract,'contracts/project-prompt-generation.json'])];
-if(members.length!==8)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
+ matrix.oneshell_contract,...CRITICAL,'contracts/project-prompt-generation.json'])];
+if(members.length!==10)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
 const refs={};
 for(const p of members){
  if(!/^[A-Za-z0-9._/-]+$/.test(p)||p.split('/').some(s=>s===''||s==='..'))
@@ -34,7 +42,10 @@ for(const p of members){
  refs[p]={git_blob_sha1:id,sha256:sha(b),bytes:b.length};
 }
 const source=original(matrix.source_prompt).toString('utf8');
-for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','project-repo-loader'])
+for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','project-repo-loader',
+ 'STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION',
+ 'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72',
+ 'project/session-chat/PROMPT.txt'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{
@@ -58,7 +69,10 @@ const prompt=mode==='portable'?Buffer.from(source,'utf8'):Buffer.from('iKant · 
 const lock={schema:'ikant-le-project-prompt-source-lock/v1',source_head:mode==='portable'?null:head,source_tree:mode==='portable'?null:tree,
  generated_from_head:head,generated_from_tree:tree,session_source_lock:'RESOLVE_LIVE_MAIN_ON_FIRST_PROJECT_CHAT_MESSAGE',
  mode,live_main_verified:liveMainVerified,portable_head_agnostic:mode==='portable',source_prompt:matrix.source_prompt,
- prompt_source_blob:refs[matrix.source_prompt].git_blob_sha1,bundle_required:false,
+ prompt_source_blob:refs[matrix.source_prompt].git_blob_sha1,
+ critical_contract_blobs:Object.fromEntries(CRITICAL.map(p=>[p,refs[p].git_blob_sha1])),
+ runtime_preflight_required:true,installed_prompt_equivalence_attested:false,
+ versioned_c72_receipt_transfer_allowed:false,bundle_required:false,
  native_ui_attested:false,installed:false,active:false};
 const receipt={schema:'ikant-le-project-prompt-generation-receipt/v1',head,tree,mode,
  live_main_verified:liveMainVerified,source_blobs:refs,prompt_sha256:sha(prompt),
