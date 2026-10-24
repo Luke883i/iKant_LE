@@ -42,6 +42,11 @@ for(const p of members){
  refs[p]={git_blob_sha1:id,sha256:sha(b),bytes:b.length};
 }
 const source=original(matrix.source_prompt).toString('utf8');
+if(matrix.project_instruction_limit_chars!==8000||
+ matrix.project_instruction_limit_utf8_bytes!==8000||
+ [...source].length>matrix.project_instruction_limit_chars||
+ Buffer.byteLength(source,'utf8')>matrix.project_instruction_limit_utf8_bytes)
+ throw Error('PROJECT_INSTRUCTIONS_EXCEED_8000');
 for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','project-repo-loader',
  'STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION',
  'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72',

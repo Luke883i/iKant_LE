@@ -28,5 +28,9 @@
   "orientation_read_scope": "FIVE_DOCUMENT_BODIES_ONLY_PROMPT_BLOB_TREE_METADATA_ALLOWED",
   "installed_prompt_equality": "ONLY_IF_ACTUAL_PROJECT_PROMPT_BYTES_ACCESSIBLE_ELSE_UNKNOWN",
   "explicit_repin": "FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER",
-  "canonical_freshness": "MAIN_PUSH_HEAD_MATCH_TREE_AND_CRITICAL_BLOBS"
+  "canonical_freshness": "MAIN_PUSH_HEAD_MATCH_TREE_AND_CRITICAL_BLOBS",
+  "project_instruction_limit_chars": 8000,
+  "project_instruction_limit_utf8_bytes": 8000,
+  "short_prompt_dod": "SOURCE_PROMPT_BYTE_EXACT_GENERATOR_INPUT_UNDER_LIMIT",
+  "portable_short_prompt": "HEAD_AGNOSTIC_SHORT_PROJECT_BOOTSTRAP_WITH_HEAD_PINNED_ORIGINAL_OWNERS"
 }
