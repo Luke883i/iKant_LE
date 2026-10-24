@@ -88,3 +88,47 @@ export async function closeOneShellOnHumanExit({selection,sourceHead,liveHead,
  }catch{return Object.freeze({ok:false,shell:'ONESHELL',
    edge:'ORIGINAL_C135_EXIT_OUTCOME_UNKNOWN_RECONCILE_READ_ONLY'});}
 }
+
+/** Bind the original running C135 session without exposing its close() method.
+ * The HOST supplies a fresh main HEAD reader and a newly observed message for
+ * each route call. This is an in-process gate, not a native ChatGPT hook.
+ */
+export function bindManagedOneShellEdu({selection,sourceHead,originalSession,readMain}={}){
+ if(!validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead})||
+    originalSession?.owner!=='C135_EDU_V2'||typeof originalSession.status!=='function'||
+    typeof originalSession.readSessionState!=='function'||
+    typeof originalSession.publishTurn!=='function'||typeof readMain!=='function')
+  throw Error('MANAGED_ONESHELL_ORIGINAL_OWNER_REQUIRED');
+ let disposition='ONESHELL',attemptedExit=false;
+ async function routeHumanTurn({frame,humanMessageObserved=false,evidenceFile=null}={}){
+  if(disposition!=='ONESHELL')return Object.freeze({ok:false,shell:disposition==='EXITED'?'HOST_CHATGPT':'ONESHELL',
+   edge:disposition==='EXITED'?'IKANT_ALREADY_EXITED':'EDU_SESSION_UNCERTAIN_RECONCILE_READ_ONLY'});
+  let liveHead;
+  try{liveHead=await readMain();}catch{return Object.freeze({ok:false,shell:'ONESHELL',edge:'SOURCE_MAIN_READ_UNKNOWN'});}
+  let status;
+  try{status=originalSession.status();}catch{return Object.freeze({ok:false,shell:'ONESHELL',edge:'EDU_OWNER_STATUS_READ_UNKNOWN'});}
+  const next=projectOneShellContinuation({selection,sourceHead,liveHead,ownerStatus:status,
+   humanInput:frame?.humanInput,humanMessageObserved});
+  if(next.kind==='STOP')return Object.freeze({ok:false,shell:'ONESHELL',edge:next.edge});
+  if(next.kind==='DELEGATE_EXIT'){
+   if(attemptedExit)return Object.freeze({ok:false,shell:'ONESHELL',edge:'EXIT_ATTEMPT_ALREADY_RECORDED'});
+   if(typeof evidenceFile!=='string'||!evidenceFile.length)
+    return Object.freeze({ok:false,shell:'ONESHELL',edge:'EXIT_EVIDENCE_FILE_REQUIRED'});
+   attemptedExit=true; // Set before any external side effect; never blindly retry.
+   const result=await closeOneShellOnHumanExit({selection,sourceHead,liveHead,
+    humanInput:frame.humanInput,humanMessageObserved,originalSession,evidenceFile});
+   disposition=result.ok===true?'EXITED':'UNKNOWN';
+   return result;
+  }
+  if(typeof frame?.humanInput!=='string'||humanMessageObserved!==true)
+   return Object.freeze({ok:false,shell:'ONESHELL',edge:'CURRENT_HUMAN_INPUT_REQUIRED'});
+  try{
+   const result=await originalSession.publishTurn(frame);
+   if(result?.slots?.A===undefined){disposition='UNKNOWN';return Object.freeze({ok:false,shell:'ONESHELL',edge:'ORIGINAL_EDU_TURN_OUTCOME_UNKNOWN'});}
+   return Object.freeze({ok:true,shell:'ONESHELL',frame:result});
+  }catch{disposition='UNKNOWN';return Object.freeze({ok:false,shell:'ONESHELL',edge:'EDU_TURN_OUTCOME_UNKNOWN_RECONCILE_READ_ONLY'});}
+ }
+ return Object.freeze({schema:'ikant-le-host-managed-edu-oneshell/v1',authority:0,
+   getDisposition:()=>disposition,routeHumanTurn,
+   native_delivery_attested:false,ui_persistence_attested:false});
+}

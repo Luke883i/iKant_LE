@@ -70,3 +70,26 @@ test('readback omitted or inconsistent must not call close',async()=>{
  const r=await closeOneShellOnHumanExit({...args,humanInput:'EXIT IKANT',humanMessageObserved:true,originalSession:owner});
  assert.equal(r.ok,false);assert.equal(calls,0);assert.equal(r.edge,'ORIGINAL_C87_READBACK_BEFORE_EXIT_REQUIRED');
 });
+test('managed facade never exposes close, gates each turn on current main and exact exit',async()=>{
+ const {bindManagedOneShellEdu}=await import('../host/project-oneshell-continuity.mjs');
+ let closed=false,called=0,writes=0,live=head;
+ const owner={owner:'C135_EDU_V2',status:()=>({closed,busy:false,uncertain:false}),
+  readSessionState:()=>({owner:'C135_EDU_V2',source_head:head,
+   selection_receipt_sha256:selection.receipt_sha256,original_c87_readback:{status:'C107_LEDGER_REOPENED'}}),
+  publishTurn:async()=>{writes++;return oneShellFrame({esito:'EDU',b:'HOST'});},
+  close:()=>{called++;closed=true;}};
+ const managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:owner,readMain:async()=>live});
+ assert.equal(managed.close,undefined);
+ assert.equal((await managed.routeHumanTurn({frame:{humanInput:'ciao'},humanMessageObserved:true})).ok,true);
+ assert.equal(writes,1);assert.equal(called,0);
+ live='f'.repeat(40);
+ assert.equal((await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},humanMessageObserved:true})).edge,'STOP_SOURCE_LOCK_STALE');
+ assert.equal(called,0);live=head;
+ assert.equal((await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},humanMessageObserved:true})).edge,'EXIT_EVIDENCE_FILE_REQUIRED');
+ assert.equal(called,0);
+ const out=join(mkdtempSync(join(tmpdir(),'ikant-facade-')),'exit.json');
+ const done=await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},humanMessageObserved:true,evidenceFile:out});
+ assert.equal(done.ok,true);assert.equal(done.shell,'HOST_CHATGPT');assert.equal(called,1);
+ assert.equal((await managed.routeHumanTurn({frame:{humanInput:'another'},humanMessageObserved:true})).edge,'IKANT_ALREADY_EXITED');
+ assert.equal(called,1);assert.equal(writes,1);
+});

@@ -3,8 +3,22 @@
   "authority": 0,
   "scope": "HOST_ONLY_LOCAL_VIEW_WITH_ORIGINAL_EDU_OWNER",
   "current_source_head_required": true,
-  "human_slots": ["ESITO", "Superficie A (iKant)", "Superficie B (HOST)", "PROVA", "EDGE", "NEXT"],
-  "machine_slots_unchanged": ["ESITO", "A", "B", "PROVA", "EDGE", "NEXT"],
+  "human_slots": [
+    "ESITO",
+    "Superficie A (iKant)",
+    "Superficie B (HOST)",
+    "PROVA",
+    "EDGE",
+    "NEXT"
+  ],
+  "machine_slots_unchanged": [
+    "ESITO",
+    "A",
+    "B",
+    "PROVA",
+    "EDGE",
+    "NEXT"
+  ],
   "visual_minimum": "SIX_CONTIGUOUS_LOGICAL_SLOTS_NO_BLANK_PARAGRAPHS",
   "not_a_six_physical_lines_claim_when_any_slot_contains_newlines": true,
   "surface_a": "ORIGINAL_C87_C125_S03_SAME_TURN_UTF8_OR_NO_VOICE",
@@ -37,7 +51,11 @@
     "unknown_write_must_not_retry": true,
     "native_human_origin_attested": false,
     "native_ui_persistence_attested": false,
-    "cross_session_persistence_attested": false
+    "cross_session_persistence_attested": false,
+    "managed_turn_facade": "host/project-oneshell-continuity.mjs#bindManagedOneShellEdu",
+    "managed_facade_exposes_close": false,
+    "managed_exit_requires_fresh_evidence_file": true,
+    "managed_turn_requires_fresh_main_observation": true
   },
   "method": {
     "test_cases": 100,

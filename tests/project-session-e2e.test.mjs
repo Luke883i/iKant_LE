@@ -73,6 +73,17 @@ test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn afte
   const ev=session.getLastEvidence();
   assert.equal(ev.original_c87_readback.count,1);assert.equal(ev.native_delivery_attested,false);
   assert.equal(ev.original_c125_sha256,createHash('sha256').update(ev.original_c125_utf8).digest('hex'));
+  const {bindManagedOneShellEdu}=await import('../host/project-oneshell-continuity.mjs');
+  const managed=bindManagedOneShellEdu({selection,sourceHead:expected.head,
+   originalSession:session,readMain:async()=>expected.head});
+  const exitFile=path.join(parent,'human-exit.json');
+  const exit=await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},
+   humanMessageObserved:true,evidenceFile:exitFile});
+  assert.equal(exit.ok,true,JSON.stringify(exit));
+  assert.equal(exit.shell,'HOST_CHATGPT');
+  assert.equal(session.status().closed,true);
+  assert.equal(JSON.parse(fs.readFileSync(exitFile,'utf8')).human_input,'EXIT IKANT');
+  assert.equal((await managed.routeHumanTurn({frame:{humanInput:'Ancora'},humanMessageObserved:true})).edge,'IKANT_ALREADY_EXITED');
   session.close();
   assert.equal((await session.publishTurn({humanInput:'Ancora',nonce:'oneshell-original-test-nonce-0002',
     priorMessages:[],resetContext:true})).slots.A,'NO_VOICE');
