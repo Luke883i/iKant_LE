@@ -13,6 +13,7 @@ test('iKant DIRECT_IDENTITY may not call itself the HOST language model',()=>{
   const r=qualifyHumanFacingIdentity({method:'DIRECT_IDENTITY',text});
   assert.equal(r.ok,false,text);assert.equal(r.reason,'IKANT_HOST_MODEL_IDENTITY_CONFUSION');
  }
+ assert.equal(qualifyHumanFacingIdentity({method:'RETRIEVE',text:'Sono GPT-6.'}).ok,false);
  assert.equal(qualifyHumanFacingIdentity({method:'DIRECT_IDENTITY',
   text:'Sono iKant, runtime conversazionale con un modello HOST sostituibile.'}).ok,true);
 });
