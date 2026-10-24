@@ -14,6 +14,7 @@ const edu=selectC72V2Mode({accepted,orientation,humanMessage:'EDU'});
 const canonical=selectC72V2Mode({accepted,orientation,humanMessage:'CANONICAL'});
 const mk=(next,edge='TEST')=>oneShellFrame({esito:'TEST',b:'HOST',edge,next});
 const args=(next)=>({frame:mk(next),selection:edu,sourceHead:head,liveHead:head});
+const verified=async observed=>({ok:true,source_head:observed.sourceHead,receipt_sha256:observed.ownerReceiptSha256});
 
 test('human labels distinguish owner-bound iKant bytes from HOST; canonical keys unchanged',()=>{
  const f=mk('AWAIT_I_ACCEPT');const result=renderOneShell(f);
@@ -70,17 +71,23 @@ test('100000 seeded realistic hostile HOST observations: no promotion across gat
 test('automatic chain continues only over fresh original readbacks, never retries UNKNOWN',async()=>{
  const frames=[mk('VERIFY_SOURCE'),mk('VERIFY_MACHINE_BRIDGE'),mk('UPLOAD_PINNED_SOURCE_ZIP')];
  let n=0;
- const result=await driveOneShellHost({read:async()=>({...args('VERIFY_SOURCE'),frame:frames[n],ownerReceiptSha256:(n+1).toString(16).padStart(64,'0')}),
+ const result=await driveOneShellHost({verify:verified,read:async()=>({...args('VERIFY_SOURCE'),frame:frames[n],ownerReceiptSha256:(n+1).toString(16).padStart(64,'0')}),
    perform:async()=>{n++;return {ok:true}}});
  assert.equal(result.ok,true);assert.equal(result.kind,'MANUAL_HANDOFF');
  assert.deepEqual(result.actions.map(x=>x.action),['VERIFY_SOURCE','VERIFY_MACHINE_BRIDGE']);
  let writes=0;
- const unchanged=await driveOneShellHost({read:async()=>({...args('VERIFY_SOURCE'),ownerReceiptSha256:'a'.repeat(64)}),
+ const unchanged=await driveOneShellHost({verify:verified,read:async()=>({...args('VERIFY_SOURCE'),ownerReceiptSha256:'a'.repeat(64)}),
   perform:async()=>{writes++;return {ok:true}}});
  assert.equal(unchanged.edge,'UNCHANGED_EVIDENCE_RETRY_FORBIDDEN');assert.equal(writes,1);
  let attempted=0;
- const uncertain=await driveOneShellHost({read:async()=>({...args('START_C135_EDU'),ownerReceiptSha256:'b'.repeat(64)}),
+ const uncertain=await driveOneShellHost({verify:verified,read:async()=>({...args('START_C135_EDU'),ownerReceiptSha256:'b'.repeat(64)}),
   perform:async()=>{attempted++;throw Error('UNKNOWN')}});
  assert.equal(uncertain.edge,'HOST_ACTION_OUTCOME_UNKNOWN_RECONCILE_READ_ONLY');
  assert.equal(attempted,1);
+ let writesWithoutWitness=0;
+ const forged=await driveOneShellHost({read:async()=>({...args('VERIFY_SOURCE'),ownerReceiptSha256:'e'.repeat(64)}),
+  verify:async()=>({ok:true,source_head:head,receipt_sha256:'f'.repeat(64)}),
+  perform:async()=>{writesWithoutWitness++;return {ok:true}}});
+ assert.equal(forged.edge,'ORIGINAL_OWNER_READBACK_NOT_VERIFIED');
+ assert.equal(writesWithoutWitness,0);
 });

@@ -29,8 +29,8 @@ export function deriveOneShellHostAction({frame,selection,sourceHead,liveHead}={
 
 /** HOST adapter supplies real read/perform callbacks. The runner never repeats
  * the same observation or replays writes after an UNKNOWN outcome. */
-export async function driveOneShellHost({read,perform,maxSteps=12}={}) {
- if(typeof read!=='function'||typeof perform!=='function'||
+export async function driveOneShellHost({read,verify,perform,maxSteps=12}={}) {
+ if(typeof read!=='function'||typeof verify!=='function'||typeof perform!=='function'||
     !Number.isSafeInteger(maxSteps)||maxSteps<1||maxSteps>32)
   return Object.freeze({ok:false,edge:'HOST_CALLBACKS_OR_BUDGET_INVALID',actions:[]});
  const actions=[],seen=new Set();
@@ -43,6 +43,11 @@ export async function driveOneShellHost({read,perform,maxSteps=12}={}) {
   const witness=observed?.ownerReceiptSha256;
   if(typeof witness!=='string'||!/^[a-f0-9]{64}$/.test(witness))
    return Object.freeze({ok:false,edge:'ORIGINAL_OWNER_READBACK_REQUIRED',actions});
+  // A caller digest is not independent readback. Reopen with the original owner.
+  let proof;try{proof=await verify(observed);}catch{}
+  if(proof?.ok!==true||proof.receipt_sha256!==witness||
+     proof.source_head!==observed.sourceHead)
+   return Object.freeze({ok:false,edge:'ORIGINAL_OWNER_READBACK_NOT_VERIFIED',actions});
   const identity=[observed.sourceHead,step.action,witness].join(':');
   if(seen.has(identity))return Object.freeze({ok:false,edge:'UNCHANGED_EVIDENCE_RETRY_FORBIDDEN',actions});
   seen.add(identity);
