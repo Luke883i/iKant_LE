@@ -1,0 +1,19 @@
+{
+  "schema": "ikant-le-project-prompt-generation/v1",
+  "authority": 0,
+  "source_prompt": "project/session-chat/PROMPT.txt",
+  "runtime_owner": "host/project-oneshell-edu.mjs",
+  "oneshell_contract": "contracts/project-oneshell-do-d.json",
+  "required_orientation": [
+    "README.md",
+    "BOOTSTRAP.json",
+    "ADMISSION.json",
+    "AGENTS.md",
+    "TERMS.md"
+  ],
+  "no_project_bundle": true,
+  "template_binding": "EXACT_GIT_HEAD_BLOB",
+  "candidate": "PR_HEAD_NOT_CANONICAL",
+  "canonical": "PUSH_MAIN_WITH_API_MAIN_SHA_MATCH",
+  "no_auto_repin": true
+}

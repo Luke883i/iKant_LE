@@ -1343,7 +1343,7 @@
     "contract": "contracts/project-session-capsule.json",
     "source_manifest": "contracts/project-session-source.json",
     "source_loader": "scripts/project-repo-loader.mjs",
-    "runtime_entry": "scripts/project-session.mjs",
+    "runtime_entry": "host/project-oneshell-edu.mjs",
     "instructions": "docs/PROJECT_SESSION_REPO_FIRST.md",
     "local_bundle_required": false,
     "archive_fallback": false,
@@ -1356,6 +1356,30 @@
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
     "display": "COMPACT_MARKDOWN_AND_REOPENED_EVIDENCE",
     "missing_capability": "STOP_CURRENT_EDGE_NO_VOICE",
-    "voice_owner_unchanged": true
+    "voice_owner_unchanged": true,
+    "oneshell_controller": "host/project-oneshell-edu.mjs",
+    "oneshell_contract": "contracts/project-oneshell-do-d.json",
+    "oneshell_scope": "ALL_VISIBLE_BOOTSTRAP_ADMISSION_START_AND_EDU_TURNS",
+    "edu_runtime_owner": "host/c135-edu-v2-owner.mjs",
+    "no_second_writer": true,
+    "manual_edu_handoff": {
+      "post_mode_only": true,
+      "source_states": [
+        "SOURCE_ABSENT",
+        "PARTIAL_SOURCE_ONLY"
+      ],
+      "bridge": "DEFINITIVELY_UNAVAILABLE",
+      "python_extractor": "scripts/project-manual-source.py",
+      "handoff_owner": "host/p1-postmode-source-handoff.mjs",
+      "verified_reentry": "scripts/project-repo-loader.mjs",
+      "kind": "PINNED_GITHUB_SOURCE_ZIP_NOT_PROJECT_BUNDLE",
+      "canonical_active_authority": false
+    },
+    "control_entry": "scripts/project-session.mjs",
+    "runtime_entry_kind": "ESM_FACTORY_REQUIRES_ORIGINAL_CALLBACKS",
+    "oneshell_semantic_slides": "contracts/project-oneshell-semantic-slides.json",
+    "prompt_generation_matrix": "contracts/project-prompt-generation.json",
+    "prompt_builder": "scripts/build-project-oneshell-prompt.mjs",
+    "prompt_release": "POST_MERGE_EXACT_MAIN_SHA_ONLY"
   }
 }
