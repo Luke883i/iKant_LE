@@ -26,5 +26,9 @@
   "gateway_can_authenticate_provider_human_event": false,
   "source_lock_after_merge": "FRESH_EPOCH_REQUIRES_EXPLICIT_REPIN_C72",
   "ci_scope": "LOCAL_SOFTWARE_FALSIFICATION_NOT_PLATFORM_COMPLIANCE",
-  "product_release": "PRODUCT_NO_GO"
+  "product_release": "PRODUCT_NO_GO",
+  "postaccept_reentry": "host/project-c72-postaccept-reentry.mjs",
+  "postaccept_reentry_only_after_distinct_I_ACCEPT": true,
+  "postaccept_owner_statuses_are_observations_not_discovery_inferences": true,
+  "postaccept_reentry_native_turn_origin_attested": false
 }

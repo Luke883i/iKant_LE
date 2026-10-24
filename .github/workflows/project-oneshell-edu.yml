@@ -4,8 +4,10 @@ on:
     paths:
       - 'host/project-oneshell-edu.mjs'
       - 'host/project-c72-preaccept-gate.mjs'
+      - 'host/project-c72-postaccept-reentry.mjs'
       - 'contracts/project-c72-preaccept-gate.json'
       - 'tests/project-c72-preaccept-gate.test.mjs'
+      - 'tests/project-c72-postaccept-reentry.test.mjs'
       - 'tests/project-c72-preaccept-contract.test.mjs'
       - 'host/project-oneshell-autopilot.mjs'
       - 'host/project-oneshell-continuity.mjs'
@@ -51,7 +53,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node scripts/project-source-manifest.mjs verify
-      - run: node --test tests/project-c72-preaccept-gate.test.mjs tests/project-c72-preaccept-contract.test.mjs
+      - name: Original C72 reentry and 10k owner/brand semantic trace
+        run: |
+          mkdir -p "$RUNNER_TEMP/c72-brand-10k"
+          IKANT_C72_BRAND_TRACE_DIR="$RUNNER_TEMP/c72-brand-10k" node --test tests/project-c72-preaccept-gate.test.mjs tests/project-c72-preaccept-contract.test.mjs tests/project-c72-postaccept-reentry.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c72-brand-semantic-10k-node-${{ matrix.node-version }}
+          path: ${{ runner.temp }}/c72-brand-10k/
+          retention-days: 30
+          if-no-files-found: error
       - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-continuity.test.mjs tests/project-oneshell-compact.test.mjs tests/project-oneshell-visual-v2.test.mjs tests/project-oneshell-host-boundary.test.mjs tests/project-oneshell-language-ack.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
       - run: node scripts/oneshell-compact-select-100.mjs "$RUNNER_TEMP/oneshell-compact-100.json"
       - run: python3 tests/test_project_manual_source.py

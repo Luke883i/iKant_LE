@@ -1350,7 +1350,8 @@
     "terms_owner": "host/c72-public-mode-admission.mjs#acceptC72V2LinkedTerms",
     "post_accept_before_mode_paths": [
       "host/c72-public-mode-admission.mjs",
-      "contracts/c72-public-mode-admission-v2.json"
+      "contracts/c72-public-mode-admission-v2.json",
+      "host/project-c72-postaccept-reentry.mjs"
     ],
     "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
@@ -1390,6 +1391,8 @@
       "CANONICAL_ACTIVE"
     ],
     "project_scoped": true,
-    "prompt_portable_release": "EXACT_GIT_HEAD_SOURCE_PROMPT_UNPINNED_OUTPUT"
+    "prompt_portable_release": "EXACT_GIT_HEAD_SOURCE_PROMPT_UNPINNED_OUTPUT",
+    "postaccept_reentry": "host/project-c72-postaccept-reentry.mjs#reenterC72V2PostAccept",
+    "postaccept_reentry_scope": "POST_EXACT_I_ACCEPT_ONLY_ORIGINAL_C72_RECEIPTS_HOST_WITNESS_NOT_NATIVE"
   }
 }
