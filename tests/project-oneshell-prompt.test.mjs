@@ -24,5 +24,15 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.notEqual(run('candidate',head,'f'.repeat(40),path.join(dir,'wrong-tree')).status,0);
   assert.notEqual(run('candidate',head,tree,a).status,0);
   assert.notEqual(run('canonical',head,tree,path.join(dir,'not-main')).status,0);
+  // A changed working tree cannot contaminate Git-show HEAD content: the exact
+  // release output and source receipt must stay byte-identical.
+  const dirty=path.join(process.cwd(),'artifacts','qualification','oneshell-test-dirty-'+process.pid+'.tmp');
+  try{
+   fs.writeFileSync(dirty,'worktree artifact is NOT an input to git show HEAD');
+   const third=path.join(dir,'c'),out=run('candidate',head,tree,third);
+   assert.equal(out.status,0,out.stderr);
+   for(const name of ['PROMPT_INNESCO.txt','SOURCE_LOCK.json','RECEIPT.json'])
+    assert.deepEqual(fs.readFileSync(path.join(a,name)),fs.readFileSync(path.join(third,name)));
+  }finally{fs.rmSync(dirty,{force:true});}
  }finally{fs.rmSync(dir,{recursive:true,force:true})}
 });

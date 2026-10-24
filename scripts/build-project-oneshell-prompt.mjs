@@ -14,7 +14,7 @@ const mode=arg('--mode'),head=arg('--head'),tree=arg('--tree'),out=arg('--out');
 if(process.argv.length!==10||!['candidate','canonical'].includes(mode)||!H40.test(head||'')||
  !H40.test(tree||'')||typeof out!=='string')throw Error('PROMPT_ARGUMENTS_INVALID');
 if(git('rev-parse','HEAD')!==head||git('rev-parse','HEAD^{tree}')!==tree)throw Error('STOP_SOURCE_LOCK_STALE');
-if(git('status','--porcelain')!=='')throw Error('DIRTY_SOURCE');
+// Only immutable Git HEAD blobs are read below; qualification outputs or dirty worktree\n// cannot change the generator input. Blob/readback locks are enforced per original.
 const matrix=JSON.parse(original('contracts/project-prompt-generation.json'));
 const route=JSON.parse(original('BOOTSTRAP.json')).project_session;
 if(matrix.schema!=='ikant-le-project-prompt-generation/v1'||
