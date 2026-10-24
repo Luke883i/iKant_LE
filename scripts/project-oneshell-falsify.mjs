@@ -9,7 +9,7 @@ import {gzipSync,gunzipSync} from 'node:zlib';
 import {issueC72V2LinkedTermsOffer,acceptC72V2LinkedTerms,
  presentC72V2Introduction,selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
 import {planOneShellEduSource,oneShellFrame,renderOneShell} from '../host/project-oneshell-edu.mjs';
-import {oneShellOrientation,oneShellAccepted,oneShellSelected} from '../host/project-oneshell-phases.mjs';
+import {oneShellOrientation,oneShellAccepted,oneShellSelected,createOneShellAdmissionFlow} from '../host/project-oneshell-phases.mjs';
 const SHA=x=>createHash('sha256').update(x).digest('hex');
 const H='a'.repeat(40),D=SHA('terms');
 const offer=issueC72V2LinkedTermsOffer({sourceHead:H,termsDigest:D});
@@ -29,7 +29,7 @@ const cases=Number(process.argv[2]??100000);
 if(!Number.isInteger(cases)||cases!==100000)throw Error('EXACT_100K_REQUIRED');
 const signatures=new Set(),decisions=new Map();
 const traceDir=process.env.IKANT_ONESHELL_TRACE_DIR||null,lines=traceDir?[]:null;
-let unexpected=0,checked=0,manual=0,blocked=0,stageChecks=0,forgedFramesDenied=0;
+let unexpected=0,checked=0,manual=0,blocked=0,stageChecks=0,forgedFramesDenied=0,firstMessageChecks=0,firstMessageGateChecks=0;
 let hash=createHash('sha256');
 const expected=(mode,source,bridge,node,extract,timing,epoch)=>{
  if(mode!==0||timing!==0||epoch!==0)return 'STOP';
@@ -61,6 +61,25 @@ for(let i=0;i<cases;i++){
   bridgeState:bridges[bridge],nodeReady:!!node,manualExtractorReady:!!extract});
  const want=expected(mode,source,bridge,node,extract,timing,epoch);
  const got=frame.slots.NEXT;
+ // First-message policy: exercise real original C72 owner and existing OneShell
+ // coordinator on EACH preseeded case. No new consent engine, no duplicated ledger.
+ const utterances=['ciao','blblblba','avvia iKant','I ACCEPT','EDU','CANONICAL',
+  'non avviare iKant','🚀','',('x'.repeat(1000))];
+ const firstText=utterances[(i+mode+sourceProof+nonce)%utterances.length];
+ const flow=createOneShellAdmissionFlow({head:H,tree:'b'.repeat(40),termsUtf8:'terms'});
+ const first=flow.advance({humanMessage:firstText,termsLinkPresented:true});
+ if(first.slots.NEXT!=='AWAIT_I_ACCEPT'||first.slots.A!=='NO_VOICE'||
+    flow.phase()!=='WAIT_ACCEPT'||flow.selection()!==null)unexpected++;
+ firstMessageChecks++;
+ if((i%10)===0){
+  const bad=flow.advance({humanMessage:'EDU'});
+  if(bad.slots.NEXT!=='STOP'||flow.phase()!=='WAIT_ACCEPT')unexpected++;
+  const ac=flow.advance({humanMessage:'I ACCEPT',termsLinkPresented:true});
+  if(ac.slots.NEXT!=='AWAIT_EDU_OR_CANONICAL'||ac.slots.A!=='NO_VOICE')unexpected++;
+  const selected=flow.advance({humanMessage:'EDU'});
+  if(selected.slots.NEXT!=='VERIFY_SOURCE'||flow.selection()?.selected_mode!=='EDU')unexpected++;
+  firstMessageGateChecks++;
+ }
  if(got!==want)unexpected++;
  if(frame.slot_order.join('|')!=='ESITO|A|B|PROVA|EDGE|NEXT'||
    frame.slots.A!=='NO_VOICE'||frame.active!==false||frame.authority!==0)unexpected++;
@@ -70,7 +89,7 @@ for(let i=0;i<cases;i++){
  }
  if(got==='STOP')blocked++;
  decisions.set(got,(decisions.get(got)||0)+1);
- if(lines)lines.push(JSON.stringify({i,key,axes:{mode,source:sources[source],
+ if(lines)lines.push(JSON.stringify({i,key,first_text:firstText,first_step:first.slots.NEXT,axes:{mode,source:sources[source],
   bridge:bridges[bridge],node:!!node,extractor:!!extract,human_timing:timing,
   epoch,source_integrity:sourceProof,ledger,delivery,nonce,language_port:languagePort,
   ui_projection:layout},expected:want,observed:got,discrepancy:want!==got,
@@ -108,7 +127,7 @@ for(let i=0;i<cases;i++){
  }
  checked++;
 }
-if(signatures.size!==cases||manual<10000||blocked<15000||stageChecks===0||
+if(signatures.size!==cases||firstMessageChecks!==cases||firstMessageGateChecks!==cases/10||manual<10000||blocked<15000||stageChecks===0||
  forgedFramesDenied===0||decisions.size<5)unexpected++;
 const result={schema:'ikant-le-oneshell-realistic-preseeded-100k/v1',
  seed:SEED.toString(),step:STEP.toString(),cases,unique_semantic_scenarios:signatures.size,
@@ -116,7 +135,8 @@ const result={schema:'ikant-le-oneshell-realistic-preseeded-100k/v1',
  dimensions:['mode_receipt','source_availability','api_to_node_bridge','node_executor',
  'manual_extractor','human_message_timing','source_epoch','source_integrity',
  'original_ledger_state','provider_delivery','nonce_status','language_port','ui_projection'],
- sample_space:total.toString(),trace_sha256:hash.digest('hex'),
+ sample_space:total.toString(),first_message_orientation_checks:firstMessageChecks,
+ first_message_separate_c72_gates:firstMessageGateChecks,trace_sha256:hash.digest('hex'),
  decisions:Object.fromEntries([...decisions].sort()),manual,blocked,
  original_c72_stage_checks:stageChecks,forged_host_voice_frames_denied:forgedFramesDenied,
  discrepancies:unexpected,limits:'FINITE_STATE_HOST_POLICY_NOT_REAL_LLM_OR_NATIVE_CHATGPT_EXECUTION'};

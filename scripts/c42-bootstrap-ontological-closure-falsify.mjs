@@ -28,6 +28,9 @@ const noisy=(x,n)=>{let s=x;if(n&1)s=s.toUpperCase();if(n&2)s='  '+s+'  ';if(n&4
 const direct=()=>for_ai_agent_first_entrypoint({preaccept_handoff:preaccept,activation_executor:executor,human_input:'I ACCEPT',acceptance_observed_monotonic_ms:42,runtime_root_descriptor:D});
 const fileLedger=i=>buildFastbootChannelLedger({sourceHead:HEAD,receipts:[...FASTBOOT_MACHINE_CARRIERS.map((carrier,j)=>cap(carrier,'UNAVAILABLE','machine-'+i+'-'+j)),cap('HOST_FILE_BRIDGE','AVAILABLE','file-'+i)]});
 const warmLedger=i=>buildFastbootChannelLedger({sourceHead:HEAD,receipts:[cap('WARM_CACHE_EXACT','AVAILABLE','warm-'+i)]});
+// No sampled variable enters this direct original-owner projection. Evaluate the
+// immutable witness once; each case still independently validates its oracle.
+const directWitness=direct();
 const contract=JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/bootstrap-ontological-closure.json'),'utf8'));
 const boot=JSON.parse(fs.readFileSync(path.join(ROOT,'BOOTSTRAP.json'),'utf8')).for_ai_agent_first_entrypoint;
 
@@ -42,13 +45,13 @@ const families=[
  ['EXIT_FIRST_CONTACT',i=>{const input=noisy(exits[i%exits.length],rnd()),x=for_ai_agent_first_entrypoint({human_input:input});return x.next?.terminal==='CANONICAL_PREACCEPT'&&x.next?.pending_intent===input&&x.readiness?.public_line==='iKant · PREPARA'}],
  ['FILE_NEXT',i=>{const x=for_ai_agent_first_entrypoint({channel_ledger:fileLedger(i),runtime_root_sha256:D.runtime_root_sha256});return x.next?.canonical_carrier==='HOST_FILE_BRIDGE'&&x.readiness?.public_line==='iKant · CARICA FILE'}],
  ['WARM_NEXT',i=>{const x=for_ai_agent_first_entrypoint({channel_ledger:warmLedger(i),runtime_root_sha256:D.runtime_root_sha256});return x.next?.canonical_carrier==='WARM_CACHE_EXACT'&&x.readiness?.public_line==='iKant · AVVIA'}],
- ['DIRECT_VALID',i=>{const x=direct();return x.handoff?.action==='EXECUTE_PRE_RUNTIME_BOOTSTRAP'&&x.handoff?.owner==='SESSION_CHAT_COMPOSITION_CHANNEL'&&x.handoff?.canonical_activation_authority===true&&x.handoff?.active_claim===false&&x.canonical_handoff?.receipt_sha256===x.handoff?.receipt_sha256&&x.legacy_handoff===null&&x.readiness?.public_line==='iKant · MATERIALIZZA'}],
- ['NO_PREMATURE_EVENT_ID',i=>{const x=direct();return !('acceptance_event_id'in x.handoff)&&!('acceptance_event_id'in(x.handoff?.direct_handoff?.execution_input||{}))}],
+ ['DIRECT_VALID',i=>{const x=directWitness;return x.handoff?.action==='EXECUTE_PRE_RUNTIME_BOOTSTRAP'&&x.handoff?.owner==='SESSION_CHAT_COMPOSITION_CHANNEL'&&x.handoff?.canonical_activation_authority===true&&x.handoff?.active_claim===false&&x.canonical_handoff?.receipt_sha256===x.handoff?.receipt_sha256&&x.legacy_handoff===null&&x.readiness?.public_line==='iKant · MATERIALIZZA'}],
+ ['NO_PREMATURE_EVENT_ID',i=>{const x=directWitness;return !('acceptance_event_id'in x.handoff)&&!('acceptance_event_id'in(x.handoff?.direct_handoff?.execution_input||{}))}],
  ['BAD_ACCEPT_REJECT',i=>rejects(()=>for_ai_agent_first_entrypoint({preaccept_handoff:preaccept,activation_executor:executor,human_input:'YES',acceptance_observed_monotonic_ms:42,runtime_root_descriptor:D}))],
  ['BAD_TERMS_REJECT',i=>rejects(()=>for_ai_agent_first_entrypoint({preaccept_handoff:{...preaccept,terms_object:{...preaccept.terms_object,blob_sha1:'b'.repeat(40)}},activation_executor:executor,human_input:'I ACCEPT',acceptance_observed_monotonic_ms:42,runtime_root_descriptor:D}))],
  ['BAD_EXECUTOR_REJECT',i=>{const bad=sign({...executor,content_addressed:false});return rejects(()=>for_ai_agent_first_entrypoint({preaccept_handoff:preaccept,activation_executor:bad,human_input:'I ACCEPT',acceptance_observed_monotonic_ms:42,runtime_root_descriptor:D}))}],
  ['CALLER_RETRY_REJECT',i=>rejects(()=>for_ai_agent_first_entrypoint({channel_ledger:fileLedger(i),runtime_root_sha256:D.runtime_root_sha256,attempted_classes:['WARM_CACHE_EXACT']}))],
- ['PUBLIC_LINE_BOUND',i=>[for_ai_agent_first_entrypoint({human_input:'inizializza iKant'}),for_ai_agent_first_entrypoint({human_input:'chiudi iKant'}),for_ai_agent_first_entrypoint({channel_ledger:fileLedger(i),runtime_root_sha256:D.runtime_root_sha256}),direct()].every(x=>x.readiness.public_line.length<=32)],
+ ['PUBLIC_LINE_BOUND',i=>[for_ai_agent_first_entrypoint({human_input:'inizializza iKant'}),for_ai_agent_first_entrypoint({human_input:'chiudi iKant'}),for_ai_agent_first_entrypoint({channel_ledger:fileLedger(i),runtime_root_sha256:D.runtime_root_sha256}),directWitness].every(x=>x.readiness.public_line.length<=32)],
  ['PUBLIC_LINE_NO_TECH',i=>!/receipt|sha|LOCAL_|SESSION_|ACTIVE_READBACK|runtime_root|carrier/i.test(for_ai_agent_first_entrypoint({channel_ledger:fileLedger(i),runtime_root_sha256:D.runtime_root_sha256}).readiness.public_line)],
  ['NO_NEW_AUTHORITY',i=>boot.intent_adapter?.authority===0&&boot.optional_host_bridge?.required===false&&boot.optional_host_bridge?.may_create_authority===false],
  ['LEGACY_REENTRY_PRESERVED',i=>JSON.stringify(boot.reentry?.accepted_observation_schemas)===JSON.stringify(['ikant-le-fastboot-capability-receipt/v1','ikant-le-fastboot-carrier-attempt/v1'])],
@@ -57,7 +60,7 @@ const families=[
 
 let mismatches=0,killed=0;const counts=Object.fromEntries(families.map(([n])=>[n,0])),failures=[];
 for(let i=0;i<CASES;i++){const [name,run]=families[i%families.length];counts[name]++;let ok=false;try{ok=run(i)===true}catch(e){if(failures.length<20)failures.push({i,name,error:String(e?.message||e)})}if(ok)killed++;else{mismatches++;if(failures.length<20)failures.push({i,name,error:'oracle_mismatch'})}}
-const witness=direct();
+const witness=directWitness;
 const unsafeActive=witness.handoff?.active_claim===true?1:0;
 const premature=('acceptance_event_id'in(witness.handoff||{})||'acceptance_event_id'in(witness.handoff?.direct_handoff?.execution_input||{}))?1:0;
 const unsafeOwned=contract.dod?.IKANT_OWNED_predicate_unchanged===true?0:1;

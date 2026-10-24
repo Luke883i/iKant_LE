@@ -23,7 +23,23 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.notEqual(run('candidate','f'.repeat(40),tree,path.join(dir,'wrong-head')).status,0);
   assert.notEqual(run('candidate',head,'f'.repeat(40),path.join(dir,'wrong-tree')).status,0);
   assert.notEqual(run('candidate',head,tree,a).status,0);
-  assert.notEqual(run('canonical',head,tree,path.join(dir,'not-main')).status,0);
+  // Negative canonical test must stay negative even on a real main push workflow.
+  assert.notEqual(run('canonical',head,tree,path.join(dir,'not-main'),
+   {GITHUB_EVENT_NAME:'pull_request',GITHUB_REF:'refs/pull/158/head'}).status,0);
+  const portable=path.join(dir,'portable'),again=path.join(dir,'portable-again');
+  const portableRun=run('portable',head,tree,portable);
+  assert.equal(portableRun.status,0,portableRun.stderr);
+  assert.equal(run('portable',head,tree,again).status,0);
+  for(const name of ['PROMPT_INNESCO.txt','SOURCE_LOCK.json','RECEIPT.json'])
+   assert.deepEqual(fs.readFileSync(path.join(portable,name)),fs.readFileSync(path.join(again,name)));
+  const original=execFileSync('git',['show','HEAD:project/session-chat/PROMPT.txt']);
+  assert.deepEqual(fs.readFileSync(path.join(portable,'PROMPT_INNESCO.txt')),original);
+  const portableLock=JSON.parse(fs.readFileSync(path.join(portable,'SOURCE_LOCK.json')));
+  assert.equal(portableLock.source_head,null);
+  assert.equal(portableLock.source_tree,null);
+  assert.equal(portableLock.generated_from_head,head);
+  assert.equal(portableLock.session_source_lock,'RESOLVE_LIVE_MAIN_ON_FIRST_PROJECT_CHAT_MESSAGE');
+  assert.match(original.toString('utf8'),/PRIMO messaggio umano di OGNI nuova chat/);
   // A changed working tree cannot contaminate Git-show HEAD content: the exact
   // release output and source receipt must stay byte-identical.
   const dirty=path.join(process.cwd(),'artifacts','qualification','oneshell-test-dirty-'+process.pid+'.tmp');

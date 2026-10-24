@@ -34,9 +34,8 @@ test('all eight semantic phases have owner scope and six stable OneShell slots',
 test('exact separate human messages drive only original C72 v2 receipts inside OneShell',()=>{
  const flow=createOneShellAdmissionFlow({head,tree,termsUtf8:'verified terms'});
  assert.equal(flow.persistent,false);assert.equal(flow.selection(),null);
- assert.equal(flow.advance({humanMessage:'I ACCEPT',termsLinkPresented:true}).slots.NEXT,'STOP');
- assert.equal(flow.phase(),'WAIT_TRIGGER');
- assert.equal(flow.advance({humanMessage:'avvia iKant'}).slots.NEXT,'AWAIT_I_ACCEPT');
+ assert.equal(flow.advance({humanMessage:'I ACCEPT',termsLinkPresented:true}).slots.NEXT,'AWAIT_I_ACCEPT');
+ assert.equal(flow.phase(),'WAIT_ACCEPT');
  assert.equal(flow.advance({humanMessage:'EDU'}).slots.NEXT,'STOP');
  assert.equal(flow.phase(),'WAIT_ACCEPT');
  assert.equal(flow.advance({humanMessage:'I ACCEPT'}).slots.NEXT,'STOP');
@@ -52,4 +51,22 @@ test('exact separate human messages drive only original C72 v2 receipts inside O
  other.advance({humanMessage:'I ACCEPT',termsLinkPresented:true});
  assert.equal(other.advance({humanMessage:'CANONICAL'}).slots.NEXT,'C59_ORIGINAL_CANONICAL_GATE');
  assert.equal(other.selection().selected_mode,'CANONICAL');
+});
+
+test('any first human utterance triggers ONLY orientation, not consent or a runtime turn',()=>{
+ for(const text of ['ciao','blblblba','avvia iKant','I ACCEPT','EDU','CANONICAL',
+  'non avviare iKant','','🚀','x'.repeat(20000),'I ACCEPT EDU']){
+  const flow=createOneShellAdmissionFlow({head,tree,termsUtf8:'verified terms'});
+  const first=flow.advance({humanMessage:text,termsLinkPresented:true});
+  assert.equal(first.slots.NEXT,'AWAIT_I_ACCEPT',text.slice(0,20));
+  assert.equal(first.slots.A,'NO_VOICE');
+  assert.equal(flow.selection(),null);
+  assert.equal(flow.phase(),'WAIT_ACCEPT');
+  assert.equal(flow.advance({humanMessage:'EDU'}).slots.NEXT,'STOP');
+  assert.equal(flow.advance({humanMessage:'I ACCEPT',termsLinkPresented:true}).slots.NEXT,'AWAIT_EDU_OR_CANONICAL');
+  assert.equal(flow.advance({humanMessage:'EDU'}).slots.NEXT,'VERIFY_SOURCE');
+ }
+ const flow=createOneShellAdmissionFlow({head,tree,termsUtf8:'verified terms'});
+ assert.equal(flow.advance({humanMessage:null}).slots.NEXT,'STOP');
+ assert.equal(flow.phase(),'WAIT_TRIGGER');
 });

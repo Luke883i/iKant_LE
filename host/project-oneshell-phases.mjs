@@ -75,15 +75,17 @@ export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
  let phase='WAIT_TRIGGER',offer=null,accepted=null,orientation=null,selection=null;
  const rejected=(edge)=>denied(edge);
  function advance({humanMessage,termsLinkPresented=false}={}){
-  if(typeof humanMessage!=='string'||humanMessage.length>64)return rejected('EXACT_HUMAN_MESSAGE_REQUIRED');
+  // Project-scoped first-contact bootstrap accepts ANY actual human text.
+  // Text is never an acceptance, mode selection or runtime input at this gate.
   if(phase==='WAIT_TRIGGER'){
-   if(humanMessage!=='avvia iKant')return rejected('AVVIA_IKANT_REQUIRED');
+   if(typeof humanMessage!=='string')return rejected('FIRST_HUMAN_MESSAGE_REQUIRED');
    offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest});
    const frame=oneShellOrientation({head,tree,offer});
    if(frame.slots.NEXT!=='AWAIT_I_ACCEPT')return rejected('C72_ORIENTATION_BLOCKED');
    phase='WAIT_ACCEPT';
    return frame;
   }
+  if(typeof humanMessage!=='string'||humanMessage.length>64)return rejected('EXACT_HUMAN_MESSAGE_REQUIRED');
   if(phase==='WAIT_ACCEPT'){
    if(humanMessage!=='I ACCEPT'||termsLinkPresented!==true)
     return rejected('C72_EXACT_ACCEPTANCE_OR_LINK_WITNESS_REQUIRED');

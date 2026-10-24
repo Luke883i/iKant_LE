@@ -11,7 +11,7 @@ const original=p=>execFileSync('git',['show','HEAD:'+p],{timeout:15000,maxBuffer
 const blob=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
 const arg=f=>{const n=process.argv.indexOf(f);return n<0?null:process.argv[n+1]};
 const mode=arg('--mode'),head=arg('--head'),tree=arg('--tree'),out=arg('--out');
-if(process.argv.length!==10||!['candidate','canonical'].includes(mode)||!H40.test(head||'')||
+if(process.argv.length!==10||!['candidate','canonical','portable'].includes(mode)||!H40.test(head||'')||
  !H40.test(tree||'')||typeof out!=='string')throw Error('PROMPT_ARGUMENTS_INVALID');
 if(git('rev-parse','HEAD')!==head||git('rev-parse','HEAD^{tree}')!==tree)throw Error('STOP_SOURCE_LOCK_STALE');
 // Only immutable Git HEAD blobs are read below; qualification outputs or dirty worktree\n// cannot change the generator input. Blob/readback locks are enforced per original.
@@ -53,10 +53,11 @@ if(mode==='canonical'){
  if((await liveHead())!==head)throw Error('STOP_SOURCE_LOCK_STALE');
  liveMainVerified=true;
 }
-const prompt=Buffer.from('iKant · OneShell | HEAD='+head+' | TREE='+tree+'\n'+
+const prompt=mode==='portable'?Buffer.from(source,'utf8'):Buffer.from('iKant · OneShell | HEAD='+head+' | TREE='+tree+'\n'+
  'Before operations compare live main to HEAD. Drift => STOP_SOURCE_LOCK_STALE; never auto-repin.\n'+source);
-const lock={schema:'ikant-le-project-prompt-source-lock/v1',source_head:head,source_tree:tree,
- mode,live_main_verified:liveMainVerified,source_prompt:matrix.source_prompt,
+const lock={schema:'ikant-le-project-prompt-source-lock/v1',source_head:mode==='portable'?null:head,source_tree:mode==='portable'?null:tree,
+ generated_from_head:head,generated_from_tree:tree,session_source_lock:'RESOLVE_LIVE_MAIN_ON_FIRST_PROJECT_CHAT_MESSAGE',
+ mode,live_main_verified:liveMainVerified,portable_head_agnostic:mode==='portable',source_prompt:matrix.source_prompt,
  prompt_source_blob:refs[matrix.source_prompt].git_blob_sha1,bundle_required:false,
  native_ui_attested:false,installed:false,active:false};
 const receipt={schema:'ikant-le-project-prompt-generation-receipt/v1',head,tree,mode,
