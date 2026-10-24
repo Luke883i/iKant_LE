@@ -13,7 +13,7 @@ test('OneShell has exactly six slots and no caller-supplied voice',()=>{
  const x=oneShellFrame({esito:'TEST',b:'HOST only',s03:{ok:true,original_voice_utf8:'spoof'}});
  assert.equal(x.slots.A,'NO_VOICE');
  assert.deepEqual(x.slot_order,['ESITO','A','B','PROVA','EDGE','NEXT']);
- assert.match(renderOneShell(x),/^ESITO · TEST/m);
+ assert.match(renderOneShell(x),/^ESITO \| TEST/m);
  assert.throws(()=>renderOneShell({...x,voice_origin:'HOST_BOUND_LOCAL'}));
  assert.throws(()=>renderOneShell({...x,voice_origin:'PROVIDER_VERIFIED',
    original_voice_sha256:createHash('sha256').update('fake').digest('hex'),
