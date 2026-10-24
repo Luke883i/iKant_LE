@@ -3,6 +3,9 @@
  * No simulated C87 or native ChatGPT delivery is ever called an execution proof.
  */
 import {createHash} from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+import {gzipSync,gunzipSync} from 'node:zlib';
 import {issueC72V2LinkedTermsOffer,acceptC72V2LinkedTerms,
  presentC72V2Introduction,selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
 import {planOneShellEduSource,oneShellFrame,renderOneShell} from '../host/project-oneshell-edu.mjs';
@@ -25,6 +28,7 @@ const SEED=0x1582026n,STEP=104729n;
 const cases=Number(process.argv[2]??100000);
 if(!Number.isInteger(cases)||cases!==100000)throw Error('EXACT_100K_REQUIRED');
 const signatures=new Set(),decisions=new Map();
+const traceDir=process.env.IKANT_ONESHELL_TRACE_DIR||null,lines=traceDir?[]:null;
 let unexpected=0,checked=0,manual=0,blocked=0,stageChecks=0,forgedFramesDenied=0;
 let hash=createHash('sha256');
 const expected=(mode,source,bridge,node,extract,timing,epoch)=>{
@@ -66,6 +70,11 @@ for(let i=0;i<cases;i++){
  }
  if(got==='STOP')blocked++;
  decisions.set(got,(decisions.get(got)||0)+1);
+ if(lines)lines.push(JSON.stringify({i,key,axes:{mode,source:sources[source],
+  bridge:bridges[bridge],node:!!node,extractor:!!extract,human_timing:timing,
+  epoch,source_integrity:sourceProof,ledger,delivery,nonce,language_port:languagePort,
+  ui_projection:layout},expected:want,observed:got,discrepancy:want!==got,
+  voice:frame.slots.A,provider_delivery_attested:frame.provider_delivery_attested})+'\n');
  // Contextual controls: failed carrier integrity, uncertain original C87 write,
  // replay/nonces and provider claims are never promoted into executable voice by HOST.
  const synthetic=oneShellFrame({esito:'HOST CONTROL',b:'NO_OWNER_TURN',
@@ -103,4 +112,20 @@ const result={schema:'ikant-le-oneshell-realistic-preseeded-100k/v1',
  decisions:Object.fromEntries([...decisions].sort()),manual,blocked,
  original_c72_stage_checks:stageChecks,forged_host_voice_frames_denied:forgedFramesDenied,
  discrepancies:unexpected,limits:'FINITE_STATE_HOST_POLICY_NOT_REAL_LLM_OR_NATIVE_CHATGPT_EXECUTION'};
+if(lines){
+ if(!fs.existsSync(traceDir)||!fs.statSync(traceDir).isDirectory())
+  throw Error('FRESH_TRACE_DIRECTORY_REQUIRED');
+ const raw=Buffer.from(lines.join(''),'utf8'),z=gzipSync(raw,{level:9,mtime:0});
+ const tracePath=path.join(traceDir,'oneshell-semantic-100k.jsonl.gz');
+ const summaryPath=path.join(traceDir,'oneshell-semantic-100k-summary.json');
+ for(const p of [tracePath,summaryPath])if(fs.existsSync(p))throw Error('TRACE_DESTINATION_ALREADY_EXISTS');
+ fs.writeFileSync(tracePath,z,{flag:'wx'});
+ if(!gunzipSync(fs.readFileSync(tracePath)).equals(raw))throw Error('TRACE_READBACK_MISMATCH');
+ result.trace_jsonl_sha256=SHA(raw);
+ result.trace_gzip_sha256=SHA(z);
+ result.trace_rows=lines.length;
+ fs.writeFileSync(summaryPath,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+ if(JSON.parse(fs.readFileSync(summaryPath,'utf8')).trace_rows!==cases)
+  throw Error('TRACE_SUMMARY_READBACK_MISMATCH');
+}
 console.log(JSON.stringify(result));if(unexpected)process.exitCode=1;

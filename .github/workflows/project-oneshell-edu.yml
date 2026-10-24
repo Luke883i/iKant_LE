@@ -30,4 +30,13 @@ jobs:
       - run: node scripts/project-source-manifest.mjs verify
       - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
       - run: python3 tests/test_project_manual_source.py
-      - run: node scripts/project-oneshell-falsify.mjs 100000
+      - name: Trace 100k seeded semantic scenarios
+        run: |
+          mkdir -p "$RUNNER_TEMP/oneshell-trace"
+          IKANT_ONESHELL_TRACE_DIR="$RUNNER_TEMP/oneshell-trace" node scripts/project-oneshell-falsify.mjs 100000
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oneshell-semantic-100k-node-${{ matrix.node-version }}
+          path: ${{ runner.temp }}/oneshell-trace/
+          retention-days: 30
+          if-no-files-found: error
