@@ -4,6 +4,7 @@
  * available. A serialized HOST ticket cannot resurrect or authenticate an exit.
  */
 import {validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
+import {classifyOneShellHumanDestination} from './project-oneshell-host-boundary.mjs';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 const H40=/^[a-f0-9]{40}$/u;
@@ -168,6 +169,13 @@ export function bindManagedOneShellEdu({selection,sourceHead,originalSession,rea
   }
   if(typeof frame?.humanInput!=='string'||humanMessageObserved!==true)
    return Object.freeze({ok:false,shell:'ONESHELL',edge:'CURRENT_HUMAN_INPUT_REQUIRED'});
+  // A HOST request never consumes an iKant turn or generates a substitute voice.
+  const hostGate=classifyOneShellHumanDestination(input);
+  if(hostGate.target==='HOST_CHECKUP'||hostGate.target==='HOST_DOCUMENTATION')
+   return Object.freeze({ok:true,shell:'ONESHELL',kind:hostGate.target,
+     edge:hostGate.edge,next:'HOST_ONLY_NO_C87',owner_voice_attested:false});
+  if(hostGate.target==='DENIED')return Object.freeze({ok:false,shell:'ONESHELL',
+   edge:hostGate.edge,next:'STOP'});
   try{
    const result=await originalSession.publishTurn(frame);
    if(result?.slots?.A===undefined){disposition='UNKNOWN';return Object.freeze({ok:false,shell:'ONESHELL',edge:'ORIGINAL_EDU_TURN_OUTCOME_UNKNOWN'});}

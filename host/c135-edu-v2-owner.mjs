@@ -227,6 +227,9 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     let draft;try{draft=await languagePort(Object.freeze({schema:'ikant-edu-v2-language-task/v1',
       source_head:src.head,current_input_utf8:frame.humanInput,plan:scope,guidance,
       channels:plan.c124_language_channels,
+      required_ack:Object.freeze({input_sha256:plan.input_sha256,
+       ack_plan_sha256:guidance.plan_sha256,
+       ack_c124_channel_sha256:plan.c124_language_channel_sha256}),
       ...(useC139?{c139_epistemic_format:c139.C139_EPISTEMIC_FORMAT}:{} )}));}catch{return no('S02_HOST_LANGUAGE_FAILED')}
     if(closed)return no('S02_CLOSED_AFTER_LANGUAGE');
     if(!clean(draft)||Object.keys(draft).sort().join(',')!==

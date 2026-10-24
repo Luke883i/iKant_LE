@@ -81,3 +81,27 @@ export function verifyOneShellCompactEvidence(presentation,{frame=null}={}){
   physical_readback:presentation.physical_readback_attested===true,
   native_ui_attested:false,global_human_semantics_attested:false});
 }
+
+/** Full original HOST documentation can be displayed as a bounded brief only if bytes
+ * are durably stored and physically reopened. Not proof of semantic equivalence.
+ */
+export function materializeHostDocumentationAnnex({fullText,brief,evidenceFile}={}){
+ if(typeof fullText!=='string'||!fullText.trim()||
+  typeof brief!=='string'||!brief.trim()||bytes(brief).length>512||
+  typeof evidenceFile!=='string'||!evidenceFile||fs.existsSync(evidenceFile))
+  throw Error('HOST_ANNEX_ARGUMENT_OR_FRESHNESS_INVALID');
+ const original=bytes(fullText),originalSha=sha(original);
+ const envelope={schema:'ikant-le-host-documentation-annex/v1',authority:0,
+  original_utf8:fullText,original_sha256:originalSha,brief_utf8:brief,
+  brief_sha256:sha(bytes(brief)),semantic_equivalence_attested:false,
+  iKant_voice_attested:false};
+ const raw=bytes(JSON.stringify(envelope)+'\n');
+ fs.writeFileSync(evidenceFile,raw,{flag:'wx',mode:0o600});
+ if(!fs.readFileSync(evidenceFile).equals(raw))throw Error('HOST_ANNEX_READBACK_FAILED');
+ const reopened=JSON.parse(fs.readFileSync(evidenceFile,'utf8'));
+ if(sha(bytes(reopened.original_utf8))!==originalSha||
+  sha(bytes(reopened.brief_utf8))!==envelope.brief_sha256)
+  throw Error('HOST_ANNEX_HASH_REOPEN_MISMATCH');
+ return Object.freeze({ok:true,brief_utf8:brief,original_sha256:originalSha,
+  evidenceFile,readback:true,semantic_equivalence_attested:false});
+}
