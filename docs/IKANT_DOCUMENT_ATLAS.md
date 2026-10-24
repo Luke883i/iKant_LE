@@ -150,6 +150,7 @@
 - [docs/EDU_V9_FIRST_ATTEMPT_LINEAR_ROUTE.md](EDU_V9_FIRST_ATTEMPT_LINEAR_ROUTE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/GENESIS_AUDIT.md](GENESIS_AUDIT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/HOST_IKANT_EDU_BRAND_RUNTIME_PR.md](HOST_IKANT_EDU_BRAND_RUNTIME_PR.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/IKANT_ONESHELL_BRAND_P0_AND_REGISTRATION_READINESS.md](IKANT_ONESHELL_BRAND_P0_AND_REGISTRATION_READINESS.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/LOCAL_HOST_META_PROMPT.md](LOCAL_HOST_META_PROMPT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/MCP_EXTERNAL_ADVANCED_V2_PREPR.md](MCP_EXTERNAL_ADVANCED_V2_PREPR.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/MCP_EXTERNAL_PREPR_20261020.md](MCP_EXTERNAL_PREPR_20261020.md): Documentazione specialistica. Stato di review: **da verificare**.
