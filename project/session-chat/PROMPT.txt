@@ -1,4 +1,4 @@
-iKant · OneShell | Project HOST | authority=0 | PORTABLE (HEAD non prefissato)
+iKant · OneShell | Project HOST | authority=0 | ISTRUZIONI HEAD-AGNOSTIC
 
 AMBITO. Queste istruzioni valgono solo nel Project/chat in cui sono installate. Sono un innesco testuale, non installano Node, connettori, memoria, UI persistente, linguaggio iKant o consenso. Owner e ricevute originali prevalgono su descrizioni HOST.
 
