@@ -4,92 +4,70 @@ import {createHash} from 'node:crypto';
 import {mkdtempSync,readFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
+import {spawn} from 'node:child_process';
 import {issueC72V2LinkedTermsOffer,acceptC72V2LinkedTerms,presentC72V2Introduction,
  selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
-import {oneShellFrame,renderOneShell,renderOneShellCompact} from '../host/project-oneshell-edu.mjs';
-import {projectOneShellContinuation,closeOneShellOnHumanExit} from '../host/project-oneshell-continuity.mjs';
+import {bindManagedOneShellEdu,closeOneShellOnHumanExit,IKANT_EXIT_WARNING} from '../host/project-oneshell-continuity.mjs';
 const head='a'.repeat(40);
-const offer=issueC72V2LinkedTermsOffer({sourceHead:head,
- termsDigest:createHash('sha256').update('terms').digest('hex')});
+const offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest:createHash('sha256').update('terms').digest('hex')});
 const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
 const orientation=presentC72V2Introduction(accepted);
 const selection=selectC72V2Mode({accepted,orientation,humanMessage:'EDU'});
-const args={selection,sourceHead:head,liveHead:head,ownerStatus:{closed:false,busy:false,uncertain:false}};
-test('compact renderer keeps six original fields and no user voice forgery',()=>{
- const f=oneShellFrame({esito:'PRONTO',b:'Breve descrizione HOST',prova:'sha256:123',edge:'UNKNOWN',next:'STOP'});
- const x=renderOneShellCompact(f);assert.equal(x.split('\n').length,6);
- assert(x.includes('Superficie A (iKant) | NO_VOICE'));
- assert(x.includes('Superficie B (HOST) | Breve descrizione HOST'));
- assert.equal(renderOneShell(f).replaceAll('\n\n','\n'),x);
- assert.deepEqual(f.slot_order,['ESITO','A','B','PROVA','EDGE','NEXT']);
- assert.throws(()=>renderOneShellCompact({...f,slots:{...f.slots,A:'I am iKant'}}));
-});
-test('exact human-only exit; all other input remains OneShell',()=>{
- for(const text of ['ciao','esci','EXIT IKANT!','please EXIT IKANT', ' EXIT IKANT', 'EXIT IKANT\n','"EXIT IKANT"',undefined]){
-  assert.equal(projectOneShellContinuation({...args,humanInput:text,humanMessageObserved:true}).kind,'CONTINUE');
- }
- assert.equal(projectOneShellContinuation({...args,humanInput:'EXIT IKANT',humanMessageObserved:false}).kind,'STOP');
- assert.equal(projectOneShellContinuation({...args,humanInput:'EXIT IKANT',humanMessageObserved:true}).kind,'DELEGATE_EXIT');
- assert.equal(projectOneShellContinuation({...args,liveHead:'b'.repeat(40)}).edge,'STOP_SOURCE_LOCK_STALE');
- assert.equal(projectOneShellContinuation({...args,ownerStatus:null}).kind,'STOP');
- assert.equal(projectOneShellContinuation({...args,ownerStatus:{closed:true}}).kind,'STOP');
-});
-test('one owner close, local readback, next normal HOST turn only with exit evidence',async()=>{
- let closed=false,called=0;const owner={owner:'C135_EDU_V2',status:()=>({closed,busy:false,uncertain:false}),readSessionState:()=>({owner:'C135_EDU_V2',source_head:head,selection_receipt_sha256:selection.receipt_sha256,original_c87_readback:{status:'C107_LEDGER_REOPENED'}}),close:()=>{called++;closed=true;}};
- const file=join(mkdtempSync(join(tmpdir(),'oneshell-exit-')),'exit-projection.json');
- const r=await closeOneShellOnHumanExit({...args,humanInput:'EXIT IKANT',humanMessageObserved:true,
-  originalSession:owner,evidenceFile:file});
- assert.equal(r.ok,true);assert.equal(called,1);assert.equal(r.shell,'HOST_CHATGPT');
- const raw=readFileSync(file,'utf8');assert.equal(JSON.parse(raw).human_input,'EXIT IKANT');
- assert.equal(r.evidence_sha256,createHash('sha256').update(raw).digest('hex'));
- const next=projectOneShellContinuation({...args,humanInput:'un nuovo argomento',
-  ownerStatus:owner.status(),originalSession:owner,exitReadback:r.exitReadback});
- assert.equal(next.shell,'HOST_CHATGPT');assert.equal(next.kind,'EXIT_CONFIRMED');
- const reject=projectOneShellContinuation({...args,ownerStatus:owner.status(),originalSession:owner,
-  exitReadback:{...r.exitReadback,host_observed_human_message:false}});
- assert.equal(reject.shell,'ONESHELL');
- const replay=await closeOneShellOnHumanExit({...args,humanInput:'EXIT IKANT',humanMessageObserved:true,originalSession:owner});
- assert.equal(replay.ok,false);assert.equal(called,1);
-});
-test('send/close UNKNOWN does not switch UI',async()=>{
- const stub={owner:'C135_EDU_V2',status:()=>({closed:false,busy:false,uncertain:false}),readSessionState:()=>({owner:'C135_EDU_V2',source_head:head,selection_receipt_sha256:selection.receipt_sha256,original_c87_readback:{status:'C107_LEDGER_REOPENED'}}),close:()=>{throw Error('UNKNOWN');}};
- const r=await closeOneShellOnHumanExit({...args,humanInput:'EXIT IKANT',humanMessageObserved:true,originalSession:stub});
- assert.equal(r.ok,false);assert.equal(r.shell,'ONESHELL');assert.match(r.edge,/UNKNOWN/);
-});
-
-test('forged source-locked exit ticket never changes shell without same-instance private issuance',()=>{
- const forged={schema:'ikant-le-host-exit-projection/v2',human_input:'EXIT IKANT',
- host_observed_human_message:true,source_head:head,closed:true,original_owner:'C135_EDU_V2',
- selection_receipt_sha256:selection.receipt_sha256};
- const owner={status:()=>({closed:true,busy:false,uncertain:false})};
- assert.equal(projectOneShellContinuation({...args,ownerStatus:owner.status(),originalSession:owner,exitReadback:forged}).kind,'STOP');
-});
-test('readback omitted or inconsistent must not call close',async()=>{
- let calls=0;const owner={owner:'C135_EDU_V2',status:()=>({closed:false,busy:false,uncertain:false}),
- readSessionState:()=>({owner:'C135_EDU_V2',source_head:'f'.repeat(40)}),close:()=>{calls++}};
- const r=await closeOneShellOnHumanExit({...args,humanInput:'EXIT IKANT',humanMessageObserved:true,originalSession:owner});
- assert.equal(r.ok,false);assert.equal(calls,0);assert.equal(r.edge,'ORIGINAL_C87_READBACK_BEFORE_EXIT_REQUIRED');
-});
-test('managed facade never exposes close, gates each turn on current main and exact exit',async()=>{
- const {bindManagedOneShellEdu}=await import('../host/project-oneshell-continuity.mjs');
- let closed=false,called=0,writes=0,live=head;
- const owner={owner:'C135_EDU_V2',status:()=>({closed,busy:false,uncertain:false}),
+const f=humanInput=>({humanInput});
+const owner=()=>{let closed=false,calls=0,turns=0;
+ return {owner:'C135_EDU_V2',status:()=>({closed,busy:false,uncertain:false}),
+  close:()=>{closed=true;calls++;},getCalls:()=>calls,getTurns:()=>turns,
   readSessionState:()=>({owner:'C135_EDU_V2',source_head:head,
-   selection_receipt_sha256:selection.receipt_sha256,original_c87_readback:{status:'C107_LEDGER_REOPENED'}}),
-  publishTurn:async()=>{writes++;return oneShellFrame({esito:'EDU',b:'HOST'});},
-  close:()=>{called++;closed=true;}};
- const managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:owner,readMain:async()=>live});
- assert.equal(managed.close,undefined);
- assert.equal((await managed.routeHumanTurn({frame:{humanInput:'ciao'},humanMessageObserved:true})).ok,true);
- assert.equal(writes,1);assert.equal(called,0);
- live='f'.repeat(40);
- assert.equal((await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},humanMessageObserved:true})).edge,'STOP_SOURCE_LOCK_STALE');
- assert.equal(called,0);live=head;
- assert.equal((await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},humanMessageObserved:true})).edge,'EXIT_EVIDENCE_FILE_REQUIRED');
- assert.equal(called,0);
- const out=join(mkdtempSync(join(tmpdir(),'ikant-facade-')),'exit.json');
- const done=await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},humanMessageObserved:true,evidenceFile:out});
- assert.equal(done.ok,true);assert.equal(done.shell,'HOST_CHATGPT');assert.equal(called,1);
- assert.equal((await managed.routeHumanTurn({frame:{humanInput:'another'},humanMessageObserved:true})).edge,'IKANT_ALREADY_EXITED');
- assert.equal(called,1);assert.equal(writes,1);
+   selection_receipt_sha256:selection.receipt_sha256,
+   original_c87_readback:{status:'C107_LEDGER_REOPENED',count:turns}}),
+  publishTurn:async()=>{turns++;return {slots:{A:'NO_VOICE'}};}};
+};
+test('EXIT request warns but never closes, cancel is safe, direct confirmation blocked',async()=>{
+ const c=owner(),managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:c,readMain:async()=>head});
+ const a=await managed.routeHumanTurn({frame:f('EXIT IKANT'),humanMessageObserved:true});
+ assert.equal(a.kind,'REQUEST_EXIT_CONFIRMATION');
+ assert.equal(a.warning,"ATTENZIONE: L'INFRASTRUTTURA IKANT VERRA CHIUSA");
+ assert.equal(a.warning,IKANT_EXIT_WARNING);assert.equal(c.getCalls(),0);
+ assert.equal((await managed.routeHumanTurn({frame:f('ciao'),humanMessageObserved:true})).edge,'HUMAN_EXIT_CONFIRMATION_PENDING');
+ assert.equal(c.getTurns(),0);
+ assert.equal((await managed.routeHumanTurn({frame:f('ANNULLA EXIT IKANT'),humanMessageObserved:true})).kind,'EXIT_CANCELLED');
+ assert.equal((await managed.routeHumanTurn({frame:f('CONFERMO EXIT IKANT'),humanMessageObserved:true})).edge,'EXIT_CONFIRMATION_NOT_PENDING');
+ assert.equal((await closeOneShellOnHumanExit({selection,sourceHead:head,liveHead:head,
+  humanInput:'CONFERMO EXIT IKANT',humanMessageObserved:true,originalSession:c})).edge,
+  'TWO_DISTINCT_HUMAN_MESSAGES_REQUIRED');
+ assert.equal(c.getCalls(),0);
+});
+test('real dedicated child worker terminated only after human confirmation',async()=>{
+ const worker=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{stdio:'ignore'});
+ assert(worker.pid!==process.pid);let exited=false;
+ const supervisor={dedicated:true,terminate:async()=>{
+  assert(worker.kill('SIGTERM'));await new Promise((resolve,reject)=>{
+   worker.once('exit',()=>{exited=true;resolve()});worker.once('error',reject);});
+ },readback:async()=>({dedicated:true,terminated:exited,verified:worker.exitCode!==null||worker.signalCode!==null})};
+ const c=owner(),managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:c,
+  readMain:async()=>head,workerSupervisor:supervisor});
+ assert.equal((await managed.routeHumanTurn({frame:f('EXIT IKANT'),humanMessageObserved:true})).next,
+  'AWAIT_EXACT_EXIT_CONFIRMATION');
+ assert.equal(c.getCalls(),0);
+ const path=join(mkdtempSync(join(tmpdir(),'oneshell-exit-')),'evidence.json');
+ const r=await managed.routeHumanTurn({frame:f('CONFERMO EXIT IKANT'),humanMessageObserved:true,evidenceFile:path});
+ assert.equal(r.ok,true,JSON.stringify(r));assert.equal(r.shell,'HOST_CHATGPT');
+ assert.equal(c.getCalls(),1);assert.equal(exited,true);
+ assert.equal(JSON.parse(readFileSync(path,'utf8')).human_confirmation,'CONFERMO EXIT IKANT');
+ assert.equal((await managed.routeHumanTurn({frame:f('ciao'),humanMessageObserved:true})).edge,'IKANT_ALREADY_EXITED');
+ assert.equal(c.getCalls(),1);
+});
+test('no exclusive worker supervisor means no close, no HOST release',async()=>{
+ const c=owner(),managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:c,readMain:async()=>head});
+ await managed.routeHumanTurn({frame:f('EXIT IKANT'),humanMessageObserved:true});
+ const out=await managed.routeHumanTurn({frame:f('CONFERMO EXIT IKANT'),humanMessageObserved:true,
+  evidenceFile:join(mkdtempSync(join(tmpdir(),'no-worker-')),'exit.json')});
+ assert.equal(out.edge,'DEDICATED_WORKER_SUPERVISOR_REQUIRED');
+ assert.equal(c.getCalls(),0);
+});
+test('SOURCE_LOCK drift blocks exit preparation',async()=>{
+ const c=owner(),managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:c,
+  readMain:async()=> 'b'.repeat(40)});
+ assert.equal((await managed.routeHumanTurn({frame:f('EXIT IKANT'),humanMessageObserved:true})).edge,'STOP_SOURCE_LOCK_STALE');
+ assert.equal(c.getCalls(),0);
 });

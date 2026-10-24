@@ -55,7 +55,13 @@
     "managed_turn_facade": "host/project-oneshell-continuity.mjs#bindManagedOneShellEdu",
     "managed_facade_exposes_close": false,
     "managed_exit_requires_fresh_evidence_file": true,
-    "managed_turn_requires_fresh_main_observation": true
+    "managed_turn_requires_fresh_main_observation": true,
+    "exit_request_exact": "EXIT IKANT",
+    "exit_confirmation_exact": "CONFERMO EXIT IKANT",
+    "exit_cancel_exact": "ANNULLA EXIT IKANT",
+    "exit_warning_exact": "ATTENZIONE: L'INFRASTRUTTURA IKANT VERRA CHIUSA",
+    "exit_stages": "REQUEST_WARNING_THEN_DISTINCT_HUMAN_CONFIRMATION",
+    "dedicated_worker_termination_with_independent_readback_required": true
   },
   "method": {
     "test_cases": 100,

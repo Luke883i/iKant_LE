@@ -74,10 +74,17 @@ test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn afte
   assert.equal(ev.original_c87_readback.count,1);assert.equal(ev.native_delivery_attested,false);
   assert.equal(ev.original_c125_sha256,createHash('sha256').update(ev.original_c125_utf8).digest('hex'));
   const {bindManagedOneShellEdu}=await import('../host/project-oneshell-continuity.mjs');
+  let workerStopped=false; // Fixture only, not native worker proof
   const managed=bindManagedOneShellEdu({selection,sourceHead:expected.head,
-   originalSession:session,readMain:async()=>expected.head});
+   originalSession:session,readMain:async()=>expected.head,
+   workerSupervisor:{dedicated:true,terminate:async()=>{workerStopped=true;},
+    readback:async()=>({dedicated:true,verified:true,terminated:workerStopped})}});
   const exitFile=path.join(parent,'human-exit.json');
-  const exit=await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},
+  const warning=await managed.routeHumanTurn({frame:{humanInput:'EXIT IKANT'},
+   humanMessageObserved:true});
+  assert.equal(warning.kind,'REQUEST_EXIT_CONFIRMATION');
+  assert.equal(session.status().closed,false);
+  const exit=await managed.routeHumanTurn({frame:{humanInput:'CONFERMO EXIT IKANT'},
    humanMessageObserved:true,evidenceFile:exitFile});
   assert.equal(exit.ok,true,JSON.stringify(exit));
   assert.equal(exit.shell,'HOST_CHATGPT');
