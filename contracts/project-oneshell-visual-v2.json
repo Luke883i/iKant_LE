@@ -71,6 +71,9 @@
     "text_fallback": "host/project-oneshell-visual.mjs#renderOneShellVisualText",
     "native_component_availability": "NOT_ATTESTED",
     "persistent_chatgpt_ui": "NOT_ATTESTED",
-    "semantic_retention_without_readback": "NOT_ATTESTED"
+    "semantic_retention_without_readback": "NOT_ATTESTED",
+    "rich_html_fallback": "host/project-oneshell-visual.mjs#renderOneShellVisualHtml",
+    "rich_html_script": "NONE",
+    "rich_html_exit_gesture": "INERT_UNTIL_HOST_BOUNDS_HUMAN_EVENT"
   }
 }

@@ -27,3 +27,16 @@ test('forged visual slot or fake voice cannot pass',()=>{
  assert.throws(()=>verifyOneShellVisualEquivalence({...m,slots:m.slots.map(x=>x.key==='B'?{...x,value:'spoof'}:x)},f),/BYTE_EXACT/);
  assert.throws(()=>createOneShellVisualModel({...f,slots:{...f.slots,A:'fake'}}),/UNVERIFIED/);
 });
+
+test('safe HTML rich fallback is single-framed and not a fake EXIT control',async()=>{
+ const {renderOneShellVisualHtml}=await import('../host/project-oneshell-visual.mjs');
+ const f=oneShellFrame({esito:'T',b:'<script>alert("x")</script>',prova:'original',edge:'NONE',next:'STOP'});
+ const html=renderOneShellVisualHtml(f);
+ assert.equal(html.match(/<section\b/g).length,1);
+ assert.equal(html.match(/data-slot=/g).length,6);
+ assert(html.includes('rgba(194,37,46,.10)'));
+ assert(html.includes('<strong>iKant</strong><small>Superficie A</small>'));
+ assert(html.includes('<strong>Host</strong><small>Superficie B</small>'));
+ assert(!html.includes('<script>'));assert(html.includes('&lt;script&gt;'));
+ assert(!html.includes('<button')); // HOST must bind gesture to human event
+});

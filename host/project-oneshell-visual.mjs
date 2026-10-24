@@ -58,3 +58,27 @@ export function renderOneShellVisualText(frame,{exitPhase='AVAILABLE'}={}){
  rows.push('╰'+rule+'╯');
  return rows.join('\n');
 }
+
+/** Self-contained rich HOST markup. No script/action dispatch or native UI claim. */
+export function renderOneShellVisualHtml(frame,{exitPhase='AVAILABLE'}={}){
+ const m=createOneShellVisualModel(frame,{exitPhase});
+ const esc=x=>x.replaceAll('&','&amp;').replaceAll('<','&lt;')
+  .replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+ const css='.ikant-oneshell{box-sizing:border-box;border:1px solid #d7d7dc;border-radius:16px;padding:12px;font-family:system-ui,sans-serif;color:inherit;max-width:100%}'
+  +'.ikant-oneshell *{box-sizing:border-box}.ikant-head{display:flex;align-items:center;justify-content:space-between;gap:12px}'
+  +'.ikant-head strong{font-size:16px}.ikant-exit{border:1px solid rgba(194,37,46,.24);border-radius:8px;background:rgba(194,37,46,.10);color:#a0232b;font-size:12px;padding:7px 10px;font-weight:600}'
+  +'.ikant-row{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;padding:7px 0;align-items:start}'
+  +'.ikant-name{font-size:12px;color:#686975}.ikant-name strong{font-size:16px;display:block;font-weight:700}'
+  +'.ikant-name small{display:block;font-size:11px}.ikant-value{min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}'
+  +'.ikant-divider{border:0;border-top:1px solid #e6e6eb;margin:9px 0}'
+  +'@media(max-width:480px){.ikant-row{grid-template-columns:minmax(0,1fr);gap:3px}.ikant-head{flex-wrap:wrap}}';
+ const rows=m.slots.map(s=>'<div class="ikant-row" data-slot="'+esc(s.key)+'"><div class="ikant-name">'
+  +(s.strong?'<strong>'+esc(s.primary)+'</strong>':esc(s.primary))
+  +(s.secondary?'<small>'+esc(s.secondary)+'</small>':'')
+  +'</div><div class="ikant-value">'+esc(s.value)+'</div></div>');
+ return '<style>'+css+'</style><section class="ikant-oneshell" aria-label="iKant OneShell" data-authority="0">'
+  +'<header class="ikant-head"><strong>iKant · OneShell</strong>'
+  +'<span class="ikant-exit" aria-label="EXIT IKANT, comando non collegato">EXIT IKANT</span></header>'
+  +'<hr class="ikant-divider">'+rows.slice(0,3).join('')
+  +'<hr class="ikant-divider">'+rows.slice(3).join('')+'</section>';
+}
