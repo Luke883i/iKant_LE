@@ -5,8 +5,8 @@
   "current_source_head_required": true,
   "human_slots": [
     "ESITO",
-    "Superficie A (iKant)",
-    "Superficie B (HOST)",
+    "iKant (Superficie A)",
+    "Host (Superficie B)",
     "PROVA",
     "EDGE",
     "NEXT"

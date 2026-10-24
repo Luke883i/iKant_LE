@@ -14,8 +14,8 @@ export function makeOneShellCompactEvidence(frame,{evidenceFile=null}={}){
  const slots=Object.freeze(Object.fromEntries(KEYS.map(k=>[k,frame.slots[k]])));
  const payload={schema:'ikant-le-oneshell-compact-evidence/v1',authority:0,
   source:'ORIGINAL_VALIDATED_ONESHELL_FRAME_NOT_NATIVE_CHATGPT_RECEIPT',
-  machine_order:[...KEYS],human_aliases:{ESITO:'ESITO',A:'Superficie A (iKant)',
-   B:'Superficie B (HOST)',PROVA:'PROVA',EDGE:'EDGE',NEXT:'NEXT'},
+  machine_order:[...KEYS],human_aliases:{ESITO:'ESITO',A:'iKant (Superficie A)',
+   B:'Host (Superficie B)',PROVA:'PROVA',EDGE:'EDGE',NEXT:'NEXT'},
   original_slots:slots,voice_origin:frame.voice_origin,
   original_voice_sha256:frame.original_voice_sha256,
   original_value_sha256:Object.fromEntries(KEYS.map(k=>[k,sha(bytes(slots[k]))])),

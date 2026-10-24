@@ -19,8 +19,8 @@ const verified=async observed=>({ok:true,source_head:observed.sourceHead,receipt
 test('human labels distinguish owner-bound iKant bytes from HOST; canonical keys unchanged',()=>{
  const f=mk('AWAIT_I_ACCEPT');const result=renderOneShell(f);
  assert(result.startsWith('ESITO | TEST'));
- assert(result.includes('Superficie A (iKant) | NO_VOICE'));
- assert(result.includes('Superficie B (HOST) | HOST'));
+ assert(result.includes('iKant (Superficie A) | NO_VOICE'));
+ assert(result.includes('Host (Superficie B) | HOST'));
  assert.deepEqual(f.slot_order,['ESITO','A','B','PROVA','EDGE','NEXT']);
  assert.throws(()=>renderOneShell({...f,voice_origin:'HOST_BOUND_LOCAL',
   slots:{...f.slots,A:'falsa voce iKant'},original_voice_sha256:'0'.repeat(64)}));
