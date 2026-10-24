@@ -24,10 +24,12 @@ jobs:
           TREE=$(git rev-parse 'HEAD^{tree}')
           MODE=candidate
           if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF" = refs/heads/main ]; then MODE=canonical; fi
-          node scripts/build-project-oneshell-prompt.mjs --mode "$MODE" --head "$HEAD" --tree "$TREE" --out "$RUNNER_TEMP/ikant-prompt"
+          mkdir -p "$RUNNER_TEMP/ikant-prompt"
+          node scripts/build-project-oneshell-prompt.mjs --mode portable --head "$HEAD" --tree "$TREE" --out "$RUNNER_TEMP/ikant-prompt/portable"
+          node scripts/build-project-oneshell-prompt.mjs --mode "$MODE" --head "$HEAD" --tree "$TREE" --out "$RUNNER_TEMP/ikant-prompt/pinned"
       - uses: actions/upload-artifact@v4
         with:
-          name: oneshell-prompt-head
+          name: oneshell-prompt-portable-and-head
           path: ${{ runner.temp }}/ikant-prompt/
           retention-days: 30
           if-no-files-found: error
