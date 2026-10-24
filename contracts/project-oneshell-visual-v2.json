@@ -49,19 +49,6 @@
       "primary": "NEXT"
     }
   },
-  "exit": {
-    "placement": "HEADER_TOP_RIGHT",
-    "label": "EXIT IKANT",
-    "role": "REQUEST_ONLY_NO_DIRECT_KILL",
-    "background_css": "rgba(194, 37, 46, 0.10)",
-    "border_css": "rgba(194, 37, 46, 0.24)",
-    "foreground_css": "rgb(160, 35, 43)",
-    "warning_text_exact": "ATTENZIONE: L'INFRASTRUTTURA IKANT VERRA CHIUSA",
-    "confirmation_exact": "CONFERMO EXIT IKANT",
-    "cancel_exact": "ANNULLA EXIT IKANT",
-    "explicit_separate_human_turn_required": true,
-    "physical_worker_termination_required": true
-  },
   "fidelity": {
     "source": "VALIDATED_ONESHELL_FRAME",
     "reference": "host/project-oneshell-compact.mjs",
@@ -74,6 +61,34 @@
     "semantic_retention_without_readback": "NOT_ATTESTED",
     "rich_html_fallback": "host/project-oneshell-visual.mjs#renderOneShellVisualHtml",
     "rich_html_script": "NONE",
-    "rich_html_exit_gesture": "INERT_UNTIL_HOST_BOUNDS_HUMAN_EVENT"
+    "rich_html_exit_gesture": "NOT_PRESENT_EXIT_IS_TEXT_COMMAND_ONLY"
+  },
+  "status_badge": {
+    "role": "READ_ONLY_DETERMINISTIC_PHASE",
+    "placement": "HEADER_TOP_RIGHT",
+    "interactive": false,
+    "neutral_color": true,
+    "source": "VALIDATED_OWNER_FRAME_ONLY",
+    "never_exit_control": true,
+    "labels": [
+      "BLOCCATO",
+      "VOCE_VERIFICATA",
+      "PRONTO",
+      "ORIENTAMENTO",
+      "CONSENSO",
+      "ATTESA_SORGENTI",
+      "ATTESA",
+      "FASE_SCONOSCIUTA"
+    ],
+    "derive_order": [
+      "STOP_OR_BLOCK",
+      "OWNER_VOICE",
+      "READY",
+      "TERMS",
+      "ACCEPT",
+      "SOURCE",
+      "PENDING",
+      "UNKNOWN"
+    ]
   }
 }

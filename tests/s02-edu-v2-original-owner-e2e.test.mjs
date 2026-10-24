@@ -8,6 +8,7 @@ import {execFileSync} from 'node:child_process';
 import {createC129PublicEduV2Session} from '../host/edu-c129-manual-entry.mjs';
 import {issueC72V2TermsOffer,acceptC72V2Terms,presentC72V2Introduction,selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
 import {emitC125Shell} from '../host/c125-exclusive-shell.mjs';
+import {makeC135AcknowledgedDraft} from '../host/project-oneshell-language-ack.mjs';
 const root=path.resolve(new URL('../',import.meta.url).pathname);
 const SHA=x=>crypto.createHash('sha256').update(x).digest('hex');
 const git=()=>execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
@@ -16,9 +17,8 @@ function select(mode='EDU'){
  const accepted=acceptC72V2Terms({offer,humanMessage:'I ACCEPT',termsPresented:true});
  return selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:mode});
 }
-const language=async task=>({text:'La risposta EDU e una bozza HOST verificata sul piano C70, senza ACTIVE.',
- input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,
- ack_c124_channel_sha256:task.channels.channel_sha256});
+const language=async task=>makeC135AcknowledgedDraft(task,
+ 'La risposta EDU e una bozza HOST verificata sul piano C70, senza ACTIVE.');
 const witness={accepted:true,scope:'HOST_WITNESSED_ONLY'};
 test('S02 EDU/v2: original C107 C70 C100 C87 and independent C125, 30 successes distinct nonces',async()=>{
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'s02-edu-v2-'));
@@ -89,4 +89,28 @@ test('S02 refuses properly formed but wrong TERMS digest, and nested hostile pro
   const result=await session.publishTurn({humanInput:'Descrivi un metodo locale.',nonce:'edu-v2-malicious-0001',priorMessages:nested,resetContext:false});
   assert.equal(result.ok,false);assert.equal(traps,0);assert.equal(calls,0);assert.equal(sends,0);
  }finally{session?.close();fs.rmSync(temp,{recursive:true,force:true})}
+});
+
+test('observed historic Host missing-plan-field mismatch blocks before C87 and C125',async()=>{
+ const temp=fs.mkdtempSync(path.join(os.tmpdir(),'s02-host-ack-regression-'));
+ let s=null,attempted=0,sent=0;
+ try{
+  s=await createC129PublicEduV2Session({selection:select(),sourceRoot:root,privateParent:temp,
+   languagePort:async task=>{
+    attempted++;
+    assert.equal(task.required_ack.ack_c124_channel_sha256,task.channels.channel_sha256);
+    assert.equal(task.required_ack.ack_plan_sha256,task.guidance.plan_sha256);
+    // This mirrors the exact absent task.plan field observed in the session log.
+    assert.equal(task.plan.c124_language_channel_sha256,undefined);
+    return {text:'Draft which must fail',input_sha256:task.plan.input_sha256,
+     ack_plan_sha256:task.guidance.plan_sha256,
+     ack_c124_channel_sha256:task.plan.c124_language_channel_sha256};
+   },send:async()=>{sent++},afterAcceptWitness:witness});
+  assert.equal(s.ok,true);
+  const turn=await s.publishTurn({humanInput:'ciao, io sono Gianluca. Un essere umano. identifica M metodi di auto-valutazione, studia te stesso e2e e materializza un tua propria definizione ontologica di te stesso',
+   nonce:'s02-historic-ack-0001',priorMessages:[],resetContext:true});
+  assert.equal(turn.ok,false);assert.equal(turn.first_edge,'S02_MODEL_ACK_INVALID');
+  assert.equal(sent,0);assert.equal(attempted,1);
+  assert.equal(s.readSessionState().original_c87_readback.count,0);
+ }finally{s?.close();fs.rmSync(temp,{recursive:true,force:true});}
 });

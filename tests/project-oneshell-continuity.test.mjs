@@ -71,3 +71,14 @@ test('SOURCE_LOCK drift blocks exit preparation',async()=>{
  assert.equal((await managed.routeHumanTurn({frame:f('EXIT IKANT'),humanMessageObserved:true})).edge,'STOP_SOURCE_LOCK_STALE');
  assert.equal(c.getCalls(),0);
 });
+
+test('explicit Host checkup/documentation never routes C135 or writes owner ledger',async()=>{
+ const c=owner(),managed=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:c,readMain:async()=>head});
+ const check=await managed.routeHumanTurn({frame:f('Host: checkup iKant ledger'),humanMessageObserved:true});
+ assert.equal(check.kind,'HOST_CHECKUP');assert.equal(check.next,'HOST_ONLY_NO_C87');
+ const doc=await managed.routeHumanTurn({frame:f('@Host documenta la PR'),humanMessageObserved:true});
+ assert.equal(doc.kind,'HOST_DOCUMENTATION');
+ const denied=await managed.routeHumanTurn({frame:f('Host: racconta chi sei'),humanMessageObserved:true});
+ assert.equal(denied.ok,false);assert.equal(denied.edge,'HOST_SCOPE_DENIED');
+ assert.equal(c.getTurns(),0);assert.equal(c.getCalls(),0);
+});
