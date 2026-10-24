@@ -2,7 +2,8 @@
 import {createHash} from 'node:crypto';
 import {
  validateC72V2Offer,validateC72V2Accepted,validateC72V2Orientation,
- validateC72V2ModeSelection
+ validateC72V2ModeSelection,issueC72V2LinkedTermsOffer,
+ acceptC72V2LinkedTerms,presentC72V2Introduction,selectC72V2Mode
 } from './c72-public-mode-admission.mjs';
 import {verifyLocalProjectSource} from '../scripts/project-repo-loader.mjs';
 import {oneShellFrame} from './project-oneshell-edu.mjs';
@@ -61,3 +62,57 @@ export function oneShellMaterialized({selection,sourceRoot,head,tree}={}){
 export const ONE_SHELL_PHASES=Object.freeze(['ORIENTATION','ACCEPTED','MODE_SELECTED',
  'SOURCE_CHECK','SOURCE_HANDOFF','MATERIALIZED','EDU_READY','FIRST_TURN_VERIFIED']);
 export const ONE_SHELL_SLOTS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
+
+/** Ephemeral read-only OneShell C72 coordination; NOT a new admission owner,
+ * transport, persistent state or native human-event authentication.
+ * One advance corresponds to ONE externally observed exact human message.
+ */
+export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
+ if(!H40.test(head||'')||!H40.test(tree||'')||typeof termsUtf8!=='string'||
+    !termsUtf8.length||Buffer.byteLength(termsUtf8,'utf8')>500000)
+  throw Error('FROZEN_ORIGINAL_TERMS_REQUIRED');
+ const termsDigest=sha(termsUtf8);
+ let phase='WAIT_TRIGGER',offer=null,accepted=null,orientation=null,selection=null;
+ const rejected=(edge)=>denied(edge);
+ function advance({humanMessage,termsLinkPresented=false}={}){
+  if(typeof humanMessage!=='string'||humanMessage.length>64)return rejected('EXACT_HUMAN_MESSAGE_REQUIRED');
+  if(phase==='WAIT_TRIGGER'){
+   if(humanMessage!=='avvia iKant')return rejected('AVVIA_IKANT_REQUIRED');
+   offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest});
+   const frame=oneShellOrientation({head,tree,offer});
+   if(frame.slots.NEXT!=='AWAIT_I_ACCEPT')return rejected('C72_ORIENTATION_BLOCKED');
+   phase='WAIT_ACCEPT';
+   return frame;
+  }
+  if(phase==='WAIT_ACCEPT'){
+   if(humanMessage!=='I ACCEPT'||termsLinkPresented!==true)
+    return rejected('C72_EXACT_ACCEPTANCE_OR_LINK_WITNESS_REQUIRED');
+   const candidate=acceptC72V2LinkedTerms({offer,humanMessage,termsLinkPresented});
+   if(!validateC72V2Accepted(candidate))return rejected('C72_ACCEPTANCE_DENIED');
+   const introduction=presentC72V2Introduction(candidate);
+   if(!validateC72V2Orientation(introduction,candidate))return rejected('C72_INTRODUCTION_DENIED');
+   const frame=oneShellAccepted({accepted:candidate,orientation:introduction});
+   if(frame.slots.NEXT!=='AWAIT_EDU_OR_CANONICAL')return rejected('C72_INTRODUCTION_PROJECTION_DENIED');
+   accepted=candidate;orientation=introduction;phase='WAIT_MODE';
+   return frame;
+  }
+  if(phase==='WAIT_MODE'){
+   if(humanMessage!=='EDU'&&humanMessage!=='CANONICAL')return rejected('C72_EXACT_MODE_REQUIRED');
+   const candidate=selectC72V2Mode({accepted,orientation,humanMessage});
+   if(!validateC72V2ModeSelection(candidate,{sourceHead:head}))
+    return rejected('C72_SELECTION_DENIED');
+   const frame=oneShellSelected({selection:candidate,accepted,orientation});
+   if(frame.slots.NEXT==='STOP')return rejected('C72_SELECTION_PROJECTION_DENIED');
+   selection=candidate;phase='MODE_SELECTED';
+   return frame;
+  }
+  return rejected('C72_NEW_HUMAN_MESSAGE_NOT_A_NEW_GATE');
+ }
+ return Object.freeze({
+  advance,phase:()=>phase,
+  selection:()=>phase==='MODE_SELECTED'?selection:null,
+  source_head:head,source_tree:tree,
+  authority:0,persistent:false,provider_event_authenticated:false,
+  native_ui_attested:false
+ });
+}
