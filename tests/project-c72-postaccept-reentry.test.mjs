@@ -2,14 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {join} from 'node:path';
+import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {reenterC72V2PostAccept,classifyC72OwnerEvidence} from '../host/project-c72-postaccept-reentry.mjs';
 import {validateC72V2Accepted,validateC72V2Orientation,selectC72V2Mode,validateC72V2ModeSelection} from '../host/c72-public-mode-admission.mjs';
 import {oneShellFrame,renderOneShell} from '../host/project-oneshell-edu.mjs';
 import {renderOneShellVisualHtml,createOneShellVisualModel,verifyOneShellVisualEquivalence} from '../host/project-oneshell-visual.mjs';
-const H='903fc394103d2f20aa1541eb7d5c6eb490e2a837';
+const git=(...args)=>execFileSync('git',args,{cwd:new URL('../',import.meta.url),encoding:'utf8'}).trim();
+const H=git('rev-parse','HEAD');
 const paths=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md'];
-const doc=path=>{const content=readFileSync(new URL('../'+path,import.meta.url),'utf8');const bytes=Buffer.from(content);return{path,source_head:H,content,blob_sha1:createHash('sha1').update(Buffer.from(`blob ${bytes.length}\0`)).update(bytes).digest('hex')}};
+const doc=path=>{const content=readFileSync(new URL('../'+path,import.meta.url),'utf8');const bytes=Buffer.from(content);const sha=createHash('sha1').update(Buffer.from(`blob ${bytes.length}\0`)).update(bytes).digest('hex');assert.equal(sha,git('rev-parse','HEAD:'+path));return{path,source_head:H,content,blob_sha1:sha}};
 const docs=paths.map(doc), prior={pinned_blob_shas:Object.fromEntries(docs.map(d=>[d.path,d.blob_sha1])),source_head:H,terms_link:`https://github.com/Luke883i/iKant_LE/blob/${H}/TERMS.md`,host_link_displayed:true,distinct_human_message_observed:true};
 const base=()=>({sourceHead:H,liveHead:H,humanMessage:'I ACCEPT',priorTurnEvidence:prior,documents:docs});
 test('postaccept original C72 owner only: linked receipts, introduction, EDU selection',()=>{
