@@ -90,5 +90,24 @@
       "PENDING",
       "UNKNOWN"
     ]
+  },
+  "brand": {
+    "scope": "HOST_OWNED_PRESENTATION_ONLY",
+    "source": "assets/brand/ikant-light.svg",
+    "plugin_source": "plugins/ikant-le-session-chat/assets/ikant-light.svg",
+    "asset_sha256": "b6dc3f6e22149ef9f96348ce8e677af034cd2377f26450af18d51bc5c43ae633",
+    "placement": "HEADER_LEFT_OF_TITLE",
+    "width_px": 28,
+    "height_px": 28,
+    "host_svg": "INLINE_PINNED_EXACT_BYTES_NO_NETWORK",
+    "tint": "CSS_CURRENTCOLOR_FOR_LIGHT_DARK_HOST_THEME",
+    "fallback": "TEXT_TITLE_ONLY_WHEN_ASSET_UNVERIFIED",
+    "header_logo_not_voice_provenance": true,
+    "native_registered": false,
+    "native_assistant_avatar_attested": false,
+    "third_party_publication_attested": false,
+    "branding_not_identity_authentication": true,
+    "single_frame_unchanged": true,
+    "slot_values_byte_exact": true
   }
 }
