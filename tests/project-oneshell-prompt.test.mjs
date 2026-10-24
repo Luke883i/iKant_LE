@@ -18,6 +18,21 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
    assert.deepEqual(fs.readFileSync(path.join(a,p)),fs.readFileSync(path.join(b,p)));
   const p=fs.readFileSync(path.join(a,'PROMPT_INNESCO.txt'),'utf8');
   const receipt=JSON.parse(fs.readFileSync(path.join(a,'RECEIPT.json')));
+  const matrix=JSON.parse(execFileSync('git',['show','HEAD:contracts/project-prompt-generation.json'],'utf8'));
+  assert.deepEqual(matrix.head_critical_contracts,
+   ['contracts/project-oneshell-compact-continuity.json','contracts/project-oneshell-visual-v2.json']);
+  for(const p of matrix.head_critical_contracts){
+   assert.equal(receipt.source_blobs[p].git_blob_sha1,git('rev-parse','HEAD:'+p));
+   assert.equal(receipt.source_blobs[p].bytes,
+    execFileSync('git',['show','HEAD:'+p]).length);
+  }
+  const lock=JSON.parse(fs.readFileSync(path.join(a,'SOURCE_LOCK.json')));
+  assert.equal(lock.installed_prompt_equivalence_attested,false);
+  assert.equal(lock.versioned_c72_receipt_transfer_allowed,false);
+  assert.equal(lock.runtime_preflight_required,true);
+  assert.deepEqual(Object.keys(lock.critical_contract_blobs),matrix.head_critical_contracts);
+  assert.equal(lock.live_main_verified,false);
+
   assert(p.includes(head)&&p.includes(tree)&&p.includes('OneShell'));
   assert.equal(receipt.product_release,'PRODUCT_NO_GO');assert.equal(receipt.live_main_verified,false);
   assert.notEqual(run('candidate','f'.repeat(40),tree,path.join(dir,'wrong-head')).status,0);
@@ -40,6 +55,13 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.equal(portableLock.generated_from_head,head);
   assert.equal(portableLock.session_source_lock,'RESOLVE_LIVE_MAIN_ON_FIRST_PROJECT_CHAT_MESSAGE');
   assert.match(original.toString('utf8'),/PRIMO messaggio umano di OGNI nuova chat/);
+  for(const token of ['STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION',
+    'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72']){
+   assert(original.toString('utf8').includes(token),'missing '+token);
+  }
+  assert(!portableLock.live_main_verified);
+  assert.equal(portableLock.installed_prompt_equivalence_attested,false);
+
   // A changed working tree cannot contaminate Git-show HEAD content: the exact
   // release output and source receipt must stay byte-identical.
   const dirty=path.join(process.cwd(),'artifacts','qualification','oneshell-test-dirty-'+process.pid+'.tmp');
