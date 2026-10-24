@@ -6,6 +6,9 @@ import {createC135EduV2Session} from './c135-edu-v2-owner.mjs';
 
 const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
 const KEYS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
+// Display aliases only; machine slot keys and original C125 bytes remain unchanged.
+const TITLES=Object.freeze({ESITO:'ESITO',A:'Superficie A (iKant)',
+ B:'Superficie B (HOST)',PROVA:'PROVA',EDGE:'EDGE',NEXT:'NEXT'});
 const genuineOwnerFrames=new WeakSet();
 const SOURCE_STATES=new Set(['FULL_SOURCE_VERIFIED','PARTIAL_SOURCE_ONLY','SOURCE_ABSENT','SOURCE_UNKNOWN']);
 const BRIDGES=new Set(['AVAILABLE','DEFINITIVELY_UNAVAILABLE','UNKNOWN']);
@@ -49,7 +52,7 @@ export function renderOneShell(frame){
  if(frame.voice_origin==='HOST_BOUND_LOCAL'&&
     (!genuineOwnerFrames.has(frame)||typeof s.A!=='string'||digest(s.A)!==frame.original_voice_sha256))
   throw Error('ONESHELL_VOICE_UNVERIFIED');
- return KEYS.map(k=>k+' · '+s[k]).join('\n\n');
+ return KEYS.map(k=>TITLES[k]+' | '+s[k]).join('\n\n');
 }
 /** Source routing consumes observed HOST capabilities, not guesses from a prompt.
  * The existing P1 helper is deliberately invoked only for public EDU/v2. */
