@@ -1356,7 +1356,9 @@
       "host/project-c72-capability-port.mjs",
       "scripts/project-c72-portable-cli.mjs",
       "contracts/project-host-capability-port.json",
-      "host/project-c72-physical-ingress.mjs"
+      "host/project-c72-physical-ingress.mjs",
+      "host/project-c72-coldstart-seed.mjs",
+      "scripts/project-c72-partial-source-kit.mjs"
     ],
     "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
@@ -1418,6 +1420,11 @@
     "host_adapter_selection": "OBSERVED_PHYSICAL_CAPABILITY_ANY_IMPLEMENTATION_ONLY_ORIGINAL_OWNER_VALIDATES",
     "one_shell_brand_scope": "VERIFIED_REPOSITORY_SVG_HOST_HTML_OR_TEXT_FALLBACK_NO_NATIVE_AVATAR_PROMISE",
     "host_followthrough_contract": "contracts/project-host-followthrough.json",
-    "host_followthrough_rule": "READONLY_AFTER_MODE_OWNER_READBACK_FIRST_NO_NEW_PERSISTENCE_OR_AUTHORITY"
+    "host_followthrough_rule": "READONLY_AFTER_MODE_OWNER_READBACK_FIRST_NO_NEW_PERSISTENCE_OR_AUTHORITY",
+    "postaccept_cold_seed": "host/project-c72-coldstart-seed.mjs#executeC72Coldstart",
+    "postaccept_partial_kit": "scripts/project-c72-partial-source-kit.mjs",
+    "postaccept_partial_manual_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_ONLY_NO_OWNER_REPLAY",
+    "postaccept_partial_source_original_count": 8,
+    "postaccept_partial_source_no_full_edu": true
   }
 }

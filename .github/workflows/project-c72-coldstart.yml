@@ -1,0 +1,32 @@
+name: C72 coldstart source kit qualification
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  original-c72-coldstart:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['20','22']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Original C72 coldstart positive and negative
+        run: node --test tests/project-c72-coldstart-*.test.mjs
+      - name: Generate narrow source handoff and physical readback
+        run: |
+          node scripts/project-c72-partial-source-kit.mjs "${GITHUB_SHA}" "${RUNNER_TEMP}/C72-PARTIAL-SOURCE-${GITHUB_SHA}.json"
+          test -s "${RUNNER_TEMP}/C72-PARTIAL-SOURCE-${GITHUB_SHA}.json"
+      - name: Publish partial source from merged main only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.node == '22'
+        uses: actions/upload-artifact@v4
+        with:
+          name: c72-partial-source-${{ github.sha }}
+          path: ${{ runner.temp }}/C72-PARTIAL-SOURCE-${{ github.sha }}.json
+          retention-days: 30
