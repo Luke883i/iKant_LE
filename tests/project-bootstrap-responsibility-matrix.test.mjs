@@ -9,7 +9,7 @@ const boot=JSON.parse(read('BOOTSTRAP.json')).project_session;
 const routes=matrix.responsibility_registry;
 const sourceCache=new Map(routes.map(x=>[x.module,read(x.module)]));
 function ownerCheck(rows){
- if(!Array.isArray(rows)||rows.length!==12||new Set(rows.map(x=>x.route)).size!==rows.length)return false;
+ if(!Array.isArray(rows)||rows.length!==13||new Set(rows.map(x=>x.route)).size!==rows.length)return false;
  for(const row of rows){
   if(row.authority!==0||row.provider_bound!==false||!row.scope||!row.boundary||!row.proof||
    !/^[A-Za-z0-9._/-]+$/.test(row.module||''))return false;
@@ -21,12 +21,16 @@ function ownerCheck(rows){
  }
  return true;
 }
-test('12 declarative routes map 1:1 to original exports or an explicit Host-only project prompt',()=>{
+test('13 declarative routes map 1:1 to original exports or an explicit Host-only project prompt',()=>{
  assert.equal(ownerCheck(routes),true);
  assert.equal(boot.prompt,matrix.source_prompt);
  assert.equal(boot.runtime_entry,matrix.runtime_owner);
  assert.equal(boot.postaccept_host_recovery_executor,
   'host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery');
+ assert.equal(boot.host_port_adapter,'host/project-c72-capability-port.mjs#bindC72Transport');
+ assert.equal(boot.host_port_cli,'scripts/project-c72-portable-cli.mjs');
+ assert.equal(matrix.host_port_not_native_hook,true);
+ assert.equal(routes.find(x=>x.route==='C72_HOST_PORT').export,'bindC72Transport');
  assert.equal(boot.postaccept_reentry,'host/project-c72-postaccept-reentry.mjs#reenterC72V2PostAccept');
  assert.equal(routes.find(x=>x.route==='C72_POSTACCEPT_EXEC').module,'host/project-c72-host-recovery.mjs');
  assert.equal(routes.find(x=>x.route==='C72_REENTRY').module,'host/project-c72-postaccept-reentry.mjs');

@@ -60,7 +60,7 @@ export function planC72HostRecovery({phase='AWAIT_ACCEPTANCE',humanMessage='',
  * admission operation. Only the original reentry imports/validates C72/v2.
  */
 export async function executeC72PostAcceptRecovery({humanMessage, freshHumanTurn,
-  priorTurnEvidence,readMain,readPinnedDocument,ownerOutcome='NOT_INVOKED'}={}){
+  priorTurnEvidence,readMain,readPinnedDocument,sourcePacket=null,ownerOutcome='NOT_INVOKED'}={}){
  const stop=(edge,trace=[],invoked=false)=>Object.freeze({ok:false,kind:'STOP',edge,
    trace:Object.freeze([...trace]),original_owner_invoked:invoked,
    native_event_attested:false,authority:0});
@@ -81,17 +81,19 @@ export async function executeC72PostAcceptRecovery({humanMessage, freshHumanTurn
  const major=Number(process.versions.node.split('.')[0]);
  trace.push('VERIFY_NODE_20');
  if(!Number.isInteger(major)||major<20)return stop('C72_NODE_UNAVAILABLE_VERIFIED',trace);
- if(typeof readMain!=='function'||typeof readPinnedDocument!=='function')
-  return stop('C72_SOURCE_BRIDGE_UNBOUND',trace);
+ const {bindC72Transport}=await import('./project-c72-capability-port.mjs');
+ const bound=bindC72Transport({sourceHead:w.source_head,readMain,readPinnedDocument,sourcePacket});
+ if(!bound.ok)return stop(bound.edge,trace);
  trace.push('VERIFY_PINNED_API_TRANSPORT');
+ trace.push('TRANSPORT:'+bound.kind);
  let liveHead;
- try{liveHead=await readMain();}catch{return stop('C72_HEAD_READ_OUTCOME_UNKNOWN',trace);}
+ try{liveHead=await bound.readMain();}catch{return stop('C72_HEAD_READ_OUTCOME_UNKNOWN',trace);}
  if(!sha.test(liveHead||''))return stop('C72_HEAD_READ_INVALID',trace);
  if(liveHead!==w.source_head)return stop('STOP_SOURCE_LOCK_STALE',trace);
  const documents=[];
  for(const path of names){
   let d;
-  try{d=await readPinnedDocument(path,w.source_head);}catch{
+  try{d=await bound.readPinnedDocument(path,w.source_head);}catch{
    return stop('C72_SOURCE_READ_OUTCOME_UNKNOWN:'+path,trace);
   }
   if(!d||d.path!==path||d.source_head!==w.source_head||
@@ -116,5 +118,6 @@ export async function executeC72PostAcceptRecovery({humanMessage, freshHumanTurn
  return Object.freeze({ok:true,kind:'C72_ORIGINAL_POSTACCEPT_VERIFIED',
   trace:Object.freeze(trace),source_head:w.source_head,accepted:reentry.accepted,
   introduction:reentry.introduction,original_owner_invoked:true,
+  transport_kind:bound.kind,source_origin_attested:false,
   native_event_attested:false,active:false,authority:0});
 }
