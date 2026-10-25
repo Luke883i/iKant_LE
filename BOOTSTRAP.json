@@ -1376,7 +1376,8 @@
         "SOURCE_ABSENT",
         "PARTIAL_SOURCE_ONLY"
       ],
-      "bridge": "DEFINITIVELY_UNAVAILABLE",
+      "bridge": "DEFINITIVELY_UNAVAILABLE_OR_EXPLICIT_POST_EDU_MANUAL_CHOICE",
+      "manual_route_policy": "EXPLICIT_MANUAL_POST_EDU_AFTER_VALID_C72_V2_EDU_NEVER_BEFORE_ACCEPTANCE",
       "python_extractor": "scripts/project-manual-source.py",
       "handoff_owner": "host/p1-postmode-source-handoff.mjs",
       "verified_reentry": "scripts/project-repo-loader.mjs",
