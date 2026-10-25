@@ -1355,7 +1355,8 @@
       "host/project-c72-host-recovery.mjs",
       "host/project-c72-capability-port.mjs",
       "scripts/project-c72-portable-cli.mjs",
-      "contracts/project-host-capability-port.json"
+      "contracts/project-host-capability-port.json",
+      "host/project-c72-physical-ingress.mjs"
     ],
     "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
@@ -1409,6 +1410,7 @@
     "host_port_contract": "contracts/project-host-capability-port.json",
     "host_port_adapter": "host/project-c72-capability-port.mjs#bindC72Transport",
     "host_port_cli": "scripts/project-c72-portable-cli.mjs",
-    "postaccept_transport_policy": "HOST_CHOOSES_PHYSICALLY_CALLABLE_CALLBACK_OR_SOURCE_PACKET_NO_NATIVE_HOOK_CLAIM"
+    "postaccept_transport_policy": "HOST_SELECTED_ONE_CALLABLE_CALLBACK_OR_PACKET_OR_NODE_HTTPS_POST_ACCEPT_ONLY_NO_NATIVE_CLAIM",
+    "host_port_orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress"
   }
 }

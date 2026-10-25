@@ -37,6 +37,8 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.host_port_standard!=='contracts/project-host-capability-port.json'||
  matrix.host_port_adapter!=='host/project-c72-capability-port.mjs#bindC72Transport'||
  matrix.host_port_cli!=='scripts/project-c72-portable-cli.mjs'||
+ matrix.host_physical_orchestrator!=='host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress'||
+ route.host_port_orchestrator!==matrix.host_physical_orchestrator||
  matrix.host_port_not_native_hook!==true||
  route.host_port_contract!==matrix.host_port_standard||
  route.host_port_adapter!==matrix.host_port_adapter||
@@ -94,7 +96,8 @@ for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','proj
  'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
  'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
  'project-c72-capability-port.mjs','project-c72-portable-cli.mjs',
- 'C72_SOURCE_BRIDGE_UNBOUND','senza invio osservato NON dire trasferimento fallito'])
+ 'C72_SOURCE_BRIDGE_UNBOUND','senza invio osservato NON dire trasferimento fallito',
+ 'project-c72-physical-ingress.mjs','HTTPS GitHub in Node'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{
