@@ -73,13 +73,16 @@ jobs:
           node scripts/p1-app-shell-falsify.mjs 10000000
       - name: One million synthetic protocol mutations; 10k composite checks
         run: node scripts/p1p7-closure-falsify.mjs 1000000
-      - name: P0/P1 four selected contracts and one million pre-seeded synthetic language compositions
+      - name: P0/P1 original owner and ontology regression tests
+        run: node --test tests/p0-first-run-handoff.test.mjs tests/p0-thread-panel-readiness.test.mjs tests/p1-composite-ontology-route.test.mjs tests/c134-cognitive-epoch.test.mjs tests/c114-ontology-language.test.mjs
+      - name: P0/P1 deterministic four-contract selection
         run: |
-          node --test tests/p0-first-run-handoff.test.mjs tests/p0-thread-panel-readiness.test.mjs tests/p1-composite-ontology-route.test.mjs tests/c134-cognitive-epoch.test.mjs tests/c114-ontology-language.test.mjs
           node scripts/p0p1-select-contracts.mjs > "$RUNNER_TEMP/p0p1-contracts.json"
           cmp "$RUNNER_TEMP/p0p1-contracts.json" contracts/p0p1-100-selection.json
-          node scripts/p0p1-seeded-falsify.mjs > "$RUNNER_TEMP/p0p1-1m.json"
-          cmp "$RUNNER_TEMP/p0p1-1m.json" artifacts/qualification/p0p1-1m-seeded.json
+      - name: P0/P1 one million owner policy oracles must execute without violations
+        run: node scripts/p0p1-seeded-falsify.mjs > "$RUNNER_TEMP/p0p1-1m.json"
+      - name: P0/P1 one million exact baseline receipt bytes
+        run: cmp "$RUNNER_TEMP/p0p1-1m.json" artifacts/qualification/p0p1-1m-seeded.json
       - name: Deterministic Project builds, source-bound and NON-INSTALLED
         shell: bash
         run: |

@@ -75,7 +75,7 @@ export function planOneShellEduSource({selection,sourceState='SOURCE_UNKNOWN',
  if(bridgeState==='AVAILABLE')
   return oneShellFrame({esito:'ACQUISIZIONE AUTOMATICA',b:'Trasferisco e verifico i blob Git originali.',edge:'SOURCE_NOT_MATERIALIZED',next:'API_TREE_SOURCE_MATERIALIZATION'});
  if(manualExtractorReady!==true)return failure('MANUAL_SOURCE_EXTRACTOR_UNAVAILABLE');
- const p=planP1PostModeSourceHandoff({selection,sourceState});
+ const p=planP1PostModeSourceHandoff({selection,sourceState,bridgeState});
  if(p.ok!==true||p.action!=='REQUEST_SOURCE_ZIP'||p.after_mode_only!==true)
   return failure(p.first_edge||'MANUAL_HANDOFF_NOT_QUALIFIED');
  return oneShellFrame({esito:'SERVONO I SORGENTI',b:'Il ponte automatico non è disponibile. Allegare solo lo ZIP del commit pinnato, dopo EDU.',

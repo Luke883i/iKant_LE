@@ -109,11 +109,11 @@
     {
       "route": "C72_HOST_PORT",
       "scope": "HOST",
-      "module": "host/project-c72-capability-port.mjs",
-      "export": "bindC72Transport",
+      "module": "host/project-c72-physical-ingress.mjs",
+      "export": "runC72SelectedHostIngress",
       "authority": 0,
-      "boundary": "CALLBACK_OR_PHYSICALLY_STAGED_SOURCE_PACKET",
-      "proof": "NODE_SOURCE_BYTES_AND_ORIGINAL_C72_READBACK_NO_NATIVE_PROVENANCE",
+      "boundary": "CALLBACK_PACKET_OR_NODE_HTTPS_SELECTED_AND_EXECUTED",
+      "proof": "NODE_SOURCE_BYTES_ORIGINAL_C72_RECEIPTS_NOT_NATIVE_HOOK",
       "provider_bound": false
     },
     {
@@ -190,5 +190,14 @@
   "host_port_standard": "contracts/project-host-capability-port.json",
   "host_port_adapter": "host/project-c72-capability-port.mjs#bindC72Transport",
   "host_port_cli": "scripts/project-c72-portable-cli.mjs",
-  "host_port_not_native_hook": true
+  "host_port_not_native_hook": true,
+  "host_physical_orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress",
+  "host_staging_cli": "scripts/project-c72-staged-ingress-cli.mjs",
+  "preferred_public_mode": "EDU",
+  "canonical_project_status": "LEGACY_UNQUALIFIED_DEPRECATION_PLANNED_NO_EDU_BOOTSTRAP_NO_ACTIVE",
+  "end_to_end_qualification": "tests/project-edu-complete-chain.test.mjs",
+  "native_avatar_or_delivery_guaranteed": false,
+  "host_followthrough_contract": "contracts/project-host-followthrough.json",
+  "host_followthrough_policy": "HOST_READONLY_FROM_ORIGINAL_RECEIPTS_NOT_STORAGE",
+  "postmerge_human_trigger": "PR merged"
 }

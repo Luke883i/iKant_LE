@@ -22,6 +22,22 @@ if(matrix.schema!=='ikant-le-project-prompt-generation/v1'||
  matrix.oneshell_contract!==route.oneshell_contract||
  route.local_bundle_required!==false||route.manual_edu_handoff?.post_mode_only!==true||
  route.manual_edu_handoff?.canonical_active_authority!==false)throw Error('PROMPT_ROUTE_DRIFT');
+// Non-authoritative, AFTER-EDU Host plan: exact HEAD blob, never a new receipt store.
+if(matrix.host_followthrough_contract!=='contracts/project-host-followthrough.json'||
+ route.host_followthrough_contract!==matrix.host_followthrough_contract||
+ route.host_followthrough_rule!=='READONLY_AFTER_MODE_OWNER_READBACK_FIRST_NO_NEW_PERSISTENCE_OR_AUTHORITY'||
+ matrix.host_followthrough_policy!=='HOST_READONLY_FROM_ORIGINAL_RECEIPTS_NOT_STORAGE'||
+ matrix.postmerge_human_trigger!=='PR merged')
+ throw Error('HOST_FOLLOWTHROUGH_ROUTE_DRIFT');
+const memoryBytes=original(matrix.host_followthrough_contract);
+const memory=JSON.parse(memoryBytes);
+if(blob(memoryBytes)!==git('rev-parse','HEAD:'+matrix.host_followthrough_contract)||
+ memory.schema!=='ikant-le-project-host-followthrough/v1'||memory.authority!==0||
+ memory.not_persistent_storage!==true||memory.evidence_policy?.no_new_C72_C59_C135_C87_C125_owner!==true||
+ memory.canonical_status!=='LEGACY_UNQUALIFIED_STOP_NOT_EDU_NOT_ACTIVE'||
+ !Array.isArray(memory.steps)||memory.steps.length!==12||
+ new Set(memory.steps.map(x=>x.id)).size!==12)
+ throw Error('HOST_FOLLOWTHROUGH_OWNERLESS_GUARD');
 const CRITICAL=['contracts/project-oneshell-compact-continuity.json',
  'contracts/project-oneshell-visual-v2.json'];
 if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
@@ -37,6 +53,10 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.host_port_standard!=='contracts/project-host-capability-port.json'||
  matrix.host_port_adapter!=='host/project-c72-capability-port.mjs#bindC72Transport'||
  matrix.host_port_cli!=='scripts/project-c72-portable-cli.mjs'||
+ matrix.host_physical_orchestrator!=='host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress'||
+ route.host_port_orchestrator!==matrix.host_physical_orchestrator||
+ matrix.host_staging_cli!=='scripts/project-c72-staged-ingress-cli.mjs'||
+ route.host_port_staged_cli!==matrix.host_staging_cli||
  matrix.host_port_not_native_hook!==true||
  route.host_port_contract!==matrix.host_port_standard||
  route.host_port_adapter!==matrix.host_port_adapter||
@@ -94,7 +114,9 @@ for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','proj
  'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
  'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
  'project-c72-capability-port.mjs','project-c72-portable-cli.mjs',
- 'C72_SOURCE_BRIDGE_UNBOUND'])
+ 'C72_SOURCE_BRIDGE_UNBOUND','senza invio osservato NON dire trasferimento fallito',
+ 'MEMORIA HOST SENZA AUTORITÀ','contracts/project-host-followthrough.json','PR merged',
+ 'project-c72-physical-ingress.mjs','HTTPS GitHub in Node'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{

@@ -39,12 +39,12 @@ export function oneShellSelected({selection,accepted,orientation}={}){
     selection.orientation_receipt_sha256!==orientation.receipt_sha256)
   return denied('C72_ORIGINAL_MODE_RECEIPT_REQUIRED');
  const edu=selection.selected_mode==='EDU';
- return oneShellFrame({esito:edu?'EDU SELEZIONATA':'CANONICAL RICHIESTA',
+ return oneShellFrame({esito:edu?'EDU SELEZIONATA':'CANONICAL LEGACY NON QUALIFICATA',
   b:edu?'La selezione autorizza soltanto i controlli della sorgente e del runtime EDU.':
-    'La selezione non attiva C59 né prova un ingresso MCP autenticato.',
+    'Percorso CANONICAL legacy, destinato alla dismissione nel Project; nessun bootstrap CANONICAL o ACTIVE viene avviato. Non attestato come funzionante.',
   prova:'C72_SELECTION_SHA256:'+selection.receipt_sha256,
-  edge:selection.first_unclosed_edge,
-  next:edu?'VERIFY_SOURCE':'C59_ORIGINAL_CANONICAL_GATE'});
+  edge:edu?selection.first_unclosed_edge:'CANONICAL_LEGACY_PRODUCT_NO_GO',
+  next:edu?'VERIFY_SOURCE':'STOP'});
 }
 /** Closed source verification over materialized bytes, never the caller's assertion. */
 export function oneShellMaterialized({selection,sourceRoot,head,tree}={}){
@@ -104,7 +104,13 @@ export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
    if(!validateC72V2ModeSelection(candidate,{sourceHead:head}))
     return rejected('C72_SELECTION_DENIED');
    const frame=oneShellSelected({selection:candidate,accepted,orientation});
-   if(frame.slots.NEXT==='STOP')return rejected('C72_SELECTION_PROJECTION_DENIED');
+   // Legacy CANONICAL is an original C72 selection receipt, not an EDU start.
+   // Its Project frame must STOP but the valid receipt remains inspectable.
+   if(candidate.selected_mode==='CANONICAL'){
+    if(frame.slots.NEXT!=='STOP'||frame.slots.EDGE!=='CANONICAL_LEGACY_PRODUCT_NO_GO')
+     return rejected('C72_LEGACY_STOP_PROJECTION_DENIED');
+   }else if(frame.slots.NEXT!=='VERIFY_SOURCE')
+    return rejected('C72_SELECTION_PROJECTION_DENIED');
    selection=candidate;phase='MODE_SELECTED';
    return frame;
   }

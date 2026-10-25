@@ -30,7 +30,11 @@ test('13 declarative routes map 1:1 to original exports or an explicit Host-only
  assert.equal(boot.host_port_adapter,'host/project-c72-capability-port.mjs#bindC72Transport');
  assert.equal(boot.host_port_cli,'scripts/project-c72-portable-cli.mjs');
  assert.equal(matrix.host_port_not_native_hook,true);
- assert.equal(routes.find(x=>x.route==='C72_HOST_PORT').export,'bindC72Transport');
+ assert.equal(routes.find(x=>x.route==='C72_HOST_PORT').export,'runC72SelectedHostIngress');
+ assert.equal(routes.find(x=>x.route==='C72_HOST_PORT').module,'host/project-c72-physical-ingress.mjs');
+ assert.equal(boot.host_port_orchestrator,'host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress');
+ assert.equal(matrix.host_physical_orchestrator,boot.host_port_orchestrator);
+ assert.equal(matrix.host_staging_cli,boot.host_port_staged_cli);
  assert.equal(boot.postaccept_reentry,'host/project-c72-postaccept-reentry.mjs#reenterC72V2PostAccept');
  assert.equal(routes.find(x=>x.route==='C72_POSTACCEPT_EXEC').module,'host/project-c72-host-recovery.mjs');
  assert.equal(routes.find(x=>x.route==='C72_REENTRY').module,'host/project-c72-postaccept-reentry.mjs');

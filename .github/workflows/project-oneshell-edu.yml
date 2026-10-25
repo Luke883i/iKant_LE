@@ -1,13 +1,24 @@
 name: OneShell EDU bootstrap runtime candidate
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 on:
   pull_request:
     paths:
       - 'host/project-oneshell-edu.mjs'
+      - 'host/p1-postmode-source-handoff.mjs'
+      - 'tests/p1-postmode-source-handoff.test.mjs'
+      - 'tests/project-bootstrap-endtoend-100k.test.mjs'
+      - 'tests/test_project_manual_full_head.py'
       - 'host/project-c72-preaccept-gate.mjs'
       - 'host/project-c72-postaccept-reentry.mjs'
       - 'host/project-c72-host-recovery.mjs'
       - 'host/project-c72-capability-port.mjs'
+      - 'host/project-c72-physical-ingress.mjs'
+      - 'tests/project-c72-physical-ingress.test.mjs'
       - 'scripts/project-c72-portable-cli.mjs'
+      - 'scripts/project-c72-staged-ingress-cli.mjs'
+      - 'tests/project-c72-staged-ingress.test.mjs'
       - 'contracts/project-host-capability-port.json'
       - 'tests/project-c72-portable-bridge.test.mjs'
       - 'host/project-oneshell-emission.mjs'
@@ -48,6 +59,11 @@ on:
       - 'scripts/oneshell-compact-select-100.mjs'
       - 'tests/p1-human-language.test.mjs'
       - 'tests/project-session-e2e.test.mjs'
+      - 'tests/project-edu-complete-chain.test.mjs'
+      - 'contracts/project-host-followthrough.json'
+      - 'tests/project-host-followthrough.test.mjs'
+      - 'host/project-oneshell-phases.mjs'
+      - 'tests/project-oneshell-phases.test.mjs'
       - 'tests/project-oneshell-full-source.test.mjs'
       - 'tests/test_project_manual_source.py'
       - 'scripts/project-oneshell-falsify.mjs'
@@ -65,7 +81,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node scripts/project-source-manifest.mjs verify
-      - run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs
+      - run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-c72-physical-ingress.test.mjs tests/project-c72-staged-ingress.test.mjs
       - run: npm run check
       - name: P0 final emission + C72 human-recovery 1000 executed adversarial scenarios
         run: |
@@ -97,9 +113,10 @@ jobs:
           path: ${{ runner.temp }}/c72-brand-10k/
           retention-days: 30
           if-no-files-found: error
-      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-continuity.test.mjs tests/project-oneshell-compact.test.mjs tests/project-oneshell-visual-v2.test.mjs tests/project-oneshell-host-boundary.test.mjs tests/project-oneshell-language-ack.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
+      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-continuity.test.mjs tests/project-oneshell-compact.test.mjs tests/project-oneshell-visual-v2.test.mjs tests/project-oneshell-host-boundary.test.mjs tests/project-oneshell-language-ack.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/project-bootstrap-endtoend-100k.test.mjs tests/p1-postmode-source-handoff.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-edu-complete-chain.test.mjs tests/project-host-followthrough.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
       - run: node scripts/oneshell-compact-select-100.mjs "$RUNNER_TEMP/oneshell-compact-100.json"
       - run: python3 tests/test_project_manual_source.py
+      - run: python3 tests/test_project_manual_full_head.py
       - run: node --test tests/s02-edu-v2-original-owner-e2e.test.mjs
       - run: node scripts/project-oneshell-host-boundary-falsify.mjs 100000
       - name: Trace 100k seeded semantic scenarios
@@ -157,3 +174,26 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tests/project-oneshell-prompt.test.mjs
+
+  pr171-regression-slices:
+    name: PR171 isolate (${{ matrix.case }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        case:
+          - project-host-followthrough
+          - project-edu-complete-chain
+          - project-bootstrap-endtoend-100k
+          - project-c72-physical-ingress
+          - project-c72-portable-bridge
+          - project-c72-staged-ingress
+          - p1-postmode-source-handoff
+          - project-oneshell-phases
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Original executable test slice
+        run: node --test tests/${{ matrix.case }}.test.mjs

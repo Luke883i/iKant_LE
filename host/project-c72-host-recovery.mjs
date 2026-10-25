@@ -59,11 +59,33 @@ export function planC72HostRecovery({phase='AWAIT_ACCEPTANCE',humanMessage='',
  * A read/call outcome UNKNOWN is terminal; never repeat a potentially written
  * admission operation. Only the original reentry imports/validates C72/v2.
  */
+/** Host evidence projection ONLY, not a transport implementation or native attestator.
+ * A bound packet/callback may be a local fixture. GitHub and Node separately
+ * available never certify that bytes crossed tools. Trace is owner-executor data.
+ */
+export function describeC72BridgeEvidence(trace=[]){
+ if(!Array.isArray(trace)||trace.some(x=>typeof x!=='string'))
+  throw Error('C72_TRACE_INVALID');
+ const carrier=trace.includes('TRANSPORT:HOST_SOURCE_PACKET')?'HOST_SOURCE_PACKET':
+  trace.includes('TRANSPORT:HOST_CALLBACKS')?'HOST_CALLBACKS':null;
+ const docs=trace.filter(x=>x.startsWith('READ_PINNED:')).length;
+ return Object.freeze({
+  node_check_observed:trace.includes('VERIFY_NODE_20'),
+  node_carrier_bound:carrier!==null,
+  node_carrier_kind:carrier,
+  records_ingested:docs,
+  github_connector_to_node_origin_attested:false,
+  native_human_event_attested:false,
+  cross_tool_transfer_failure_observed:false
+ });
+}
+
 export async function executeC72PostAcceptRecovery({humanMessage, freshHumanTurn,
   priorTurnEvidence,readMain,readPinnedDocument,sourcePacket=null,ownerOutcome='NOT_INVOKED'}={}){
  const stop=(edge,trace=[],invoked=false)=>Object.freeze({ok:false,kind:'STOP',edge,
    trace:Object.freeze([...trace]),original_owner_invoked:invoked,
-   native_event_attested:false,authority:0});
+   native_event_attested:false,authority:0,
+   bridge_evidence:describeC72BridgeEvidence(trace)});
  const trace=[];
  if(humanMessage!=='I ACCEPT'||freshHumanTurn!==true)
   return stop('C72_EXACT_NEW_CONSENT_REQUIRED');
@@ -119,5 +141,6 @@ export async function executeC72PostAcceptRecovery({humanMessage, freshHumanTurn
   trace:Object.freeze(trace),source_head:w.source_head,accepted:reentry.accepted,
   introduction:reentry.introduction,original_owner_invoked:true,
   transport_kind:bound.kind,source_origin_attested:false,
-  native_event_attested:false,active:false,authority:0});
+  native_event_attested:false,active:false,authority:0,
+  bridge_evidence:describeC72BridgeEvidence(trace)});
 }

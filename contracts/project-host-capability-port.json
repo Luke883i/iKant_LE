@@ -10,7 +10,8 @@
   "binding": "HOST_SELECTED_PER_ATTEMPT_NOT_MODEL_INFERRED",
   "selection": [
     "LIVE_AUTHORIZED_CALLBACKS",
-    "HOST_OPAQUE_SOURCE_PACKET_TO_NODE"
+    "HOST_OPAQUE_SOURCE_PACKET_TO_NODE",
+    "NODE_LOCAL_GITHUB_HTTPS_POST_ACCEPT_ONLY"
   ],
   "original_owner": "C72/v2",
   "handoff": "host/project-c72-capability-port.mjs#bindC72Transport",
@@ -49,5 +50,18 @@
     "PERSISTENCE"
   ],
   "native_chatgpt_qualified": false,
-  "product_status": "PRODUCT_NO_GO_UNTIL_FIELD_PROOF"
+  "product_status": "PRODUCT_NO_GO_UNTIL_FIELD_PROOF",
+  "orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress",
+  "selection_rule": "HOST_SELECTED_ONE_OBSERVED_CALLABLE_CARRIER_NO_BLIND_FALLBACK",
+  "node_https": "EXACT_PUBLIC_GITHUB_API_HEAD_AND_FIVE_PINNED_CONTENTS_AFTER_CONSENT_NO_REDIRECT_TOKEN_OR_NATIVE_EVENT_CLAIM",
+  "node_https_failure": "C72_HEAD_READ_OUTCOME_UNKNOWN_OR_C72_SOURCE_READ_OUTCOME_UNKNOWN_NO_OWNER_REPLAY",
+  "explicit_effect_contract": [
+    "exact human consent gate before all I/O",
+    "one pinned main HEAD recheck",
+    "five Git blob SHA1 recomputed from exact decoded bytes",
+    "unmodified original C72 owner receipt and complete introduction",
+    "no owner retry, no native provider or UI claims"
+  ],
+  "staged_file_recipe": "scripts/project-c72-staged-ingress-cli.mjs",
+  "staged_file_semantics": "POSTACCEPT_FIVE_PRIVATE_LOCAL_FILES_INDEPENDENT_BLOB_AND_FD_READBACK_TO_EXISTING_SOURCE_PACKET_OWNER"
 }

@@ -5,8 +5,10 @@ import {validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
 const STATES=Object.freeze(['FULL_SOURCE_VERIFIED','PARTIAL_SOURCE_ONLY','SOURCE_ABSENT','SOURCE_UNKNOWN']);
 export const P1_SOURCE_STATES=STATES;
 const deny=edge=>Object.freeze({ok:false,first_edge:edge,action:'STOP',source_zip_url:null,authority:0});
-export function planP1PostModeSourceHandoff({selection,sourceState,sourceAvailable}={}){
- if(!validateC72V2ModeSelection(selection))return deny('HUMAN_MODE_GATE_UNVERIFIED');
+export function planP1PostModeSourceHandoff({selection,sourceState,sourceAvailable,bridgeState='UNKNOWN'}={}){
+ if(!validateC72V2ModeSelection(selection,{mode:'EDU'}))return deny('HUMAN_EDU_MODE_GATE_UNVERIFIED');
+ if(!['UNKNOWN','AVAILABLE','DEFINITIVELY_UNAVAILABLE'].includes(bridgeState))
+  return deny('SOURCE_BRIDGE_EVIDENCE_INVALID');
  // Legacy boolean callers keep their semantics. Contradictory evidence fails closed.
  if(sourceState!==undefined&&sourceAvailable!==undefined)return deny('SOURCE_EVIDENCE_CONFLICT');
  const state=sourceState===undefined?(sourceAvailable===true?'FULL_SOURCE_VERIFIED':
@@ -19,6 +21,10 @@ export function planP1PostModeSourceHandoff({selection,sourceState,sourceAvailab
  if(state==='SOURCE_UNKNOWN')return Object.freeze({ok:false,first_edge:'SOURCE_AVAILABILITY_NOT_CHECKED',
   action:'VERIFY_SOURCE',source_state:state,source_zip_url:null,
   message:'Verifico prima i file gia disponibili; non occorre scaricare nulla ora.',authority:0});
+ if(bridgeState!=='DEFINITIVELY_UNAVAILABLE')
+  return Object.freeze({ok:false,action:'VERIFY_MACHINE_BRIDGE',
+   first_edge:bridgeState==='AVAILABLE'?'AUTOMATIC_SOURCE_BRIDGE_AVAILABLE':'SOURCE_BRIDGE_NOT_PROVEN_ABSENT',
+   source_state:state,source_zip_url:null,authority:0});
  const source_zip_url=`https://github.com/Luke883i/iKant_LE/archive/${selection.source_head}.zip`;
  return Object.freeze({ok:true,action:'REQUEST_SOURCE_ZIP',source_state:state,source_zip_url,
   message:state==='PARTIAL_SOURCE_ONLY'?

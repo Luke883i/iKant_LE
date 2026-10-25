@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync,spawnSync} from 'node:child_process';
 import {validateC72V2Accepted,validateC72V2Orientation} from '../host/c72-public-mode-admission.mjs';
-import {executeC72PostAcceptRecovery} from '../host/project-c72-host-recovery.mjs';
+import {executeC72PostAcceptRecovery,describeC72BridgeEvidence} from '../host/project-c72-host-recovery.mjs';
 import {bindC72Transport} from '../host/project-c72-capability-port.mjs';
 const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
 const head=git('rev-parse','HEAD');
@@ -93,4 +93,42 @@ test('100k deterministic 5-axis port mutation cells: reject any invalid evidence
  }
  assert.equal(negative+positive,100000);
  assert(negative>0&&positive>0);
+});
+
+test('live-split diagnosis: connector and Node availability do not mean physical handoff',async()=>{
+ const r=await executeC72PostAcceptRecovery({...args(),sourcePacket:undefined});
+ assert.equal(r.ok,false);assert.equal(r.edge,'C72_SOURCE_BRIDGE_UNBOUND');
+ assert.equal(r.original_owner_invoked,false);
+ assert.equal(r.bridge_evidence.node_check_observed,true);
+ assert.equal(r.bridge_evidence.node_carrier_bound,false);
+ assert.equal(r.bridge_evidence.records_ingested,0);
+ assert.equal(r.bridge_evidence.cross_tool_transfer_failure_observed,false);
+ assert.equal(r.bridge_evidence.github_connector_to_node_origin_attested,false);
+ const positive=await executeC72PostAcceptRecovery(args());
+ assert.equal(positive.ok,true);
+ assert.equal(positive.bridge_evidence.node_carrier_kind,'HOST_SOURCE_PACKET');
+ assert.equal(positive.bridge_evidence.records_ingested,5);
+ assert.equal(positive.bridge_evidence.github_connector_to_node_origin_attested,false);
+ assert.equal(positive.bridge_evidence.native_human_event_attested,false);
+});
+
+test('10k four-axis field observations never launder fixture bindings into provider proof',()=>{
+ let cases=0;
+ const carriers=[null,'TRANSPORT:HOST_CALLBACKS','TRANSPORT:HOST_SOURCE_PACKET',
+  null,null,'TRANSPORT:HOST_CALLBACKS',null,'TRANSPORT:HOST_SOURCE_PACKET',null,null];
+ for(let a=0;a<10;a++)for(let b=0;b<10;b++)for(let c=0;c<10;c++)for(let d=0;d<10;d++){
+  const trace=[];
+  if(a%2===0)trace.push('VERIFY_NODE_20');
+  if(b%2===0)trace.push('VERIFY_PINNED_API_TRANSPORT');
+  if(carriers[c])trace.push(carriers[c]);
+  for(let k=0;k<d%6;k++)trace.push('READ_PINNED:synthetic-'+k);
+  const e=describeC72BridgeEvidence(trace);
+  assert.equal(e.node_carrier_bound,carriers[c]!==null);
+  assert.equal(e.records_ingested,d%6);
+  assert.equal(e.github_connector_to_node_origin_attested,false);
+  assert.equal(e.native_human_event_attested,false);
+  assert.equal(e.cross_tool_transfer_failure_observed,false);
+  cases++;
+ }
+ assert.equal(cases,10000);
 });

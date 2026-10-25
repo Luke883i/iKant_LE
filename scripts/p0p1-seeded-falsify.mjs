@@ -38,10 +38,18 @@ for(let i=0;i<count;i++){
   [1,4,6,9].includes(sourceIndex)?'PARTIAL_SOURCE_ONLY':
   [0,5].includes(sourceIndex)?'SOURCE_ABSENT':'SOURCE_UNKNOWN';
  const validConsent=contextIndex===3||contextIndex===8;
- const out=planP1PostModeSourceHandoff({selection:validConsent?sel:badSel,sourceState:source});
- const expectedSource=!validConsent?'STOP':source==='FULL_SOURCE_VERIFIED'?'USE_VERIFIED_SOURCE':source==='SOURCE_UNKNOWN'?'VERIFY_SOURCE':'REQUEST_SOURCE_ZIP';
+ // Explicit, prespecified software-fixture bridge witness. CONTEXT 3 is a
+ // simulated observed-absent bridge; CONTEXT 8 has an available bridge.
+ // No model narrative or native provider event may prove this state.
+ const bridgeState=contextIndex===3?'DEFINITIVELY_UNAVAILABLE':'AVAILABLE';
+ const out=planP1PostModeSourceHandoff({
+  selection:validConsent?sel:badSel,sourceState:source,bridgeState});
+ const missing=source==='SOURCE_ABSENT'||source==='PARTIAL_SOURCE_ONLY';
+ const expectedSource=!validConsent?'STOP':source==='FULL_SOURCE_VERIFIED'?'USE_VERIFIED_SOURCE':
+  source==='SOURCE_UNKNOWN'?'VERIFY_SOURCE':
+  bridgeState==='DEFINITIVELY_UNAVAILABLE'?'REQUEST_SOURCE_ZIP':'VERIFY_MACHINE_BRIDGE';
  if(out.action!==expectedSource)violations++;
- if((!validConsent||source==='SOURCE_UNKNOWN'||source==='FULL_SOURCE_VERIFIED')&&out.source_zip_url!==null)violations++;
+ if((!validConsent||!missing||bridgeState!=='DEFINITIVELY_UNAVAILABLE')&&out.source_zip_url!==null)violations++;
  combinations.source++;
  const flagged=intentIndex===6,sessionBound=validConsent,snapshotOk=source==='FULL_SOURCE_VERIFIED';
  const panel=assessP0ThreadPanelReadiness({panelRequested:flagged,sessionBound,snapshotOk});
