@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Original C72 coldstart positive and negative
-        run: node --test tests/project-c72-coldstart-seed.test.mjs
+        run: node --test tests/project-c72-coldstart-*.test.mjs
       - name: Generate narrow source handoff and physical readback
         run: |
           node scripts/project-c72-partial-source-kit.mjs "${GITHUB_SHA}" "${RUNNER_TEMP}/C72-PARTIAL-SOURCE-${GITHUB_SHA}.json"
