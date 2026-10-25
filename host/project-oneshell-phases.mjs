@@ -84,7 +84,7 @@ export function createOneShellAdmissionFlow({head,termsUtf8}={}){
   if(phase==='WAIT_TRIGGER'){
    if(typeof humanMessage!=='string')return rejected('FIRST_HUMAN_MESSAGE_REQUIRED');
    offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest});
-   const frame=oneShellOrientation({head,tree,offer});
+   const frame=oneShellOrientation({head,offer});
    if(frame.slots.NEXT!=='AWAIT_I_ACCEPT')return rejected('C72_ORIENTATION_BLOCKED');
    phase='WAIT_ACCEPT';
    return frame;
