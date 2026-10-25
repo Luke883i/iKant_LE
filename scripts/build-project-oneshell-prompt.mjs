@@ -94,7 +94,7 @@ for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','proj
  'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
  'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
  'project-c72-capability-port.mjs','project-c72-portable-cli.mjs',
- 'C72_SOURCE_BRIDGE_UNBOUND'])
+ 'C72_SOURCE_BRIDGE_UNBOUND','senza invio osservato NON dire trasferimento fallito'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{
