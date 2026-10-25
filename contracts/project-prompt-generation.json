@@ -107,6 +107,16 @@
       "provider_bound": false
     },
     {
+      "route": "C72_HOST_PORT",
+      "scope": "HOST",
+      "module": "host/project-c72-capability-port.mjs",
+      "export": "bindC72Transport",
+      "authority": 0,
+      "boundary": "CALLBACK_OR_PHYSICALLY_STAGED_SOURCE_PACKET",
+      "proof": "NODE_SOURCE_BYTES_AND_ORIGINAL_C72_READBACK_NO_NATIVE_PROVENANCE",
+      "provider_bound": false
+    },
+    {
       "route": "C72_REENTRY",
       "scope": "HOST",
       "module": "host/project-c72-postaccept-reentry.mjs",
@@ -176,5 +186,9 @@
       "proof": "PINNED_TREE_BLOB_PHYSICAL_READBACK",
       "provider_bound": false
     }
-  ]
+  ],
+  "host_port_standard": "contracts/project-host-capability-port.json",
+  "host_port_adapter": "host/project-c72-capability-port.mjs#bindC72Transport",
+  "host_port_cli": "scripts/project-c72-portable-cli.mjs",
+  "host_port_not_native_hook": true
 }

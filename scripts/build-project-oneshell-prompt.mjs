@@ -33,7 +33,11 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.orientation_witness!=='FIVE_BLOB_SHA1_CAPTURED_IN_FIRST_TURN_BEFORE_TERMS_FREEZE'||
  matrix.postaccept_auto_execution!=='AUTO_MUST_BE_EXECUTED_AND_OBSERVED_NOT_TERMINAL_STOP'||
  matrix.postaccept_executor!=='host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery'||
- matrix.bridge_unbound!=='C72_SOURCE_BRIDGE_UNBOUND_NOT_PROVEN_UNAVAILABLE')
+ matrix.bridge_unbound!=='C72_SOURCE_BRIDGE_UNBOUND_NOT_PROVEN_UNAVAILABLE'||
+ matrix.host_port_standard!=='contracts/project-host-capability-port.json'||
+ matrix.host_port_adapter!=='host/project-c72-capability-port.mjs#bindC72Transport'||
+ matrix.host_port_cli!=='scripts/project-c72-portable-cli.mjs'||
+ matrix.host_port_not_native_hook!==true
  throw Error('PROMPT_HEAD_GUARD_MATRIX_INVALID');
 // This is a checkable route index, not proof of provider dispatch or a new owner.
 const rp=matrix.release_protocol;
@@ -46,8 +50,8 @@ if(rp?.candidate!=='PR_HEAD_TEST_ONLY_NEVER_INSTALLED_OR_CANONICAL'||
  rp.no_auto_change_runtime!==true||rp.no_native_delivery_claim!==true)
  throw Error('PROMPT_RELEASE_BOUNDARY_DRIFT');
 const routes=matrix.responsibility_registry;
-if(!Array.isArray(routes)||routes.length!==12||
- new Set(routes.map(x=>x.route)).size!==12||
+if(!Array.isArray(routes)||routes.length!==13||
+ new Set(routes.map(x=>x.route)).size!==13||
  routes.some(x=>x.authority!==0||x.provider_bound!==false||
  !x.boundary||!x.proof||!x.scope||
  typeof x.module!=='string'||!/^[A-Za-z0-9._/-]+$/.test(x.module)))
@@ -84,6 +88,7 @@ for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','proj
  'RIENTRO POST-ACCEPT P0','host/project-c72-host-recovery.mjs',
  'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
  'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
+ 'project-c72-capability-port.mjs','project-c72-portable-cli.mjs',
  'C72_SOURCE_BRIDGE_UNBOUND'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){

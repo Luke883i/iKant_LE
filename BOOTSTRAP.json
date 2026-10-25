@@ -1352,7 +1352,10 @@
       "host/c72-public-mode-admission.mjs",
       "contracts/c72-public-mode-admission-v2.json",
       "host/project-c72-postaccept-reentry.mjs",
-      "host/project-c72-host-recovery.mjs"
+      "host/project-c72-host-recovery.mjs",
+      "host/project-c72-capability-port.mjs",
+      "scripts/project-c72-portable-cli.mjs",
+      "contracts/project-host-capability-port.json"
     ],
     "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
@@ -1402,6 +1405,10 @@
     "postaccept_host_recovery_executor": "host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery",
     "preaccept_orientation_witness": "FIVE_BLOB_SHA_AT_FIRST_TURN_FROZEN_BEFORE_TERMS",
     "host_engineering": "SEPARATE_ENGINEERING_HEAD_NO_C72_OR_IKANT_RUNTIME",
-    "postaccept_auto": "EXECUTE_AND_OBSERVE_AUTO_OR_TYPED_STOP_NOT_NARRATIVE"
+    "postaccept_auto": "EXECUTE_AND_OBSERVE_AUTO_OR_TYPED_STOP_NOT_NARRATIVE",
+    "host_port_contract": "contracts/project-host-capability-port.json",
+    "host_port_adapter": "host/project-c72-capability-port.mjs#bindC72Transport",
+    "host_port_cli": "scripts/project-c72-portable-cli.mjs",
+    "postaccept_transport_policy": "HOST_CHOOSES_PHYSICALLY_CALLABLE_CALLBACK_OR_SOURCE_PACKET_NO_NATIVE_HOOK_CLAIM"
   }
 }
