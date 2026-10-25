@@ -53,7 +53,7 @@ for(let i=0;i<COUNT;i++){
    valid=mode==='EDU';if(state.slots.NEXT!==(valid?'VERIFY_SOURCE':'STOP'))errors++;
    transitions++;
   }else if(receipt.slots.NEXT!=='STOP')errors++;
-  if(!valid)phase='C72_BLOCKED';
+  if(!valid){phase='C72_BLOCKED';selection=null;}
  }else{
   const fault=(a>>>11)%11;
   if(fault===0){selection={...good,receipt_sha256:'f'.repeat(64)};valid=false;phase='RECEIPT_TAMPER';}
