@@ -7,9 +7,19 @@ const offer=issueC72V2TermsOffer({sourceHead:H,termsDigest:T});
 const accepted=acceptC72V2Terms({offer,humanMessage:'I ACCEPT',termsPresented:true});
 const selection=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'EDU'});
 test('ZIP offered only on genuine post-mode source blocker; not on uncertain state',()=>{
- const absent=planP1PostModeSourceHandoff({selection,sourceAvailable:false});
+ const absent=planP1PostModeSourceHandoff({selection,sourceAvailable:false,bridgeState:'DEFINITIVELY_UNAVAILABLE'});
  assert.equal(absent.action,'REQUEST_SOURCE_ZIP');assert.ok(absent.source_zip_url.endsWith(`/${H}.zip`));
  assert.equal(planP1PostModeSourceHandoff({selection,sourceAvailable:true}).source_zip_url,null);
  assert.equal(planP1PostModeSourceHandoff({selection}).source_zip_url,null);
- assert.equal(planP1PostModeSourceHandoff({selection:{...selection,selected_mode:'EDU',receipt_sha256:'0'.repeat(64)},sourceAvailable:false}).action,'STOP');
+ assert.equal(planP1PostModeSourceHandoff({selection:{...selection,selected_mode:'EDU',receipt_sha256:'0'.repeat(64)},sourceAvailable:false,bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'STOP');
+});
+
+test('P1 direct helper cannot bypass EDU-only and verified automatic-bridge absence',()=>{
+ assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'SOURCE_ABSENT'}).action,'VERIFY_MACHINE_BRIDGE');
+ assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'PARTIAL_SOURCE_ONLY',bridgeState:'AVAILABLE'}).source_zip_url,null);
+ assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'REQUEST_SOURCE_ZIP');
+ assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'FULL_SOURCE_VERIFIED',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'USE_VERIFIED_SOURCE');
+ const canonical=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'CANONICAL'});
+ assert.equal(planP1PostModeSourceHandoff({selection:canonical,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'STOP');
+ assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'SOURCE_ABSENT',bridgeState:'INFERRED'}).action,'STOP');
 });

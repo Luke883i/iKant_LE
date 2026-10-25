@@ -242,3 +242,44 @@ Release invariant: **a green source-level PR must never be promoted to an assert
 
 The missing platform transport cannot be materialized inside a repository alone. The exact failure in this chat is not fixed at the **field** level until an authorized cross-tool bridge can be invoked and read back. A user should not be asked to resend I ACCEPT in this stalled epoch; engineering changes are applied only on an independent branch. Generate or install a new Project prompt only after human merge and the separate established postmerge procedure.
 
+
+---
+
+## Archaeological follow-on: can #171 make the *next fresh chat* always boot? (25 October 2026)
+
+**Answer: NO unconditional guarantee.** At #171 engineering HEAD, main was still `27c2fca83638ae86aa65dbc15b067e63ae46ca0e` and PR was not merged. A new chat binds the live main HEAD, not the unmerged branch; installing the new prompt is a separate postmerge operation. Even after merge, an updated Project prompt is text, not a native GitHub/Node hook. The three-carrier C72 adapter only succeeds when a real callback, packet, or Node-to-GitHub network path is callable. A failure after original owner invocation must not trigger a blind retry.
+
+### Stage-by-stage archaeological gate matrix
+
+| Stage | Minimal necessary proof | Source implementation | Field status in this chat |
+|---|---|---|---|
+| 0. Deployment | PR merged, Project prompt installed and actually equal to HEAD-pinned source | prompt builder / matrix | UNVERIFIED, PR unmerged at study |
+| 1. First message | one main HEAD + five direct pinned paths, SHA-1 witness displayed | C72 preaccept/Project prompt | OBSERVED in earlier orientation only |
+| 2. Later consent | exact distinct `I ACCEPT`, same main HEAD | C72/v2 gate | Host-observed input, native event UNKNOWN |
+| 3. C72 ingress | real runnable original owner + all five bytes inside Node | #171 callback / packet / HTTPS / staged-files | NO COMPLETE FIVE-FILE FIELD WITNESS |
+| 4. C72 receipt | validated accepted + *complete original introduction* | original C72/v2 validators | NOT INVOKED in previous bootstrap |
+| 5. Later mode | further distinct exact `EDU`; original selection receipt | original C72/v2 selection | NOT REACHED |
+| 6. Preflight | exact current HEAD/TREE + critical prompt blobs; reject drift and stale installation when observed | prompt preflight/matrix | CI test only, actual installed text unknown |
+| 7. Source transport | approved GitHub API->Node materialization of pinned full code | manifest + project-repo-loader | NOT FIELD ATTESTED |
+| 8. Manual contingency | **only EDU** + absent/partial source + bridge **DEFINITIVELY_UNAVAILABLE** + Node + verified extractor | P1 / project-manual-source.py | reachable as typed choice, never universal |
+| 9. ZIP/loader | one full pinned GitHub source ZIP; independently verified complete API TREE, all manifest blob SHA-1, source reread | original Python extractor + Node loader | local checkout fixture tests only |
+| 10. EDU start | same selected HEAD and source, actual C135 original owner and C87 readback | project-oneshell-edu/C135/C87/C125 | software e2e exists; field NOT REACHED |
+| 11. Subsequent turn | same live worker instance and ledger, same-turn C125/S03 and actual visible delivery | continuity + original owner | native persistence/delivery UNKNOWN |
+
+**Postmode manual source specifics.** The GitHub ZIP includes the **whole repository**, but the extractor only transports the paths in the pinned `contracts/project-session-source.json` manifest into the fresh Node source root; this is not an iKant Project bundle, nor five loose user-provided code files. On #171 HEAD the API recursive TREE returned **1,358 entries / 1,317 blobs / ~6.52 MiB Git blob bytes**, no unsafe paths, no symlinks or submodules. This fits the existing Python extractor maximum of 3,000 ZIP members, 30 MiB uncompressed and 5 MiB per member. A complete independent GitHub ZIP fetch and real ChatGPT file upload remain unobserved. The new full-HEAD CI test uses actual `git archive`, a complete reconstructed checkout TREE, original `convert`, and the original Node loader with byte readback: software fixture, NOT live GitHub API provenance.
+
+**Confirmed source-level weakness closed here:** direct `planP1PostModeSourceHandoff` previously accepted any structurally valid C72 mode (including CANONICAL) and `sourceAvailable:false` without independently requiring proof of bridge unavailability. Only its OneShell caller imposed the stricter conditions. This patch moves the gate down to the helper itself: strict EDU/v2, explicit bridgeState = `DEFINITIVELY_UNAVAILABLE`, never offer ZIP on AVAILABLE/UNKNOWN, reject contradicting availability evidence. The direct helper and upstream caller now agree; tests cover both. This is a guard hardening, not an assertion that bridge absence can always be proven.
+
+### Simulative qualification vs the real product
+
+`tests/project-bootstrap-endtoend-100k.test.mjs` executes **100,000 deterministic stage/state combinations** using original C72 selection receipts, P1, original OneShell source planner and original auto-action classifier. Orthogonal axes include selection / state, source availability, bridge availability, Node+extractor availability, and epoch drift. Fail conditions: any ZIP route without genuine EDU + verified absent bridge + qualified missing source + local tools, any bypass from direct P1, any start before full source, any AUTO continuation under source drift. Results MUST be obtained from the latest commit CI on Node20/22, not inferred from the test's existence; count of authentic ChatGPT sessions = 0.
+
+`tests/test_project_manual_full_head.py` performs one **real original-source-code** Git-archive -> complete Git tree -> Python plan -> independent original Node project loader -> physical readback integration on the PR HEAD, plus a stale-HEAD negative. This proves a full checkout-based fallback can run. It is intentionally different from an actual user-uploaded GitHub ZIP and is not proof that the current Host can receive and process that upload.
+
+### Global DoD / anti-regression
+
+- Local: original C72/C59/C135/C87 owners unchanged; reject direct P1 bypass; 100k status falsification (test results observed, not only written); one actual-HEAD archive/loader execution and reread.
+- Intermediate: every Node20/22 OneShell/Project CI green on latest PR commit; manual test wired into CI; source manifest, TREE and budget checks unchanged.
+- Product: merge, installed prompt byte-equality check where available, fresh human consent and EDU receipt, live GitHub->Node complete five-body transfer, full original source materialization, C135 worker and native delivery witnesses. Without this, `PRODUCT_NO_GO`.
+
+The Host's minimum promise is **observed success or a truthful first blocking edge**, not universal automatic activation. In particular, if the bridge's unavailability cannot be proven, the correct state is `API_TO_NODE_BRIDGE_UNKNOWN` and ZIP is not yet offered. Never turn an UNKNOWN result into an invented absence, a simulated owner receipt or a forced human handoff.
