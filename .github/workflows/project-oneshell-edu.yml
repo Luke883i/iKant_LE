@@ -5,6 +5,10 @@ on:
       - 'host/project-oneshell-edu.mjs'
       - 'host/project-c72-preaccept-gate.mjs'
       - 'host/project-c72-postaccept-reentry.mjs'
+      - 'host/project-c72-host-recovery.mjs'
+      - 'host/project-oneshell-emission.mjs'
+      - 'tests/project-c72-host-recovery-emission-p0.test.mjs'
+      - 'project/session-chat/PROMPT.txt'
       - 'contracts/project-c72-preaccept-gate.json'
       - 'tests/project-c72-preaccept-gate.test.mjs'
       - 'tests/project-c72-postaccept-reentry.test.mjs'
@@ -53,6 +57,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node scripts/project-source-manifest.mjs verify
+      - run: npm run check
+      - name: P0 final emission + C72 human-recovery 1000 executed adversarial scenarios
+        run: |
+          mkdir -p "$RUNNER_TEMP/p0-c72-brand-1000"
+          IKANT_P0_TRACE_DIR="$RUNNER_TEMP/p0-c72-brand-1000" node --test tests/project-c72-host-recovery-emission-p0.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p0-c72-brand-adversarial-1000-node-${{ matrix.node-version }}
+          path: ${{ runner.temp }}/p0-c72-brand-1000/
+          retention-days: 30
+          if-no-files-found: error
       - name: Original C72 reentry and 10k owner/brand semantic trace
         run: |
           mkdir -p "$RUNNER_TEMP/c72-brand-10k"

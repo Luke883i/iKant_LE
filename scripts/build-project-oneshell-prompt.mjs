@@ -50,7 +50,9 @@ if(matrix.project_instruction_limit_chars!==8000||
 for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','project-repo-loader',
  'STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION',
  'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72',
- 'project/session-chat/PROMPT.txt'])
+ 'project/session-chat/PROMPT.txt',
+ 'RIENTRO POST-ACCEPT P0','host/project-c72-host-recovery.mjs',
+ 'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{

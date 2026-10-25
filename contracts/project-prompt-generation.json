@@ -32,5 +32,11 @@
   "project_instruction_limit_chars": 8000,
   "project_instruction_limit_utf8_bytes": 8000,
   "short_prompt_dod": "SOURCE_PROMPT_BYTE_EXACT_GENERATOR_INPUT_UNDER_LIMIT",
-  "portable_short_prompt": "HEAD_AGNOSTIC_SHORT_PROJECT_BOOTSTRAP_WITH_HEAD_PINNED_ORIGINAL_OWNERS"
+  "portable_short_prompt": "HEAD_AGNOSTIC_SHORT_PROJECT_BOOTSTRAP_WITH_HEAD_PINNED_ORIGINAL_OWNERS",
+  "postaccept_reentry_required_in_project_prompt": true,
+  "postaccept_host_recovery": "host/project-c72-host-recovery.mjs",
+  "original_c72_postaccept": "host/project-c72-postaccept-reentry.mjs",
+  "visual_html_emission_gate": "host/project-oneshell-emission.mjs",
+  "native_chatgpt_renderer_control_claim": false,
+  "end_user_next_must_be_actionable": true
 }
