@@ -30,5 +30,10 @@
   "postaccept_reentry": "host/project-c72-postaccept-reentry.mjs",
   "postaccept_reentry_only_after_distinct_I_ACCEPT": true,
   "postaccept_owner_statuses_are_observations_not_discovery_inferences": true,
-  "postaccept_reentry_native_turn_origin_attested": false
+  "postaccept_reentry_native_turn_origin_attested": false,
+  "postaccept_host_recovery": "host/project-c72-host-recovery.mjs",
+  "postaccept_catalog_empty_is_not_owner_absence": true,
+  "postaccept_human_gateway_action_required": false,
+  "postaccept_auto_verify_node_and_source_after_exact_i_accept": true,
+  "native_host_binding_enforced_by_prompt": false
 }
