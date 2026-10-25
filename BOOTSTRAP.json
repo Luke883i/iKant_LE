@@ -1412,6 +1412,10 @@
     "host_port_cli": "scripts/project-c72-portable-cli.mjs",
     "postaccept_transport_policy": "HOST_SELECTED_ONE_CALLABLE_CALLBACK_OR_PACKET_OR_NODE_HTTPS_POST_ACCEPT_ONLY_NO_NATIVE_CLAIM",
     "host_port_orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress",
-    "host_port_staged_cli": "scripts/project-c72-staged-ingress-cli.mjs"
+    "host_port_staged_cli": "scripts/project-c72-staged-ingress-cli.mjs",
+    "preferred_public_mode": "EDU",
+    "canonical_project_status": "LEGACY_UNQUALIFIED_DEPRECATION_PLANNED_NO_EDU_BOOTSTRAP_NO_ACTIVE",
+    "host_adapter_selection": "OBSERVED_PHYSICAL_CAPABILITY_ANY_IMPLEMENTATION_ONLY_ORIGINAL_OWNER_VALIDATES",
+    "one_shell_brand_scope": "VERIFIED_REPOSITORY_SVG_HOST_HTML_OR_TEXT_FALLBACK_NO_NATIVE_AVATAR_PROMISE"
   }
 }

@@ -59,6 +59,9 @@ on:
       - 'scripts/oneshell-compact-select-100.mjs'
       - 'tests/p1-human-language.test.mjs'
       - 'tests/project-session-e2e.test.mjs'
+      - 'tests/project-edu-complete-chain.test.mjs'
+      - 'host/project-oneshell-phases.mjs'
+      - 'tests/project-oneshell-phases.test.mjs'
       - 'tests/project-oneshell-full-source.test.mjs'
       - 'tests/test_project_manual_source.py'
       - 'scripts/project-oneshell-falsify.mjs'
@@ -108,7 +111,7 @@ jobs:
           path: ${{ runner.temp }}/c72-brand-10k/
           retention-days: 30
           if-no-files-found: error
-      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-continuity.test.mjs tests/project-oneshell-compact.test.mjs tests/project-oneshell-visual-v2.test.mjs tests/project-oneshell-host-boundary.test.mjs tests/project-oneshell-language-ack.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/project-bootstrap-endtoend-100k.test.mjs tests/p1-postmode-source-handoff.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
+      - run: node --test tests/project-oneshell-edu.test.mjs tests/project-oneshell-continuity.test.mjs tests/project-oneshell-compact.test.mjs tests/project-oneshell-visual-v2.test.mjs tests/project-oneshell-host-boundary.test.mjs tests/project-oneshell-language-ack.test.mjs tests/project-oneshell-autopilot-100k.test.mjs tests/project-bootstrap-endtoend-100k.test.mjs tests/p1-postmode-source-handoff.test.mjs tests/p1-human-language.test.mjs tests/project-oneshell-phases.test.mjs tests/project-session-e2e.test.mjs tests/project-edu-complete-chain.test.mjs tests/project-oneshell-full-source.test.mjs tests/project-repo-loader.test.mjs tests/p0-first-run-handoff.test.mjs
       - run: node scripts/oneshell-compact-select-100.mjs "$RUNNER_TEMP/oneshell-compact-100.json"
       - run: python3 tests/test_project_manual_source.py
       - run: python3 tests/test_project_manual_full_head.py

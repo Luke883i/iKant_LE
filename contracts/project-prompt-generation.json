@@ -192,5 +192,9 @@
   "host_port_cli": "scripts/project-c72-portable-cli.mjs",
   "host_port_not_native_hook": true,
   "host_physical_orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress",
-  "host_staging_cli": "scripts/project-c72-staged-ingress-cli.mjs"
+  "host_staging_cli": "scripts/project-c72-staged-ingress-cli.mjs",
+  "preferred_public_mode": "EDU",
+  "canonical_project_status": "LEGACY_UNQUALIFIED_DEPRECATION_PLANNED_NO_EDU_BOOTSTRAP_NO_ACTIVE",
+  "end_to_end_qualification": "tests/project-edu-complete-chain.test.mjs",
+  "native_avatar_or_delivery_guaranteed": false
 }

@@ -25,7 +25,7 @@ test('all eight semantic phases have owner scope and six stable OneShell slots',
  const e=oneShellSelected({selection:edu,accepted,orientation});
  assert.equal(e.slots.NEXT,'VERIFY_SOURCE');
  const c=oneShellSelected({selection:canonical,accepted,orientation});
- assert.equal(c.slots.NEXT,'C59_ORIGINAL_CANONICAL_GATE');assert.equal(c.slots.A,'NO_VOICE');
+ assert.equal(c.slots.NEXT,'STOP');assert.equal(c.slots.A,'NO_VOICE');
  assert.equal(oneShellSelected({selection:{...edu,selected_mode:'CANONICAL'},accepted,orientation}).slots.NEXT,'STOP');
  const missing=oneShellMaterialized({selection:edu,sourceRoot:'/not/a/materialized/source',head,tree});
  assert.equal(missing.slots.NEXT,'STOP');
@@ -49,7 +49,7 @@ test('exact separate human messages drive only original C72 v2 receipts inside O
  const other=createOneShellAdmissionFlow({head,tree,termsUtf8:'verified terms'});
  other.advance({humanMessage:'avvia iKant'});
  other.advance({humanMessage:'I ACCEPT',termsLinkPresented:true});
- assert.equal(other.advance({humanMessage:'CANONICAL'}).slots.NEXT,'C59_ORIGINAL_CANONICAL_GATE');
+ assert.equal(other.advance({humanMessage:'CANONICAL'}).slots.NEXT,'STOP');
  assert.equal(other.selection().selected_mode,'CANONICAL');
 });
 
@@ -69,4 +69,13 @@ test('any first human utterance triggers ONLY orientation, not consent or a runt
  const flow=createOneShellAdmissionFlow({head,tree,termsUtf8:'verified terms'});
  assert.equal(flow.advance({humanMessage:null}).slots.NEXT,'STOP');
  assert.equal(flow.phase(),'WAIT_TRIGGER');
+});
+
+test('CANONICAL remains original C72-readable legacy but never starts Project bootstrap',()=>{
+ const result=oneShellSelected({selection:canonical,accepted,orientation});
+ assert.match(result.slots.ESITO,/LEGACY/);
+ assert.equal(result.slots.EDGE,'CANONICAL_LEGACY_PRODUCT_NO_GO');
+ assert.equal(result.slots.NEXT,'STOP');
+ assert.equal(result.slots.A,'NO_VOICE');
+ assert.equal(oneShellSelected({selection:edu,accepted,orientation}).slots.NEXT,'VERIFY_SOURCE');
 });
