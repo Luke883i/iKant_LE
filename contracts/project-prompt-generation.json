@@ -199,5 +199,10 @@
   "native_avatar_or_delivery_guaranteed": false,
   "host_followthrough_contract": "contracts/project-host-followthrough.json",
   "host_followthrough_policy": "HOST_READONLY_FROM_ORIGINAL_RECEIPTS_NOT_STORAGE",
-  "postmerge_human_trigger": "PR merged"
+  "postmerge_human_trigger": "PR merged",
+  "postaccept_cold_seed": "host/project-c72-coldstart-seed.mjs",
+  "postaccept_manual_source_kit": "scripts/project-c72-partial-source-kit.mjs",
+  "postaccept_manual_kit_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_WITH_INDEPENDENT_BLOB_PROOF",
+  "post_edu_full_zip_gate_unchanged": true,
+  "field_e2e_gate": "EIGHT_PINNED_GITHUB_BLOBS_PHYSICALLY_ENTER_NODE_AND_ORIGINAL_C72_RECEIPT"
 }
