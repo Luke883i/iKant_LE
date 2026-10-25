@@ -93,3 +93,39 @@ jobs:
           path: ${{ runner.temp }}/oneshell-trace/
           retention-days: 30
           if-no-files-found: error
+
+  p0-source-closure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/project-source-manifest.mjs verify
+
+  p0-contract-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run check
+
+  p0-owner-brand-1000:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/project-c72-host-recovery-emission-p0.test.mjs
+
+  p0-legacy-prompt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/project-oneshell-prompt.test.mjs
