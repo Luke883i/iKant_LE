@@ -1351,7 +1351,8 @@
     "post_accept_before_mode_paths": [
       "host/c72-public-mode-admission.mjs",
       "contracts/c72-public-mode-admission-v2.json",
-      "host/project-c72-postaccept-reentry.mjs"
+      "host/project-c72-postaccept-reentry.mjs",
+      "host/project-c72-host-recovery.mjs"
     ],
     "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
@@ -1393,6 +1394,10 @@
     "project_scoped": true,
     "prompt_portable_release": "EXACT_GIT_HEAD_SOURCE_PROMPT_UNPINNED_OUTPUT",
     "postaccept_reentry": "host/project-c72-postaccept-reentry.mjs#reenterC72V2PostAccept",
-    "postaccept_reentry_scope": "POST_EXACT_I_ACCEPT_ONLY_ORIGINAL_C72_RECEIPTS_HOST_WITNESS_NOT_NATIVE"
+    "postaccept_reentry_scope": "POST_EXACT_I_ACCEPT_ONLY_ORIGINAL_C72_RECEIPTS_HOST_WITNESS_NOT_NATIVE",
+    "postaccept_host_recovery": "host/project-c72-host-recovery.mjs#planC72HostRecovery",
+    "oneshell_host_emission_gate": "host/project-oneshell-emission.mjs#emitVerifiedHostOneShell",
+    "brand_coverage": "REPOSITORY_HOST_OWNED_HTML_ONLY_NO_NATIVE_CHATGPT_RENDERING_CLAIM",
+    "human_recovery_action": "HOST_DIAGNOSES_AUTOMATICALLY_NO_GATEWAY_ACTION_FOR_END_USER"
   }
 }
