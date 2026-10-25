@@ -13,10 +13,11 @@ const denied=e=>oneShellFrame({esito:'BLOCCATO',b:'La fase richiesta non ha una 
  edge:e,next:'STOP'});
 const sha=x=>createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const href=(h,p)=>'https://github.com/Luke883i/iKant_LE/blob/'+h+'/'+p;
-/** Only HOST presentation. Caller must independently verify main, tree and original documents;
+/** Only HOST presentation. Preaccept must not require or acquire a Git TREE.
+ * Caller independently verifies main and the five permitted pinned documents;
  * this function cannot certify a GitHub API call from a plain JS object. */
-export function oneShellOrientation({head,tree,offer}={}){
- if(!H40.test(head||'')||!H40.test(tree||'')||
+export function oneShellOrientation({head,offer}={}){
+ if(!H40.test(head||'')||
     !validateC72V2Offer(offer)||offer.source_head!==head||
     offer.presentation!=='PINNED_DOCUMENT_LINK'||offer.terms_link!==href(head,'TERMS.md')||
     offer.terms_read_attested!==false||offer.terms_body_presented!==false)
@@ -63,12 +64,15 @@ export const ONE_SHELL_PHASES=Object.freeze(['ORIENTATION','ACCEPTED','MODE_SELE
  'SOURCE_CHECK','SOURCE_HANDOFF','MATERIALIZED','EDU_READY','FIRST_TURN_VERIFIED']);
 export const ONE_SHELL_SLOTS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
 
-/** Ephemeral read-only OneShell C72 coordination; NOT a new admission owner,
+/** Ephemeral read-only OneShell C72 coordination: no preaccept TREE dependency.
+ * This helper assumes its imported original C72 owner is already available in the process;
+ * it does not install a gateway or replace postaccept recovery in a cold Host.
+ * NOT a new admission owner,
  * transport, persistent state or native human-event authentication.
  * One advance corresponds to ONE externally observed exact human message.
  */
-export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
- if(!H40.test(head||'')||!H40.test(tree||'')||typeof termsUtf8!=='string'||
+export function createOneShellAdmissionFlow({head,termsUtf8}={}){
+ if(!H40.test(head||'')||typeof termsUtf8!=='string'||
     !termsUtf8.length||Buffer.byteLength(termsUtf8,'utf8')>500000)
   throw Error('FROZEN_ORIGINAL_TERMS_REQUIRED');
  const termsDigest=sha(termsUtf8);
@@ -80,7 +84,7 @@ export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
   if(phase==='WAIT_TRIGGER'){
    if(typeof humanMessage!=='string')return rejected('FIRST_HUMAN_MESSAGE_REQUIRED');
    offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest});
-   const frame=oneShellOrientation({head,tree,offer});
+   const frame=oneShellOrientation({head,offer});
    if(frame.slots.NEXT!=='AWAIT_I_ACCEPT')return rejected('C72_ORIENTATION_BLOCKED');
    phase='WAIT_ACCEPT';
    return frame;
@@ -119,7 +123,7 @@ export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
  return Object.freeze({
   advance,phase:()=>phase,
   selection:()=>phase==='MODE_SELECTED'?selection:null,
-  source_head:head,source_tree:tree,
+  source_head:head,
   authority:0,persistent:false,provider_event_authenticated:false,
   native_ui_attested:false
  });
