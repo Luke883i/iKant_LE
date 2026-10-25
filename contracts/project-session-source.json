@@ -71,6 +71,7 @@
     "host/edu-c126-channel-qualifier.mjs",
     "host/p1-postmode-source-handoff.mjs",
     "host/p1-public-language-guard.mjs",
+    "host/project-c72-postaccept-reentry.mjs",
     "host/project-c72-preaccept-gate.mjs",
     "host/project-oneshell-autopilot.mjs",
     "host/project-oneshell-compact.mjs",
