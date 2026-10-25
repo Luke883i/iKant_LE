@@ -38,5 +38,10 @@
   "original_c72_postaccept": "host/project-c72-postaccept-reentry.mjs",
   "visual_html_emission_gate": "host/project-oneshell-emission.mjs",
   "native_chatgpt_renderer_control_claim": false,
-  "end_user_next_must_be_actionable": true
+  "end_user_next_must_be_actionable": true,
+  "host_engineering_route": "EXPLICIT_HUMAN_REQUEST_INDEPENDENT_NO_C72_NO_IKANT_STATE_TRANSFER",
+  "orientation_witness": "FIVE_BLOB_SHA1_CAPTURED_IN_FIRST_TURN_BEFORE_TERMS_FREEZE",
+  "postaccept_auto_execution": "AUTO_MUST_BE_EXECUTED_AND_OBSERVED_NOT_TERMINAL_STOP",
+  "postaccept_executor": "host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery",
+  "bridge_unbound": "C72_SOURCE_BRIDGE_UNBOUND_NOT_PROVEN_UNAVAILABLE"
 }

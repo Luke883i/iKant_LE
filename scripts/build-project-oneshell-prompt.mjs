@@ -28,7 +28,12 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.runtime_head_preflight!=='AFTER_ORIGINAL_C72_MODE_GATE_BEFORE_EDU_MATERIALIZATION'||
  matrix.orientation_read_scope!=='ONLY_HEAD_AND_FIVE_PINNED_DOCUMENTS_PREACCEPT_NO_TREE_OR_BLOBS'||
  matrix.installed_prompt_equality!=='ONLY_IF_ACTUAL_PROJECT_PROMPT_BYTES_ACCESSIBLE_ELSE_UNKNOWN'||
- matrix.explicit_repin!=='FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER')
+ matrix.explicit_repin!=='FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER'||
+ matrix.host_engineering_route!=='EXPLICIT_HUMAN_REQUEST_INDEPENDENT_NO_C72_NO_IKANT_STATE_TRANSFER'||
+ matrix.orientation_witness!=='FIVE_BLOB_SHA1_CAPTURED_IN_FIRST_TURN_BEFORE_TERMS_FREEZE'||
+ matrix.postaccept_auto_execution!=='AUTO_MUST_BE_EXECUTED_AND_OBSERVED_NOT_TERMINAL_STOP'||
+ matrix.postaccept_executor!=='host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery'||
+ matrix.bridge_unbound!=='C72_SOURCE_BRIDGE_UNBOUND_NOT_PROVEN_UNAVAILABLE')
  throw Error('PROMPT_HEAD_GUARD_MATRIX_INVALID');
 const members=[...new Set([...matrix.required_orientation,matrix.source_prompt,
  matrix.oneshell_contract,...CRITICAL,'contracts/project-prompt-generation.json'])];
@@ -52,7 +57,9 @@ for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','proj
  'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72',
  'project/session-chat/PROMPT.txt',
  'RIENTRO POST-ACCEPT P0','host/project-c72-host-recovery.mjs',
- 'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs'])
+ 'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
+ 'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
+ 'C72_SOURCE_BRIDGE_UNBOUND'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{
