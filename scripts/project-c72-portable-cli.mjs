@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-/** One-shot physical stdin bridge for a Host that can move GitHub bytes to Node.
- * This is NOT a native ChatGPT provider hook. Never auto-retry UNKNOWN.
+/** Physical HOST-supplied stdin, or explicitly selected Node-local GitHub HTTPS.
+ * Neither creates native ChatGPT hooks, consent events or C72 receipt owners.
  */
-import {executeC72PostAcceptRecovery} from '../host/project-c72-host-recovery.mjs';
+import {runC72SelectedHostIngress} from '../host/project-c72-physical-ingress.mjs';
 let raw='';
 try{
  for await(const chunk of process.stdin){
@@ -12,12 +12,21 @@ try{
  const p=JSON.parse(raw);
  if(p?.schema!=='ikant-host-c72-port-request/v1'||p?.humanMessage!=='I ACCEPT'||
   p?.freshHumanTurn!==true||!p?.priorTurnEvidence||
-  !p?.sourcePacket||p?.ownerOutcome&&p.ownerOutcome!=='NOT_INVOKED')
+  (p?.ownerOutcome&&p.ownerOutcome!=='NOT_INVOKED'))
   throw Error('C72_PORT_REQUEST_INVALID');
- const r=await executeC72PostAcceptRecovery({
+ // Legacy packet requests are preserved verbatim. HTTPS must be selected,
+ // never tried automatically after a source transport or owner failure.
+ const mode=p.transport??'HOST_SOURCE_PACKET';
+ if(!['HOST_SOURCE_PACKET','NODE_GITHUB_API'].includes(mode)||
+  (mode==='HOST_SOURCE_PACKET'&&!p.sourcePacket)||
+  (mode==='NODE_GITHUB_API'&&p.sourcePacket!==undefined))
+  throw Error('C72_PORT_CARRIER_INVALID');
+ const r=await runC72SelectedHostIngress({
   humanMessage:p.humanMessage,freshHumanTurn:p.freshHumanTurn,
-  priorTurnEvidence:p.priorTurnEvidence,sourcePacket:p.sourcePacket,
-  ownerOutcome:'NOT_INVOKED'});
+  priorTurnEvidence:p.priorTurnEvidence,
+  carrier:mode,...(mode==='HOST_SOURCE_PACKET'?{sourcePacket:p.sourcePacket}:{}),
+  ownerOutcome:'NOT_INVOKED'
+ });
  process.stdout.write(JSON.stringify(r)+'\n');
  if(r.ok!==true)process.exitCode=2;
 }catch(e){
