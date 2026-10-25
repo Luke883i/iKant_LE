@@ -66,7 +66,7 @@ for(let i=0;i<cases;i++){
  const utterances=['ciao','blblblba','avvia iKant','I ACCEPT','EDU','CANONICAL',
   'non avviare iKant','🚀','',('x'.repeat(1000))];
  const firstText=utterances[(i+mode+sourceProof+nonce)%utterances.length];
- const flow=createOneShellAdmissionFlow({head:H,tree:'b'.repeat(40),termsUtf8:'terms'});
+ const flow=createOneShellAdmissionFlow({head:H,termsUtf8:'terms'});
  const first=flow.advance({humanMessage:firstText,termsLinkPresented:true});
  if(first.slots.NEXT!=='AWAIT_I_ACCEPT'||first.slots.A!=='NO_VOICE'||
     flow.phase()!=='WAIT_ACCEPT'||flow.selection()!==null)unexpected++;
@@ -116,7 +116,7 @@ for(let i=0;i<cases;i++){
  }
  if((i%251)===0){
   // Original C72 receipts, six-slide contract and contradictory mode/offer cases.
-  const p=oneShellOrientation({head:H,tree:'b'.repeat(40),offer});
+  const p=oneShellOrientation({head:H,offer});
   const a=oneShellAccepted({accepted,orientation});
   const selected=oneShellSelected({selection:edu,accepted,orientation});
   if(p.slots.NEXT!=='AWAIT_I_ACCEPT'||a.slots.B!==orientation.text||
