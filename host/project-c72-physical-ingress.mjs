@@ -25,6 +25,7 @@ export async function readC72GithubJSON(path){
       H40.test(path.slice((PREFIX+'/contents/'+p+'?ref=').length))))throw Error('C72_NODE_GITHUB_PATH_DENIED');
  return await new Promise((resolve,reject)=>{
   const req=https.get({hostname:'api.github.com',port:443,path,method:'GET',
+   signal:AbortSignal.timeout(12000),
    headers:{'User-Agent':'ikant-c72-host-physical-ingress','Accept':'application/vnd.github+json',
     'X-GitHub-Api-Version':'2022-11-28'},timeout:10000},res=>{
     if(res.statusCode!==200){res.resume();reject(Error('C72_NODE_GITHUB_HTTP_'+res.statusCode));return}
