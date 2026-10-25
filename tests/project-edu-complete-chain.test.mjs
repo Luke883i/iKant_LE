@@ -58,8 +58,8 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
   const artifact=run('git',['archive','--format=zip','--prefix=iKant_LE-'+head+'/','-o',zip,'HEAD']);
   assert.equal(artifact.status,0,artifact.stderr);
   const rows=execFileSync('git',['ls-tree','-r','-t','-z','HEAD'],{cwd:root})
-   .toString('utf8').split('\\0').filter(Boolean).map(x=>{
-    const t=x.indexOf('\\t'),[mode,type,sha]=x.slice(0,t).split(' ');
+   .toString('utf8').split(String.fromCharCode(0)).filter(Boolean).map(x=>{
+    const t=x.indexOf(String.fromCharCode(9)),[mode,type,sha]=x.slice(0,t).split(' ');
     assert(t>0);return {path:x.slice(t+1),mode,type,sha};
    });
   fs.writeFileSync(api,JSON.stringify({source_head:head,source_tree:tree,
