@@ -163,6 +163,7 @@
 - [docs/POST118_RISK_AND_SCOPE.md](POST118_RISK_AND_SCOPE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PRODUCT_DASHBOARD.md](PRODUCT_DASHBOARD.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_C72_BOOTSTRAP_WITNESS_AND_BRIDGE_P0.md](PROJECT_C72_BOOTSTRAP_WITNESS_AND_BRIDGE_P0.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/PROJECT_C72_HOST_PORT_P0.md](PROJECT_C72_HOST_PORT_P0.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_C72_POSTACCEPT_REENTRY_AND_BRAND.md](PROJECT_C72_POSTACCEPT_REENTRY_AND_BRAND.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_C72_PREACCEPT_REGRESSION.md](PROJECT_C72_PREACCEPT_REGRESSION.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_META_PROMPT_COBOL.md](PROJECT_META_PROMPT_COBOL.md): Documentazione specialistica. Stato di review: **da verificare**.
