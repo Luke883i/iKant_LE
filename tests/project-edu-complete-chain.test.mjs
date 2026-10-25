@@ -6,10 +6,10 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {spawnSync,execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {issueC72V2LinkedTermsOffer,acceptC72V2LinkedTerms,
- presentC72V2Introduction,selectC72V2Mode,
- validateC72V2Accepted,validateC72V2Orientation,validateC72V2ModeSelection}
+import {selectC72V2Mode,validateC72V2Accepted,
+ validateC72V2Orientation,validateC72V2ModeSelection}
  from '../host/c72-public-mode-admission.mjs';
+import {runC72SelectedHostIngress} from '../host/project-c72-physical-ingress.mjs';
 import {startOneShellEdu,renderOneShell} from '../host/project-oneshell-edu.mjs';
 import {oneShellMaterialized} from '../host/project-oneshell-phases.mjs';
 import {emitVerifiedHostOneShell} from '../host/project-oneshell-emission.mjs';
@@ -28,13 +28,30 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
  let session=null;
  const run=(cmd,args)=>spawnSync(cmd,args,{cwd:root,encoding:'utf8',timeout:90000,maxBuffer:3_000_000});
  try{
-  const terms=fs.readFileSync(path.join(root,'TERMS.md'));
-  const offer=issueC72V2LinkedTermsOffer({sourceHead:head,termsDigest:SHA(terms)});
-  assert.equal(offer.presentation,'PINNED_DOCUMENT_LINK');
-  const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
+  // The first-turn witness is a CHECKOUT FIXTURE, not native GitHub ingress.
+  // The Host packet is physically assembled from five actual PR-head Git blobs,
+  // then passed through the existing Host adapter to the original C72 owner.
+  const originalDocs=required.map(p=>({path:p,source_head:head,
+    blob_sha1:git('rev-parse','HEAD:'+p),
+    content:execFileSync('git',['show','HEAD:'+p],{cwd:root,encoding:'utf8'})}));
+  const witness={source_head:head,host_link_displayed:true,
+    distinct_human_message_observed:true,
+    terms_link:'https://github.com/Luke883i/iKant_LE/blob/'+head+'/TERMS.md',
+    pinned_blob_shas:Object.fromEntries(originalDocs.map(d=>[d.path,d.blob_sha1]))};
+  const packet={schema:'ikant-host-c72-source-packet/v1',source_head:head,live_head:head,
+    carrier_kind:'HOST_OPAQUE_TRANSFER',source_origin_attested:false,
+    native_event_attested:false,documents:originalDocs};
+  const admission=await runC72SelectedHostIngress({
+    humanMessage:'I ACCEPT',freshHumanTurn:true,priorTurnEvidence:witness,
+    carrier:'AUTO',sourcePacket:packet,ownerOutcome:'NOT_INVOKED'});
+  assert.equal(admission.ok,true,JSON.stringify(admission));
+  assert.equal(admission.host_carrier_selected,'HOST_SOURCE_PACKET');
+  assert.equal(admission.original_owner_invoked,true);
+  assert.equal(admission.provider_source_event_attested,false);
+  const accepted=admission.accepted,introduction=admission.introduction;
   assert(validateC72V2Accepted(accepted));
-  const introduction=presentC72V2Introduction(accepted);
   assert(validateC72V2Orientation(introduction,accepted));
+  assert.equal(accepted.terms_digest,SHA(fs.readFileSync(path.join(root,'TERMS.md'))));
   const selection=selectC72V2Mode({accepted,orientation:introduction,humanMessage:'EDU'});
   assert(validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead:head}));
   assert.equal(selection.selected_mode,'EDU');
@@ -99,7 +116,7 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
   assert.equal(session.readSessionState().original_c87_readback.count,1);
   console.log('PR171_ORIGINAL_EDU_CHAIN_LOCAL_PASS',JSON.stringify({
    source_head:head,source_tree:tree,manifest_members:extracted.files.length,
-   c72_original_receipts_verified:true,edu_original_selection_verified:true,
+   c72_original_receipts_verified:true,host_adapter_auto_packet_executed:true,edu_original_selection_verified:true,
    manual_full_repo_archive_node_materialized:true,c135_original_owner_started:true,
    original_c87_readback_count:1,c125_sha256:evidence.original_c125_sha256,
    logo_sha256:visual.brand_sha256,logo_rendered_before_title:true,
