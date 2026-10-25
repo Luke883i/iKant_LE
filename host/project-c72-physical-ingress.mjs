@@ -15,7 +15,7 @@ const H40=/^[a-f0-9]{40}$/u;
 const B64=/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u;
 const stop=edge=>Object.freeze({ok:false,kind:'STOP',edge,authority:0,active:false,
  original_owner_invoked:false,native_event_attested:false,source_origin_attested:false});
-const blob=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\\0')).update(b).digest('hex');
+const blob=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
 
 /** HTTPS is an actual Node-local carrier ONLY if network execution succeeds.
  * Caller cannot substitute URLs/hostnames; no redirects/tokens/secrets used. */
@@ -63,7 +63,7 @@ export function createC72NodeGithubCallbacks({sourceHead,getJSON=readC72GithubJS
       !H40.test(x?.sha||'')||typeof x?.content!=='string'||
       !Number.isInteger(x?.size)||x.size<1||x.size>256000)
     throw Error('C72_NODE_GITHUB_FILE_SHAPE');
-   const clean=x.content.replace(/\\n/g,'');
+   const clean=x.content.replace(/\n/g,'');
    if(!clean||clean.length%4!==0||!B64.test(clean))throw Error('C72_NODE_GITHUB_BASE64');
    const bytes=Buffer.from(clean,'base64');
    if(bytes.length!==x.size||bytes.toString('base64')!==clean||blob(bytes)!==x.sha)
