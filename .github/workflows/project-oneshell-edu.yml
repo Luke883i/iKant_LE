@@ -8,6 +8,7 @@ on:
       - 'host/project-c72-host-recovery.mjs'
       - 'host/project-oneshell-emission.mjs'
       - 'tests/project-c72-host-recovery-emission-p0.test.mjs'
+      - 'tests/project-c72-recovery-10k.test.mjs'
       - 'project/session-chat/PROMPT.txt'
       - 'contracts/project-c72-preaccept-gate.json'
       - 'tests/project-c72-preaccept-gate.test.mjs'
@@ -68,6 +69,16 @@ jobs:
           path: ${{ runner.temp }}/p0-c72-brand-1000/
           retention-days: 30
           if-no-files-found: error
+      - name: C72 original recovery 10k first-witness/bridge adversarial executions
+        run: |
+          mkdir -p "$RUNNER_TEMP/c72-recovery-10k"
+          IKANT_C72_RECOVERY_TRACE_DIR="$RUNNER_TEMP/c72-recovery-10k" node --test tests/project-c72-recovery-10k.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c72-recovery-first-witness-10k-node-${{ matrix.node-version }}
+          path: ${{ runner.temp }}/c72-recovery-10k/
+          retention-days: 30
+          if-no-files-found: error
       - name: Original C72 reentry and 10k owner/brand semantic trace
         run: |
           mkdir -p "$RUNNER_TEMP/c72-brand-10k"
@@ -120,6 +131,15 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tests/project-c72-host-recovery-emission-p0.test.mjs
+
+  p0-recovery-10k:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/project-c72-recovery-10k.test.mjs
 
   p0-legacy-prompt:
     runs-on: ubuntu-latest
