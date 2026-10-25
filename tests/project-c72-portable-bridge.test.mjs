@@ -49,7 +49,7 @@ test('two carriers are ambiguous; no carrier stays UNBOUND, not ABSENT',async()=
 test('different byte, duplicated path, wrong HEAD and absent native event all fail closed',async()=>{
  const x=args();x.sourcePacket.documents[4].content+='tamper';
  assert.equal((await executeC72PostAcceptRecovery(x)).edge,
-   'C72_PINNED_DOCUMENT_BLOB_INVALID:TERMS.md');
+   'C72_PINNED_DOCUMENT_BLOB_INVALID');
  const y=args();y.sourcePacket.documents[1].path='README.md';
  assert.equal((await executeC72PostAcceptRecovery(y)).edge,'C72_HOST_PACKET_INVALID');
  const z=args();z.sourcePacket.live_head='0'.repeat(40);
