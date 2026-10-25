@@ -121,3 +121,46 @@ evidence cannot be replaced with GitHub Actions labels.
 
 Do not regenerate or install a new prompt before **human merge** and a later explicit
 Host engineering request. Prompt generation then uses exact verified main HEAD and immutable blobs.
+
+---
+
+## PR #171 – minimal critical path with mandatory reuse (25 October 2026)
+
+The Host guarantees an *observable effect contract*, not the availability of any specific tool. Only after a real distinct exact `I ACCEPT` may it select and physically invoke ONE of three transports, then call the **unchanged** `executeC72PostAcceptRecovery` / original `reenterC72V2PostAccept`. No new C72 issuer, mode owner, C87 writer or model is created.
+
+**Recycled primitives rather than cloned engines:**
+- **C65 / PR #74:** pin main and each contents request to a single SHA; check the original Git blob identities independently.
+- **C78 / PR #87:** retain the existing Node stdin JSON envelope and single-process physical result readback. The legacy packet ABI and CLI remain supported.
+- **C98:** import its strict `isC98JSONDataTree` to reject executable descriptors and forged object shapes before consuming Node-local GitHub responses.
+- **C103:** reuse the separation between an *effect/receipt test* and a native provider-event claim; success is not provider registration.
+- **C104:** reuse its resumable materialization principle **only after EDU**. It is deliberately **not** imported into the atomic five-document C72 admission gate; C104's mode and cache owner would be wrong at this stage.
+- **C95/C98 host file-bridge:** these prove only real host-supplied capabilities; mere callback names, registered-looking schemas and local fixtures do not install network routing.
+
+**The new, smallest missing executable primitive** is `host/project-c72-physical-ingress.mjs`:
+- `chooseC72HostCarrier`: pure, deterministic capability selection, with no network calls or consent issuance; picks `HOST_CALLBACKS`, `HOST_SOURCE_PACKET`, or `NODE_GITHUB_API` ONLY when there is an actual function/packet or an explicit Node HTTPS allowance. Multiple incompatible carriers are rejected, not arbitrarily combined. No carrier = typed `C72_SOURCE_BRIDGE_UNBOUND`.
+- `createC72NodeGithubCallbacks`: allows the same original executor to run entirely in Node. Node's `https` library fetches precisely one public GitHub main ref and the five `contents/*?ref=<frozen SHA>` APIs. Requests are path-allowlisted, timeout/byte bounded, refuse redirects/non-200 responses, and validate source metadata, size, strict UTF-8, canonical Base64 and each Git SHA-1.
+- `runC72SelectedHostIngress`: exact fresh-consent and owner-outcome gates come BEFORE any carrier I/O. Calls the existing `executeC72PostAcceptRecovery` **once**, which compares live HEAD against the original first-turn SHA witness and recomputes/validates original owner receipts. The selection labels remain Host observations, not native messages.
+- `scripts/project-c72-portable-cli.mjs`: reused physical Node stdin gateway. Old source-packet JSON remains valid; an explicit `transport: "NODE_GITHUB_API"` without a packet invokes Node HTTPS instead. No implicit auto-retry or token/URL injection.
+
+### Decision table (Host capability, not a platform guarantee)
+
+| Actually observed capability | Machine choice | What the Host must prove |
+|---|---|---|
+| GitHub callback FUNCTIONS callable within the same Node process | `HOST_CALLBACKS` | 1 pinned live HEAD, 5 pinned byte bodies, 5 Git SHA-1 matches, original C72 accepted+intro |
+| Exact five-source packet physically received by the Node process | `HOST_SOURCE_PACKET` | full packet validation, same five hashes and original C72 output; no invented API origin |
+| Node code installed and outbound GitHub HTTPS explicitly permitted | `NODE_GITHUB_API` | Node performs the six REAL GitHub API calls itself, as above; DNS/network failure is a typed STOP |
+| Connector and Node separately available but no callable cross-tool carrier and no permitted Node HTTPS | none | `C72_SOURCE_BRIDGE_UNBOUND`, not “transfer failed” or “C72 absent” |
+
+A host may select the route manually or call `chooseC72HostCarrier` (`carrier:'AUTO'`). The selector is not a new runtime installer: it cannot make GitHub reachable from an isolated Node container. Host decides **how** to provision an authorized carrier; contract decides **what physical evidence** is required. The software is portable because all paths converge on one original owner, not because the Project prompt can provision platform tools.
+
+### Counterexample tests / non-regression
+
+Tests cover the three carrier positives, the legacy packet CLI, an invalid/duplicate carrier, network failure, stale main, wrong Git SHA-1, corrupt Base64, wrong file metadata, missing prior witness, non-exact consent, ambiguous Host IO and unknown owner outcomes. The 10k and 20k Cartesian negative suites are synthetic software states, *not* real ChatGPT sessions. The Node20/22 workflows qualify source + CI only. Run an **actual native Host field test** separately to show connector ingress -> Node file/HTTPS read -> original C72 receipt -> complete original introduction -> native transcript delivery. If that native field test is unavailable, `PRODUCT_NO_GO` and `NO_VOICE` remain mandatory.
+
+**Anti-regression:**
+1. A new mode, writer or C72 implementation is forbidden. Do not alter original C72 accepted/intro validators.
+2. Any missing/unknown node, callback, source, origin, or owner result is a fail-closed typed edge. A read failure is NOT a successful retry authorization.
+3. Preconsent remains exactly one main HEAD + five direct original documents; this Node module must not run until the separate `I ACCEPT` has actually been observed.
+4. Current GitHub Project prompt text must stay within 8000 bytes/chars, including its 210-byte pinned prefix.
+5. The current chat SOURCE_LOCK never repins because engineering commits changed the PR branch. Only a later human merge + separate release step can generate a new installed prompt candidate.
+6. Repo CI success cannot attest native ChatGPT tool registration, human event authentication, UI rendering, worker persistence or transport permission.
