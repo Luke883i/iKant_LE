@@ -174,3 +174,26 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tests/project-oneshell-prompt.test.mjs
+
+  pr171-regression-slices:
+    name: PR171 isolate (${{ matrix.case }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        case:
+          - project-host-followthrough
+          - project-edu-complete-chain
+          - project-bootstrap-endtoend-100k
+          - project-c72-physical-ingress
+          - project-c72-portable-bridge
+          - project-c72-staged-ingress
+          - p1-postmode-source-handoff
+          - project-oneshell-phases
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Original executable test slice
+        run: node --test tests/${{ matrix.case }}.test.mjs
