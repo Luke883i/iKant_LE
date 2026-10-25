@@ -28,8 +28,38 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.runtime_head_preflight!=='AFTER_ORIGINAL_C72_MODE_GATE_BEFORE_EDU_MATERIALIZATION'||
  matrix.orientation_read_scope!=='ONLY_HEAD_AND_FIVE_PINNED_DOCUMENTS_PREACCEPT_NO_TREE_OR_BLOBS'||
  matrix.installed_prompt_equality!=='ONLY_IF_ACTUAL_PROJECT_PROMPT_BYTES_ACCESSIBLE_ELSE_UNKNOWN'||
- matrix.explicit_repin!=='FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER')
+ matrix.explicit_repin!=='FRESH_C72_REQUIRED_NO_RECEIPT_OR_C135_TRANSFER'||
+ matrix.host_engineering_route!=='EXPLICIT_HUMAN_REQUEST_INDEPENDENT_NO_C72_NO_IKANT_STATE_TRANSFER'||
+ matrix.orientation_witness!=='FIVE_BLOB_SHA1_CAPTURED_IN_FIRST_TURN_BEFORE_TERMS_FREEZE'||
+ matrix.postaccept_auto_execution!=='AUTO_MUST_BE_EXECUTED_AND_OBSERVED_NOT_TERMINAL_STOP'||
+ matrix.postaccept_executor!=='host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery'||
+ matrix.bridge_unbound!=='C72_SOURCE_BRIDGE_UNBOUND_NOT_PROVEN_UNAVAILABLE')
  throw Error('PROMPT_HEAD_GUARD_MATRIX_INVALID');
+// This is a checkable route index, not proof of provider dispatch or a new owner.
+const rp=matrix.release_protocol;
+if(rp?.candidate!=='PR_HEAD_TEST_ONLY_NEVER_INSTALLED_OR_CANONICAL'||
+ rp.canonical!=='AFTER_HUMAN_MERGE_ON_MAIN_AND_EXPLICIT_HOST_REQUEST'||
+ rp.human_action!=='ONE_POSTMERGE_GENERATE_PROMPT_REQUEST_NO_C72_GATE_FOR_HOST_ENGINEERING'||
+ rp.head_read!=='RESOLVE_LIVE_MAIN_ONCE_AND_BIND_EXACT_COMMIT_TREE_BLOBS'||
+ rp.installed_equivalence!=='UNKNOWN_UNLESS_REAL_PROJECT_PROMPT_BYTES_OBSERVED'||
+ rp.runtime_epoch!=='EXPLICIT_REPIN_REQUIRES_FRESH_C72_NO_RECEIPT_LEDGER_OR_C135_TRANSFER'||
+ rp.no_auto_change_runtime!==true||rp.no_native_delivery_claim!==true)
+ throw Error('PROMPT_RELEASE_BOUNDARY_DRIFT');
+const routes=matrix.responsibility_registry;
+if(!Array.isArray(routes)||routes.length!==12||
+ new Set(routes.map(x=>x.route)).size!==12||
+ routes.some(x=>x.authority!==0||x.provider_bound!==false||
+ !x.boundary||!x.proof||!x.scope||
+ typeof x.module!=='string'||!/^[A-Za-z0-9._/-]+$/.test(x.module)))
+ throw Error('PROMPT_RESPONSIBILITY_MATRIX_INVALID');
+for(const row of routes){
+ const raw=original(row.module).toString('utf8');
+ if(row.export===null){if(row.route!=='ENGINEERING'||!raw.includes('HOST_ENGINEERING.'))
+  throw Error('PROMPT_HOST_ENGINEERING_OWNER_MISSING');continue}
+ if(typeof row.export!=='string'||!/^[A-Za-z][A-Za-z0-9_]*$/.test(row.export)||
+  !new RegExp('export\\s+(?:async\\s+)?(?:function|const|class)\\s+'+row.export+'\\b').test(raw))
+   throw Error('PROMPT_OWNER_EXPORT_MISSING:'+row.route);
+}
 const members=[...new Set([...matrix.required_orientation,matrix.source_prompt,
  matrix.oneshell_contract,...CRITICAL,'contracts/project-prompt-generation.json'])];
 if(members.length!==10)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
@@ -52,7 +82,9 @@ for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','proj
  'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72',
  'project/session-chat/PROMPT.txt',
  'RIENTRO POST-ACCEPT P0','host/project-c72-host-recovery.mjs',
- 'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs'])
+ 'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
+ 'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
+ 'C72_SOURCE_BRIDGE_UNBOUND'])
  if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
 async function liveHead(){
  return new Promise((resolve,reject)=>{

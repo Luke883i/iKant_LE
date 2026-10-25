@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/project-oneshell-prompt.test.mjs
+      - run: node --test tests/project-oneshell-prompt.test.mjs tests/project-bootstrap-responsibility-matrix.test.mjs
       - name: Build immutable HEAD-only prompt
         shell: bash
         run: |
