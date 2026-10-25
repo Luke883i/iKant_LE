@@ -9,6 +9,9 @@ on:
       - 'host/project-oneshell-emission.mjs'
       - 'tests/project-c72-host-recovery-emission-p0.test.mjs'
       - 'tests/project-c72-recovery-10k.test.mjs'
+      - 'tests/project-bootstrap-responsibility-matrix.test.mjs'
+      - 'contracts/project-prompt-generation.json'
+      - 'scripts/build-project-oneshell-prompt.mjs'
       - 'project/session-chat/PROMPT.txt'
       - 'contracts/project-c72-preaccept-gate.json'
       - 'tests/project-c72-preaccept-gate.test.mjs'
@@ -58,6 +61,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node scripts/project-source-manifest.mjs verify
+      - run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs
       - run: npm run check
       - name: P0 final emission + C72 human-recovery 1000 executed adversarial scenarios
         run: |

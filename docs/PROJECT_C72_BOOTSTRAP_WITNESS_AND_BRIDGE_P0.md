@@ -45,3 +45,84 @@ This runner is a repo software path, **not** a provider-native tool binding or c
 4. Original C72/v2 returns validated receipts and an unmodified full introduction, with no fake A voice and no preemptive EDU.
 5. Explicit Host repository audit/patch/PR stays outside the iKant gate. Engineering HEAD never repins iKant.
 6. Prompt source, generation contract, generator, BOOTSTRAP routing and Node 20/22 tests agree on the new path. No new original owner, native SVG/avatar or C135 writer.
+
+
+## Cross-PR DoD register (last five merged PRs at the PR169 engineering baseline)
+
+Each `[x]` below means the **source-level obligation is covered by the named merged PR's code or test**, not that a new provider-native ChatGPT E2E event was witnessed here. A `[ ]` means a release qualification still requires an independent observation. This register is descriptive and subordinate to the original owners.
+
+### PR #164 — EDU Host scope, badge, C135 ACK (8 granular DoD)
+- [x] 164-01 Read-only status badge derived from validated original frame, never a functional EXIT button.
+- [x] 164-02 Exact two-distinct-human-turn `EXIT IKANT` and confirmation/cancellation remain unchanged.
+- [x] 164-03 Host checkups require explicit `Host:` or `@Host ` and allowed subject.
+- [x] 164-04 Owner cognitive output cannot be replaced by Host B after C135 stop.
+- [x] 164-05 C135 emits `required_ack` instead of referencing missing `task.plan` fields.
+- [x] 164-06 C135/S02 validate all three actual digest fields before C87, with negative zero-write tests.
+- [x] 164-07 Original C87/C125/S03 same-turn proof retained, no other writer/owner.
+- [ ] 164-08 End-user native status badge, C135 deliverability and original provider-bound turn observed outside CI.
+
+### PR #165 — preaccept freeze + portable Project prompt (8 granular DoD)
+- [x] 165-01 Only one HEAD read then `README.md`, `BOOTSTRAP.json`, `ADMISSION.json`, `AGENTS.md`, `TERMS.md` in that order.
+- [x] 165-02 No preaccept TREE, history, additional files, arbitrary script or gateway download.
+- [x] 165-03 Gateway is **preinstalled-only**; it does not globally intercept unbound Host tools.
+- [x] 165-04 After Terms presentation, source access freezes until a later exact human `I ACCEPT`.
+- [x] 165-05 C72/v2 original issues offer/acceptance and complete introduction; no Host reconstruction.
+- [x] 165-06 No `HARD_PREACCEPT_BREACH` without evidence of the classified action/sequence.
+- [x] 165-07 Portable and pinned prompt retain both 8,000-character and 8,000-byte ceilings including 210-byte pinned allowance.
+- [ ] 165-08 Live native Host first-turn read exclusivity and preservation across turns observed externally.
+
+### PR #166 — original canonical SVG (7 granular DoD)
+- [x] 166-01 Render original `assets/brand/ikant-light.svg`, no new glyph and no model-authored substitutions.
+- [x] 166-02 Exact original asset SHA-256 verified; 28×28 before header, correct responsive themed wrapper.
+- [x] 166-03 On invalid/missing SVG fail closed to declared text-only presentation.
+- [x] 166-04 Six slots, model-data escaping and UTF-8 Owner A remain byte-identical.
+- [x] 166-05 No false interactive EXIT control, native avatar or registered branding claim.
+- [x] 166-06 Source manifest includes the actual SVG dependencies and negative adversarial cases.
+- [ ] 166-07 Native ChatGPT renderer displays that SVG for **every** delivered OneShell message, not just repository HTML.
+
+### PR #167 — original C72/v2 reentry (8 granular DoD)
+- [x] 167-01 Reentry only on distinct exact post-orientation `I ACCEPT`.
+- [x] 167-02 Live HEAD equals pinned SOURCE_LOCK; no automatic repin.
+- [x] 167-03 Five original first-turn SHA witnesses match the five re-acquired pinned UTF-8 Git blobs.
+- [x] 167-04 Original `issueC72V2LinkedTermsOffer`, `acceptC72V2LinkedTerms`, `presentC72V2Introduction` invoked, validated and returned intact.
+- [x] 167-05 Catalog discovery EMPTY is neither a proven missing gateway nor permission to invent a receipt.
+- [x] 167-06 Unknown owner call outcome stops; no blind retry, fake identity, or premature EDU.
+- [x] 167-07 Mode remains a separate later exact `EDU`/`CANONICAL` original owner event.
+- [ ] 167-08 The actual ChatGPT Host API-to-Node source and previous-turn SHA bridge is observed, not assumed.
+
+### PR #168 — Host AUTO recovery + final identity emission (8 granular DoD)
+- [x] 168-01 `planC72HostRecovery` classifies typed Node/bridge/owner diagnostics, but never creates C72 receipts.
+- [x] 168-02 Missing catalog entry must not be interpreted as verified missing Node/C72.
+- [x] 168-03 After exact I ACCEPT, Node/transport checks must continue rather than asking the human to diagnose a gateway.
+- [x] 168-04 Repository-controlled HTML passes through `emitVerifiedHostOneShell` only.
+- [x] 168-05 Exactly one SHA-verified source-canonical SVG before title and exactly six verified slots.
+- [x] 168-06 Invalid visual code/content fails closed; text fallback discloses absent SVG.
+- [x] 168-07 Generator, Project prompt and source manifest reference original owner/renderer and keep 8k bounds.
+- [ ] 168-08 Automatic actions and visual rendering actually run in the consumer ChatGPT Host session.
+
+### PR #169 — closure and anti-regression DoD (15 granular DoD)
+- [x] 169-01 Correctly split the **two distinct observed roots**: missing first-turn SHAs; AUTO turned into premature STOP.
+- [x] 169-02 First-turn preinstalled gateway exposes immutable five-SHA witness before Terms freeze.
+- [x] 169-03 Host without installed gateway must obtain/show first-turn five SHAs or stop **before inviting consent**.
+- [x] 169-04 No reconstruction of initial witness with second-turn source rereads.
+- [x] 169-05 Postaccept executor consumes actual `readMain`/`readPinnedDocument` callbacks; a missing binding is `C72_SOURCE_BRIDGE_UNBOUND`.
+- [x] 169-06 Node 20+ check; live HEAD equality and all five original SHA matches before owner.
+- [x] 169-07 Original C72/v2 owner and validators reused; full introduction and accepted receipt returned unmodified.
+- [x] 169-08 UNKNOWN read/owner outcome stops without retry and without user gateway tasks.
+- [x] 169-09 Host engineering uses independent `ENGINEERING_HEAD`, no runtime/consent transfer.
+- [x] 169-10 Legacy prompt anchors restored, plus both <8000 budgets and 210-byte pinned allowance.
+- [x] 169-11 Canonical prompt generator/contract bind and validate 12 **real source exports** or one explicitly Host-owned prompt declaration. An export witness is **not** a live execution witness.
+- [x] 169-12 10k C72/source and 10k matrix mutations check failures without fake owner receipt; Node 20/22 CI.
+- [x] 169-13 Epoch **generation** and iKant runtime repinning separated (see below).
+- [ ] 169-14 All PR HEAD CI checks success, with Git tree/blob readback; no merge by Host.
+- [ ] 169-15 New fresh-chat provider E2E witnesses on a newly installed Project prompt, including first-turn SHA persistence, API-to-Node binding, original C72 receipt, original EDU selection, source loader, C135, C87/C125, visual delivery.
+
+## Generation matrix, propagation ownership and release process
+
+`contracts/project-prompt-generation.json` is the canonical **generation matrix**. Its `responsibility_registry` is a source-level map of 12 routes to file/function, scope, edge, evidence and an explicit `provider_bound:false`. It is **not** a second cognitive controller. The original `scripts/build-project-oneshell-prompt.mjs` reopens the matrix from `git show HEAD`, checks semantic bounds and live exports, and reads immutable source blobs. The Project string remains `project/session-chat/PROMPT.txt`. `BOOTSTRAP.project_session` points to bootstrap owner paths; Node CI verifies alignment. If any layer disagrees, generation must fail rather than silently updating only one surface.
+
+Minimal propagation: **owner code** → `BOOTSTRAP.project_session` route → **Project source prompt** → **generation matrix** → **canonical generator checks** → **Node 20/22 tests** → PR commit TREE/blob readback → **human merge** → new main HEAD verified → **explicit Host generation request** → byte-identical prompt and metadata. No separate manually authored portable template. The glifo stays the original source-verified SVG in the existing renderer: generation does not install that renderer in ChatGPT.
+
+**Two epochs, not one bypass.** The Host can generate the portable prompt with one explicit human request *after merge* against the then-current main HEAD; this is **engineering only** and never requires C72, selecting EDU, or a fake prior iKant consent. By contrast, `SOURCE_LOCK` rotation of an iKant **runtime** epoch remains `EXPLICIT_REPIN_REQUIRES_FRESH_C72`, with no receipt, C87 ledger or C135 instance transfer. This PR does **not** weaken the original C72/v2 owner to disguise an old consent as a new one. Any future one-turn runtime epoch upgrade needs an independently reviewed, new original owner contract and real accepted-turn proof, and is **outside #169**.
+
+**Release status:** a green repo CI establishes the source-level software DoD. Live API→Node native dispatch, cross-turn witness persistence, current Project installation equality, provider delivery and persistent user-visible glyph remain independent DoD, hence **PRODUCT_NO_GO** unless separately observed.
