@@ -73,13 +73,14 @@ test('one-shot physical stdin Node process verifies full original receipts',()=>
 });
 test('100k deterministic 5-axis port mutation cells: reject any invalid evidence',()=>{
  let negative=0,positive=0;
+ const baseline=packet();
  for(let i=0;i<100000;i++){
-  const p=packet(),a=i%10,b=Math.floor(i/10)%10,c=Math.floor(i/100)%10,
+  const p={...baseline,documents:[...baseline.documents]},a=i%10,b=Math.floor(i/10)%10,c=Math.floor(i/100)%10,
    d=Math.floor(i/1000)%10,e=Math.floor(i/10000)%10;
   if(a>=5)p.source_head='f'.repeat(40);
   if(b>=5)p.live_head='not-a-sha';
   if(c>=5)p.carrier_kind='DECLARED_ONLY';
-  if(d>=5)p.documents[4].path='README.md';
+  if(d>=5)p.documents[4]={...p.documents[4],path:'README.md'};
   if(e>=5)p.native_event_attested=true;
   const r=bindC72Transport({sourceHead:head,sourcePacket:p});
   if(a>=5||b>=5||c>=5||d>=5||e>=5){
