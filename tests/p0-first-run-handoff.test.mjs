@@ -9,7 +9,7 @@ const accepted=acceptC72V2Terms({offer,humanMessage:'I ACCEPT',termsPresented:tr
 const selection=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'EDU'});
 test('four observed source states are distinct and the first permitted handoff is one-click',()=>{
  for(const state of ['SOURCE_ABSENT','PARTIAL_SOURCE_ONLY']){
-  const r=planP1PostModeSourceHandoff({selection,sourceState:state});
+  const r=planP1PostModeSourceHandoff({selection,sourceState:state,bridgeState:'DEFINITIVELY_UNAVAILABLE'});
   assert.equal(r.action,'REQUEST_SOURCE_ZIP');assert.equal(r.after_mode_only,true);
   assert.equal(r.source_zip_url,`https://github.com/Luke883i/iKant_LE/archive/${h}.zip`);
   assert.match(r.message,/allegalo qui/);assert.match(r.message,/Non servono terminale/);
@@ -17,6 +17,12 @@ test('four observed source states are distinct and the first permitted handoff i
  assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'FULL_SOURCE_VERIFIED'}).action,'USE_VERIFIED_SOURCE');
  assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_UNKNOWN'}).action,'VERIFY_SOURCE');
  assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_UNKNOWN'}).source_zip_url,null);
+ for(const state of ['SOURCE_ABSENT','PARTIAL_SOURCE_ONLY']){
+  const p=planP1PostModeSourceHandoff({selection,sourceState:state});
+  assert.equal(p.action,'VERIFY_MACHINE_BRIDGE');assert.equal(p.source_zip_url,null);
+  const available=planP1PostModeSourceHandoff({selection,sourceState:state,bridgeState:'AVAILABLE'});
+  assert.equal(available.action,'VERIFY_MACHINE_BRIDGE');assert.equal(available.source_zip_url,null);
+ }
 });
 test('no inferred selection, no contradictory or unknown source evidence, no early ZIP',()=>{
  assert.equal(planP1PostModeSourceHandoff({selection:null,sourceState:'SOURCE_ABSENT'}).action,'STOP');
