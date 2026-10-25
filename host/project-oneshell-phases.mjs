@@ -104,7 +104,13 @@ export function createOneShellAdmissionFlow({head,tree,termsUtf8}={}){
    if(!validateC72V2ModeSelection(candidate,{sourceHead:head}))
     return rejected('C72_SELECTION_DENIED');
    const frame=oneShellSelected({selection:candidate,accepted,orientation});
-   if(frame.slots.NEXT==='STOP')return rejected('C72_SELECTION_PROJECTION_DENIED');
+   // Legacy CANONICAL is an original C72 selection receipt, not an EDU start.
+   // Its Project frame must STOP but the valid receipt remains inspectable.
+   if(candidate.selected_mode==='CANONICAL'){
+    if(frame.slots.NEXT!=='STOP'||frame.slots.EDGE!=='CANONICAL_LEGACY_PRODUCT_NO_GO')
+     return rejected('C72_LEGACY_STOP_PROJECTION_DENIED');
+   }else if(frame.slots.NEXT!=='VERIFY_SOURCE')
+    return rejected('C72_SELECTION_PROJECTION_DENIED');
    selection=candidate;phase='MODE_SELECTED';
    return frame;
   }
