@@ -15,11 +15,11 @@ test('ZIP offered only on genuine post-mode source blocker; not on uncertain sta
 });
 
 test('P1 direct helper cannot bypass EDU-only and verified automatic-bridge absence',()=>{
- assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'SOURCE_ABSENT'}).action,'VERIFY_MACHINE_BRIDGE');
- assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'PARTIAL_SOURCE_ONLY',bridgeState:'AVAILABLE'}).source_zip_url,null);
- assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'REQUEST_SOURCE_ZIP');
- assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'FULL_SOURCE_VERIFIED',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'USE_VERIFIED_SOURCE');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT'}).action,'VERIFY_MACHINE_BRIDGE');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'PARTIAL_SOURCE_ONLY',bridgeState:'AVAILABLE'}).source_zip_url,null);
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'REQUEST_SOURCE_ZIP');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'FULL_SOURCE_VERIFIED',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'USE_VERIFIED_SOURCE');
  const canonical=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'CANONICAL'});
  assert.equal(planP1PostModeSourceHandoff({selection:canonical,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'STOP');
- assert.equal(planP1PostModeSourceHandoff({selection:edu,sourceState:'SOURCE_ABSENT',bridgeState:'INFERRED'}).action,'STOP');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT',bridgeState:'INFERRED'}).action,'STOP');
 });
