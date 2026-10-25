@@ -198,3 +198,31 @@ The minimum release gating remains (i) source/CI suite green (ii) a real Host fi
 - GLOBAL / FIELD: PR actually merged into main, fresh new chat installed Project prompt byte equality attested (or explicitly UNKNOWN), native first-message intake, original C72 linked accepted/intro with witnessed user message, later EDU selection, chosen real adapter callback/physical packet or successful permitted Node HTTPS, full code source, C135 running worker with languagePort and persistence, ledger reopened, actual visible user interface delivery and verified logo in the client when the client supports Host HTML. If the native host cannot display a verified SVG, TEXT fallback is mandatory, not a false brand guarantee. `PRODUCT_GO` requires actual field evidence, which PR tests cannot supply.
 
 **No unconditional promise:** a generic Host cannot create absent connector permissions, native hooks, reliable network or a supported rich UI by reading Project instructions. The deterministic guarantee is **either fully proved success for the capabilities actually available or an honest typed first failure with NO_VOICE**.
+
+---
+
+## PR171 Host continuation without a new authority — 2026-10-25
+
+**User intent, made executable:** An arbitrary freshly invoked Host should understand what the next externally provable result must be after each human message. It may select a transport implementation on available capabilities, but it must never confuse a prompt, a plan, a model memory, a CI fixture or an earlier message with an original C72/C135/C87 receipt. The user is not required to repair Node adapters. Human actions are limited to the exact consent, EDU choice, *if proven necessary* one pinned source ZIP, and subsequent actual EDU turns. Host engineering after a human merge is independent of C72.
+
+**Recycled owners:** C72 (linked offer, new exact acceptance and EDU selection), C65 pinned Git SHA, C78 stdin physical carrier, C98 descriptor bounds, C103 observed-effects boundary, C104 reopen technique, P1 ZIP, original Python extractor and Node loader, C135 / C107 / C87 / C125 / S03, original OneShell emitter/verified logo and the read-only `project-oneshell-autopilot.mjs`. No new receipt schema is allowed to override these owners.
+
+**Non-authoritative memory:** `contracts/project-host-followthrough.json` is a 12-stage **read-only reminder** linked from `BOOTSTRAP.project_session` and `contracts/project-prompt-generation.json`. Its only jobs are listing previous proof dependencies, allowed next operation, original file owner and the first STOP condition. It is NOT writable persistence, not a newly created verifier, not a new message receiver, and is never enough to authorize C72, C59, C135, C87 or native delivery. The Host must re-open original receipt, HEAD/TREE and real same-instance ledger on each live step. No native worker exists merely because text says “continue.”
+
+**Proof-critical transitions (AND, not OR):**
+
+`FIRST_CONTACT ∧ FIVE_FIRST_TURN_SHA -> LINKED_TERMS -> DISTINCT_I_ACCEPT -> ORIGINAL_C72_ACCEPTED ∧ INTRO -> DISTINCT_EDU -> ORIGINAL_EDU_SELECTION -> POSTMODE_HEAD/TREE/PROMPT_CRITICAL_PREFLIGHT -> (REAL_HOST_TO_NODE_CARRIER ∨ EDU_POSTMODE_PROVEN_UNAVAILABLE_BRIDGE_AND_PINNED_ZIP) -> ORIGINAL_LOADER_BLOB_AND_READBACK -> ORIGINAL_C135_WORKER_WITH_CALLABLE_LANGUAGE_PORT -> SAME_TURN_C87_C125_S03 -> VERIFIED_SIX_SLOT_ONESHELL -> VERIFIED_HOST_SVG_WHEN_HTML_IS_SUPPORTED`.
+
+`CANONICAL` is a quarantined **legacy unqualified** Project branch, not an EDU shortcut or a source of ACTIVE. Previous C72/C59 owner bytes remain original. “Never historically worked” is not independently proved; PRODUCT_GO is not demonstrated.
+
+**Restart/recovery:** Host continuity is never reconstructed from model narrative. If the real C135 instance is not live, or C87 write/send is UNKNOWN, the next action is a read-only reconciliation or STOP, **not** instantiate a new instance and replay the user's input. Model Memory and Project prompt can remind an Host which *verifications* to attempt, but cannot persist a live worker, signed user event, or native UI. A different source HEAD requires fresh C72; no token/ledger transfer.
+
+**Release handoff:** CI on PR HEAD verifies source-level closure and the tests (including `tests/project-host-followthrough.test.mjs`), not ChatGPT-native field functionality. An explicit human merge moves the code to new main; only a **subsequent explicit Host engineering message `PR merged`** permits this Host to read the new main, regenerate prompt locally using original `scripts/build-project-oneshell-prompt.mjs`, verify source/byte hashes and return it to the user. It does not install the prompt in Project or repin the running iKant epoch. Never ask the user to send `PR merged` until latest PR-head CI is green and all source-level DoD have independently passed.
+
+**Anti-regression DoD lattice:**
+
+| Local | Intermediate | Global |
+|---|---|---|
+| Exact repository step file names resolve; no new authority; original C72/EDU/EXIT tests unchanged; compact prompt +210 under 8k; negative 10k fake-continuity mutants rejected | Manifest rooted from actual imported source closure; Node20/22 tests and full HEAD ZIP/canonical SVG/nonce/readback tests on **latest** PR commit pass; prompt builder pins new checkpoint blob | Only actual Host native capability and user event proof can attest C72 → EDU → same C135 worker → visible OneShell/logo; otherwise `FIELD_E2E_NOT_ATTESTED` and `PRODUCT_NO_GO` |
+
+**Status discipline:** A code commit is not a successful execution. Missing CI logs or queued/failed workflows are not ALL_GREEN. External chat UI, transport installation, native persistence and provider dispatch are **always separately attested**, never elevated by a repository test.

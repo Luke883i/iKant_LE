@@ -1416,6 +1416,8 @@
     "preferred_public_mode": "EDU",
     "canonical_project_status": "LEGACY_UNQUALIFIED_DEPRECATION_PLANNED_NO_EDU_BOOTSTRAP_NO_ACTIVE",
     "host_adapter_selection": "OBSERVED_PHYSICAL_CAPABILITY_ANY_IMPLEMENTATION_ONLY_ORIGINAL_OWNER_VALIDATES",
-    "one_shell_brand_scope": "VERIFIED_REPOSITORY_SVG_HOST_HTML_OR_TEXT_FALLBACK_NO_NATIVE_AVATAR_PROMISE"
+    "one_shell_brand_scope": "VERIFIED_REPOSITORY_SVG_HOST_HTML_OR_TEXT_FALLBACK_NO_NATIVE_AVATAR_PROMISE",
+    "host_followthrough_contract": "contracts/project-host-followthrough.json",
+    "host_followthrough_rule": "READONLY_AFTER_MODE_OWNER_READBACK_FIRST_NO_NEW_PERSISTENCE_OR_AUTHORITY"
   }
 }

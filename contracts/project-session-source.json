@@ -27,6 +27,7 @@
     "contracts/orientation-capsule.json",
     "contracts/project-c72-preaccept-gate.json",
     "contracts/project-host-capability-port.json",
+    "contracts/project-host-followthrough.json",
     "contracts/project-oneshell-compact-continuity.json",
     "contracts/project-oneshell-do-d.json",
     "contracts/project-oneshell-host-scope.json",

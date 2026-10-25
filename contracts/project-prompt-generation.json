@@ -196,5 +196,8 @@
   "preferred_public_mode": "EDU",
   "canonical_project_status": "LEGACY_UNQUALIFIED_DEPRECATION_PLANNED_NO_EDU_BOOTSTRAP_NO_ACTIVE",
   "end_to_end_qualification": "tests/project-edu-complete-chain.test.mjs",
-  "native_avatar_or_delivery_guaranteed": false
+  "native_avatar_or_delivery_guaranteed": false,
+  "host_followthrough_contract": "contracts/project-host-followthrough.json",
+  "host_followthrough_policy": "HOST_READONLY_FROM_ORIGINAL_RECEIPTS_NOT_STORAGE",
+  "postmerge_human_trigger": "PR merged"
 }

@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/project-oneshell-prompt.test.mjs tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-c72-physical-ingress.test.mjs tests/project-c72-staged-ingress.test.mjs
+      - run: node --test tests/project-oneshell-prompt.test.mjs tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-c72-physical-ingress.test.mjs tests/project-c72-staged-ingress.test.mjs tests/project-host-followthrough.test.mjs
       - name: Build immutable HEAD-only prompt
         shell: bash
         run: |
