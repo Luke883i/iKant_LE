@@ -51,8 +51,16 @@ export function createProjectC72PreacceptGate({readMain,readDocument}={}){
  function attestTermsLinkDisplayed({actuallyDisplayed}={}){
   if(phase!=='OFFER_READY'||actuallyDisplayed!==true)return stop('TERMS_LINK_DISPLAY_NOT_ATTESTED');
   phase='AWAITING_ACCEPTANCE';
+  // First-turn source SHA witness is formed before the Terms freeze; the
+  // following I ACCEPT must be a separate human message. A caller must retain
+  // this exact object (or visibly record its five hashes), not recreate it
+  // from the post-accept re-fetch.
+  const witness=Object.freeze({source_head:head,terms_link:offer.terms_link,
+   host_link_displayed:true,distinct_human_message_observed:false,
+   pinned_blob_shas:Object.freeze(Object.fromEntries(observed.map(x=>[x.path,x.blob_sha1]))),
+   witness_scope:'HOST_CLAIM_ONLY',native_event_attested:false});
   return Object.freeze({ok:true,edge:'AWAIT_I_ACCEPT',frozen:true,authority:0,
-    host_display_claim:true,human_read_attested:false});
+    host_display_claim:true,human_read_attested:false,orientation_witness:witness});
  }
  function accept(humanMessage){
   if(phase!=='AWAITING_ACCEPTANCE')return stop('PREACCEPT_ACCEPTANCE_GATE_CLOSED');

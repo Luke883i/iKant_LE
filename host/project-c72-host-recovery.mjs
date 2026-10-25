@@ -51,3 +51,70 @@ export function planC72HostRecovery({phase='AWAIT_ACCEPTANCE',humanMessage='',
  if(apiTransport==='UNAVAILABLE_VERIFIED')return deny('C72_POSTACCEPT_TRANSPORT_UNAVAILABLE_VERIFIED','Questa chat non dispone di un collegamento verificabile ai file originali.');
  return auto('INVOKE_PINNED_C72_POSTACCEPT_REENTRY','C72_ORIGINAL_REENTRY_REQUIRED','Verifico i blob originali e completo l’ammissione; non devi intervenire.');
 }
+
+
+/** Post-consent one-shot executor, not another C72 owner. The host supplies
+ * live GitHub API callbacks explicitly; Node cannot authenticate their origin.
+ * AUTO decisions are executed here rather than narrated as terminal STOPs.
+ * A read/call outcome UNKNOWN is terminal; never repeat a potentially written
+ * admission operation. Only the original reentry imports/validates C72/v2.
+ */
+export async function executeC72PostAcceptRecovery({humanMessage, freshHumanTurn,
+  priorTurnEvidence,readMain,readPinnedDocument,ownerOutcome='NOT_INVOKED'}={}){
+ const stop=(edge,trace=[],invoked=false)=>Object.freeze({ok:false,kind:'STOP',edge,
+   trace:Object.freeze([...trace]),original_owner_invoked:invoked,
+   native_event_attested:false,authority:0});
+ const trace=[];
+ if(humanMessage!=='I ACCEPT'||freshHumanTurn!==true)
+  return stop('C72_EXACT_NEW_CONSENT_REQUIRED');
+ if(ownerOutcome!=='NOT_INVOKED')return stop(ownerOutcome==='UNKNOWN'?
+  'C72_OWNER_OUTCOME_UNKNOWN':'C72_OWNER_ALREADY_ATTEMPTED');
+ const w=priorTurnEvidence;
+ const names=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md'];
+ const sha=/^[a-f0-9]{40}$/u;
+ if(!sha.test(w?.source_head||'')||w?.host_link_displayed!==true||
+  w?.distinct_human_message_observed!==true||
+  w?.terms_link!==`https://github.com/Luke883i/iKant_LE/blob/${w.source_head}/TERMS.md`||
+  !w?.pinned_blob_shas||names.some(n=>!sha.test(w.pinned_blob_shas[n]||'')))
+  return stop('C72_ORIENTATION_WITNESS_MISSING');
+ // Running in Node proves the Node capability, not connector reachability.
+ const major=Number(process.versions.node.split('.')[0]);
+ trace.push('VERIFY_NODE_20');
+ if(!Number.isInteger(major)||major<20)return stop('C72_NODE_UNAVAILABLE_VERIFIED',trace);
+ if(typeof readMain!=='function'||typeof readPinnedDocument!=='function')
+  return stop('C72_SOURCE_BRIDGE_UNBOUND',trace);
+ trace.push('VERIFY_PINNED_API_TRANSPORT');
+ let liveHead;
+ try{liveHead=await readMain();}catch{return stop('C72_HEAD_READ_OUTCOME_UNKNOWN',trace);}
+ if(!sha.test(liveHead||''))return stop('C72_HEAD_READ_INVALID',trace);
+ if(liveHead!==w.source_head)return stop('STOP_SOURCE_LOCK_STALE',trace);
+ const documents=[];
+ for(const path of names){
+  let d;
+  try{d=await readPinnedDocument(path,w.source_head);}catch{
+   return stop('C72_SOURCE_READ_OUTCOME_UNKNOWN:'+path,trace);
+  }
+  if(!d||d.path!==path||d.source_head!==w.source_head||
+    typeof d.content!=='string'||d.blob_sha1!==w.pinned_blob_shas[path])
+   return stop('C72_PINNED_DOCUMENT_BLOB_INVALID:'+path,trace);
+  // Reentry recomputes Git blob identity from exact UTF-8 bytes.
+  documents.push({path,source_head:w.source_head,content:d.content,blob_sha1:d.blob_sha1});
+  trace.push('READ_PINNED:'+path);
+ }
+ trace.push('INVOKE_PINNED_C72_POSTACCEPT_REENTRY');
+ let reentry;
+ try{
+  const owner=await import('./project-c72-postaccept-reentry.mjs');
+  reentry=owner.reenterC72V2PostAccept({sourceHead:w.source_head,liveHead,
+    humanMessage,priorTurnEvidence:w,documents});
+  if(reentry.ok!==true)return stop(reentry.first_edge||'C72_ORIGINAL_OWNER_FAILED',trace,reentry.original_owner_invoked===true);
+  const validators=await import('./c72-public-mode-admission.mjs');
+  if(!validators.validateC72V2Accepted(reentry.accepted)||
+     !validators.validateC72V2Orientation(reentry.introduction,reentry.accepted))
+   return stop('C72_ORIGINAL_RECEIPT_READBACK_FAILED',trace,true);
+ }catch{return stop('C72_OWNER_OUTCOME_UNKNOWN',trace,null);}
+ return Object.freeze({ok:true,kind:'C72_ORIGINAL_POSTACCEPT_VERIFIED',
+  trace:Object.freeze(trace),source_head:w.source_head,accepted:reentry.accepted,
+  introduction:reentry.introduction,original_owner_invoked:true,
+  native_event_attested:false,active:false,authority:0});
+}

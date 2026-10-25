@@ -1398,6 +1398,10 @@
     "postaccept_host_recovery": "host/project-c72-host-recovery.mjs#planC72HostRecovery",
     "oneshell_host_emission_gate": "host/project-oneshell-emission.mjs#emitVerifiedHostOneShell",
     "brand_coverage": "REPOSITORY_HOST_OWNED_HTML_ONLY_NO_NATIVE_CHATGPT_RENDERING_CLAIM",
-    "human_recovery_action": "HOST_DIAGNOSES_AUTOMATICALLY_NO_GATEWAY_ACTION_FOR_END_USER"
+    "human_recovery_action": "HOST_DIAGNOSES_AUTOMATICALLY_NO_GATEWAY_ACTION_FOR_END_USER",
+    "postaccept_host_recovery_executor": "host/project-c72-host-recovery.mjs#executeC72PostAcceptRecovery",
+    "preaccept_orientation_witness": "FIVE_BLOB_SHA_AT_FIRST_TURN_FROZEN_BEFORE_TERMS",
+    "host_engineering": "SEPARATE_ENGINEERING_HEAD_NO_C72_OR_IKANT_RUNTIME",
+    "postaccept_auto": "EXECUTE_AND_OBSERVE_AUTO_OR_TYPED_STOP_NOT_NARRATIVE"
   }
 }
