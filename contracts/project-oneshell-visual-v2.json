@@ -108,6 +108,11 @@
     "third_party_publication_attested": false,
     "branding_not_identity_authentication": true,
     "single_frame_unchanged": true,
-    "slot_values_byte_exact": true
+    "slot_values_byte_exact": true,
+    "host_emission_gate": "host/project-oneshell-emission.mjs#emitVerifiedHostOneShell",
+    "rich_html_missing_glyph": "STOP_HOST_OFFICIAL_BRAND_UNVERIFIED",
+    "rich_html_requires_exactly_one_verified_glyph": true,
+    "text_fallback_has_svg": false,
+    "provider_enforced_rendering_attested": false
   }
 }

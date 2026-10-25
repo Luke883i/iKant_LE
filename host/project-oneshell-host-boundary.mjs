@@ -2,6 +2,7 @@
  * No language answer fallback on original owner stop; no new iKant authority.
  */
 import {oneShellFrame,renderOneShell} from './project-oneshell-edu.mjs';
+import {emitVerifiedHostOneShell} from './project-oneshell-emission.mjs';
 const check=/(?:checkup|audit|stato|diagnos|problemi|error[ei]|rifiut|bootstrap|runtime|ledger|verific|ricevut|sorgent|preflight|perch[eé])/iu;
 const docs=/(?:documenta|documentazione|specifica|contrattualizz|formalizz|requisit|pr\b|patch|test|dod\b|metric|checklist|falsific|rifattorizz)/iu;
 export function classifyOneShellHumanDestination(input){
@@ -28,5 +29,7 @@ export function presentOneShellHostOnly({humanInput,originalFrame,hostText}={}){
   return Object.freeze({ok:false,target:gate.target,edge:'HOST_TEXT_REQUIRES_REOPENED_ANNEX',frame:originalFrame});
  const frame=oneShellFrame({esito:originalFrame.slots.ESITO,b:hostText,
   prova:originalFrame.slots.PROVA,edge:originalFrame.slots.EDGE,next:originalFrame.slots.NEXT});
- return Object.freeze({ok:true,target:gate.target,edge:'NONE',frame});
+ const emission=emitVerifiedHostOneShell(frame);
+ if(emission.ok!==true)return Object.freeze({ok:false,target:gate.target,edge:emission.first_edge,frame});
+ return Object.freeze({ok:true,target:gate.target,edge:'NONE',frame,emission});
 }
