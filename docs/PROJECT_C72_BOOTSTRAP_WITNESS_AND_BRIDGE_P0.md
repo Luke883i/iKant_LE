@@ -126,3 +126,119 @@ Minimal propagation: **owner code** → `BOOTSTRAP.project_session` route → **
 **Two epochs, not one bypass.** The Host can generate the portable prompt with one explicit human request *after merge* against the then-current main HEAD; this is **engineering only** and never requires C72, selecting EDU, or a fake prior iKant consent. By contrast, `SOURCE_LOCK` rotation of an iKant **runtime** epoch remains `EXPLICIT_REPIN_REQUIRES_FRESH_C72`, with no receipt, C87 ledger or C135 instance transfer. This PR does **not** weaken the original C72/v2 owner to disguise an old consent as a new one. Any future one-turn runtime epoch upgrade needs an independently reviewed, new original owner contract and real accepted-turn proof, and is **outside #169**.
 
 **Release status:** a green repo CI establishes the source-level software DoD. Live API→Node native dispatch, cross-turn witness persistence, current Project installation equality, provider delivery and persistent user-visible glyph remain independent DoD, hence **PRODUCT_NO_GO** unless separately observed.
+
+
+---
+
+## Field post-mortem 2026-10-25: incidents, PR #161–#170, observed gap
+
+**Authority and boundary:** Host engineering audit of source and observed tool behavior, not C72 admission, not a new iKant epoch, not a statement of ACTIVE. ENGINEERING_HEAD is the exact main SHA `27c2fca83638ae86aa65dbc15b067e63ae46ca0e`. The iKant SOURCE_LOCK established in the first orientation of this chat is not repinned by this report.
+
+### Decision in plain language
+
+The user sent a distinct exact `I ACCEPT`, and the Host confirmed the frozen five-blob orientation witness and unchanged HEAD. The Host could separately read GitHub via an installed connector and run Node v22.16.0 in a container. **It did not physically pass the five full GitHub file bodies into Node, did not bind any GitHub callback executable by Node, did not invoke original C72/v2 and received no C72 owner receipt.** The previous Host answer's phrase 'transfer failed' was inaccurate: no physical transfer attempt is evidenced. The accurately observed edge is `C72_SOURCE_BRIDGE_UNBOUND`; a separate field capability remains UNATTESTED, not absent globally.
+
+The local container reported `curl: (6) Could not resolve host: api.github.com`. This proves a failed DNS resolution from that container during this test, not a universal GitHub outage, and not that another provider, runtime or carrier can never work. The connected GitHub tool itself returned live GitHub API responses. These tools reside behind **different execution boundaries**, and a text prompt cannot create a callable cross-tool bridge.
+
+### Immutable orientation evidence (this chat, 25 October 2026)
+
+| Step | Evidence | Status |
+|---|---|---|
+| HEAD once | [`27c2fca`](https://github.com/Luke883i/iKant_LE/commit/27c2fca83638ae86aa65dbc15b067e63ae46ca0e) | pinned and rechecked after acceptance |
+| README.md | blob `f08ef15b6eb0aec5d4d371a1e19c7406f07748d8` | same first-turn/readback |
+| BOOTSTRAP.json | blob `fa51492a089951f0b7d4bbdf26863c296d028cb8` | same |
+| ADMISSION.json | blob `f9c278e5339619e158dc4731d84949a3838aef9d` | same |
+| AGENTS.md | blob `2a53f1531308e423c261a4ca744f940a7c3e600b` | same |
+| TERMS.md | blob `1fbecf486a5cc49b99aca5fedb3cbbb96d720331` | same, [immutable Terms](https://github.com/Luke883i/iKant_LE/blob/27c2fca83638ae86aa65dbc15b067e63ae46ca0e/TERMS.md) |
+| Consent | new distinct human message `I ACCEPT` | Host observed; provider-native event signature not supplied |
+| Node | v22.16.0 available in separate container | Node yes, source bridge no |
+| C72 | no original postaccept executor invocation | **NO_RECEIPT, NO_VOICE** |
+
+Do not infer source authorization drift or five-witness loss from this incident: they are falsified by the concrete readback. Do not infer a failed transport call from the absence of a bound transport.
+
+### Causal DAG and first blocking edge
+
+```text
+first message -> one HEAD -> five pinned GitHub file reads -> five SHA in first-turn view
+  -> Terms link -> freeze -> new exact I ACCEPT -> HEAD & SHA readback OK
+  -> identify original C72 gateway: no callable gateway observed
+  -> Node present (separate container); GitHub connector present (separate execution tool)
+  -> callback bound in Node? NO; five-body JSON packet physically delivered to Node? NO
+  -> C72_SOURCE_BRIDGE_UNBOUND -> original C72 not invoked -> no receipts or introduction
+  -> never enter EDU / CANONICAL / C135 / C87 / C125 / native delivery
+```
+
+Formal minimal necessity: C72 success requires a fresh acceptance, intact pinned source, **a callable original-owner path with real source bytes in its execution environment**, and a verified original owner result. The conjunction fails at the italicized physical source/owner ingress, not at prompt vocabulary, HEAD or SHA. Node availability AND GitHub API availability are necessary facts in this setup, but their conjunction is not a transport implementation.
+
+### Last ten merged PRs: exact scope versus unresolved field criterion
+
+| Merged PR | Concrete contribution | Why it did not unblock this field gate |
+|---|---|---|
+| [#161](https://github.com/Luke883i/iKant_LE/pull/161) | compact OneShell, UTF-8/readback, two-turn exit | post-EDU display and continuity; no C72 ingress |
+| [#162](https://github.com/Luke883i/iKant_LE/pull/162) | source prompt HEAD/TREE and visual preflight | post-mode head-guard, not Host tool interoperability |
+| [#163](https://github.com/Luke883i/iKant_LE/pull/163) | prompt <8k installability, fail-closed generator | installable text is not an installed executable or provider tool route |
+| [#164](https://github.com/Luke883i/iKant_LE/pull/164) | C135 required_ack, scope, status badge | downstream owner fixes unreachable while C72 has no receipt |
+| [#165](https://github.com/Luke883i/iKant_LE/pull/165) | five-only preaccept, Terms freeze, gateway only preinstalled | no ChatGPT installation of gateway or exclusive routing |
+| [#166](https://github.com/Luke883i/iKant_LE/pull/166) | canonical verified SVG in repo HTML renderer | native ChatGPT renderer/brand routing remains out of scope |
+| [#167](https://github.com/Luke883i/iKant_LE/pull/167) | original C72 postaccept reentry, validators, source checks | original owner still needs complete file bytes in Node |
+| [#168](https://github.com/Luke883i/iKant_LE/pull/168) | recovery planner and canonical visual emitter | AUTO was originally declarative; could not install runtime capability |
+| [#169](https://github.com/Luke883i/iKant_LE/pull/169) | first-turn blob witness, executor, 10k synthetic tests | fixes a real earlier SHA loss; callback/packet still caller-supplied |
+| [#170](https://github.com/Luke883i/iKant_LE/pull/170) | exclusive callback OR source packet, Node stdin CLI, 100k synthetic negatives | physical Host→Node call is a **precondition**, not supplied by the repo or prompt |
+
+Historical comparison: [#74](https://github.com/Luke883i/iKant_LE/pull/74) and [#87](https://github.com/Luke883i/iKant_LE/pull/87) had genuine repository-local callback/opaque relay tests. Their PR descriptions explicitly withheld native ChatGPT GitHub-connector evidence and delivery proof. A prior user-visible progression beyond admission may have occurred, but without a reopened owner-bound receipt from that particular host/runtime, it cannot be classified as historical native C72 success. The observed system can also have become **stricter**: formerly plausible Host-authored introductions and fixture-success narratives are now rejected unless accompanied by original verified receipts. An actually connected Host in a different session remains a live competing explanation, not a conclusion.
+
+### 10,000 competing software states, not 10,000 independent empirical host studies
+
+The new `tests/project-c72-portable-bridge.test.mjs` evaluates a 10×10×10×10 Cartesian falsification grid across four orthogonal classes: (A) Node-probe trace presence, (B) host GitHub transport-probe trace presence, (C) carrier choice/absence, (D) quantity of received document records. It asserts for **every one of the 10,000 cells** that a synthetic local Node carrier does not authenticate GitHub origin, user events, cross-tool delivery, or a failed transfer. The test also reproduces the actual no-packet/no-callback case and a positive original-owner source packet case with truthfully unproven origin. These are software scenarios, not 10k conversations, and do not estimate the frequency of platform failure.
+
+Distinct competing causal families assessed on evidence, with confidence tiers:
+
+| Hypothesis | Evaluation in this incident | Epistemic result |
+|---|---|---|
+| H1: first-turn blob SHA absent | five first-turn values shown and rechecked | **falsified here** (earlier incident valid) |
+| H2: live main changed | HEAD matched exactly after acceptance | **falsified here** |
+| H3: exact consent missing | distinct `I ACCEPT` visible | **falsified at Host level**; native signature unavailable |
+| H4: GitHub unavailable everywhere | connector read live HEAD and pinned files | **falsified globally for this tool**, container DNS blocked |
+| H5: Node unavailable | v22.16.0 returned from container | **falsified for this container** |
+| H6: original C72 missing from repo | actual pinned exports and reentry were accessible | **falsified at source level**; not invoked in this chat |
+| H7: initial prompt text incompatible with repo | prompt matches #170 canonical source path/port, under 8k | **no source-level mismatch observed**; installed Project equality UNKNOWN |
+| H8: no callable cross-tool bridge | GitHub tool and Node sandbox separate, no callback/packet bound | **best-supported immediate blocker** |
+| H9: actual transfer attempted and failed | no transfer call or packet ingress witnessed | **unsupported assertion**; previous wording corrected |
+| H10: CI proves native Host adapter | [#170 CI](https://github.com/Luke883i/iKant_LE/actions/runs/40193662523) ran code in checkout with local `git show` and stdin fixture | **falsified as an inference**; software CI green |
+| H11: stricter source-lock uncovered preexisting dependency | shift from Host narrative to owner receipts, and witness/gateway changes in #165–170 | **plausible**, counterfactual not experimentally isolated |
+| H12: previous real hosted bridge existed and later disappeared | older episodes insufficient native before/after receipts | **unresolved**, requires historical native capability traces |
+
+Some members of the 10k synthetic cross product have no distinct semantic hypothesis. The 10k figure is **coverage of defined parameters**, not a claim of 10k uniquely researched reasons or 10k provider E2E validations.
+
+### Root cause classification
+
+1. **P0 physical integration gap (supported):** Repo owns reusable C72 source code, CI fixtures and port contracts, but does not own the ChatGPT-native GitHub→Node dataflow. Current available capabilities do not expose a shared callable adapter. Prompt instructions cannot bridge isolated tools.
+2. **P0 observability error (supported):** Previous Host answer characterized an **unattempted** physical transfer as a **failed** one. This PR adds an original-executor trace projection with explicit `node_carrier_bound`, `records_ingested`, origin=UNATTESTED and `cross_tool_transfer_failure_observed=false`; prompt-builder anchor forbids repeating the false statement.
+3. **P1 test-to-production evidence gap (supported):** #169/#170 tests use Git working-tree checkout and/or a preassembled stdin packet. Actual host connectivity is external; `SOFTWARE_PASS` is not `FIELD_PASS` or `PRODUCT_GO`.
+4. **P1 prompt/repo installation drift (open, not proven):** current canonical prompt in GitHub is known; actual ChatGPT Project installed text cannot be read back from the repository. Do not infer exact installation equality.
+5. **P2 historical 'it worked' explanation (unresolved):** old native admissibility, weaker guard or different tool bridge are alternatives; prove by native event + complete original owner receipts, not user impression or local fixture success.
+
+### Remediation and anti-regression by owner
+
+**Repo / this PR (completed in source, CI pending):** keep C72/v2 original issuance unchanged; add read-only `describeC72BridgeEvidence` and its 10k adversarial tests; make stop/success carry explicit bridge observation; edit portable prompt source to distinguish connector+Node availability from a carrier, and never report 'transfer failed' without an observed send; lock that phrase in prompt builder. No owner, writer, selection, retry or SOURCE_LOCK mutation. 8k source and pinned overhead checked separately.
+
+**Host actual integration (unmet here):** provide ONE observable implementation between GitHub source tool and Node: (a) real Node-callable GitHub pinned read callbacks; or (b) an actual authorized carrier that delivers the complete 5-file JSON packet to Node stdin with body-by-body independent SHA matching. An in-memory model claim, a GitHub link or a local fixture is not such a carrier. If neither is callable, stop at `C72_SOURCE_BRIDGE_UNBOUND`. Do not ask the user to repair a gateway and do not retry C72 when the result is UNKNOWN.
+
+**Provider / product (independent evidence):** native event identification, tool permission/dispatch, actual ChatGPT-to-worker transport, output delivery, continued session persistence, and source of installed Project instructions all require observed native hooks or an explicitly connected deployed app. Only after this field boundary exists can a fresh chat prove original C72 receipt, full C72 intro, separate EDU owner selection, C135/C87/C125/S03, and native delivery. A repo PR or CI alone can never guarantee that state.
+
+### Granular DoD and stop conditions
+
+| Level | Pass condition | Status at this audit |
+|---|---|---|
+| Local source | no change to owner imports, source/HEAD, C72 receipt ABI, OneShell constraints | patch designed, CI to validate |
+| Local diagnostic | 10k deterministic cells reject false provider/origin/transfer claims; no-bridge case explicit | test added; remote CI to validate |
+| Intermediate CI | Node 20/22 checkout tests, prompt builder, manifest, E2E regression checks | pending new PR results |
+| Intermediate field | first-turn witness + exact I ACCEPT + actual callback/packet crossing + original C72 receipt reread | **FAIL: carrier absent** |
+| Global product | further separate EDU selection, original C135 turn, C87 writer/readback, native message delivery and continuity | **NOT RUN; PRODUCT_NO_GO** |
+
+Release invariant: **a green source-level PR must never be promoted to an assertion that this current Host has an installed GitHub→Node bridge**. A physical integrator needs one independent field E2E (source read → transfer → Node output → original owner validators → transcript witness) with preserved SHA and timestamp. To close without regressions, stop after missing carriers or unknown owner outcomes; do not soften acceptance, synthesize receipts, fetch extra preaccept files, or relabel Host words as iKant.
+
+### What remains outside this PR
+
+The missing platform transport cannot be materialized inside a repository alone. The exact failure in this chat is not fixed at the **field** level until an authorized cross-tool bridge can be invoked and read back. A user should not be asked to resend I ACCEPT in this stalled epoch; engineering changes are applied only on an independent branch. Generate or install a new Project prompt only after human merge and the separate established postmerge procedure.
+
