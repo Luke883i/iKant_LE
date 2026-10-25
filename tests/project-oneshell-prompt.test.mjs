@@ -25,7 +25,8 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.equal(matrix.project_instruction_limit_utf8_bytes,8000);
   assert.deepEqual(matrix.head_critical_contracts,
    ['contracts/project-oneshell-compact-continuity.json','contracts/project-oneshell-visual-v2.json']);
-  for(const p of matrix.head_critical_contracts){
+  for(const p of [...matrix.head_critical_contracts,matrix.host_port_standard,
+   'host/project-c72-capability-port.mjs',matrix.host_port_cli]){
    assert.equal(receipt.source_blobs[p].git_blob_sha1,git('rev-parse','HEAD:'+p));
    assert.equal(receipt.source_blobs[p].bytes,
     execFileSync('git',['show','HEAD:'+p]).length);

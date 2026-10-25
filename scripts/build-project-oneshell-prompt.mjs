@@ -37,7 +37,10 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.host_port_standard!=='contracts/project-host-capability-port.json'||
  matrix.host_port_adapter!=='host/project-c72-capability-port.mjs#bindC72Transport'||
  matrix.host_port_cli!=='scripts/project-c72-portable-cli.mjs'||
- matrix.host_port_not_native_hook!==true
+ matrix.host_port_not_native_hook!==true||
+ route.host_port_contract!==matrix.host_port_standard||
+ route.host_port_adapter!==matrix.host_port_adapter||
+ route.host_port_cli!==matrix.host_port_cli)
  throw Error('PROMPT_HEAD_GUARD_MATRIX_INVALID');
 // This is a checkable route index, not proof of provider dispatch or a new owner.
 const rp=matrix.release_protocol;
@@ -65,8 +68,10 @@ for(const row of routes){
    throw Error('PROMPT_OWNER_EXPORT_MISSING:'+row.route);
 }
 const members=[...new Set([...matrix.required_orientation,matrix.source_prompt,
- matrix.oneshell_contract,...CRITICAL,'contracts/project-prompt-generation.json'])];
-if(members.length!==10)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
+ matrix.oneshell_contract,...CRITICAL,matrix.host_port_standard,
+ 'host/project-c72-capability-port.mjs',matrix.host_port_cli,
+ 'contracts/project-prompt-generation.json'])];
+if(members.length!==13)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
 const refs={};
 for(const p of members){
  if(!/^[A-Za-z0-9._/-]+$/.test(p)||p.split('/').some(s=>s===''||s==='..'))
