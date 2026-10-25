@@ -1,0 +1,53 @@
+{
+  "schema": "ikant-le-host-capability-port/v1",
+  "authority": 0,
+  "purpose": "Host implements observable effects with any authorized physical technology; no owner replacement",
+  "inspiration": [
+    "C103",
+    "C104",
+    "C105"
+  ],
+  "binding": "HOST_SELECTED_PER_ATTEMPT_NOT_MODEL_INFERRED",
+  "selection": [
+    "LIVE_AUTHORIZED_CALLBACKS",
+    "HOST_OPAQUE_SOURCE_PACKET_TO_NODE"
+  ],
+  "original_owner": "C72/v2",
+  "handoff": "host/project-c72-capability-port.mjs#bindC72Transport",
+  "runner": "scripts/project-c72-portable-cli.mjs",
+  "packet_schema": "ikant-host-c72-source-packet/v1",
+  "request_schema": "ikant-host-c72-port-request/v1",
+  "require": [
+    "distinct exact new human acceptance observed by Host",
+    "frozen first-turn SHA witness",
+    "pinned live HEAD rechecked",
+    "ordered five full original UTF-8 blobs with SHA-1",
+    "physical Node ingress and actual output readback",
+    "unchanged original C72 owner receipts and introduction",
+    "no blind retry on unknown outcome"
+  ],
+  "transport_semantics": {
+    "callback": "Host supplies actual callable functions for pinned GitHub reads",
+    "packet": "Host physically transports full pinned GitHub API results via authorized carrier to Node stdin/JSON; Node checks the Git object identity, not API event origin",
+    "ambiguous": "FAIL_CLOSED",
+    "unbound": "C72_SOURCE_BRIDGE_UNBOUND_NOT_PROVEN_ABSENT",
+    "fallback": "HOST_CHOICE_ONLY_WITH_OBSERVED_PHYSICAL_CAPABILITY"
+  },
+  "no_preaccept_extra_reads": true,
+  "no_preaccept_gateway_download": true,
+  "no_new_owner": true,
+  "no_new_writer": true,
+  "no_original_receipt_reconstruction": true,
+  "no_native_host_hook_installed": true,
+  "no_guaranteed_provider_capabilities": true,
+  "local_receipt_not_native_proof": true,
+  "release_evidence": [
+    "SOURCE_AND_CI",
+    "PHYSICAL_HOST_TRANSFER",
+    "NATIVE_USER_INGRESS",
+    "NATIVE_DELIVERY",
+    "PERSISTENCE"
+  ],
+  "native_chatgpt_qualified": false,
+  "product_status": "PRODUCT_NO_GO_UNTIL_FIELD_PROOF"
+}
