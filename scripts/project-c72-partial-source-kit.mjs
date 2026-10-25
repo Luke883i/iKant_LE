@@ -18,6 +18,9 @@ export function buildPartialKit({head=git('rev-parse','HEAD').toString('utf8').t
   if(sha(b)!==id)throw Error('C72_KIT_BLOB_MISMATCH:'+p);
   return {path:p,blob_sha1:id,contentBase64:b.toString('base64')};
  });
+ const later=git('show',head+':scripts/project-c72-cold-mode-cli.mjs');
+ const laterId=git('rev-parse',head+':scripts/project-c72-cold-mode-cli.mjs').toString('utf8').trim();
+ if(sha(later)!==laterId)throw Error('C72_LATER_CLI_BLOB_DRIFT');
  const seed=git('show',head+':host/project-c72-coldstart-seed.mjs');
  const seedId=git('rev-parse',head+':host/project-c72-coldstart-seed.mjs').toString('utf8').trim();
  if(sha(seed)!==seedId)throw Error('C72_KIT_SEED_DRIFT');
@@ -25,6 +28,7 @@ export function buildPartialKit({head=git('rev-parse','HEAD').toString('utf8').t
   instructions:'DATA_ONLY. After later exact I ACCEPT, Host independently rechecks live main HEAD and eight original GitHub API blobs, then invokes unchanged C72/v2. No origin or consent is attested by this kit.',
   no_authority:true,native_event_attested:false,owner_invoked:false,active:false,
   seed:{path:'host/project-c72-coldstart-seed.mjs',blob_sha1:seedId,contentBase64:seed.toString('base64')},
+  later_mode_cli:{path:'scripts/project-c72-cold-mode-cli.mjs',blob_sha1:laterId,contentBase64:later.toString('base64')},
   files};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

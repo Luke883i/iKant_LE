@@ -66,7 +66,7 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
    expectedBlobShas:Object.fromEntries(kit.files.map(x=>[x.path,x.blob_sha1])),
    sourcePacket:modePacket};
   // The later process receives the exact packet over stdin.
-  const later=spawnSync(process.execPath,['scripts/project-c72-cold-mode-cli.mjs'],{
+  const later=spawnSync(process.execPath,[path.join(root,'scripts/project-c72-cold-mode-cli.mjs')],{
    cwd:tmp,input:JSON.stringify(modeRequest),encoding:'utf8',timeout:20000,maxBuffer:2000000});
   assert.equal(later.status,0,later.stderr+' '+later.stdout);
   const resultMode=JSON.parse(later.stdout);

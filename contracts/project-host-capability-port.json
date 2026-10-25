@@ -66,6 +66,8 @@
   "staged_file_semantics": "POSTACCEPT_FIVE_PRIVATE_LOCAL_FILES_INDEPENDENT_BLOB_AND_FD_READBACK_TO_EXISTING_SOURCE_PACKET_OWNER",
   "cold_seed": "host/project-c72-coldstart-seed.mjs#executeC72Coldstart",
   "partial_source_kit": "scripts/project-c72-partial-source-kit.mjs",
+  "later_edu_mode_cli": "scripts/project-c72-cold-mode-cli.mjs",
+  "later_edu_mode_policy": "ORIGINAL_C72_V2_TWO_PINNED_FILES_WITH_FRESH_EDU_AND_PRIOR_ORIGINAL_RECEIPTS",
   "partial_source_original_paths": [
     "README.md",
     "BOOTSTRAP.json",
