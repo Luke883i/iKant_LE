@@ -191,5 +191,6 @@
   "host_port_adapter": "host/project-c72-capability-port.mjs#bindC72Transport",
   "host_port_cli": "scripts/project-c72-portable-cli.mjs",
   "host_port_not_native_hook": true,
-  "host_physical_orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress"
+  "host_physical_orchestrator": "host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress",
+  "host_staging_cli": "scripts/project-c72-staged-ingress-cli.mjs"
 }

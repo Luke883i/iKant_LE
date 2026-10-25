@@ -13,6 +13,8 @@ on:
       - 'host/project-c72-physical-ingress.mjs'
       - 'tests/project-c72-physical-ingress.test.mjs'
       - 'scripts/project-c72-portable-cli.mjs'
+      - 'scripts/project-c72-staged-ingress-cli.mjs'
+      - 'tests/project-c72-staged-ingress.test.mjs'
       - 'contracts/project-host-capability-port.json'
       - 'tests/project-c72-portable-bridge.test.mjs'
       - 'host/project-oneshell-emission.mjs'
@@ -70,7 +72,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node scripts/project-source-manifest.mjs verify
-      - run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-c72-physical-ingress.test.mjs
+      - run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-c72-physical-ingress.test.mjs tests/project-c72-staged-ingress.test.mjs
       - run: npm run check
       - name: P0 final emission + C72 human-recovery 1000 executed adversarial scenarios
         run: |

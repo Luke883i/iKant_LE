@@ -39,6 +39,8 @@ if(JSON.stringify(matrix.head_critical_contracts)!==JSON.stringify(CRITICAL)||
  matrix.host_port_cli!=='scripts/project-c72-portable-cli.mjs'||
  matrix.host_physical_orchestrator!=='host/project-c72-physical-ingress.mjs#runC72SelectedHostIngress'||
  route.host_port_orchestrator!==matrix.host_physical_orchestrator||
+ matrix.host_staging_cli!=='scripts/project-c72-staged-ingress-cli.mjs'||
+ route.host_port_staged_cli!==matrix.host_staging_cli||
  matrix.host_port_not_native_hook!==true||
  route.host_port_contract!==matrix.host_port_standard||
  route.host_port_adapter!==matrix.host_port_adapter||

@@ -61,5 +61,7 @@
     "five Git blob SHA1 recomputed from exact decoded bytes",
     "unmodified original C72 owner receipt and complete introduction",
     "no owner retry, no native provider or UI claims"
-  ]
+  ],
+  "staged_file_recipe": "scripts/project-c72-staged-ingress-cli.mjs",
+  "staged_file_semantics": "POSTACCEPT_FIVE_PRIVATE_LOCAL_FILES_INDEPENDENT_BLOB_AND_FD_READBACK_TO_EXISTING_SOURCE_PACKET_OWNER"
 }

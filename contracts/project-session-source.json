@@ -108,6 +108,7 @@
     "scripts/c109-chat-gateway.mjs",
     "scripts/c111-host-edge-cli.mjs",
     "scripts/project-c72-portable-cli.mjs",
+    "scripts/project-c72-staged-ingress-cli.mjs",
     "scripts/project-manual-source.py",
     "scripts/project-repo-loader.mjs",
     "scripts/project-session.mjs",
