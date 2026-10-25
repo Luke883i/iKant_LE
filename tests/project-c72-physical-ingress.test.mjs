@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {validateC72V2Accepted,validateC72V2Orientation} from '../host/c72-public-mode-admission.mjs';
-import {createC72NodeGithubCallbacks,runC72SelectedHostIngress} from '../host/project-c72-physical-ingress.mjs';
+import {createC72NodeGithubCallbacks,runC72SelectedHostIngress,chooseC72HostCarrier} from '../host/project-c72-physical-ingress.mjs';
 const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const names=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md'];
 const docs=names.map(path=>({path,source_head:head,
@@ -92,4 +92,40 @@ test('10k preaccept/no-capability adversaries cause zero I/O or original invocat
   assert.equal(r.ok,false);assert.equal(r.original_owner_invoked,false);
  }
  assert.equal(touched,0);
+});
+
+test('AUTO binds one observed capability without inventing a bridge or silently retrying',async()=>{
+ const none=chooseC72HostCarrier({});
+ assert.equal(none.ok,false);assert.equal(none.edge,'C72_SOURCE_BRIDGE_UNBOUND');
+ assert.equal(chooseC72HostCarrier({allowNodeGithubHTTPS:true}).carrier,'NODE_GITHUB_API');
+ assert.equal(chooseC72HostCarrier({sourcePacket:packet()}).carrier,'HOST_SOURCE_PACKET');
+ const packetR=await runC72SelectedHostIngress({...inp(),carrier:'AUTO',sourcePacket:packet()});
+ assert.equal(packetR.ok,true);assert.equal(packetR.host_carrier_selected,'HOST_SOURCE_PACKET');
+ const network=await runC72SelectedHostIngress({...inp(),carrier:'AUTO',getGithubJSON:getJSON()});
+ assert.equal(network.ok,true);assert.equal(network.host_carrier_selected,'NODE_GITHUB_API');
+ let calls=0;
+ const broken=await runC72SelectedHostIngress({...inp(),carrier:'AUTO',
+  getGithubJSON:async()=>{calls++;throw Error('DNS unreachable')}});
+ assert.equal(broken.ok,false);assert.equal(broken.edge,'C72_HEAD_READ_OUTCOME_UNKNOWN');
+ assert.equal(calls,1);assert.equal(broken.original_owner_invoked,false);
+ assert.equal(chooseC72HostCarrier({sourcePacket:packet(),
+  getGithubJSON:getJSON()}).edge,'C72_HOST_PORT_AMBIGUOUS');
+});
+test('20k deterministic Host auto-selection cases: no fake native evidence',()=>{
+ let n=0;
+ for(let i=0;i<20000;i++){
+  const a=i%5,b=Math.floor(i/5)%5,c=Math.floor(i/25)%8,d=Math.floor(i/200)%100;
+  const req={allowNodeGithubHTTPS:(a%2)===0};
+  if(b===0)req.sourcePacket=packet();
+  if(b===1){req.readMain=async()=>head;req.readPinnedDocument=async()=>docs[0]}
+  if(b===2)req.getGithubJSON=getJSON();
+  if(c===5)req.readMain=async()=>head;
+  if(d===7)req.sourcePacket=packet();
+  const picked=chooseC72HostCarrier(req);
+  assert.equal(typeof picked.ok,'boolean');
+  if(picked.ok)assert(['NODE_GITHUB_API','HOST_SOURCE_PACKET','HOST_CALLBACKS'].includes(picked.carrier));
+  else assert(['C72_SOURCE_BRIDGE_UNBOUND','C72_HOST_PORT_AMBIGUOUS'].includes(picked.edge));
+  n++;
+ }
+ assert.equal(n,20000);
 });

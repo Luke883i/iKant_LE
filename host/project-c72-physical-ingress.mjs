@@ -78,17 +78,45 @@ export function createC72NodeGithubCallbacks({sourceHead,getJSON=readC72GithubJS
  * not claim a missing provider capability exists. No fallback after an owner
  * outcome that could be UNKNOWN; never call original twice.
  */
+/** Pure Host-side intent -> physically bindable carrier decision. A declared
+ * 'available' flag does not equal native provenance: only actual readback does.
+ * No implicit retry; ambiguity is rejected before owner or network I/O.
+ */
+export function chooseC72HostCarrier({readMain,readPinnedDocument,sourcePacket,
+ getGithubJSON,allowNodeGithubHTTPS=false}={}){
+ const packet=sourcePacket!==undefined&&sourcePacket!==null;
+ const callbacks=readMain!==undefined||readPinnedDocument!==undefined;
+ const nodeAPI=getGithubJSON!==undefined;
+ if([packet,callbacks,nodeAPI].filter(Boolean).length>1)
+  return Object.freeze({ok:false,edge:'C72_HOST_PORT_AMBIGUOUS'});
+ if(packet)return Object.freeze({ok:true,carrier:'HOST_SOURCE_PACKET'});
+ if(callbacks){
+  if(typeof readMain!=='function'||typeof readPinnedDocument!=='function')
+   return Object.freeze({ok:false,edge:'C72_HOST_PORT_AMBIGUOUS'});
+  return Object.freeze({ok:true,carrier:'HOST_CALLBACKS'});
+ }
+ if(nodeAPI){
+  if(typeof getGithubJSON!=='function')return Object.freeze({ok:false,edge:'C72_NODE_GITHUB_ADAPTER_CONFIG'});
+  return Object.freeze({ok:true,carrier:'NODE_GITHUB_API'});
+ }
+ if(allowNodeGithubHTTPS===true)return Object.freeze({ok:true,carrier:'NODE_GITHUB_API'});
+ return Object.freeze({ok:false,edge:'C72_SOURCE_BRIDGE_UNBOUND'});
+}
 export async function runC72SelectedHostIngress({humanMessage,freshHumanTurn,
  priorTurnEvidence,carrier='UNBOUND',getGithubJSON,readMain,readPinnedDocument,
- sourcePacket,ownerOutcome='NOT_INVOKED'}={}){
+ sourcePacket,allowNodeGithubHTTPS=false,ownerOutcome='NOT_INVOKED'}={}){
  if(humanMessage!=='I ACCEPT'||freshHumanTurn!==true)
   return stop('C72_EXACT_NEW_CONSENT_REQUIRED');
  if(ownerOutcome!=='NOT_INVOKED')
   return stop(ownerOutcome==='UNKNOWN'?'C72_OWNER_OUTCOME_UNKNOWN':'C72_OWNER_ALREADY_ATTEMPTED');
  if(!H40.test(priorTurnEvidence?.source_head||''))
   return stop('C72_ORIENTATION_WITNESS_MISSING');
+ const choice=carrier==='AUTO'?chooseC72HostCarrier({readMain,readPinnedDocument,
+  sourcePacket,getGithubJSON,allowNodeGithubHTTPS}):Object.freeze({ok:true,carrier});
+ if(!choice.ok)return stop(choice.edge);
+ const selected=choice.carrier;
  let options;
- if(carrier==='NODE_GITHUB_API'){
+ if(selected==='NODE_GITHUB_API'){
   if(sourcePacket!=null||readMain!==undefined||readPinnedDocument!==undefined)
    return stop('C72_HOST_PORT_AMBIGUOUS');
   let adapter;
@@ -96,20 +124,20 @@ export async function runC72SelectedHostIngress({humanMessage,freshHumanTurn,
    ...(getGithubJSON!==undefined?{getJSON:getGithubJSON}:{})});}
   catch{return stop('C72_NODE_GITHUB_ADAPTER_CONFIG');}
   options={readMain:adapter.readMain,readPinnedDocument:adapter.readPinnedDocument};
- }else if(carrier==='HOST_CALLBACKS'){
+ }else if(selected==='HOST_CALLBACKS'){
   if(typeof readMain!=='function'||typeof readPinnedDocument!=='function'||
       sourcePacket!=null||getGithubJSON!==undefined)return stop('C72_HOST_PORT_AMBIGUOUS');
   options={readMain,readPinnedDocument};
- }else if(carrier==='HOST_SOURCE_PACKET'){
+ }else if(selected==='HOST_SOURCE_PACKET'){
   if(sourcePacket==null||readMain!==undefined||readPinnedDocument!==undefined||
      getGithubJSON!==undefined)return stop('C72_HOST_PORT_AMBIGUOUS');
   options={sourcePacket};
  }else{
-  return stop(carrier==='UNBOUND'?'C72_SOURCE_BRIDGE_UNBOUND':'C72_HOST_CARRIER_INVALID');
+  return stop(selected==='UNBOUND'?'C72_SOURCE_BRIDGE_UNBOUND':'C72_HOST_CARRIER_INVALID');
  }
  const r=await executeC72PostAcceptRecovery({humanMessage,freshHumanTurn,
    priorTurnEvidence,ownerOutcome,...options});
  // A verified owner response is not a provider-origin or native UI receipt.
- return Object.freeze({...r,host_carrier_selected:carrier,
+ return Object.freeze({...r,host_carrier_selected:selected,
   provider_source_event_attested:false,native_delivery_attested:false});
 }
