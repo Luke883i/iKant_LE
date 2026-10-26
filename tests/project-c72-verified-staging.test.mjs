@@ -10,8 +10,8 @@ const NAMES=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md
  'contracts/c72-public-mode-admission-v2.json','host/c72-public-mode-admission.mjs',
  'host/project-c72-postaccept-reentry.mjs'];
 const SHA='a'.repeat(40);
-const blob=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\\0')).update(b).digest('hex');
-const bytes=NAMES.map((p,i)=>Buffer.from('original fixture byte-path '+i+' '+p+'\\n'));
+const blob=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+const bytes=NAMES.map((p,i)=>Buffer.from('original fixture byte-path '+i+' '+p+'\n'));
 const expectedBlobShas=Object.fromEntries(NAMES.map((p,i)=>[p,blob(bytes[i])]));
 function manifest(dir){return {op:'init',schema:'ikant-host-c72-verified-staging/v1',
  source_head:SHA,expectedBlobShas,stageDirectory:dir,priorTurnEvidence:{source_head:SHA,

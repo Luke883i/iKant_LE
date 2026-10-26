@@ -1426,6 +1426,7 @@
     "host_followthrough_rule": "READONLY_AFTER_MODE_OWNER_READBACK_FIRST_NO_NEW_PERSISTENCE_OR_AUTHORITY",
     "postaccept_cold_seed": "host/project-c72-coldstart-seed.mjs#executeC72Coldstart",
     "postaccept_partial_kit": "scripts/project-c72-partial-source-kit.mjs",
+    "postaccept_verified_staging": "scripts/project-c72-verified-staging.mjs",
     "postaccept_partial_manual_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_ONLY_NO_OWNER_REPLAY",
     "postaccept_partial_source_original_count": 8,
     "postaccept_partial_source_no_full_edu": true,
