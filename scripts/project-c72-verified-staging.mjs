@@ -112,6 +112,30 @@ export function putRelayBlob(q){
  if(!safeFile(q.stageDirectory,q.path).equals(bytes))fail('C72_RELAY_FILE_READBACK_MISMATCH');
  return receipt({ok:true,phase:'BLOB_REOPENED',path:q.path,blob_sha1:m.expectedBlobShas[q.path],bytes:bytes.length});
 }
+/** Host tool transfers pinned GitHub UTF-8 into private local file. This
+ * adapter validates local bytes, not GitHub/provider event origin or consent. */
+export function putRelayLocalFile(q){
+ if(!plain(q)||q.schema!=='ikant-host-c72-verified-put-local/v1'||
+    !NAMES.includes(q.path)||typeof q.sourceFile!=='string'||
+    !path.isAbsolute(q.sourceFile)||path.resolve(q.sourceFile)!==q.sourceFile)
+   fail('C72_RELAY_LOCAL_FILE_REQUEST_INVALID');
+ let fd;
+ try{
+  const st=fs.lstatSync(q.sourceFile);
+  if(!st.isFile()||st.isSymbolicLink()||st.nlink!==1||st.size<1||
+     st.size>256000||(st.mode&0o077)!==0||
+     (process.getuid&&st.uid!==process.getuid())||
+     fs.realpathSync(q.sourceFile)!==q.sourceFile)
+    fail('C72_RELAY_LOCAL_FILE_UNSAFE');
+  fd=fs.openSync(q.sourceFile,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW||0));
+  const a=fs.fstatSync(fd),bytes=fs.readFileSync(fd),b=fs.fstatSync(fd);
+  if(a.dev!==st.dev||a.ino!==st.ino||a.size!==bytes.length||
+     a.ctimeMs!==b.ctimeMs||a.mtimeMs!==b.mtimeMs)
+    fail('C72_RELAY_LOCAL_FILE_CHANGED');
+  return putRelayBlob({schema:'ikant-host-c72-verified-put/v1',
+   stageDirectory:q.stageDirectory,path:q.path,contentBase64:bytes.toString('base64')});
+ }finally{if(fd!==undefined)fs.closeSync(fd);}
+}
 export function verifyRelay(q){
  if(!plain(q)||q.schema!=='ikant-host-c72-verified-verify/v1')fail('C72_RELAY_VERIFY_INVALID');
  const m=manifest(q.stageDirectory),verified=[];
@@ -133,6 +157,7 @@ export async function runRelayCli(raw){
   const q=JSON.parse(raw);const op=q?.op;
   if(op==='init')return initializeRelay(q);
   if(op==='put')return putRelayBlob(q);
+  if(op==='put-local')return putRelayLocalFile(q);
   if(op==='verify')return verifyRelay(q);
   return receipt({ok:false,edge:'C72_RELAY_OP_UNKNOWN'});
  }catch(e){return receipt({ok:false,edge:String(e.message||'C72_RELAY_UNKNOWN')});}

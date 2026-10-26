@@ -92,6 +92,7 @@
 - [docs/C70_CAPABILITY_FRONTIER.md](C70_CAPABILITY_FRONTIER.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C71_CX_RUNTIME_CLOSURE_AUDIT.md](C71_CX_RUNTIME_CLOSURE_AUDIT.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C71_PROJECT_CHATGPT_ADAPTER.md](C71_PROJECT_CHATGPT_ADAPTER.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
+- [docs/C72_HOST_ASSISTED_LOCAL_FILE_CARRIER.md](C72_HOST_ASSISTED_LOCAL_FILE_CARRIER.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C72_HOST_TOOL_TO_NODE_RELAY.md](C72_HOST_TOOL_TO_NODE_RELAY.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C72_UNIFIED_ADMISSION_AND_VALUE.md](C72_UNIFIED_ADMISSION_AND_VALUE.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C73_BRANDED_SHELL_CAPSULE.md](C73_BRANDED_SHELL_CAPSULE.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
@@ -139,6 +140,7 @@
 - [docs/C99_LAST30_CIRCULARITY_AUDIT.md](C99_LAST30_CIRCULARITY_AUDIT.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C99_PROXY_HOST_INPUT_HARDENING.md](C99_PROXY_HOST_INPUT_HARDENING.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C99_V6_USER_UPLOAD_EVIDENCE.md](C99_V6_USER_UPLOAD_EVIDENCE.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
+- [docs/EDU_BOOTSTRAP_PARETO_10K.md](EDU_BOOTSTRAP_PARETO_10K.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_C125_UI_DOD.md](EDU_C125_UI_DOD.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_C126_POST125_HARDENING.md](EDU_C126_POST125_HARDENING.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_C127_MIND_TRANSPORT_DOD.md](EDU_C127_MIND_TRANSPORT_DOD.md): Documentazione specialistica. Stato di review: **da verificare**.
