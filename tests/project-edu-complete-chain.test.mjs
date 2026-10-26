@@ -14,6 +14,7 @@ import {startOneShellEdu,renderOneShell} from '../host/project-oneshell-edu.mjs'
 import {oneShellMaterialized} from '../host/project-oneshell-phases.mjs';
 import {emitVerifiedHostOneShell} from '../host/project-oneshell-emission.mjs';
 import {makeC135AcknowledgedDraft} from '../host/project-oneshell-language-ack.mjs';
+import {bindManagedOneShellEdu} from '../host/project-oneshell-continuity.mjs';
 import {planOneShellEduSource} from '../host/project-oneshell-edu.mjs';
 import {buildPartialKit} from '../scripts/project-c72-partial-source-kit.mjs';
 
@@ -113,11 +114,20 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
     'Risposta EDU locale verificata: prove separate dalle ipotesi.')});
   assert.equal(session.ok,true,JSON.stringify(session));
   assert.equal(session.frame.slots.NEXT,'AWAIT_HUMAN_INPUT');
-  const current=await session.publishTurn({
+  // Bind the ORIGINAL live C135 instance to the real Host continuity adapter;
+  // a CI fixture observed=true is not native ChatGPT message authentication.
+  const managed=bindManagedOneShellEdu({selection,sourceHead:head,
+   originalSession:session,readMain:async()=>git('rev-parse','HEAD')});
+  const deniedNoHuman=await managed.routeHumanTurn({frame:{humanInput:'unobserved test',
+   nonce:'no-human'},humanMessageObserved:false});
+  assert.equal(deniedNoHuman.edge,'CURRENT_HUMAN_INPUT_REQUIRED');
+  assert.equal(session.readSessionState().original_c87_readback.count,0);
+  const firstRoute=await managed.routeHumanTurn({frame:{
    humanInput:'Spiega come verificare una fonte.',
    nonce:'complete-chain-171-nonce-0001',
-   priorMessages:[],resetContext:true
-  });
+   priorMessages:[],resetContext:true},humanMessageObserved:true});
+  assert.equal(firstRoute.ok,true,JSON.stringify(firstRoute));
+  const current=firstRoute.frame;
   assert.equal(current.voice_origin,'HOST_BOUND_LOCAL',JSON.stringify(current));
   assert.match(current.slots.A,/Risposta EDU locale verificata/);
   assert.deepEqual(current.slot_order,['ESITO','A','B','PROVA','EDGE','NEXT']);
@@ -135,14 +145,19 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
   assert.equal((visual.html.match(/data-slot=/g)||[]).length,6);
   assert.equal(visual.native_delivery_attested,false);
   for(let n=2;n<=3;n++){
-   const next=await session.publishTurn({humanInput:'Turno EDU distinto '+n,
-     nonce:'complete-chain-171-nonce-000'+n,priorMessages:[],resetContext:true});
+   const result=await managed.routeHumanTurn({frame:{humanInput:'Turno EDU distinto '+n,
+     nonce:'complete-chain-171-nonce-000'+n,priorMessages:[],resetContext:true},
+     humanMessageObserved:true});
+   assert.equal(result.ok,true,JSON.stringify(result));
+   const next=result.frame;
    assert.equal(next.voice_origin,'HOST_BOUND_LOCAL',JSON.stringify(next));
    assert.equal(session.readSessionState().original_c87_readback.count,n);
   }
-  const replay=await session.publishTurn({humanInput:'ripeti',nonce:'complete-chain-171-nonce-0001',
-   priorMessages:[],resetContext:true});
-  assert.equal(replay.slots.A,'NO_VOICE');
+  const replay=await managed.routeHumanTurn({frame:{humanInput:'ripeti',
+    nonce:'complete-chain-171-nonce-0001',priorMessages:[],resetContext:true},
+    humanMessageObserved:true});
+  assert.equal(replay.frame.slots.A,'NO_VOICE');
+  assert.equal(managed.native_delivery_attested,false);
   assert.equal(session.readSessionState().original_c87_readback.count,3);
   console.log('PR171_ORIGINAL_EDU_CHAIN_LOCAL_PASS',JSON.stringify({
    source_head:head,source_tree:tree,manifest_members:extracted.files.length,
