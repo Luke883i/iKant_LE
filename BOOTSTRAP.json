@@ -1428,6 +1428,8 @@
     "postaccept_partial_kit": "scripts/project-c72-partial-source-kit.mjs",
     "postaccept_verified_staging": "scripts/project-c72-verified-staging.mjs",
     "postaccept_host_assisted_file_carrier": "scripts/project-c72-verified-staging.mjs#putRelayLocalFile",
+    "postaccept_host_transport_frontier": "host/project-c72-transport-frontier.mjs#chooseC72HostTransport",
+    "postedu_host_source_frontier": "host/project-c72-transport-frontier.mjs#chooseEDUSourceTransport",
     "postaccept_partial_manual_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_ONLY_NO_OWNER_REPLAY",
     "postaccept_partial_source_original_count": 8,
     "postaccept_partial_source_no_full_edu": true,
