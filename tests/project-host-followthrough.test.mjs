@@ -25,9 +25,10 @@ test('Host reminders are read-only checkpoints, original owners keep all authori
  }
  assert.equal(contract.canonical_status,'LEGACY_UNQUALIFIED_STOP_NOT_EDU_NOT_ACTIVE');
  assert.equal(contract.steps.find(x=>x.id==='CANONICAL_LEGACY').on_success,'STOP_CANONICAL_LEGACY_PRODUCT_NO_GO');
- assert.equal(contract.steps.find(x=>x.id==='MANUAL_ZIP').human,'PINNED_SOURCE_ZIP_ONLY_IF_PROVEN_NO_BRIDGE');
+ assert.equal(contract.steps.find(x=>x.id==='MANUAL_ZIP').human,'VALID_EDU_POSTMODE_EXPLICIT_PINNED_SOURCE_ZIP');
  assert.equal(contract.steps.find(x=>x.id==='EDU_TURN').source,'host/project-oneshell-continuity.mjs');
  assert.equal(contract.evidence_policy.native_ui_logo,'UNKNOWN_UNLESS_OBSERVED');
+ assert.equal(contract.host_adapter_contract,'contracts/project-edu-host-what-how-v2.json');
 });
 test('one linked HEAD contract appears in BOOTSTRAP, prompt matrix and prompt only POST-MODE',()=>{
  assert.equal(matrix.host_followthrough_contract,'contracts/project-host-followthrough.json');
@@ -66,7 +67,7 @@ test('10000 hostile reminder mutations cannot become executable authority or a C
    v.steps.every((x,index)=>x.id===expected[index]&&x.on_failure.startsWith('STOP')&&
     x.source===contract.steps[index].source)&&
    v.canonical_status==='LEGACY_UNQUALIFIED_STOP_NOT_EDU_NOT_ACTIVE'&&
-   v.steps[6].human==='PINNED_SOURCE_ZIP_ONLY_IF_PROVEN_NO_BRIDGE';
+   v.steps[6].human==='VALID_EDU_POSTMODE_EXPLICIT_PINNED_SOURCE_ZIP';
   assert.equal(valid,false,'unrejected mutant '+i);count++;
  }
  assert.equal(count,10000);

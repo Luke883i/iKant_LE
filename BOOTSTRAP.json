@@ -1376,12 +1376,15 @@
         "SOURCE_ABSENT",
         "PARTIAL_SOURCE_ONLY"
       ],
-      "bridge": "DEFINITIVELY_UNAVAILABLE",
+      "bridge": "DEFINITIVELY_UNAVAILABLE_OR_EXPLICIT_POST_EDU_MANUAL_CHOICE",
+      "manual_route_policy": "EXPLICIT_MANUAL_POST_EDU_AFTER_VALID_C72_V2_EDU_NEVER_BEFORE_ACCEPTANCE",
       "python_extractor": "scripts/project-manual-source.py",
       "handoff_owner": "host/p1-postmode-source-handoff.mjs",
       "verified_reentry": "scripts/project-repo-loader.mjs",
       "kind": "PINNED_GITHUB_SOURCE_ZIP_NOT_PROJECT_BUNDLE",
-      "canonical_active_authority": false
+      "canonical_active_authority": false,
+      "post_mode_default": "EXPLICIT_MANUAL_POST_EDU_IF_SOURCE_ABSENT_AND_NODE_EXTRACTOR_READY",
+      "bridge_unknown_is_not_absence_proof": true
     },
     "control_entry": "scripts/project-session.mjs",
     "runtime_entry_kind": "ESM_FACTORY_REQUIRES_ORIGINAL_CALLBACKS",
@@ -1425,6 +1428,7 @@
     "postaccept_partial_kit": "scripts/project-c72-partial-source-kit.mjs",
     "postaccept_partial_manual_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_ONLY_NO_OWNER_REPLAY",
     "postaccept_partial_source_original_count": 8,
-    "postaccept_partial_source_no_full_edu": true
+    "postaccept_partial_source_no_full_edu": true,
+    "host_adapter_what_how": "contracts/project-edu-host-what-how-v2.json"
   }
 }

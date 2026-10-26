@@ -62,23 +62,26 @@ export function renderOneShellCompact(frame){
 /** Source routing consumes observed HOST capabilities, not guesses from a prompt.
  * The existing P1 helper is deliberately invoked only for public EDU/v2. */
 export function planOneShellEduSource({selection,sourceState='SOURCE_UNKNOWN',
- bridgeState='UNKNOWN',nodeReady=false,manualExtractorReady=false}={}){
+ bridgeState='UNKNOWN',nodeReady=false,manualExtractorReady=false,manualRoute='AUTO'}={}){
  if(!validateC72V2ModeSelection(selection,{mode:'EDU'}))return failure('C72_EDU_SELECTION_REQUIRED');
- if(!SOURCE_STATES.has(sourceState)||!BRIDGES.has(bridgeState))return failure('SOURCE_OR_BRIDGE_EVIDENCE_INVALID');
+ if(!SOURCE_STATES.has(sourceState)||!BRIDGES.has(bridgeState)||
+    !['AUTO','EXPLICIT_MANUAL_POST_EDU'].includes(manualRoute))return failure('SOURCE_OR_BRIDGE_EVIDENCE_INVALID');
  if(nodeReady!==true)return failure('NODE_20_NOT_ATTESTED');
  if(sourceState==='FULL_SOURCE_VERIFIED')
   return oneShellFrame({esito:'SORGENTE VERIFICATA',b:'Uso il codice originale già disponibile.',edge:'EDU_RUNTIME_NOT_STARTED',next:'START_C135_EDU'});
  if(sourceState==='SOURCE_UNKNOWN')
   return oneShellFrame({esito:'VERIFICA SORGENTE',b:'Controllo i file già disponibili prima di richiederne altri.',edge:'SOURCE_AVAILABILITY_NOT_CHECKED',next:'VERIFY_SOURCE'});
- if(bridgeState==='UNKNOWN')
+ if(manualRoute!=='EXPLICIT_MANUAL_POST_EDU'&&bridgeState==='UNKNOWN')
   return oneShellFrame({esito:'VERIFICA COLLEGAMENTO',b:'Accerto se i byte originali possono raggiungere Node.',edge:'API_TO_NODE_BRIDGE_UNKNOWN',next:'VERIFY_MACHINE_BRIDGE'});
- if(bridgeState==='AVAILABLE')
+ if(manualRoute!=='EXPLICIT_MANUAL_POST_EDU'&&bridgeState==='AVAILABLE')
   return oneShellFrame({esito:'ACQUISIZIONE AUTOMATICA',b:'Trasferisco e verifico i blob Git originali.',edge:'SOURCE_NOT_MATERIALIZED',next:'API_TREE_SOURCE_MATERIALIZATION'});
  if(manualExtractorReady!==true)return failure('MANUAL_SOURCE_EXTRACTOR_UNAVAILABLE');
- const p=planP1PostModeSourceHandoff({selection,sourceState,bridgeState});
+ const p=planP1PostModeSourceHandoff({selection,sourceState,bridgeState,manualRoute});
  if(p.ok!==true||p.action!=='REQUEST_SOURCE_ZIP'||p.after_mode_only!==true)
   return failure(p.first_edge||'MANUAL_HANDOFF_NOT_QUALIFIED');
- return oneShellFrame({esito:'SERVONO I SORGENTI',b:'Il ponte automatico non è disponibile. Allegare solo lo ZIP del commit pinnato, dopo EDU.',
+ return oneShellFrame({esito:'SERVONO I SORGENTI',b:manualRoute==='EXPLICIT_MANUAL_POST_EDU'?
+  'Percorso manuale EDU selezionato. Apri il link dello ZIP pinnato e allegalo qui.':
+  'Il ponte automatico non è disponibile. Allegare solo lo ZIP del commit pinnato, dopo EDU.',
   prova:p.source_zip_url,edge:'EDU_MANUAL_SOURCE_REQUIRED',next:'UPLOAD_PINNED_SOURCE_ZIP'});
 }
 /** The original C125 callback is captured once as opaque evidence, not presented

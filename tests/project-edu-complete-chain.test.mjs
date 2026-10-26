@@ -14,6 +14,9 @@ import {startOneShellEdu,renderOneShell} from '../host/project-oneshell-edu.mjs'
 import {oneShellMaterialized} from '../host/project-oneshell-phases.mjs';
 import {emitVerifiedHostOneShell} from '../host/project-oneshell-emission.mjs';
 import {makeC135AcknowledgedDraft} from '../host/project-oneshell-language-ack.mjs';
+import {bindManagedOneShellEdu} from '../host/project-oneshell-continuity.mjs';
+import {planOneShellEduSource} from '../host/project-oneshell-edu.mjs';
+import {buildPartialKit} from '../scripts/project-c72-partial-source-kit.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
@@ -52,8 +55,30 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
   assert(validateC72V2Accepted(accepted));
   assert(validateC72V2Orientation(introduction,accepted));
   assert.equal(accepted.terms_digest,SHA(fs.readFileSync(path.join(root,'TERMS.md'))));
-  const selection=selectC72V2Mode({accepted,orientation:introduction,humanMessage:'EDU'});
+  // Exact original owner bytes are staged into a SEPARATE later Node process,
+  // not imported from the checkout into this test's EDU selection.
+  const kit=buildPartialKit({head});
+  const modePacket=kit.files.filter(x=>['contracts/c72-public-mode-admission-v2.json',
+   'host/c72-public-mode-admission.mjs'].includes(x.path))
+   .map(x=>({path:x.path,contentBase64:x.contentBase64}));
+  const modeRequest={schema:'ikant-host-c72-later-mode/v1',humanMessage:'EDU',
+   freshHumanTurn:true,priorAcceptanceObserved:true,ownerOutcome:'NOT_INVOKED',
+   sourceHead:head,liveHead:head,accepted,introduction,
+   expectedBlobShas:Object.fromEntries(kit.files.map(x=>[x.path,x.blob_sha1])),
+   sourcePacket:modePacket};
+  // The later process receives the exact packet over stdin.
+  const later=spawnSync(process.execPath,[path.join(root,'scripts/project-c72-cold-mode-cli.mjs')],{
+   cwd:tmp,input:JSON.stringify(modeRequest),encoding:'utf8',timeout:20000,maxBuffer:2000000});
+  assert.equal(later.status,0,later.stderr+' '+later.stdout);
+  const resultMode=JSON.parse(later.stdout);
+  assert.equal(resultMode.ok,true);assert.equal(resultMode.original_owner_invoked,true);
+  const selection=resultMode.selection;
   assert(validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead:head}));
+  const manual=planOneShellEduSource({selection,sourceState:'SOURCE_ABSENT',
+   bridgeState:'UNKNOWN',nodeReady:true,manualExtractorReady:true,
+   manualRoute:'EXPLICIT_MANUAL_POST_EDU'});
+  assert.equal(manual.slots.NEXT,'UPLOAD_PINNED_SOURCE_ZIP');
+  assert.equal(manual.slots.PROVA,'https://github.com/Luke883i/iKant_LE/archive/'+head+'.zip');
   assert.equal(selection.selected_mode,'EDU');
   const artifact=run('git',['archive','--format=zip','--prefix=iKant_LE-'+head+'/','-o',zip,'HEAD']);
   assert.equal(artifact.status,0,artifact.stderr);
@@ -89,11 +114,20 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
     'Risposta EDU locale verificata: prove separate dalle ipotesi.')});
   assert.equal(session.ok,true,JSON.stringify(session));
   assert.equal(session.frame.slots.NEXT,'AWAIT_HUMAN_INPUT');
-  const current=await session.publishTurn({
+  // Bind the ORIGINAL live C135 instance to the real Host continuity adapter;
+  // a CI fixture observed=true is not native ChatGPT message authentication.
+  const managed=bindManagedOneShellEdu({selection,sourceHead:head,
+   originalSession:session,readMain:async()=>git('rev-parse','HEAD')});
+  const deniedNoHuman=await managed.routeHumanTurn({frame:{humanInput:'unobserved test',
+   nonce:'no-human'},humanMessageObserved:false});
+  assert.equal(deniedNoHuman.edge,'CURRENT_HUMAN_INPUT_REQUIRED');
+  assert.equal(session.readSessionState().original_c87_readback.count,0);
+  const firstRoute=await managed.routeHumanTurn({frame:{
    humanInput:'Spiega come verificare una fonte.',
    nonce:'complete-chain-171-nonce-0001',
-   priorMessages:[],resetContext:true
-  });
+   priorMessages:[],resetContext:true},humanMessageObserved:true});
+  assert.equal(firstRoute.ok,true,JSON.stringify(firstRoute));
+  const current=firstRoute.frame;
   assert.equal(current.voice_origin,'HOST_BOUND_LOCAL',JSON.stringify(current));
   assert.match(current.slots.A,/Risposta EDU locale verificata/);
   assert.deepEqual(current.slot_order,['ESITO','A','B','PROVA','EDGE','NEXT']);
@@ -110,15 +144,26 @@ test('PR HEAD original owner chain: linked C72 -> later EDU -> full manual ZIP -
   assert(visual.html.indexOf('class="ikant-brand-mark"')<visual.html.indexOf('<strong>iKant · OneShell</strong>'));
   assert.equal((visual.html.match(/data-slot=/g)||[]).length,6);
   assert.equal(visual.native_delivery_attested,false);
-  const replay=await session.publishTurn({humanInput:'ripeti',nonce:'complete-chain-171-nonce-0001',
-   priorMessages:[],resetContext:true});
-  assert.equal(replay.slots.A,'NO_VOICE');
-  assert.equal(session.readSessionState().original_c87_readback.count,1);
+  for(let n=2;n<=3;n++){
+   const result=await managed.routeHumanTurn({frame:{humanInput:'Turno EDU distinto '+n,
+     nonce:'complete-chain-171-nonce-000'+n,priorMessages:[],resetContext:true},
+     humanMessageObserved:true});
+   assert.equal(result.ok,true,JSON.stringify(result));
+   const next=result.frame;
+   assert.equal(next.voice_origin,'HOST_BOUND_LOCAL',JSON.stringify(next));
+   assert.equal(session.readSessionState().original_c87_readback.count,n);
+  }
+  const replay=await managed.routeHumanTurn({frame:{humanInput:'ripeti',
+    nonce:'complete-chain-171-nonce-0001',priorMessages:[],resetContext:true},
+    humanMessageObserved:true});
+  assert.equal(replay.frame.slots.A,'NO_VOICE');
+  assert.equal(managed.native_delivery_attested,false);
+  assert.equal(session.readSessionState().original_c87_readback.count,3);
   console.log('PR171_ORIGINAL_EDU_CHAIN_LOCAL_PASS',JSON.stringify({
    source_head:head,source_tree:tree,manifest_members:extracted.files.length,
    c72_original_receipts_verified:true,host_adapter_auto_packet_executed:true,edu_original_selection_verified:true,
    manual_full_repo_archive_node_materialized:true,c135_original_owner_started:true,
-   original_c87_readback_count:1,c125_sha256:evidence.original_c125_sha256,
+   original_c87_readback_count:3,c125_sha256:evidence.original_c125_sha256,
    logo_sha256:visual.brand_sha256,logo_rendered_before_title:true,
    native_provider_ingress_attested:false,native_delivery_attested:false,product_go:false
   }));

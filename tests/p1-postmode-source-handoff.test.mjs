@@ -23,3 +23,23 @@ test('P1 direct helper cannot bypass EDU-only and verified automatic-bridge abse
  assert.equal(planP1PostModeSourceHandoff({selection:canonical,sourceState:'SOURCE_ABSENT',bridgeState:'DEFINITIVELY_UNAVAILABLE'}).action,'STOP');
  assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT',bridgeState:'INFERRED'}).action,'STOP');
 });
+
+test('explicit post-EDU manual ZIP is a transport decision and never a C72 bypass',()=>{
+ const explicit=planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT',
+  bridgeState:'UNKNOWN',manualRoute:'EXPLICIT_MANUAL_POST_EDU'});
+ assert.equal(explicit.ok,true);
+ assert.equal(explicit.action,'REQUEST_SOURCE_ZIP');
+ assert.equal(explicit.bridge_absence_claimed,false);
+ assert.ok(explicit.source_zip_url.endsWith('/'+H+'.zip'));
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT',
+  bridgeState:'UNKNOWN'}).action,'VERIFY_MACHINE_BRIDGE');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_UNKNOWN',
+  manualRoute:'EXPLICIT_MANUAL_POST_EDU'}).action,'VERIFY_SOURCE');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'FULL_SOURCE_VERIFIED',
+  manualRoute:'EXPLICIT_MANUAL_POST_EDU'}).action,'USE_VERIFIED_SOURCE');
+ assert.equal(planP1PostModeSourceHandoff({selection,sourceState:'SOURCE_ABSENT',
+  manualRoute:'INFERRED_FROM_HOST'}).action,'STOP');
+ const wrong={...selection,receipt_sha256:'f'.repeat(64)};
+ assert.equal(planP1PostModeSourceHandoff({selection:wrong,sourceState:'SOURCE_ABSENT',
+  manualRoute:'EXPLICIT_MANUAL_POST_EDU'}).action,'STOP');
+});
