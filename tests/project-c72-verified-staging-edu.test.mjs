@@ -14,7 +14,7 @@ const head=execFileSync('git',['rev-parse','HEAD'],{cwd:repo,encoding:'utf8'}).t
 const paths=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md',
  'contracts/c72-public-mode-admission-v2.json','host/c72-public-mode-admission.mjs',
  'host/project-c72-postaccept-reentry.mjs'];
-const sha=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\\0')).update(b).digest('hex');
+const sha=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
 const originalObjects=paths.map(p=>({path:p,bytes:original(p),blob_sha1:object(p)}));
 const expectedBlobShas=Object.fromEntries(originalObjects.map(o=>[o.path,o.blob_sha1]));
 const witness={source_head:head,host_link_displayed:true,distinct_human_message_observed:true,
