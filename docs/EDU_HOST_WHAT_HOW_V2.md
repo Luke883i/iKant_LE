@@ -29,3 +29,9 @@ CI Node 20/22 qualifies G1–G3 on fixture/checkout-origin test bytes, NOT the r
 ## User language (when qualified)
 
 After EDU: "Apri il link dello ZIP di questa versione e allegalo qui. Non devi usare terminale o ripetere il consenso." After the upload, the Host—not the user—must invoke the actual extractor/loader. If Node or the host-to-Node sink does not exist, do not ask for an upload that cannot be consumed.
+
+## Observed WHAT / Host-selected HOW
+
+The user-facing Host chooses any authorized physical carrier, not a fixed gateway technology. The required WHAT is: frozen five SHA first-turn witness, new exact human I ACCEPT, actual pinned source bytes physically sent to Node and re-read as Git blob SHA-1, unchanged original C72 accepted/complete intro, and a later separate original EDU mode receipt. A DNS error only affects Node HTTPS, not a host-mediated packet. If actual tool→Node transfer cannot be observed, stop at C72_SOURCE_BRIDGE_UNBOUND; prompt text does not install an adapter.
+
+After original EDU, absent full source plus an available Node/Python extractor permits an explicit pinned ZIP handoff even with bridge UNKNOWN. Do not infer that the machine bridge is unavailable. The ZIP must be compared to an independent GitHub TREE and loaded with the original Python+Node components. The worker must remain alive across *separate real human turns*, with C87/C125 readback; adjacent CI turns are only software proof.

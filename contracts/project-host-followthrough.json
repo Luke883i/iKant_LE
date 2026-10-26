@@ -32,7 +32,7 @@
       "human": "DISTINCT_EXACT_I_ACCEPT",
       "phase": "C72",
       "source": "host/project-c72-physical-ingress.mjs",
-      "required": "OWNER_C72_RECEIPT_AND_COMPLETE_INTRODUCTION_REOPENED",
+      "required": "HOST_REAL_PINNED_BYTE_TO_NODE_READBACK_AND_ORIGINAL_C72_RECEIPT_INTRO",
       "on_success": "AWAIT_DISTINCT_EDU",
       "on_failure": "STOP_NO_BLIND_RETRY"
     },
@@ -40,8 +40,8 @@
       "id": "MODE",
       "human": "DISTINCT_EXACT_EDU",
       "phase": "EDU_SELECTED",
-      "source": "host/c72-public-mode-admission.mjs",
-      "required": "ORIGINAL_C72_V2_EDU_SELECTION_RECEIPT",
+      "source": "scripts/project-c72-cold-mode-cli.mjs",
+      "required": "ORIGINAL_C72_V2_MODE_OWNER_CALLED_IN_SEPARATE_LATER_NODE_PROCESS",
       "on_success": "POSTMODE_PREFLIGHT",
       "on_failure": "STOP"
     },
@@ -74,12 +74,12 @@
     },
     {
       "id": "MANUAL_ZIP",
-      "human": "PINNED_SOURCE_ZIP_ONLY_IF_PROVEN_NO_BRIDGE",
+      "human": "VALID_EDU_POSTMODE_EXPLICIT_PINNED_SOURCE_ZIP",
       "phase": "P1_MANUAL_FALLBACK",
       "source": "host/p1-postmode-source-handoff.mjs",
-      "required": "EDU_MODE_AND_BRIDGE_DEFINITIVELY_UNAVAILABLE_AND_TREE_API_INDEPENDENT",
+      "required": "VALID_ORIGINAL_EDU_ABSENT_FULL_SOURCE_NODE_EXTRACTOR_AND_INDEPENDENT_GIT_TREE",
       "on_success": "ORIGINAL_PYTHON_EXTRACTOR_AND_NODE_LOADER",
-      "on_failure": "STOP_NO_ZIP_ON_UNKNOWN"
+      "on_failure": "STOP_NO_ZIP_WITHOUT_VALID_EDU_OR_UNKNOWN_SOURCE"
     },
     {
       "id": "SOURCE_REOPEN",
@@ -136,5 +136,8 @@
     "no_memory_as_state": true,
     "native_provider_delivery": "UNKNOWN_UNLESS_OBSERVED",
     "native_ui_logo": "UNKNOWN_UNLESS_OBSERVED"
-  }
+  },
+  "host_adapter_contract": "contracts/project-edu-host-what-how-v2.json",
+  "host_adapter_decision": "WHAT_FROM_ORIGINAL_OWNER_HOW_CHOSEN_AND_PHYSICALLY_EXECUTED_BY_HOST",
+  "field_host_capabilities_attested": false
 }
