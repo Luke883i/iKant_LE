@@ -8,6 +8,10 @@ on:
       - 'host/project-oneshell-edu.mjs'
       - 'tests/p1-postmode-source-handoff.test.mjs'
       - 'tests/project-edu-complete-chain.test.mjs'
+      - 'tests/project-edu-host-closure-3x10k.test.mjs'
+      - 'contracts/project-host-followthrough.json'
+      - 'contracts/project-host-capability-port.json'
+      - 'docs/EDU_HOST_WHAT_HOW_V2.md'
       - 'scripts/project-edu-what-how-falsify.mjs'
       - 'contracts/project-edu-host-what-how-v2.json'
       - 'project/session-chat/PROMPT.txt'
@@ -33,6 +37,10 @@ jobs:
       - run: node --test tests/project-c72-cold-mode.test.mjs tests/p1-postmode-source-handoff.test.mjs tests/project-edu-complete-chain.test.mjs
       - run: python3 tests/test_project_manual_full_head.py
       - run: node scripts/project-source-manifest.mjs verify
+      - name: Three independent seeded 10k WHAT/HOW, P1 and continuity campaigns
+        run: |
+          mkdir -p "$RUNNER_TEMP/three-gates"
+          IKANT_EDU_THREE_GATES_DIR="$RUNNER_TEMP/three-gates" node --test tests/project-edu-host-closure-3x10k.test.mjs
       - run: npm run check
       - name: Seeded 10k original C72 admission and post-EDU semantics
         run: |
@@ -44,6 +52,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: edu-what-how-${{ matrix.node }}-${{ github.sha }}
-          path: ${{ runner.temp }}/what-how/
+          path: |
+            ${{ runner.temp }}/what-how/
+            ${{ runner.temp }}/three-gates/
           retention-days: 30
           if-no-files-found: error
