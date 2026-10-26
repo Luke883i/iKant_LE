@@ -31,7 +31,7 @@ test('post-EDU P1 mechanical pinned ZIP only on separately verified original mod
 test('exactly 10,000 seeded complete structural scenarios: no owner/ACTIVE forgery, no pre-consent ZIP, observed carrier dominates probes',()=>{
  const random=rnd();const states=['OBSERVED','CALLABLE_UNTESTED','UNAVAILABLE_VERIFIED','UNKNOWN'];
  const names=C72_TRANSPORT_ORDER;
- let stops=0,probes=0,executes=0,mutations=0;
+ let stops=0,probes=0,executes=0,mutations=0;const ladder={};
  for(let i=0;i<10000;i++){
   const q=base();for(const n of names)q.carriers[n]=states[Math.floor(random()*4)];
   const mutation=Math.floor(random()*10);mutations++;
@@ -62,7 +62,9 @@ test('exactly 10,000 seeded complete structural scenarios: no owner/ACTIVE forge
   const e=chooseEDUSourceTransport({phase:'POST_ACCEPT',sourceHead:SHA,liveHead:SHA,
    originalEduSelectionVerified:true,node:'AVAILABLE',source:'ABSENT',manualRoute:'EXPLICIT_MANUAL_POST_EDU',extractorVerified:true});
   assert.notEqual(e.action,'REQUEST_ORIGINAL_PINNED_ZIP');
+  if([1,10,100,1000,10000].includes(i+1))ladder[i+1]={stops,probes,executes};
  }
+ assert.deepEqual(Object.keys(ladder),['1','10','100','1000','10000']);
  assert.equal(mutations,10000);assert.equal(stops+probes+executes,10000);
- console.log('PARETO_10K',JSON.stringify({seed,cases:10000,stops,probes,executes,model:'finite structural, not 10000 native chats'}));
+ console.log('PARETO_10K',JSON.stringify({seed,cases:10000,stops,probes,executes,ladder,model:'finite structural, not 10000 native chats'}));
 });

@@ -5,7 +5,7 @@ const STATES=new Set(['OBSERVED','CALLABLE_UNTESTED','UNAVAILABLE_VERIFIED','UNK
 // Normative dimensions for a bounded model, NOT measured latency or cost.
 // [Host blob copies, sequential effects, external dependency burden].
 export const C72_MODEL_COSTS=Object.freeze({CALLBACKS:[0,2,0],NODE_HTTPS:[0,1,1],
- HOST_PACKET:[8,2,0],HOST_FILE:[9,10,0]});
+ HOST_PACKET:[1,2,0],HOST_FILE:[10,10,0]});
 const dominates=(a,b)=>a.every((v,i)=>v<=b[i])&&a.some((v,i)=>v<b[i]);
 export function c72ParetoFrontier(carriers={}){
  const available=C72_TRANSPORT_ORDER.filter(n=>carriers[n]==='OBSERVED');
@@ -15,8 +15,15 @@ export function c72ParetoFrontier(carriers={}){
 const SHA=/^[a-f0-9]{40}$/u;
 const stop=edge=>Object.freeze({kind:'STOP',action:'STOP',edge,authority:0,owner_invoked:false,active:false});
 const pending=(action,carrier,edge)=>Object.freeze({kind:'PROBE',action,carrier,edge,authority:0,owner_invoked:false,active:false});
-const chosen=(carrier)=>Object.freeze({kind:'EXECUTE',action:'RUN_ORIGINAL_C72_VIA_'+carrier,carrier,
- required:'ORIGINAL_OWNER_RECEIPT_AND_FULL_INTRODUCTION',authority:0,owner_invoked:false,active:false});
+const ACTIONS=Object.freeze({
+ CALLBACKS:'BIND_CALLBACKS_THEN_RUN_ORIGINAL_C72',
+ NODE_HTTPS:'FETCH_PINNED_NODE_HTTPS_THEN_RUN_ORIGINAL_C72',
+ HOST_PACKET:'TRANSFER_EIGHT_SOURCE_PACKET_THEN_RUN_ORIGINAL_COLD_SEED',
+ HOST_FILE:'STAGE_EIGHT_PRIVATE_FILES_THEN_RUN_ORIGINAL_COLD_SEED'
+});
+const chosen=(carrier)=>Object.freeze({kind:'EXECUTE',action:ACTIONS[carrier],carrier,
+ required:'REOPEN_PINNED_SOURCE_AND_VERIFIED_ORIGINAL_OWNER_RECEIPT_AND_FULL_INTRODUCTION',
+ authority:0,owner_invoked:false,active:false});
 /** Bounded first-best policy, never a guarantee of platform capability.
  * OBSERVED = a real, validated, callable physical carrier in THIS Host.
  * CALLABLE_UNTESTED => only a non-owner probe, never an owner call. */

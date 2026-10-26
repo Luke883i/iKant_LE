@@ -8,6 +8,7 @@ No. The original #176 adds a local-file carrier and prompt hints, not a physical
 
 ## II. Historical recurrent fault, NOT a simple EXPERIMENTAL -> EDU regression
 
+- **GENESIS/C7 and C15–C21** `docs/IKANT_DEVELOPMENT_HISTORY.md`, `contracts/bootstrap-channel-lineage.json`: the original platform already distinguished GitHub API source, physical Host file bridge, local Node, unavailable container DNS and a separate transport/availability/continuation lattice. In the older canonical channel map, HOST_FILE_BRIDGE was marked last-resort, not an installed hook. The failure class predates the EDU label.
 - **C78** `docs/C78_PHYSICAL_HOST_BRIDGE.md`: a pinned original SVG was physically moved connector -> Host -> Node (1,266 bytes, matching Git blob), but the full C77 package, provider source identity, real second-turn routing and UI delivery stayed OPEN.
 - **C100** `docs/C100_EXPERIMENTAL_COHOST_DOD.md`: experimental Host draft needed explicit opt-in, C100 binding and admission; a Project prompt did not install callbacks.
 - **C107/PR #113 and PR #118** `docs/C107_EXPERIMENTAL_RELEASE_DOD.md` and `docs/C107_CARRIER_CONSUMER_DOD.md`: original content-addressed carrier (62,448 compressed bytes, 43 files in later release), local Node original turns and explicit human archive fallback. This qualified source/software paths, NOT per-turn native host hooks.
@@ -26,7 +27,7 @@ For a fresh consent turn, compare ONLY actually witnessed alternatives. Hard fea
 | HOST_FILE | GitHub connector + Node shared file tool actually transfers SHA-checked private files | Ten source/script transfers at cold start, 8/8 stage, seed original C72 |
 | POST-EDU original ZIP | Original selection validated, Node ready, source absent/partial, explicit post-mode manual route | User may download original pinned source ZIP; independent TREE and extractor/loader checks precede original C135 |
 
-The bounded metric `C72_MODEL_COSTS` is **normative, not empirical**: [Host copy count, sequential effects, external dependency burden]; CALLBACKS [0,2,0], NODE_HTTPS [0,1,1], HOST_PACKET [8,2,0], HOST_FILE [9,10,0]. The frontier eliminates strictly dominated candidates from the currently observed feasible set; ties use a deterministic original-source-first order. Numbers abstract away bandwidth, provider configuration, API limits, operational UX and failure probability. Consequently this is a Pareto-minimal policy **within the four predeclared alternatives and this metric**, not a proof of global software-optimality or unconditional full EDU reachability.
+The bounded metric `C72_MODEL_COSTS` is **normative, not empirical**: [Host copy count, sequential effects, external dependency burden]; CALLBACKS [0,2,0], NODE_HTTPS [0,1,1], HOST_PACKET [1,2,0], HOST_FILE [10,10,0]. The frontier eliminates strictly dominated candidates from the currently observed feasible set; ties use a deterministic original-source-first order. Numbers abstract away bandwidth, provider configuration, API limits, operational UX and failure probability. Consequently this is a Pareto-minimal policy **within the four predeclared alternatives and this metric**, not a proof of global software-optimality or unconditional full EDU reachability.
 
 If a carrier is only CALLABLE_UNTESTED, plan a one-shot **non-owner physical probe** first, recording the real put/send/readback. An unobserved capability must not become an EXECUTE claim. After an UNKNOWN owner outcome, STOP; no blind carrier fallback or receipt replay. If all carriers are truly unavailable, the feasible set is empty and there is NO bootstrap theorem.
 
@@ -42,7 +43,7 @@ A prompt instructs the Host to attempt a transfer; it cannot grant filesystem ac
 
 Seed **20261026**, 10,000 deterministic scenarios, Node 22 in engineering container; 3/3 tests passed in `tests/project-c72-transport-frontier-10k.test.mjs`:
 
-- 6,616 STOP decisions; 975 non-owner PROBE decisions; 2,409 EXECUTE-*route selections*; exactly 10,000 total.
+- Saturation checkpoints 1→10→100→1,000→10,000 (STOP / PROBE / EXECUTE-*route selection*): **1/0/0**, **8/1/1**, **72/7/21**, **649/96/255**, **6,616/975/2,409**. Exactly 10,000 cases; none are native C72 invocations.
 - Assert no selected carrier without OBSERVED evidence, no owner invocation/receipt/ACTIVE output, no pre-EDU ZIP, no false C72 after stale HEAD, missing first-turn witness, non-exact consent, UNKNOWN owner, or missing Node; chosen executable carrier belongs to bounded nondominated frontier.
 - Positive controls for each of four observed carriers, and a distinct post-EDU ZIP permit vs pre-mode denial.
 - **Not tested:** 10,000 independent human semantic mutations, actual 8/8 connector transfer in a fresh ChatGPT session, native C135 languagePort, provider delivery, persistence, a statistical reliability bound or a global architecture optimum.
