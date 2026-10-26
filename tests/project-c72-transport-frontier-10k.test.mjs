@@ -11,7 +11,7 @@ test('P0 frontiers: best executable observed carrier, or non-owner probe',()=>{
  const q=base();q.carriers.HOST_FILE='CALLABLE_UNTESTED';
  assert.deepEqual([chooseC72HostTransport(q).kind,chooseC72HostTransport(q).carrier],['PROBE','HOST_FILE']);
  q.carriers.HOST_FILE='OBSERVED';
- assert.equal(chooseC72HostTransport(q).action,'RUN_ORIGINAL_C72_VIA_HOST_FILE');
+ assert.equal(chooseC72HostTransport(q).action,'STAGE_EIGHT_PRIVATE_FILES_THEN_RUN_ORIGINAL_COLD_SEED');
  q.carriers.HOST_PACKET='OBSERVED';
  assert.equal(chooseC72HostTransport(q).carrier,'HOST_PACKET');
  q.carriers.NODE_HTTPS='OBSERVED';
