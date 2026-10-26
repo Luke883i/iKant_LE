@@ -1,0 +1,28 @@
+name: C72 host-to-Node physical staging qualification
+on:
+  pull_request:
+    paths:
+      - 'scripts/project-c72-verified-staging.mjs'
+      - 'tests/project-c72-verified-staging.test.mjs'
+      - 'docs/C72_HOST_TOOL_TO_NODE_RELAY.md'
+      - 'project/session-chat/PROMPT.txt'
+      - 'BOOTSTRAP.json'
+      - '.github/workflows/c72-verified-staging.yml'
+  workflow_dispatch:
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20','22']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test tests/project-c72-verified-staging.test.mjs
+      - run: node --test tests/project-c72-coldstart-seed.test.mjs
+      - run: node scripts/project-source-manifest.mjs verify
