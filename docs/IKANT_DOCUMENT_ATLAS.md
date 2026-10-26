@@ -92,6 +92,7 @@
 - [docs/C70_CAPABILITY_FRONTIER.md](C70_CAPABILITY_FRONTIER.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C71_CX_RUNTIME_CLOSURE_AUDIT.md](C71_CX_RUNTIME_CLOSURE_AUDIT.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C71_PROJECT_CHATGPT_ADAPTER.md](C71_PROJECT_CHATGPT_ADAPTER.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
+- [docs/C72_HOST_TOOL_TO_NODE_RELAY.md](C72_HOST_TOOL_TO_NODE_RELAY.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C72_UNIFIED_ADMISSION_AND_VALUE.md](C72_UNIFIED_ADMISSION_AND_VALUE.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C73_BRANDED_SHELL_CAPSULE.md](C73_BRANDED_SHELL_CAPSULE.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
 - [docs/C74_POSTMERGE_ONTOLOGY_DOD.md](C74_POSTMERGE_ONTOLOGY_DOD.md): Contratti Cx e ricerca tecnica. Stato di review: **da verificare**.
