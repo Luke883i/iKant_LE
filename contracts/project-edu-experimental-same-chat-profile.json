@@ -1,0 +1,79 @@
+{
+  "schema": "ikant-host-edu-experimental-same-chat-profile/v1",
+  "authority": 0,
+  "decision": "EDU_EXPERIMENTAL_SAME_CHAT_NOT_CANONICAL_ACTIVE",
+  "reuse": [
+    "C103_WHAT_HOW",
+    "P01_P04",
+    "ORIGINAL_C72_V2",
+    "ORIGINAL_C135",
+    "ORIGINAL_C87",
+    "ORIGINAL_C125_S03",
+    "P1_POST_EDU_EXPLICIT_ZIP",
+    "ORIGINAL_PROJECT_REPO_LOADER"
+  ],
+  "goal": "ONE_LIVE_C135_EDU_SESSION_WITH_BOUNDED_COGNITION_AND_EXACT_OWNER_BOUND_TURNS",
+  "gates": [
+    {
+      "id": "E0",
+      "requires": "HEAD_PLUS_FIVE_FIRST_TURN_SHA",
+      "claim": "SOURCE_ORIENTATION_ONLY"
+    },
+    {
+      "id": "E1",
+      "requires": "C72_ACCEPTED_INTRO_AND_DISTINCT_ORIGINAL_EDU_SELECTION",
+      "claim": "ADMITTED_SELECTED_NOT_RUNNING"
+    },
+    {
+      "id": "E2",
+      "requires": "FULL_SOURCE_MANIFEST_TREE_BLOB_LOCAL_READBACK",
+      "claim": "SOURCE_READY_NOT_RUNNING"
+    },
+    {
+      "id": "E3",
+      "requires": "LIVE_ORIGINAL_C135_RUNTIME_READY_AND_CALLABLE_LANGUAGE_PORT",
+      "claim": "LOCAL_EDU_READY_NO_VOICE"
+    },
+    {
+      "id": "E4",
+      "requires": "MULTIPLE_REAL_HUMAN_TURNS_UNIQUE_NONCES_C87_C125_S03_READBACK",
+      "claim": "LOCAL_EDU_EXPERIMENTAL_EXECUTED"
+    },
+    {
+      "id": "E5",
+      "requires": "VISIBLE_ONESHELL_AND_TWO_TURN_EXIT_WITH_WORKER_TERMINATION",
+      "claim": "HOST_PROFILE_FIELD_QUALIFIED_ONLY"
+    }
+  ],
+  "cognition": {
+    "c107_prior_messages_max": 4,
+    "c140_alternate_may_not_execute_original_c70": true,
+    "cx_coverage": "ACTUALLY_EXECUTED_APPLICABLE_ORIGINAL_ROUTE_ONLY",
+    "unbounded_psyche_persistence_attested": false
+  },
+  "source": {
+    "manifest_owner": "contracts/project-session-source.json",
+    "loader_owner": "scripts/project-repo-loader.mjs",
+    "no_hardcoded_future_epoch_source_count": true
+  },
+  "no_new_owners": true,
+  "no_new_writer": true,
+  "no_new_carrier": true,
+  "claims_not_required_for_experimental_local": [
+    "CANONICAL_ACTIVE",
+    "NATIVE_PROVIDER_EVENT_ATTESTATION",
+    "NATIVE_UI_HOOK",
+    "CROSS_CHAT_PERSISTENCE",
+    "UNBOUNDED_COGNITIVE_MEMORY",
+    "UNIVERSAL_CX_EACH_TURN"
+  ],
+  "never_claim_without_field_evidence": [
+    "HOST_DELIVERY_ATTESTED",
+    "SOURCE_BRIDGE_CALLABLE",
+    "ACTUAL_C135_WORKER_RUNNING",
+    "FULL_EDU_COGNITION"
+  ],
+  "first_edge_policy": "OWNER_STOP_OR_UNKNOWN_IS_STOP_NO_REPLAY",
+  "phase_before_admission": "HOST_ENGINEERING_NEVER_SIMULATES_I_ACCEPT_OR_EDU",
+  "product_status_without_field_proof": "PRODUCT_NO_GO"
+}
