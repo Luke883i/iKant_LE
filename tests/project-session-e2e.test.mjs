@@ -103,7 +103,7 @@ test('experimental EDU: seven real original C135/C70/C87/C125/S03 turns with bou
  const parent=fs.mkdtempSync(path.join(os.tmpdir(),'edu-seven-causal-'));
  const destination=path.join(parent,'source');
  let session;
- const inputs=Array.from({length:7},(_,i)=>'Spiega come verificare una fonte nel caso '+(i+1)+'.');
+ const inputs=Array.from({length:7},(_,i)=>'Spiega il metodo di verifica per il caso '+(i+1)+'.');
  const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
  const windowHash=a=>digest(JSON.stringify(a.map(digest)));
  try{
@@ -115,7 +115,7 @@ test('experimental EDU: seven real original C135/C70/C87/C125/S03 turns with bou
   const {startOneShellEdu}=await import('../host/project-oneshell-edu.mjs');
   session=await startOneShellEdu({selection,sourceRoot:destination,sourceBinding:expected,privateParent:parent,
    afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'},
-   languagePort:async task=>({text:'Risposta EDU HOST_BOUND verificabile in un laboratorio Node, senza ACTIVE.',
+   languagePort:async task=>({text:'La risposta EDU e una bozza HOST verificata sul piano C70, senza ACTIVE.',
     input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,
     ack_c124_channel_sha256:task.channels.channel_sha256})});
   assert.equal(session.ok,true,JSON.stringify(session));
@@ -137,9 +137,15 @@ test('experimental EDU: seven real original C135/C70/C87/C125/S03 turns with bou
    assert.equal(session.getLastEvidence().original_c87_readback.count,i+1);
   }
   // A corrupted caller-provided memory window cannot produce another writer event.
-  const denied=await session.publishTurn({humanInput:'Spiega come verificare una fonte nel caso 8.',
+  const ledgerPath=session.readSessionState().ledger_file;
+  const denied=await session.publishTurn({humanInput:'Spiega il metodo di verifica per il caso 8.',
    nonce:'edu-seven-causal-invalid-0008',priorMessages:['memoria alterata'],resetContext:false});
   assert.equal(denied.slots.A,'NO_VOICE');
-  assert.equal(session.readSessionState().original_c87_readback.count,7);
+  // The owner may become UNCERTAIN after a rejected turn. Reopen the original
+  // C87 ledger directly rather than trusting the now-closed session wrapper.
+  const {reopenC87Ledger}=await import('../host/c87-durable-ledger.mjs');
+  const reopened=reopenC87Ledger(ledgerPath);
+  assert.equal(reopened.status,'C87_LEDGER_CHAIN_VALID');
+  assert.equal(reopened.count,7);
  }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
 });
