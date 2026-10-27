@@ -96,3 +96,50 @@ test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn afte
     priorMessages:[],resetContext:true})).slots.A,'NO_VOICE');
  }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
 });
+
+
+test('experimental EDU: seven real original C135/C70/C87/C125/S03 turns with bounded causal window',async()=>{
+ const {plan,expected}=sourceFixture();
+ const parent=fs.mkdtempSync(path.join(os.tmpdir(),'edu-seven-causal-'));
+ const destination=path.join(parent,'source');
+ let session;
+ const inputs=Array.from({length:7},(_,i)=>'Spiega come verificare una fonte nel caso '+(i+1)+'.');
+ const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
+ const windowHash=a=>digest(JSON.stringify(a.map(digest)));
+ try{
+  materializeRepositoryPlan(plan,{...expected,destination});
+  const terms=createHash('sha256').update(fs.readFileSync(path.join(destination,'TERMS.md'))).digest('hex');
+  const offer=issueC72V2LinkedTermsOffer({sourceHead:expected.head,termsDigest:terms});
+  const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
+  const selection=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'EDU'});
+  const {startOneShellEdu}=await import('../host/project-oneshell-edu.mjs');
+  session=await startOneShellEdu({selection,sourceRoot:destination,sourceBinding:expected,privateParent:parent,
+   afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'},
+   languagePort:async task=>({text:'Risposta EDU HOST_BOUND verificabile in un laboratorio Node, senza ACTIVE.',
+    input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,
+    ack_c124_channel_sha256:task.channels.channel_sha256})});
+  assert.equal(session.ok,true,JSON.stringify(session));
+  assert.equal(session.runtime_ready,true);
+  for(let i=0;i<inputs.length;i++){
+   const prior=inputs.slice(Math.max(0,i-4),i);
+   const f=await session.publishTurn({humanInput:inputs[i],
+    nonce:'edu-seven-causal-'+String(i+1).padStart(4,'0'),priorMessages:prior,resetContext:i===0});
+   assert.equal(f.voice_origin,'HOST_BOUND_LOCAL',JSON.stringify(f.slots));
+   assert.equal(f.slots.A,'Risposta EDU HOST_BOUND verificabile in un laboratorio Node, senza ACTIVE.');
+   const rb=session.readSessionState().original_c87_readback;
+   assert.equal(rb.status,'C107_LEDGER_REOPENED');
+   assert.equal(rb.count,i+1);
+   assert.equal(rb.latest_state.cognitive_window_length,prior.length+1);
+   assert.equal(rb.latest_state.previous_window_sha256,windowHash(prior));
+   assert.equal(rb.latest_state.next_window_sha256,windowHash([...prior,inputs[i]].slice(-4)));
+   assert.match(rb.latest_state.source_c70_sha256,/^[a-f0-9]{64}$/);
+   assert.notEqual(rb.latest_state.c140_open_route,true);
+   assert.equal(session.getLastEvidence().original_c87_readback.count,i+1);
+  }
+  // A corrupted caller-provided memory window cannot produce another writer event.
+  const denied=await session.publishTurn({humanInput:'Spiega come verificare una fonte nel caso 8.',
+   nonce:'edu-seven-causal-invalid-0008',priorMessages:['memoria alterata'],resetContext:false});
+  assert.equal(denied.slots.A,'NO_VOICE');
+  assert.equal(session.readSessionState().original_c87_readback.count,7);
+ }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
+});
