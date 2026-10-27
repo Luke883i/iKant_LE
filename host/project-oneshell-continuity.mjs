@@ -179,6 +179,11 @@ export function bindManagedOneShellEdu({selection,sourceHead,originalSession,rea
   try{
    const result=await originalSession.publishTurn(frame);
    if(result?.slots?.A===undefined){disposition='UNKNOWN';return Object.freeze({ok:false,shell:'ONESHELL',edge:'ORIGINAL_EDU_TURN_OUTCOME_UNKNOWN'});}
+   // Original EDU failures are six-slot BLOCCATO/NO_VOICE frames.
+   // A present A slot alone cannot promote an original owner STOP to success.
+   if(result.slots.ESITO==='BLOCCATO'||result.slots.NEXT==='STOP')
+    return Object.freeze({ok:false,shell:'ONESHELL',kind:'ORIGINAL_EDU_STOP',
+     edge:result.slots.EDGE||'ORIGINAL_EDU_STOP',frame:result});
    return Object.freeze({ok:true,shell:'ONESHELL',frame:result});
   }catch{disposition='UNKNOWN';return Object.freeze({ok:false,shell:'ONESHELL',edge:'EDU_TURN_OUTCOME_UNKNOWN_RECONCILE_READ_ONLY'});}
  }

@@ -82,3 +82,18 @@ test('explicit Host checkup/documentation never routes C135 or writes owner ledg
  assert.equal(denied.ok,false);assert.equal(denied.edge,'HOST_SCOPE_DENIED');
  assert.equal(c.getTurns(),0);assert.equal(c.getCalls(),0);
 });
+
+
+test('blocked original C135 publish frame is not a successful managed turn',async()=>{
+ const c=owner();
+ c.publishTurn=async()=>({schema:'ikant-le-project-oneshell/v1',slots:{
+  ESITO:'BLOCCATO',A:'NO_VOICE',B:'Nessuna voce originale',PROVA:'NON_ATTESTATA',
+  EDGE:'S02_MODEL_ACK_INVALID',NEXT:'STOP'}});
+ const m=bindManagedOneShellEdu({selection,sourceHead:head,originalSession:c,readMain:async()=>head});
+ const observed=await m.routeHumanTurn({frame:f('domanda sperimentale'),humanMessageObserved:true});
+ assert.equal(observed.ok,false);
+ assert.equal(observed.kind,'ORIGINAL_EDU_STOP');
+ assert.equal(observed.edge,'S02_MODEL_ACK_INVALID');
+ assert.equal(observed.frame.slots.A,'NO_VOICE');
+ assert.equal(c.getCalls(),0);
+});
