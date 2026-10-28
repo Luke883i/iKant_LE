@@ -127,6 +127,47 @@ function bindC135Recovery(resume,parent,src,selection){
  }catch{return no('S02_RECOVERY_READ_OUTCOME_UNKNOWN')}
 }
 const windowDigest=a=>sha(JSON.stringify(a.map(x=>sha(Buffer.from(x,'utf8')))));
+
+const MAX_PORTABLE_C87_BYTES=256*1024;
+const validPriorWindow=a=>Array.isArray(a)&&a.length<=4&&
+ a.every(x=>typeof x==='string'&&x.trim()&&Buffer.byteLength(x,'utf8')<=12000);
+/** Host-carried bytes are not admission, a new writer or a native persistence proof. */
+function bindC135PortableResume(resume,parent,src,selection){
+ const fields='expectedCount,expectedLastHash,ledger_sha256,ledger_utf8,previousWorkerGone,priorMessages,schema,selection_receipt_sha256,source_head,source_tree';
+ if(!clean(resume)||!safeDeep(resume)||Object.keys(resume).sort().join(',')!==fields||
+    resume.schema!=='ikant-le-c135-portable-c87/v1'||resume.previousWorkerGone!==true||
+    resume.source_head!==src.head||resume.source_tree!==src.tree||
+    resume.selection_receipt_sha256!==selection.receipt_sha256||
+    !Number.isSafeInteger(resume.expectedCount)||resume.expectedCount<1||
+    !/^[a-f0-9]{64}$/.test(resume.expectedLastHash||'')||
+    !/^[a-f0-9]{64}$/.test(resume.ledger_sha256||'')||
+    typeof resume.ledger_utf8!=='string'||!resume.ledger_utf8.endsWith('\n')||
+    Buffer.byteLength(resume.ledger_utf8,'utf8')>MAX_PORTABLE_C87_BYTES||
+    !validPriorWindow(resume.priorMessages)||sha(resume.ledger_utf8)!==resume.ledger_sha256)
+  return no('S02_PORTABLE_C87_CHECKPOINT_INVALID');
+ let transient=null;
+ try{
+  transient=fs.mkdtempSync(path.join(parent,'.ikant-portable-c87-'));
+  if((fs.lstatSync(transient).mode&0o077)!==0)throw Error('PORTABLE_ROOT_NOT_PRIVATE');
+  const dir=path.join(transient,'.ikant-host');fs.mkdirSync(dir,{mode:0o700});
+  const file=path.join(dir,'c107-observations.jsonl');
+  const fd=fs.openSync(file,'wx',0o600);
+  try{fs.writeFileSync(fd,resume.ledger_utf8,'utf8');fs.fsyncSync(fd);}
+  finally{fs.closeSync(fd);}
+  if(fs.readFileSync(file,'utf8')!==resume.ledger_utf8)throw Error('PORTABLE_READBACK_CHANGED');
+  const recovered=bindC135Recovery({ledgerFile:file,previousWorkerGone:true,
+    expectedCount:resume.expectedCount,expectedLastHash:resume.expectedLastHash},parent,src,selection);
+  if(recovered.ok!==true){fs.rmSync(transient,{recursive:true,force:true});return recovered;}
+  if(recovered.window!==windowDigest(resume.priorMessages)){
+   fs.rmSync(transient,{recursive:true,force:true});
+   return no('S02_PORTABLE_C87_WINDOW_MISMATCH');
+  }
+  return {...recovered,portable_recovered:true};
+ }catch{
+  if(transient)fs.rmSync(transient,{recursive:true,force:true});
+  return no('S02_PORTABLE_C87_IMPORT_UNKNOWN');
+ }
+}
 const inspect=(dir,ledger)=>{
  const p=spawnSync(process.execPath,['scripts/c107-turn-cli.mjs',ledger],{cwd:dir,
   input:JSON.stringify({action:'INSPECT'}),encoding:'utf8',timeout:15000,maxBuffer:1000000});
@@ -142,7 +183,11 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
    return no('S02_WITNESS_OR_CALLBACK_MISSING');
  const src=sourceVerified(sourceRoot,selection,sourceBinding);
  if(!src)return no('S02_GIT_SOURCE_OR_V2_SELECTION_UNVERIFIED');
- const recovered=bindC135Recovery(resumeFrom,privateParent,src,selection);
+ const portable=resumeFrom!==null&&clean(resumeFrom)&&safeDeep(resumeFrom)&&
+   resumeFrom.schema==='ikant-le-c135-portable-c87/v1';
+ const recovered=portable
+   ?bindC135PortableResume(resumeFrom,privateParent,src,selection)
+   :bindC135Recovery(resumeFrom,privateParent,src,selection);
  if(recovered.ok!==true)return recovered;
  let lastOriginalC125=null;
  const out=createC125HostOutputPort({send:async utf8=>{await send(utf8);lastOriginalC125=utf8},afterAcceptWitness});
@@ -372,11 +417,34 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     return Object.freeze({...delivered,s03_host_projection:s03});
    }finally{busy=false}
   }
+  function exportPortableC87({priorMessages}={}){
+   if(closed||busy||uncertain||!validPriorWindow(priorMessages))
+    return no('S02_PORTABLE_C87_EXPORT_NOT_STABLE');
+   const r=reopenC87Ledger(ledger);
+   if(r.status!=='C87_LEDGER_CHAIN_VALID'||r.count<1||
+      r.latest_state?.source_head!==src.head||
+      r.latest_state?.public_selection_receipt_sha256!==selection.receipt_sha256||
+      r.latest_state?.next_window_sha256!==windowDigest(priorMessages))
+    return no('S02_PORTABLE_C87_EXPORT_WINDOW_DENIED');
+   const bytes=fs.readFileSync(ledger,'utf8');
+   if(!bytes.endsWith('\n')||Buffer.byteLength(bytes,'utf8')>MAX_PORTABLE_C87_BYTES)
+    return no('S02_PORTABLE_C87_EXPORT_SIZE_OR_TORN');
+   const again=reopenC87Ledger(ledger);
+   if(again.status!=='C87_LEDGER_CHAIN_VALID'||again.last_hash!==r.last_hash||
+      again.count!==r.count)return no('S02_PORTABLE_C87_EXPORT_READBACK_CHANGED');
+   // No previous-worker-death claim: Host must witness it before import.
+   return Object.freeze({schema:'ikant-le-c135-portable-c87/v1',
+    source_head:src.head,source_tree:src.tree,
+    selection_receipt_sha256:selection.receipt_sha256,
+    expectedCount:r.count,expectedLastHash:r.last_hash,
+    ledger_sha256:sha(bytes),ledger_utf8:bytes,
+    priorMessages:Object.freeze([...priorMessages])});
+  }
   function close(){if(!closed){closed=true;out.close();fs.rmSync(stage,{recursive:true,force:true})}}
   return Object.freeze({ok:true,mode:'EDU',source_head:src.head,source_tree:src.tree,
     runtime_ready:true,active:false,native_event_attested:false,owner:'C135_EDU_V2',
-    recovered_original_ledger:recovered.receipt,
-    publishTurn,close,
+    recovered_original_ledger:recovered.receipt,portable_c87_recovered:recovered.portable_recovered===true,
+    publishTurn,close,exportPortableC87,
     readSessionState:()=>closed||busy||uncertain?no('S02_READBACK_NOT_STABLE'):Object.freeze({
      owner:'C135_EDU_V2',source_head:src.head,source_tree:src.tree,
      selection_receipt_sha256:selection.receipt_sha256,ledger_file:ledger,

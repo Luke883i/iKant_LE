@@ -130,6 +130,9 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
    frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'Owner originale C135 avviato; nessuna voce emessa.',
    edge:'FIRST_EDU_TURN_PENDING',next:'AWAIT_HUMAN_INPUT'}),
   publishTurn,readSessionState:()=>original.readSessionState(),
+  exportPortableC87:args=>closed||blocked||publishing
+    ?Object.freeze({ok:false,first_edge:'EDU_PORTABLE_C87_EXPORT_NOT_STABLE',active:false})
+    :original.exportPortableC87(args),
   getLastEvidence:()=>lastEvidence,status:()=>original.status(),
   close:()=>{if(!closed){closed=true;original.close();}},owner:'C135_EDU_V2'});
 }
