@@ -8,6 +8,7 @@ on:
       - 'scripts/project-oneshell-rail-falsify.mjs'
       - 'scripts/project-oneshell-source-pin-audit.mjs'
       - 'tests/project-oneshell-postaccept-rail.test.mjs'
+      - 'tests/project-oneshell-postaccept-owner.test.mjs'
       - 'project/session-chat/PROMPT.txt'
       - 'scripts/project-source-manifest.mjs'
       - 'contracts/project-session-source.json'
@@ -33,5 +34,7 @@ jobs:
         run: node scripts/project-oneshell-rail-falsify.mjs
       - name: Verify original owner and same six-slot shell after acceptance
         run: node --test tests/project-oneshell-postaccept-rail.test.mjs
+      - name: Full original C135 first and recovered owner OneShell rail
+        run: node --test tests/project-oneshell-postaccept-owner.test.mjs
       - name: Anti-regression original OneShell C135 and PR180
         run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs tests/project-edu-onezip-route.test.mjs

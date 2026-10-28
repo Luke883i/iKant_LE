@@ -2,6 +2,8 @@
  * A private original WeakSet in renderOneShell rejects serialized/fabricated voice.
  * Native ChatGPT widget persistence is not implied by the visible shell. */
 import {createHash} from 'node:crypto';
+import fs from 'node:fs';
+import {reopenC87Ledger} from './c87-durable-ledger.mjs';
 import {validateC72V2Accepted,validateC72V2Orientation,validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
 import {oneShellAccepted,oneShellSelected,oneShellMaterialized} from './project-oneshell-phases.mjs';
 import {oneShellFrame,renderOneShell} from './project-oneshell-edu.mjs';
@@ -62,9 +64,21 @@ export function projectPostAcceptOneShell({phase,sourceHead,liveHead,accepted,in
       c125.includes('<<<VOICE_UTF8_START>>>\n'+frame.slots.A+'\n<<<VOICE_UTF8_END>>>');
     independentC87Readback=ownerReady&&led?.count>=1&&led.count===evidence?.original_c87_readback?.count&&
       led.last_hash===evidence?.original_c87_readback?.last_hash;
+    // Original C87 stores the input hash in the LEDGER EVENT, not in latest_state.
+    // Reopen the original ledger and check its final complete event, never infer it.
+    let lastEvent=null,independent=null;
+    try{
+     independent=reopenC87Ledger(state.ledger_file);
+     const rows=fs.readFileSync(state.ledger_file,'utf8');
+     if(rows.endsWith('\n'))lastEvent=JSON.parse(rows.trimEnd().split('\n').at(-1));
+    }catch{}
     sameTurnEvidence=typeof turnNonce==='string'&&turnNonce.length>=12&&
       typeof turnInput==='string'&&!!turnInput.trim()&&
-      led?.latest_state?.nonce===turnNonce&&led?.latest_state?.input_sha256===hash(turnInput);
+      independent?.status==='C87_LEDGER_CHAIN_VALID'&&
+      independent.count===led?.count&&independent.last_hash===led?.last_hash&&
+      lastEvent?.record_sha256===led?.last_hash&&
+      lastEvent?.source_head===sourceHead&&
+      lastEvent?.state?.nonce===turnNonce&&lastEvent?.input_sha256===hash(turnInput);
     originalPortableC87=checkpoint?.schema==='ikant-le-c135-portable-c87/v1'&&
       checkpoint.source_head===sourceHead&&checkpoint.source_tree===state?.source_tree&&
       checkpoint.selection_receipt_sha256===selection.receipt_sha256&&
