@@ -88,14 +88,14 @@ export function planOneShellEduSource({selection,sourceState='SOURCE_UNKNOWN',
  * as an additional host message. OneShell is released only AFTER original S03.
  * No native platform-delivery receipt is asserted by this capture. */
 export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,privateParent,
- languagePort,afterAcceptWitness}={}){
+ languagePort,afterAcceptWitness,resumeFrom=null}={}){
  if(!validateC72V2ModeSelection(selection,{mode:'EDU'}))
   return Object.freeze({ok:false,frame:failure('C72_EDU_SELECTION_REQUIRED')});
  if(typeof languagePort!=='function')
   return Object.freeze({ok:false,frame:failure('EDU_LANGUAGE_PORT_NOT_CALLABLE')});
  let c125=null,blocked=false,publishing=false,lastEvidence=null;
  const original=await createC135EduV2Session({selection,sourceRoot,sourceBinding,privateParent,
-  languagePort,afterAcceptWitness,send:async bytes=>{
+  languagePort,afterAcceptWitness,resumeFrom,send:async bytes=>{
    if(blocked||c125!==null||typeof bytes!=='string'){blocked=true;throw Error('C125_CAPTURE_AMBIGUOUS');}
    c125=bytes;
   }});
@@ -126,7 +126,8 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
   finally{publishing=false;}
  }
  return Object.freeze({ok:true,mode:'EDU',runtime_ready:true,active:false,provider_delivery_attested:false,
-  frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'Owner originale C135 avviato; nessuna voce emessa.',
+  recovered_original_ledger:original.recovered_original_ledger,
+   frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'Owner originale C135 avviato; nessuna voce emessa.',
    edge:'FIRST_EDU_TURN_PENDING',next:'AWAIT_HUMAN_INPUT'}),
   publishTurn,readSessionState:()=>original.readSessionState(),
   getLastEvidence:()=>lastEvidence,status:()=>original.status(),

@@ -16,6 +16,7 @@ import {createC125HostOutputPort} from './c125-output-port.mjs';
 import {projectS03CompletedEduTurn} from './s03-owner-bound-presentation.mjs';
 import {qualifyHumanFacingIdentity} from './p1-public-language-guard.mjs';
 import {verifyLocalProjectSource} from '../scripts/project-repo-loader.mjs';
+import {reopenC87Ledger} from './c87-durable-ledger.mjs';
 const sha=x=>crypto.createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const HEX=/^[a-f0-9]{40}$/;
 const NONCE=/^[a-zA-Z0-9_-]{12,96}$/;
@@ -69,13 +70,70 @@ function sourceVerified(sourceRoot,selection,sourceBinding=null){
   return {head,tree};
  }catch{return null}
 }
+/** Original-ledger cold rebind, HOST-witnessed only: never claims native
+ * persistence, resurrects a model, or replays previously published turns. */
+function bindC135Recovery(resume,parent,src,selection){
+ if(resume===null)return {ok:true,ledger:null,nonces:[],window:null,receipt:null};
+ if(!clean(resume)||Object.keys(resume).sort().join(',')!==
+    'expectedCount,expectedLastHash,ledgerFile,previousWorkerGone'||
+    resume.previousWorkerGone!==true||!Number.isSafeInteger(resume.expectedCount)||
+    resume.expectedCount<1||!/^[a-f0-9]{64}$/.test(resume.expectedLastHash)||
+    typeof resume.ledgerFile!=='string')
+   return no('S02_RECOVERY_WITNESS_INVALID');
+ try{
+  const file=resume.ledgerFile,dir=path.dirname(file),root=fs.realpathSync(parent);
+  if(!path.isAbsolute(file)||path.basename(file)!=='c107-observations.jsonl'||
+     path.basename(dir)!=='.ikant-host'||fs.realpathSync(file)!==file||
+     fs.realpathSync(dir)!==dir||!fs.lstatSync(file).isFile()||
+     fs.lstatSync(file).isSymbolicLink()||fs.lstatSync(file).nlink!==1||
+     fs.lstatSync(dir).isSymbolicLink())return no('S02_RECOVERY_LEDGER_PATH_UNSAFE');
+  const rel=path.relative(root,file);
+  if(!rel||rel==='..'||rel.startsWith('..'+path.sep)||path.isAbsolute(rel))
+    return no('S02_RECOVERY_LEDGER_OUTSIDE_PRIVATE_ROOT');
+  let ancestor=dir;
+  while(ancestor!==root){
+    if(fs.lstatSync(ancestor).isSymbolicLink())
+      return no('S02_RECOVERY_LEDGER_PATH_UNSAFE');
+    const up=path.dirname(ancestor);
+    if(up===ancestor)return no('S02_RECOVERY_LEDGER_OUTSIDE_PRIVATE_ROOT');
+    ancestor=up;
+  }
+  const r=reopenC87Ledger(file);
+  if(r.status!=='C87_LEDGER_CHAIN_VALID'||r.count!==resume.expectedCount||
+     r.last_hash!==resume.expectedLastHash||
+     !/^[a-f0-9]{64}$/.test(r.latest_state?.next_window_sha256||''))
+    return no('S02_RECOVERY_C87_READBACK_MISMATCH');
+  const bytes=fs.readFileSync(file,'utf8');
+  if(bytes.length>5000000||!bytes.endsWith('\n'))return no('S02_RECOVERY_LEDGER_INVALID');
+  const events=bytes.trimEnd().split('\n').map(JSON.parse);
+  const seen=new Set();
+  for(const e of events){
+    const st=e.state;
+    if(e.source_head!==src.head||st?.source_head!==src.head||
+       st?.admission_schema!=='ikant-le-c72-public-selection/v2'||
+       st?.public_selection_receipt_sha256!==selection.receipt_sha256||
+       !NONCE.test(st?.nonce||'')||seen.has(st.nonce)||
+       e.output_sha256!==st.visible_voice_sha256)
+      return no('S02_RECOVERY_EPOCH_OR_NONCE_MISMATCH');
+    seen.add(st.nonce);
+  }
+  const again=reopenC87Ledger(file);
+  if(again.status!=='C87_LEDGER_CHAIN_VALID'||again.last_hash!==r.last_hash||
+     again.count!==r.count||fs.realpathSync(file)!==file)
+    return no('S02_RECOVERY_CONCURRENT_LEDGER_CHANGE');
+  return {ok:true,ledger:file,nonces:[...seen],window:r.latest_state.next_window_sha256,
+    receipt:Object.freeze({kind:'C87_LOCAL_COLD_REBIND_NOT_NATIVE',count:r.count,
+      last_hash:r.last_hash,source_head:src.head,source_tree:src.tree,active:false})};
+ }catch{return no('S02_RECOVERY_READ_OUTCOME_UNKNOWN')}
+}
+const windowDigest=a=>sha(JSON.stringify(a.map(x=>sha(Buffer.from(x,'utf8')))));
 const inspect=(dir,ledger)=>{
  const p=spawnSync(process.execPath,['scripts/c107-turn-cli.mjs',ledger],{cwd:dir,
   input:JSON.stringify({action:'INSPECT'}),encoding:'utf8',timeout:15000,maxBuffer:1000000});
  if(p.status!==0||p.signal||p.error)return null;
  try{return JSON.parse(p.stdout)}catch{return null}
 };
-export async function createC135EduV2Session({selection,sourceRoot,privateParent,languagePort,send,afterAcceptWitness,sourceBinding=null}={}){
+export async function createC135EduV2Session({selection,sourceRoot,privateParent,languagePort,send,afterAcceptWitness,sourceBinding=null,resumeFrom=null}={}){
  if(!clean(afterAcceptWitness)||afterAcceptWitness.accepted!==true||
    afterAcceptWitness.scope!=='HOST_WITNESSED_ONLY'||typeof languagePort!=='function'||
    typeof send!=='function'||typeof privateParent!=='string'||!path.isAbsolute(privateParent)||
@@ -84,6 +142,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
    return no('S02_WITNESS_OR_CALLBACK_MISSING');
  const src=sourceVerified(sourceRoot,selection,sourceBinding);
  if(!src)return no('S02_GIT_SOURCE_OR_V2_SELECTION_UNVERIFIED');
+ const recovered=bindC135Recovery(resumeFrom,privateParent,src,selection);
+ if(recovered.ok!==true)return recovered;
  let lastOriginalC125=null;
  const out=createC125HostOutputPort({send:async utf8=>{await send(utf8);lastOriginalC125=utf8},afterAcceptWitness});
  if(!out.ok)return no('S02_ORIGINAL_C125_UNAVAILABLE');
@@ -102,8 +162,20 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const c141=await import(pathToFileURL(path.join(stage,'host/c141-semantic-shadow.mjs')).href);
   const c142=await import(pathToFileURL(path.join(stage,'host/c142-semantic-owner-guard.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
-  const ledger=path.join(d,'c107-observations.jsonl');
-  let busy=false,closed=false,uncertain=false;const seen=new Set();
+  // Keep the ORIGINAL single C87 ledger outside the disposable staged package
+  // from the FIRST turn. Unexpected worker death leaves reopenable local
+  // evidence; no provider- or cross-container persistence is inferred.
+  const localLedgerRoot=recovered.ledger===null
+    ?fs.mkdtempSync(path.join(privateParent,'.ikant-edu-ledger-')):null;
+  if(localLedgerRoot!==null){
+    if(fs.realpathSync(localLedgerRoot)!==localLedgerRoot||
+       (fs.lstatSync(localLedgerRoot).mode&0o077)!==0)
+      throw Error('S02_PRIVATE_LEDGER_ROOT_NOT_PRIVATE');
+    fs.mkdirSync(path.join(localLedgerRoot,'.ikant-host'),{mode:0o700});
+  }
+  const ledger=recovered.ledger||path.join(localLedgerRoot,'.ikant-host','c107-observations.jsonl');
+  let busy=false,closed=false,uncertain=false;const seen=new Set(recovered.nonces);
+  let recoveryWindowPending=recovered.ledger!==null;
   async function publishTurn(frame){
    if(uncertain)return no('S02_UNCERTAIN_WRITE_OR_DELIVERY_RECONCILE');
    if(closed||busy)return no('S02_CLOSED_OR_BUSY');
@@ -120,6 +192,11 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       typeof frame.resetContext!=='boolean'||(frame.resetContext&&frame.priorMessages.length)||
       (frame.openScope!==undefined&&typeof frame.openScope!=='boolean'))
     return no('S02_FRAME_OR_NONCE_DENIED');
+   // A recovered owner must bind the prior *actual* cognitive window before
+   // invoking language; reset or invented history is not a continuation.
+   if(recoveryWindowPending&&(frame.resetContext!==false||
+       windowDigest(frame.priorMessages)!==recovered.window))
+     return no('S02_RECOVERY_CONTEXT_NOT_BOUND');
    // Consume event ID before all side effects, including the model callback.
    seen.add(frame.nonce);busy=true;
    try{
@@ -207,7 +284,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
        ?projectS03CompletedEduTurn({ownerTurn:delivered,originalC125Text:lastOriginalC125})
        :Object.freeze({ok:false,first_edge:'S03_C125_SEND_NOT_RESOLVED',active:false});
       lastOriginalC125=null;
-      return Object.freeze({...delivered,s03_host_projection:s03});
+      if(delivered.ok)recoveryWindowPending=false;
+    return Object.freeze({...delivered,s03_host_projection:s03});
     }
 
     const plan=original.previewC107CognitivePlan({request:req,priorMessages:frame.priorMessages,
@@ -290,17 +368,23 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
       ?projectS03CompletedEduTurn({ownerTurn:delivered,originalC125Text:lastOriginalC125})
       :Object.freeze({ok:false,first_edge:'S03_C125_SEND_NOT_RESOLVED',active:false});
     lastOriginalC125=null;
+    if(delivered.ok)recoveryWindowPending=false;
     return Object.freeze({...delivered,s03_host_projection:s03});
    }finally{busy=false}
   }
   function close(){if(!closed){closed=true;out.close();fs.rmSync(stage,{recursive:true,force:true})}}
   return Object.freeze({ok:true,mode:'EDU',source_head:src.head,source_tree:src.tree,
     runtime_ready:true,active:false,native_event_attested:false,owner:'C135_EDU_V2',
+    recovered_original_ledger:recovered.receipt,
     publishTurn,close,
     readSessionState:()=>closed||busy||uncertain?no('S02_READBACK_NOT_STABLE'):Object.freeze({
      owner:'C135_EDU_V2',source_head:src.head,source_tree:src.tree,
      selection_receipt_sha256:selection.receipt_sha256,ledger_file:ledger,
-     original_c87_readback:inspect(stage,ledger),active:false,authority:0}),
+     recovered_original_ledger:recovered.receipt,
+     original_c87_readback:inspect(stage,ledger),
+     local_ledger_survives_stage_close:true,
+     provider_or_cross_container_persistence_attested:false,
+     active:false,authority:0}),
     status:()=>Object.freeze({closed,busy,uncertain,attempted:seen.size,port:out.status()})});
  }catch(e){if(stage)fs.rmSync(stage,{recursive:true,force:true});out.close();return no(e?.message||'S02_STAGE_DENIED')}
 }

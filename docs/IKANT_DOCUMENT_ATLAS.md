@@ -149,6 +149,7 @@
 - [docs/EDU_C129_MANUAL_FIRST_COGNITION_SLICE.md](EDU_C129_MANUAL_FIRST_COGNITION_SLICE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_HOST_WHAT_HOW_V2.md](EDU_HOST_WHAT_HOW_V2.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_MVP_HOSTBOUND_RELEASE_PATH.md](EDU_MVP_HOSTBOUND_RELEASE_PATH.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/EDU_ORIGINAL_C135_COLD_REBIND_DOD.md](EDU_ORIGINAL_C135_COLD_REBIND_DOD.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_V10_POST122_MIND_TERMINAL.md](EDU_V10_POST122_MIND_TERMINAL.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_V7_PR119_CONVERGENCE.md](EDU_V7_PR119_CONVERGENCE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/EDU_V8_HOLISTIC_TRAJECTORY_AND_DOD.md](EDU_V8_HOLISTIC_TRAJECTORY_AND_DOD.md): Documentazione specialistica. Stato di review: **da verificare**.
