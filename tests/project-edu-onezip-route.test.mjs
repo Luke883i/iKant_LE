@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {PassThrough} from 'node:stream';
+import {createHash} from 'node:crypto';
 import {runOneZipOriginalAdmission} from '../scripts/project-edu-onezip-admission.mjs';
-import {runOneZipOriginalTurn} from '../scripts/project-edu-onezip-session.mjs';
+import {runOneZipOriginalTurn,verifyOneZipOriginalC125Evidence} from '../scripts/project-edu-onezip-session.mjs';
 import {createOneShellLanguageStdio} from '../scripts/project-edu-language-stdio.mjs';
 
 test('no original C72 owner without real prior witnessed consent and verified source',async()=>{
@@ -29,4 +30,19 @@ test('Host cannot correlate a forged reply to C135',async()=>{
   task_id:'wrong',text:'spoofed'})+'\n'));
  const port=createOneShellLanguageStdio({input,output});
  await assert.rejects(port({schema:'owner-task'}),/CORRELATION/);input.end();
+});
+
+test('C125 full frame is distinct from byte-exact original voice; fail closed on corrupted evidence',()=>{
+ const sha=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
+ const voice='Test originale EDU.',transport='MODE | EDU\n<<<VOICE_UTF8_START>>>\n'+voice+'\n<<<VOICE_UTF8_END>>>\n';
+ const frame={voice_origin:'HOST_BOUND_LOCAL',slots:{A:voice},original_voice_sha256:sha(voice)};
+ const evidence={original_c125_utf8:transport,original_c125_sha256:sha(transport),
+   original_c87_readback:{status:'C107_LEDGER_REOPENED',count:1}};
+ assert.notEqual(transport,voice);
+ assert.equal(verifyOneZipOriginalC125Evidence(frame,evidence),true);
+ assert.equal(verifyOneZipOriginalC125Evidence(frame,{...evidence,original_c125_sha256:sha(voice)}),false);
+ assert.equal(verifyOneZipOriginalC125Evidence(frame,{...evidence,original_c125_utf8:voice}),false);
+ assert.equal(verifyOneZipOriginalC125Evidence(frame,{...evidence,original_c87_readback:null}),false);
+ assert.equal(verifyOneZipOriginalC125Evidence({...frame,slots:{A:'NO_VOICE'}},evidence),false);
+ assert.equal(verifyOneZipOriginalC125Evidence({...frame,original_voice_sha256:'0'.repeat(64)},evidence),false);
 });

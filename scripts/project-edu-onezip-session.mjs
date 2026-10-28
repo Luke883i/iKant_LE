@@ -11,6 +11,19 @@ import {createOneShellLanguageStdio} from './project-edu-language-stdio.mjs';
 const H40=/^[a-f0-9]{40}$/u;
 const fail=edge=>Object.freeze({ok:false,edge,voice:'NO_VOICE',active:false,native_delivery_attested:false,authority:0});
 const sha=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
+/** A is only the original voice; the original C125 transport includes metadata.
+ * This validates distinct byte boundaries, NOT provider-native delivery. */
+export function verifyOneZipOriginalC125Evidence(frame,evidence){
+ const voice=frame?.slots?.A, transport=evidence?.original_c125_utf8;
+ if(frame?.voice_origin!=='HOST_BOUND_LOCAL'||typeof voice!=='string'||!voice.trim()||
+    voice==='NO_VOICE'||typeof transport!=='string'||!transport.length||
+    frame.original_voice_sha256!==sha(voice)||
+    evidence.original_c125_sha256!==sha(transport)||
+    !transport.includes('<<<VOICE_UTF8_START>>>\n'+voice+'\n<<<VOICE_UTF8_END>>>')||
+    evidence.original_c87_readback?.status!=='C107_LEDGER_REOPENED')
+    return false;
+ return true;
+}
 function writeOnce(p,body){const b=Buffer.from(JSON.stringify(body)+'\n');const fd=fs.openSync(p,'wx',0o600);
  try{fs.writeFileSync(fd,b);fs.fsyncSync(fd)}finally{fs.closeSync(fd)}
  if(!fs.readFileSync(p).equals(b))throw Error('EDU_RECEIPT_READBACK_INVALID');}
@@ -45,13 +58,12 @@ export async function runOneZipOriginalTurn(q){
   const f=await session.publishTurn({humanInput:q.humanInput,nonce:q.nonce,
     priorMessages:q.priorMessages,resetContext:q.resetContext===true});
   const e=session.getLastEvidence();
-  if(f?.voice_origin!=='HOST_BOUND_LOCAL'||f.slots?.A==='NO_VOICE'||
-    e?.original_c125_utf8!==f.slots.A||e.original_c125_sha256!==sha(f.slots.A))
+  if(!verifyOneZipOriginalC125Evidence(f,e))
     return fail(f?.slots?.EDGE||'EDU_ORIGINAL_VOICE_NOT_REOPENED');
   const cp=session.exportPortableC87({priorMessages:[...q.priorMessages,q.humanInput].slice(-4)});
   if(cp?.schema!=='ikant-le-c135-portable-c87/v1')return fail(cp?.first_edge||'EDU_C87_CHECKPOINT_DENIED');
   const receipt={ok:true,schema:'ikant-edu-onezip-original-turn/v1',head:q.head,tree:source.source_tree,
-    frame:f,checkpoint:cp,owner:'C135_EDU_V2',original_c125_sha256:sha(f.slots.A),
+    frame:f,checkpoint:cp,owner:'C135_EDU_V2',original_c125_sha256:e.original_c125_sha256,original_voice_sha256:f.original_voice_sha256,
     active:false,native_delivery_attested:false,authority:0};
   writeOnce(path.join(q.privateRoot,'edu-turn-receipt-'+q.nonce+'.json'),receipt);
   return receipt;
