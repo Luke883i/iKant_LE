@@ -55,7 +55,11 @@ jobs:
         run: node scripts/project-repo-loader.mjs "$EDU_TMP/plan.json" "$EDU_TMP/materialized" "$EDU_HEAD" "$EDU_TREE"
       - name: Full source 5a - original C72 accepted intro and EDU selection
         run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C72_ONLY node --test tests/project-edu-onezip-full-source.test.mjs
-      - name: Full source 5b - original C135 first turn and portable C87 checkpoint
+      - name: Full source 5b0 - original C135 boot
+        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_BOOT node --test tests/project-edu-onezip-full-source.test.mjs
+      - name: Full source 5b1 - original C135 first voice
+        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_VOICE node --test tests/project-edu-onezip-full-source.test.mjs
+      - name: Full source 5b2 - original C87 checkpoint
         run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_FIRST node --test tests/project-edu-onezip-full-source.test.mjs
       - name: Full source 5c - original C135 second restored turn
         run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_SECOND node --test tests/project-edu-onezip-full-source.test.mjs

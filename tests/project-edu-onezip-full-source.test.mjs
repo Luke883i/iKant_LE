@@ -41,10 +41,12 @@ test('actual commit source closure executes original C72 and two original EDU ow
    languagePort,afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'}};
   a=await one.startOneShellEdu(common);
   assert.equal(a.ok,true,JSON.stringify(a.frame));
+  if(process.env.EDU_TEST_PHASE==='C135_BOOT')return;
   const f1=await a.publishTurn({humanInput:firstInput,nonce:'pr180-full-first-0001',priorMessages:[],resetContext:true});
   assert.equal(f1.voice_origin,'HOST_BOUND_LOCAL',JSON.stringify(f1));
   assert.equal(f1.slots.A,'Risposta originale EDU verificabile.');
   const e1=a.getLastEvidence();assert.equal(e1.original_c125_utf8,f1.slots.A);
+  if(process.env.EDU_TEST_PHASE==='C135_VOICE')return;
   const cp=a.exportPortableC87({priorMessages:[firstInput]});
   assert.equal(cp.schema,'ikant-le-c135-portable-c87/v1',JSON.stringify(cp));
   if(process.env.EDU_TEST_PHASE==='C135_FIRST')return;
