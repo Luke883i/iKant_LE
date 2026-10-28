@@ -176,3 +176,96 @@ test('cold rebind reuses original C87 across two Node processes and rejects repl
   assert.equal(events[1].prev_hash,before.last_hash);
  }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
 });
+
+
+test('cold rebind after SIGKILL: original EDU keeps a first-turn durable C87 ledger and publishes a new C125/S03 turn',async()=>{
+ if(process.platform==='win32')return; // SIGKILL is tested on the Linux runtime used by the product.
+ const {plan,expected}=sourceFixture();
+ const parent=fs.mkdtempSync(path.join(os.tmpdir(),'c135-unexpected-loss-'));
+ const sourceRoot=path.join(parent,'source');
+ try{
+  materializeRepositoryPlan(plan,{...expected,destination:sourceRoot});
+  const terms=createHash('sha256').update(fs.readFileSync(path.join(sourceRoot,'TERMS.md'))).digest('hex');
+  const offer=issueC72V2LinkedTermsOffer({sourceHead:expected.head,termsDigest:terms});
+  const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
+  const selection=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'EDU'});
+  const cfg={selection,sourceRoot,sourceBinding:expected,privateParent:parent,
+    firstInput:'Spiega un controllo locale ripetibile.'};
+  const ownerURL=new URL('../host/c135-edu-v2-owner.mjs',import.meta.url).href;
+  const env={...process.env,C135_KILL_TEST:JSON.stringify(cfg)};
+  const firstWorker=[
+   'import fs from "node:fs";',
+   'const {createC135EduV2Session}=await import('+JSON.stringify(ownerURL)+');',
+   'const c=JSON.parse(process.env.C135_KILL_TEST);',
+   'const s=await createC135EduV2Session({selection:c.selection,sourceRoot:c.sourceRoot,',
+   ' sourceBinding:c.sourceBinding,privateParent:c.privateParent,',
+   ' afterAcceptWitness:{accepted:true,scope:"HOST_WITNESSED_ONLY"},',
+   ' send:async()=>{},languagePort:async task=>({text:"Primo turno owner originale.",',
+   ' input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,',
+   ' ack_c124_channel_sha256:task.channels?.channel_sha256})});',
+   'if(s.ok!==true)throw Error("FIRST_OWNER:"+JSON.stringify(s));',
+   'const first=await s.publishTurn({humanInput:c.firstInput,',
+   ' nonce:"edu-crash-durable-nonce-0001",priorMessages:[],resetContext:true});',
+   'if(first.ok!==true||first.s03_host_projection?.ok!==true)',
+   ' throw Error("FIRST_OWNER_C125_S03:"+JSON.stringify(first));',
+   'const r=s.readSessionState();',
+   'if(r.local_ledger_survives_stage_close!==true)throw Error("LEDGER_NOT_DURABLE");',
+   'fs.writeSync(1,JSON.stringify({file:r.ledger_file,count:r.original_c87_readback.count,',
+   ' hash:r.original_c87_readback.last_hash,firstVoice:first.original_turn.voice_utf8})+"\\n");',
+   'process.kill(process.pid,"SIGKILL");'
+  ].join('\n');
+  const first=spawnSync(process.execPath,['--input-type=module','-e',firstWorker],{
+   encoding:'utf8',maxBuffer:200000,timeout:120000,env});
+  assert.equal(first.signal,'SIGKILL',first.stderr+first.stdout);
+  const witness=JSON.parse(first.stdout.trim());
+  const rel=path.relative(parent,witness.file);
+  assert.match(rel,/^\.ikant-edu-ledger-[^/\\]+[/\\]\.ikant-host[/\\]c107-observations\.jsonl$/);
+  assert.equal(fs.existsSync(witness.file),true);
+  const {reopenC87Ledger}=await import('../host/c87-durable-ledger.mjs');
+  const before=reopenC87Ledger(witness.file);
+  assert.equal(before.status,'C87_LEDGER_CHAIN_VALID');
+  assert.equal(before.count,1);assert.equal(before.last_hash,witness.hash);
+  const secondWorker=[
+   'const {createC135EduV2Session}=await import('+JSON.stringify(ownerURL)+');',
+   'const c=JSON.parse(process.env.C135_KILL_TEST);',
+   'let modelCalls=0,sends=0;',
+   'const s=await createC135EduV2Session({selection:c.selection,sourceRoot:c.sourceRoot,',
+   ' sourceBinding:c.sourceBinding,privateParent:c.privateParent,',
+   ' resumeFrom:{ledgerFile:c.savedFile,expectedCount:1,',
+   ' expectedLastHash:c.savedHash,previousWorkerGone:true},',
+   ' afterAcceptWitness:{accepted:true,scope:"HOST_WITNESSED_ONLY"},',
+   ' send:async()=>{sends++;},languagePort:async task=>{modelCalls++;',
+   ' return {text:"Secondo turno dopo SIGKILL.",input_sha256:task.plan.input_sha256,',
+   ' ack_plan_sha256:task.guidance.plan_sha256,',
+   ' ack_c124_channel_sha256:task.channels?.channel_sha256};}});',
+   'if(s.ok!==true)throw Error("RECOVERY_OWNER:"+JSON.stringify(s));',
+   'const replay=await s.publishTurn({humanInput:"Ripeti",',
+   ' nonce:"edu-crash-durable-nonce-0001",priorMessages:[c.firstInput],resetContext:false});',
+   'const forged=await s.publishTurn({humanInput:"Falso contesto",',
+   ' nonce:"edu-crash-durable-nonce-0002",priorMessages:["inventato"],resetContext:false});',
+   'const good=await s.publishTurn({humanInput:"Come proseguire la verifica?",',
+   ' nonce:"edu-crash-durable-nonce-0002",priorMessages:[c.firstInput],resetContext:false});',
+   'const r=s.readSessionState();',
+   'console.log(JSON.stringify({replay:replay.first_edge,forged:forged.first_edge,',
+   ' ok:good.ok,s03:good.s03_host_projection?.ok,',
+   ' exact:good.s03_host_projection?.original_voice_utf8===good.original_turn?.voice_utf8,',
+   ' native:good.native_event_attested,modelCalls,sends,count:r.original_c87_readback.count,',
+   ' last:r.original_c87_readback.last_hash}));',
+   's.close();'
+  ].join('\n');
+  const second=spawnSync(process.execPath,['--input-type=module','-e',secondWorker],{
+   encoding:'utf8',maxBuffer:200000,timeout:120000,
+   env:{...env,C135_KILL_TEST:JSON.stringify({...cfg,savedFile:witness.file,savedHash:witness.hash})}});
+  assert.equal(second.status,0,second.stderr+second.stdout);
+  const r=JSON.parse(second.stdout.trim());
+  assert.equal(r.replay,'S02_FRAME_OR_NONCE_DENIED');
+  assert.equal(r.forged,'S02_RECOVERY_CONTEXT_NOT_BOUND');
+  assert.equal(r.ok,true);assert.equal(r.s03,true);assert.equal(r.exact,true);
+  assert.equal(r.native,false);assert.equal(r.modelCalls,1);assert.equal(r.sends,1);
+  assert.equal(r.count,2);
+  const after=reopenC87Ledger(witness.file);
+  assert.equal(after.count,2);assert.equal(after.last_hash,r.last);
+  assert.equal(after.latest_state.nonce,'edu-crash-durable-nonce-0002');
+  assert.equal(before.count,1);assert.notEqual(r.last,witness.hash);
+ }finally{fs.rmSync(parent,{recursive:true,force:true});}
+});
