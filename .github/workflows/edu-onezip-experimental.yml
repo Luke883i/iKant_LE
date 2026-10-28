@@ -53,7 +53,11 @@ jobs:
         run: python scripts/project-manual-source.py --source-zip "$EDU_TMP/source.zip" --api-tree "$EDU_TMP/derived-tree.json" --head "$EDU_HEAD" --tree "$EDU_TREE" --output-plan "$EDU_TMP/plan.json"
       - name: Full source 4 - original Node TREE and blob readback
         run: node scripts/project-repo-loader.mjs "$EDU_TMP/plan.json" "$EDU_TMP/materialized" "$EDU_HEAD" "$EDU_TREE"
-      - name: Full source 5 - original C72 and two C135 C87 C125 fixture turns
-        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" node --test tests/project-edu-onezip-full-source.test.mjs
+      - name: Full source 5a - original C72 accepted intro and EDU selection
+        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C72_ONLY node --test tests/project-edu-onezip-full-source.test.mjs
+      - name: Full source 5b - original C135 first turn and portable C87 checkpoint
+        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_FIRST node --test tests/project-edu-onezip-full-source.test.mjs
+      - name: Full source 5c - original C135 second restored turn
+        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_SECOND node --test tests/project-edu-onezip-full-source.test.mjs
       - name: Regression original C135 portable C87 and Project prompt
         run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs

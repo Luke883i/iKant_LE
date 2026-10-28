@@ -26,6 +26,7 @@ test('actual commit source closure executes original C72 and two original EDU ow
  assert(c72.validateC72V2Orientation(intro,accepted));
  const selection=c72.selectC72V2Mode({accepted,orientation:intro,humanMessage:'EDU'});
  assert(c72.validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead:head}));
+ if(process.env.EDU_TEST_PHASE==='C72_ONLY')return;
  const one=await import(from('host/project-oneshell-edu.mjs'));
  const parent=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-edu-pr180-full-'));
  fs.chmodSync(parent,0o700);
@@ -46,6 +47,7 @@ test('actual commit source closure executes original C72 and two original EDU ow
   const e1=a.getLastEvidence();assert.equal(e1.original_c125_utf8,f1.slots.A);
   const cp=a.exportPortableC87({priorMessages:[firstInput]});
   assert.equal(cp.schema,'ikant-le-c135-portable-c87/v1',JSON.stringify(cp));
+  if(process.env.EDU_TEST_PHASE==='C135_FIRST')return;
   a.close();a=null;
   b=await one.startOneShellEdu({...common,resumeFrom:{...cp,previousWorkerGone:true}});
   assert.equal(b.ok,true,JSON.stringify(b.frame));
