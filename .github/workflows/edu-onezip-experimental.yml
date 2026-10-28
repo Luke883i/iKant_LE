@@ -12,6 +12,7 @@ on:
       - 'tests/project-edu-onezip-route.test.mjs'
       - 'tests/test_edu_zip_tree.py'
       - 'tests/project-edu-onezip-full-source.test.mjs'
+      - 'tests/project-edu-onezip-full-source-transport.test.mjs'
       - '.github/workflows/edu-onezip-experimental.yml'
   workflow_dispatch:
 jobs:
@@ -63,5 +64,7 @@ jobs:
         run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_FIRST node --test tests/project-edu-onezip-full-source.test.mjs
       - name: Full source 5c - original C135 second restored turn
         run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" EDU_TEST_PHASE=C135_SECOND node --test tests/project-edu-onezip-full-source.test.mjs
+      - name: Full source 6 - physically mediated OneZIP admission and two original C135 worker turns
+        run: EDU_TEST_SOURCE_ROOT="$EDU_TMP/materialized" EDU_TEST_HEAD="$EDU_HEAD" EDU_TEST_TREE="$EDU_TREE" node --test tests/project-edu-onezip-full-source-transport.test.mjs
       - name: Regression original C135 portable C87 and Project prompt
         run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs
