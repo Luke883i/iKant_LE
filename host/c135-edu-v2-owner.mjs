@@ -183,7 +183,9 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
    return no('S02_WITNESS_OR_CALLBACK_MISSING');
  const src=sourceVerified(sourceRoot,selection,sourceBinding);
  if(!src)return no('S02_GIT_SOURCE_OR_V2_SELECTION_UNVERIFIED');
- const recovered=resumeFrom?.schema==='ikant-le-c135-portable-c87/v1'
+ const portable=resumeFrom!==null&&clean(resumeFrom)&&safeDeep(resumeFrom)&&
+   resumeFrom.schema==='ikant-le-c135-portable-c87/v1';
+ const recovered=portable
    ?bindC135PortableResume(resumeFrom,privateParent,src,selection)
    :bindC135Recovery(resumeFrom,privateParent,src,selection);
  if(recovered.ok!==true)return recovered;
@@ -441,7 +443,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   function close(){if(!closed){closed=true;out.close();fs.rmSync(stage,{recursive:true,force:true})}}
   return Object.freeze({ok:true,mode:'EDU',source_head:src.head,source_tree:src.tree,
     runtime_ready:true,active:false,native_event_attested:false,owner:'C135_EDU_V2',
-    recovered_original_ledger:recovered.receipt,
+    recovered_original_ledger:recovered.receipt,portable_c87_recovered:recovered.portable_recovered===true,
     publishTurn,close,exportPortableC87,
     readSessionState:()=>closed||busy||uncertain?no('S02_READBACK_NOT_STABLE'):Object.freeze({
      owner:'C135_EDU_V2',source_head:src.head,source_tree:src.tree,
