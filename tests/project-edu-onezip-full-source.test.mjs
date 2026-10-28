@@ -48,7 +48,7 @@ test('actual commit source closure executes original C72 and two original EDU ow
   const e1=a.getLastEvidence();
   assert.equal(e1.original_c125_sha256,createHash('sha256').update(e1.original_c125_utf8,'utf8').digest('hex'));
   assert.equal(f1.original_voice_sha256,createHash('sha256').update(f1.slots.A,'utf8').digest('hex'));
-  assert(e1.original_c125_utf8.includes('<<<VOICE_UTF8_START>>>\\n'+f1.slots.A+'\\n<<<VOICE_UTF8_END>>>'));
+  assert(e1.original_c125_utf8.includes('<<<VOICE_UTF8_START>>>\n'+f1.slots.A+'\n<<<VOICE_UTF8_END>>>'));
   assert.equal(e1.original_c87_readback.count,1);
   if(process.env.EDU_TEST_PHASE==='C135_VOICE')return;
   const cp=a.exportPortableC87({priorMessages:[firstInput]});
