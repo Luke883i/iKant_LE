@@ -1,0 +1,37 @@
+name: OneShell postaccept E9 host rail (experimental)
+on:
+  pull_request:
+    paths:
+      - 'host/project-oneshell-rail-core.mjs'
+      - 'host/project-oneshell-postaccept-rail.mjs'
+      - 'contracts/project-oneshell-cx-humanist.json'
+      - 'scripts/project-oneshell-rail-falsify.mjs'
+      - 'scripts/project-oneshell-source-pin-audit.mjs'
+      - 'tests/project-oneshell-postaccept-rail.test.mjs'
+      - 'project/session-chat/PROMPT.txt'
+      - 'scripts/project-source-manifest.mjs'
+      - 'contracts/project-session-source.json'
+      - '.github/workflows/oneshell-postaccept-e9.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Verify execution source manifest
+        run: node scripts/project-source-manifest.mjs verify
+      - name: Forbid executable PR source pins
+        run: node scripts/project-oneshell-source-pin-audit.mjs
+      - name: Falsify 100000 deterministic structural masks
+        run: node scripts/project-oneshell-rail-falsify.mjs
+      - name: Verify original owner and same six-slot shell after acceptance
+        run: node --test tests/project-oneshell-postaccept-rail.test.mjs
+      - name: Anti-regression original OneShell C135 and PR180
+        run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs tests/project-edu-onezip-route.test.mjs
