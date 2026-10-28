@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import {validateC72V2Accepted,validateC72V2Orientation,validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
 import {startOneShellEdu} from './project-oneshell-edu.mjs';
 import {projectPostAcceptOneShell} from './project-oneshell-postaccept-rail.mjs';
+import {classifyOneShellHumanDestination} from './project-oneshell-host-boundary.mjs';
 import humanist from '../contracts/project-oneshell-cx-humanist.json' with {type:'json'};
 const H40=/^[a-f0-9]{40}$/u, NONCE=/^[A-Za-z0-9_-]{12,96}$/u;
 const sha=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
@@ -111,6 +112,8 @@ export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,p
     if(before.count!==count||before.previous!==previous)return fail('ONESHELL_FORK_OR_EXTERNAL_MODIFICATION');
     if(humanMessageObserved!==true||typeof humanInput!=='string'||!humanInput.trim()||
        Buffer.byteLength(humanInput,'utf8')>12000||!NONCE.test(nonce||''))return fail('ONESHELL_HUMAN_EVENT_INVALID');
+    if(classifyOneShellHumanDestination(humanInput).target!=='IKANT')
+      return fail('ONESHELL_CONTROL_REQUIRES_ORIGINAL_MANAGED_FACADE');
     if(fs.existsSync(path.join(journal,'attempt-'+nonce+'.json')))
       return fail('ONESHELL_DUPLICATE_OR_UNKNOWN_NONCE');
     const priorMessages=count?last.checkpoint.priorMessages:[];

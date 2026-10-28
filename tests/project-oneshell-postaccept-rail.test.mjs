@@ -61,3 +61,13 @@ test('original SVG lives in one verified Host HTML shell; never a native widget 
  assert.equal(rich.native_ui_attested,false);
  assert.equal(rich.provider_persistence_attested,false);
 });
+
+
+test('STOP before source readback preserves six-slot NO_VOICE rather than inventing a missing source edge',()=>{
+ const c=original(),r=projectPostAcceptOneShell({...c,phase:'STOP'});
+ assert.equal(r.ok,true,JSON.stringify(r));
+ assert.equal(r.frame.slots.A,'NO_VOICE');
+ assert.equal(r.frame.slots.EDGE,'RAIL_EXTERNAL_STOP_OBSERVED');
+ assert.equal(r.frame.slots.NEXT,'STOP');
+ assert.equal(r.native_ui_attested,false);
+});

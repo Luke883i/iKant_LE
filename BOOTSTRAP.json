@@ -1489,11 +1489,13 @@
       "worker_recovery": "EXPLICIT_PREVIOUS_WORKER_GONE_WITH_ORIGINAL_C87_CHECKPOINT",
       "unreconciled_attempt": "STOP_NO_RETRY",
       "host_humanist_context": "contracts/project-oneshell-cx-humanist.json",
-      "sixel": "ESITO|A|B|PROVA|EDGE|NEXT",
+      "six_slots": "ESITO|A|B|PROVA|EDGE|NEXT",
       "native_widget_persistence": false,
       "native_delivery": false,
       "active": false,
-      "authority": 0
+      "authority": 0,
+      "cli": "scripts/project-oneshell-continuous-cli.mjs",
+      "real_transport": "SAME_PROCESS_STDIO_MULTIPLEXED_HOST_LANGUAGE_AND_HUMAN_TURNS"
     }
   }
 }

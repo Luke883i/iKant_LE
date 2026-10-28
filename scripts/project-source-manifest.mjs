@@ -13,7 +13,7 @@ const roots=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md
  'docs/PROJECT_SESSION_REPO_FIRST.md','docs/ONESHELL_POSTACCEPT_RAIL_AUDIT_E9.md',
  'host/project-oneshell-postaccept-rail.mjs','contracts/project-oneshell-cx-humanist.json','docs/EDU_ONEZIP_POSTACCEPT_FIELD_ROUTE.md','contracts/project-edu-onezip-field-route.json',
  'scripts/project-edu-zip-tree.py','scripts/project-edu-onezip-admission.mjs',
- 'scripts/project-edu-language-stdio.mjs','scripts/project-edu-onezip-session.mjs',
+ 'scripts/project-edu-language-stdio.mjs','scripts/project-edu-onezip-session.mjs','scripts/project-oneshell-continuous-cli.mjs',
  boot.post_accept_fastboot.runtime_root.loader.path,...boot.post_accept_fastboot.remote_paths,
  ...boot.post_accept_fastboot.runtime_root.members.map(x=>x.path),...C107_FILES];
 const seen=new Set(),missing=new Set();
