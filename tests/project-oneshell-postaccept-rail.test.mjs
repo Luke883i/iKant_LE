@@ -49,3 +49,15 @@ test('main drift, missing original C72 and nonexistent C135 stop',()=>{
  assert.equal(projectPostAcceptOneShell({...c,selection:null,phase:'EDU_SELECTED'}).ok,false);
  assert.equal(projectPostAcceptOneShell({...c,phase:'EDU_READY'}).ok,false);
 });
+
+test('original SVG lives in one verified Host HTML shell; never a native widget claim',()=>{
+ const c=original(),rich=projectPostAcceptOneShell({...c,phase:'ACCEPTED',format:'HTML'});
+ assert.equal(rich.ok,true,JSON.stringify(rich));
+ assert.equal(rich.render_format,'HTML');
+ assert.equal((rich.content.match(/class="ikant-brand-mark"/g)||[]).length,1);
+ assert.equal((rich.content.match(/data-slot=/g)||[]).length,6);
+ assert.equal((rich.content.match(/class="ikant-divider"/g)||[]).length,2);
+ assert.equal(rich.content.includes('<button'),false);
+ assert.equal(rich.native_ui_attested,false);
+ assert.equal(rich.provider_persistence_attested,false);
+});
