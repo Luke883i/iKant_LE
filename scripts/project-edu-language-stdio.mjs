@@ -15,14 +15,17 @@ export function createOneShellLanguageStdio({input=process.stdin,output=process.
    if(waiter){const f=waiter;waiter=null;f(line);}else queue.push(line);});
  rx.on('close',()=>{broken=true;if(waiter){const f=waiter;waiter=null;f(null);}});
  const receive=()=>queue.length?Promise.resolve(queue.shift()):broken?Promise.resolve(null):new Promise(resolve=>waiter=resolve);
- return async task=>{
+ return async (task,hostHumanistContext=null)=>{
    if(busy||broken||!plain(task))throw Error('LANGUAGE_BRIDGE_BUSY_OR_UNAVAILABLE');
    busy=true;
    try{
      const msg=JSON.stringify(task),taskId=sha(msg+':'+(++seq));
      if(Buffer.byteLength(msg,'utf8')>128000)throw Error('LANGUAGE_TASK_TOO_LARGE');
      output.write(JSON.stringify({schema:'ikant-edu-host-language-task/v1',task_id:taskId,
-       task,model_binding:'HOST_WITNESSED_ONLY',original_owner_receipt:false})+'\n');
+       task,...(hostHumanistContext?.schema==='ikant-host-humanist-guidance/v1'&&
+       hostHumanistContext.authority===0&&hostHumanistContext.no_owner_override===true
+        ?{humanist_context:hostHumanistContext}:{}),
+       model_binding:'HOST_WITNESSED_ONLY',original_owner_receipt:false})+'\n');
      const line=await receive();
      if(line===null)throw Error('LANGUAGE_BRIDGE_REPLY_UNKNOWN');
      let answer;try{answer=JSON.parse(line);}catch{throw Error('LANGUAGE_REPLY_INVALID_JSON');}

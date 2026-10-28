@@ -1476,6 +1476,24 @@
       "native_ui_attested": false,
       "authority": 0,
       "active": false
+    },
+    "oneshell_runtime_continuity": {
+      "schema": "ikant-host-oneshell-continuity/v1",
+      "module": "host/project-oneshell-continuous.mjs#openContinuousOneShell",
+      "mode": "EDU_POST_C72_ONLY",
+      "language_port": "scripts/project-edu-language-stdio.mjs",
+      "source": "CURRENT_MAIN_FROZEN_COMMIT",
+      "owner": "ORIGINAL_C135_C87_C125",
+      "journal": "PRIVATE_HOST_APPEND_ONLY_NON_AUTHORITY",
+      "single_owner_lease": true,
+      "worker_recovery": "EXPLICIT_PREVIOUS_WORKER_GONE_WITH_ORIGINAL_C87_CHECKPOINT",
+      "unreconciled_attempt": "STOP_NO_RETRY",
+      "host_humanist_context": "contracts/project-oneshell-cx-humanist.json",
+      "sixel": "ESITO|A|B|PROVA|EDGE|NEXT",
+      "native_widget_persistence": false,
+      "native_delivery": false,
+      "active": false,
+      "authority": 0
     }
   }
 }

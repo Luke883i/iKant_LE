@@ -89,6 +89,7 @@
     "host/project-oneshell-autopilot.mjs",
     "host/project-oneshell-compact.mjs",
     "host/project-oneshell-continuity.mjs",
+    "host/project-oneshell-continuous.mjs",
     "host/project-oneshell-edu.mjs",
     "host/project-oneshell-emission.mjs",
     "host/project-oneshell-host-boundary.mjs",
