@@ -60,6 +60,7 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.equal(portableLock.generated_from_head,head);
   assert.equal(portableLock.session_source_lock,'RESOLVE_LIVE_MAIN_ON_FIRST_PROJECT_CHAT_MESSAGE');
   assert.match(original.toString('utf8'),/PRIMO messaggio umano di OGNI nuova chat/);
+  assert.match(original.toString('utf8'),/rebind sperimentale SOLO da ledger C87/);
   for(const token of ['STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION',
     'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72']){
    assert(original.toString('utf8').includes(token),'missing '+token);
