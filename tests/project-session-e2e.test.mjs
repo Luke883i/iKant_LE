@@ -96,3 +96,83 @@ test('OneShell EDU owner starts and publishes one genuine C87/C125/S03 turn afte
     priorMessages:[],resetContext:true})).slots.A,'NO_VOICE');
  }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
 });
+
+
+test('cold rebind reuses original C87 across two Node processes and rejects replay before model callback',async()=>{
+ const {plan,expected}=sourceFixture();
+ const parent=fs.mkdtempSync(path.join(os.tmpdir(),'c135-cold-rebind-e2e-'));
+ const sourceRoot=path.join(parent,'source');let session;
+ try{
+  materializeRepositoryPlan(plan,{...expected,destination:sourceRoot});
+  const terms=createHash('sha256').update(fs.readFileSync(path.join(sourceRoot,'TERMS.md'))).digest('hex');
+  const offer=issueC72V2LinkedTermsOffer({sourceHead:expected.head,termsDigest:terms});
+  const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
+  const selection=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'EDU'});
+  const firstInput='Descrivi un esperimento ripetibile.';
+  let modelCalls=0;
+  session=await createC135EduV2Session({
+   selection,sourceRoot,sourceBinding:expected,privateParent:parent,
+   afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'},
+   send:async()=>{},languagePort:async task=>{
+    modelCalls++;
+    return {text:'Prova sperimentale verificata solo localmente.',
+     input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,
+     ack_c124_channel_sha256:task.channels.channel_sha256};
+   }
+  });
+  assert.equal(session.ok,true,JSON.stringify(session));
+  const first=await session.publishTurn({humanInput:firstInput,nonce:'edu-cold-original-nonce-0001',
+    priorMessages:[],resetContext:true});
+  assert.equal(first.ok,true,JSON.stringify(first));
+  assert.equal(modelCalls,1);
+  const before=session.readSessionState().original_c87_readback;
+  assert.equal(before.count,1);
+  const saved=path.join(parent,'saved','.ikant-host','c107-observations.jsonl');
+  fs.mkdirSync(path.dirname(saved),{recursive:true,mode:0o700});
+  fs.copyFileSync(session.readSessionState().ledger_file,saved);
+  const original=fs.readFileSync(saved);
+  session.close();session=null;
+  const resume={ledgerFile:saved,expectedCount:before.count,expectedLastHash:before.last_hash,
+    previousWorkerGone:true};
+  const config={selection,sourceRoot,sourceBinding:expected,privateParent:parent,
+    resume,firstInput};
+  const ownerURL=new URL('../host/c135-edu-v2-owner.mjs',import.meta.url).href;
+  const childCode=[
+    'const {createC135EduV2Session}=await import('+JSON.stringify(ownerURL)+');',
+    'const cfg=JSON.parse(process.env.C135_E2E_RECOVERY);',
+    'let modelCalls=0,sends=0;',
+    'const open=async resumeFrom=>createC135EduV2Session({selection:cfg.selection,sourceRoot:cfg.sourceRoot,sourceBinding:cfg.sourceBinding,privateParent:cfg.privateParent,resumeFrom,afterAcceptWitness:{accepted:true,scope:"HOST_WITNESSED_ONLY"},send:async()=>{sends++;},languagePort:async task=>{modelCalls++;return {text:"Risposta EDU successiva all’avvio del nuovo processo.",input_sha256:task.plan.input_sha256,ack_plan_sha256:task.guidance.plan_sha256,ack_c124_channel_sha256:task.channels.channel_sha256};}});',
+    'const denied=await open({...cfg.resume,expectedLastHash:"0".repeat(64)});',
+    'const noWitness=await open({...cfg.resume,previousWorkerGone:false});',
+    'const s=await open(cfg.resume);if(s.ok!==true)throw Error(JSON.stringify(s));',
+    'const replay=await s.publishTurn({humanInput:"Non ripetere",nonce:"edu-cold-original-nonce-0001",priorMessages:[cfg.firstInput],resetContext:false});',
+    'const forged=await s.publishTurn({humanInput:"Nuova verifica",nonce:"edu-cold-original-nonce-0002",priorMessages:["storia inventata"],resetContext:false});',
+    'const reset=await s.publishTurn({humanInput:"Nuova verifica",nonce:"edu-cold-original-nonce-0002",priorMessages:[],resetContext:true});',
+    'const prior=s.readSessionState().original_c87_readback;',
+    'const good=await s.publishTurn({humanInput:"Descrivi un secondo controllo.",nonce:"edu-cold-original-nonce-0002",priorMessages:[cfg.firstInput],resetContext:false});',
+    'const after=s.readSessionState().original_c87_readback;',
+    'console.log(JSON.stringify({denied:denied.first_edge,noWitness:noWitness.first_edge,replay:replay.first_edge,forged:forged.first_edge,reset:reset.first_edge,prior:prior.count,after:after.count,modelCalls,sends,ok:good.ok,receipt:s.recovered_original_ledger,active:s.active,native:s.native_event_attested}));',
+    's.close();'
+  ].join('\n');
+  const child=spawnSync(process.execPath,['--input-type=module','-e',childCode],{
+    encoding:'utf8',maxBuffer:200000,timeout:120000,
+    env:{...process.env,C135_E2E_RECOVERY:JSON.stringify(config)}
+  });
+  assert.equal(child.status,0,child.stderr+child.stdout);
+  const r=JSON.parse(child.stdout.trim());
+  assert.equal(r.denied,'S02_RECOVERY_C87_READBACK_MISMATCH');
+  assert.equal(r.noWitness,'S02_RECOVERY_WITNESS_INVALID');
+  assert.equal(r.replay,'S02_FRAME_OR_NONCE_DENIED');
+  assert.equal(r.forged,'S02_RECOVERY_CONTEXT_NOT_BOUND');
+  assert.equal(r.reset,'S02_RECOVERY_CONTEXT_NOT_BOUND');
+  assert.equal(r.prior,1);assert.equal(r.after,2);
+  assert.equal(r.ok,true);assert.equal(r.modelCalls,1);assert.equal(r.sends,1);
+  assert.equal(r.native,false);assert.equal(r.receipt.last_hash,before.last_hash);
+  const now=fs.readFileSync(saved);
+  assert(now.length>original.length);
+  const events=now.toString('utf8').trimEnd().split('\n').map(JSON.parse);
+  assert.equal(events.length,2);
+  assert.equal(events[0].record_sha256,before.last_hash);
+  assert.equal(events[1].prev_hash,before.last_hash);
+ }finally{session?.close();fs.rmSync(parent,{recursive:true,force:true});}
+});
