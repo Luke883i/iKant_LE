@@ -162,7 +162,18 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const c141=await import(pathToFileURL(path.join(stage,'host/c141-semantic-shadow.mjs')).href);
   const c142=await import(pathToFileURL(path.join(stage,'host/c142-semantic-owner-guard.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
-  const ledger=recovered.ledger||path.join(d,'c107-observations.jsonl');
+  // Keep the ORIGINAL single C87 ledger outside the disposable staged package
+  // from the FIRST turn. Unexpected worker death leaves reopenable local
+  // evidence; no provider- or cross-container persistence is inferred.
+  const localLedgerRoot=recovered.ledger===null
+    ?fs.mkdtempSync(path.join(privateParent,'.ikant-edu-ledger-')):null;
+  if(localLedgerRoot!==null){
+    if(fs.realpathSync(localLedgerRoot)!==localLedgerRoot||
+       (fs.lstatSync(localLedgerRoot).mode&0o077)!==0)
+      throw Error('S02_PRIVATE_LEDGER_ROOT_NOT_PRIVATE');
+    fs.mkdirSync(path.join(localLedgerRoot,'.ikant-host'),{mode:0o700});
+  }
+  const ledger=recovered.ledger||path.join(localLedgerRoot,'.ikant-host','c107-observations.jsonl');
   let busy=false,closed=false,uncertain=false;const seen=new Set(recovered.nonces);
   let recoveryWindowPending=recovered.ledger!==null;
   async function publishTurn(frame){
@@ -370,7 +381,10 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
      owner:'C135_EDU_V2',source_head:src.head,source_tree:src.tree,
      selection_receipt_sha256:selection.receipt_sha256,ledger_file:ledger,
      recovered_original_ledger:recovered.receipt,
-     original_c87_readback:inspect(stage,ledger),active:false,authority:0}),
+     original_c87_readback:inspect(stage,ledger),
+     local_ledger_survives_stage_close:true,
+     provider_or_cross_container_persistence_attested:false,
+     active:false,authority:0}),
     status:()=>Object.freeze({closed,busy,uncertain,attempted:seen.size,port:out.status()})});
  }catch(e){if(stage)fs.rmSync(stage,{recursive:true,force:true});out.close();return no(e?.message||'S02_STAGE_DENIED')}
 }
