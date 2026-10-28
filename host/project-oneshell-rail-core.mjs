@@ -11,11 +11,11 @@ export function classifyPostAcceptRail(x={}){
  if(x.phase==='ACCEPTED')return Object.freeze({ok:true,phase:x.phase,voice:'NO_VOICE',authority:0,active:false});
  if(x.originalEduSelection!==true)return stop('RAIL_ORIGINAL_EDU_SELECTION_REQUIRED');
  if(x.phase==='EDU_SELECTED'||x.phase==='SOURCE_HANDOFF')return Object.freeze({ok:true,phase:x.phase,voice:'NO_VOICE',authority:0,active:false});
+ if(x.phase==='STOP')return Object.freeze({ok:true,phase:x.phase,voice:'NO_VOICE',authority:0,active:false});
  if(x.verifiedSource!==true)return stop('RAIL_PINNED_SOURCE_READBACK_REQUIRED');
  if(x.phase==='MATERIALIZED')return Object.freeze({ok:true,phase:x.phase,voice:'NO_VOICE',authority:0,active:false});
  if(x.ownerReady!==true)return stop('RAIL_ORIGINAL_C135_READY_REQUIRED');
  if(x.phase==='EDU_READY')return Object.freeze({ok:true,phase:x.phase,voice:'NO_VOICE',authority:0,active:false});
- if(x.phase==='STOP')return Object.freeze({ok:true,phase:x.phase,voice:'NO_VOICE',authority:0,active:false});
  if(x.originalC125S03!==true||x.independentC87Readback!==true||x.sameTurnEvidence!==true)
   return stop('RAIL_ORIGINAL_VOICE_AND_C87_EVIDENCE_REQUIRED');
  if(x.phase==='RECOVERED_TURN'&&(x.originalPortableC87!==true||x.workerLossWitness!==true))

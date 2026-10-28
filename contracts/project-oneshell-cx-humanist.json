@@ -121,5 +121,13 @@
     "C87_CHECKPOINT_NOT_CROSS_CHAT_MEMORY",
     "SINGLE_SESSION_SOURCE_EPOCH_STOP_ON_DRIFT"
   ],
-  "canonical_active": false
+  "canonical_active": false,
+  "runtime_speech_policy": {
+    "schema": "ikant-oneshell-host-humanist-runtime/v1",
+    "host_b": "Explain human utility, limitations, accountability, evidence, and next action, without implying native UI.",
+    "ikant_candidate": "Pass role-specific human_value and boundary to Host language port as nonauthoritative context. Original C135 controls candidate acceptance and C87/C125.",
+    "no_voice_fallback": true,
+    "original_ack_unchanged": true,
+    "provider_ui_not_claimed": true
+  }
 }

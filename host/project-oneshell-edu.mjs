@@ -119,7 +119,7 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
   lastEvidence=Object.freeze({source_head:turn.source_head,source_tree:turn.source_tree,
     original_c125_utf8:s.c125_original_bytes,original_c125_sha256:s.c125_original_sha256,
     original_c87_readback:readback.original_c87_readback,authority:0,native_delivery_attested:false});
-  return originalOwnerFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Voce HOST_BOUND verificata localmente; consegna nativa non attestata.',
+  return originalOwnerFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Risposta originale iKant verificata: il suo valore dipende da utilita, limiti, decisione umana e riscontri; consegna nativa non attestata.',
    prova:'sha256:'+s.c125_original_sha256,edge:'NATIVE_CHATGPT_DELIVERY_NOT_ATTESTED',
    next:'WAIT_NEXT_HUMAN_INPUT',s03:s});
   }catch{blocked=true;lastEvidence=null;return failure('EDU_TURN_OUTCOME_UNKNOWN_RECONCILE_READ_ONLY');}
@@ -127,7 +127,7 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
  }
  return Object.freeze({ok:true,mode:'EDU',runtime_ready:true,active:false,provider_delivery_attested:false,
   recovered_original_ledger:original.recovered_original_ledger,
-   frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'Owner originale C135 avviato; nessuna voce emessa.',
+   frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'iKant e pronto a discutere la tua domanda con criteri di utilita umana, responsabilita e incertezza; nessuna voce ancora emessa.',
    edge:'FIRST_EDU_TURN_PENDING',next:'AWAIT_HUMAN_INPUT'}),
   publishTurn,readSessionState:()=>original.readSessionState(),
   exportPortableC87:args=>closed||blocked||publishing
