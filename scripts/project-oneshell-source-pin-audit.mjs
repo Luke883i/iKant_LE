@@ -2,8 +2,11 @@
 /** Scans executable source for PR-based runtime pins, NOT historical PR mentions. */
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const requested=process.argv[2]||'all';
+const runReferences=requested==='all'||requested==='references';
+const runBrand=requested==='all'||requested==='brand';
 const dirs=['host','scripts','src','contracts','plugins'],files=[];
-for(const name of dirs){const root=path.join(ROOT,name);if(!fs.existsSync(root))continue;
+if(runReferences)for(const name of dirs){const root=path.join(ROOT,name);if(!fs.existsSync(root))continue;
  function visit(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){
   if(e.isSymbolicLink())continue;const p=path.join(d,e.name);
   if(e.isDirectory())visit(p);else if(/\.(?:mjs|js|json|py|txt)$/i.test(e.name))files.push(p);
@@ -11,7 +14,7 @@ for(const name of dirs){const root=path.join(ROOT,name);if(!fs.existsSync(root))
 }
 const forbidden=/refs\/pull\/\d+|archive\/refs\/pull\/\d+|raw\.githubusercontent\.com\/Luke883i\/iKant_LE\/(?:pull|refs\/pull)\/\d+|github\.com\/Luke883i\/iKant_LE\/(?:tree|blob)\/refs\/pull\/\d+/giu;
 const findings=[];let legacyMentions=0;
-for(const p of files){const s=fs.readFileSync(p,'utf8'),relative=path.relative(ROOT,p).replaceAll(path.sep,'/');
+if(runReferences)for(const p of files){const s=fs.readFileSync(p,'utf8'),relative=path.relative(ROOT,p).replaceAll(path.sep,'/');
  if(/\bPR\s?#?\d+|\/pull\/\d+/i.test(s))legacyMentions++;
  for(const m of s.matchAll(forbidden))findings.push({path:relative,match:m[0]});
 }
@@ -21,8 +24,8 @@ const errors=[];
 if(boot.canonical_branch!=='main'||boot.canonical_repository!=='Luke883i/iKant_LE')errors.push('CANONICAL_SOURCE_NOT_MAIN');
 if(boot.project_session?.postaccept_onezip_fallback?.source_epoch!=='FROZEN_COMMIT_UNTIL_NEW_SESSION')errors.push('ONEZIP_SESSION_EPOCH_INVALID');
 if(contract.source_policy!=='MAIN_COMMIT_FROZEN_FOR_SESSION_NOT_A_PR_REF')errors.push('HUMANIST_SOURCE_POLICY_INVALID');
-if(findings.length)errors.push('EXECUTABLE_PR_PIN_OBSERVED');
-const brandHost=fs.readFileSync(path.join(ROOT,'host/ikant-edu-branded-host.mjs'),'utf8');
+if(runReferences&&findings.length)errors.push('EXECUTABLE_PR_PIN_OBSERVED');
+const brandHost=runBrand?fs.readFileSync(path.join(ROOT,'host/ikant-edu-branded-host.mjs'),'utf8'):'';
 if(/const\s+SOURCE\s*=\s*['\"][a-f0-9]{40}['\"]|source_head:\s*SOURCE/u.test(brandHost))
  errors.push('HISTORICAL_ASSET_COMMIT_MISUSED_AS_RUNTIME_SOURCE_HEAD');
 
