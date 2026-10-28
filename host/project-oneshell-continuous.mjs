@@ -32,7 +32,7 @@ function writeReopen(file,body){
 }
 function inspect(journal,head,tree,selection){
  const names=fs.readdirSync(journal).sort();let previous='GENESIS',index=0,last=null;
- if(names.some(n=>n!=='.oneshell-owner-lease'&&!/^turn-\d{6}\.json$/u.test(n)&&!/^attempt-[A-Za-z0-9_-]{12,96}\.json$/u.test(n)))
+ if(names.some(n=>n!=='.oneshell-owner-lease'&&!/^\.oneshell-retired-\d{6}\.json$/u.test(n)&&!/^turn-\d{6}\.json$/u.test(n)&&!/^attempt-[A-Za-z0-9_-]{12,96}\.json$/u.test(n)))
   throw Error('ONESHELL_UNKNOWN_JOURNAL_ENTRY');
  const turns=names.filter(n=>n.startsWith('turn-'));
  for(const n of turns){
@@ -67,6 +67,47 @@ function inspect(journal,head,tree,selection){
  }
  return {count:index,last,previous};
 }
+/** Cold-rebind only when the previous owner PID is observed gone in THIS
+ * process namespace, the Host supplied an explicit loss witness, and the
+ * existing lease still matches the frozen source. No unverified lease steal.
+ * An exclusive recovery gate prevents two concurrent cold rebinds.
+ */
+function retireObservedDeadLease(journal,head,selection,current,witness){
+ const lease=path.join(journal,'.oneshell-owner-lease');
+ if(!fs.existsSync(lease))return null;
+ if(current.count===0||witness?.previousWorkerGone!==true)
+  return 'ONESHELL_OWNER_LEASE_HELD_OR_UNKNOWN';
+ let original,st,record;
+ try{
+  st=fs.lstatSync(lease);
+  if(!st.isFile()||st.isSymbolicLink()||st.nlink!==1||(st.mode&0o077)!==0||st.size>2048)
+   return 'ONESHELL_OWNER_LEASE_UNSAFE';
+  original=fs.readFileSync(lease);
+  record=JSON.parse(original.toString('utf8'));
+  if(record.schema!=='ikant-host-oneshell-owner-lease/v1'||record.head!==head||
+     record.selection_receipt_sha256!==selection.receipt_sha256||
+     !Number.isSafeInteger(record.worker_process)||record.worker_process<=0||
+     original.toString('utf8')!==json(record)+'\n')
+    return 'ONESHELL_OWNER_LEASE_SOURCE_MISMATCH';
+  try{process.kill(record.worker_process,0);return 'ONESHELL_PREVIOUS_OWNER_STILL_ALIVE';}
+  catch(e){if(e.code!=='ESRCH')return 'ONESHELL_WORKER_DEATH_NOT_VERIFIED';}
+ }catch{return 'ONESHELL_WORKER_DEATH_NOT_VERIFIED';}
+ const gate=path.join(journal,'.oneshell-recovery-gate');
+ try{writeReopen(gate,{schema:'ikant-host-oneshell-recovery-gate/v1',head,worker_process:process.pid});}
+ catch{return 'ONESHELL_RECOVERY_GATE_HELD_OR_UNKNOWN';}
+ try{
+  const again=fs.lstatSync(lease),bytes=fs.readFileSync(lease);
+  if(again.dev!==st.dev||again.ino!==st.ino||again.size!==st.size||
+     !bytes.equals(original))return 'ONESHELL_LEASE_CHANGED_DURING_RECOVERY';
+  const retired=path.join(journal,'.oneshell-retired-'+String(current.count).padStart(6,'0')+'.json');
+  if(fs.existsSync(retired))return 'ONESHELL_RETIRED_LEASE_ALREADY_EXISTS';
+  fs.renameSync(lease,retired);
+  if(!fs.readFileSync(retired).equals(original))return 'ONESHELL_RETIRED_LEASE_READBACK_FAILED';
+  fs.unlinkSync(gate);
+  return null;
+ }catch{return 'ONESHELL_RECOVERY_OUTCOME_UNKNOWN';}
+ // An unknown outcome leaves the gate locked for explicit read-only repair.
+}
 /** One C135 instance when alive; an explicit observed worker-loss witness is
  * required to cold-rebind the ORIGINAL C87 bytes on a new instance. */
 export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,privateRoot,
@@ -87,6 +128,8 @@ export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,p
   if(current.count>0&&recoveryWitness?.previousWorkerGone!==true)
    return fail('ONESHELL_ORIGINAL_WORKER_LOSS_WITNESS_REQUIRED');
   if(current.count===0&&recoveryWitness!==null)return fail('ONESHELL_UNEXPECTED_RECOVERY');
+  const retiredEdge=retireObservedDeadLease(journal,sourceHead,selection,current,recoveryWitness);
+  if(retiredEdge)return fail(retiredEdge);
   const resumeFrom=current.count>0?{...current.last.checkpoint,previousWorkerGone:true}:null;
   owner=await startOneShellEdu({selection,sourceRoot,
    sourceBinding:{head:sourceHead,tree:sourceTree},privateParent:privateRoot,

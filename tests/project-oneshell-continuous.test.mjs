@@ -132,3 +132,46 @@ test('language failure after a recorded attempt cannot replay or cold-rebind wit
   assert.equal(again.ok,false);assert.equal(again.voice,'NO_VOICE');
  }finally{first?.close();fs.rmSync(x.parent,{recursive:true,force:true});}
 });
+
+test('physical SIGKILL leaves original C87 checkpoint; dead lease is reconciled, next human turn cold-rebinds',async()=>{
+ const x=setup();
+ async function worker({recovery=false,nonce,message,kill=false}){
+  const cfg={schema:'ikant-host-oneshell-start/v1',...Object.fromEntries(Object.entries(x.q).filter(([k])=>!['readMain','languagePort'].includes(k))),liveHead:x.q.sourceHead,
+   ...(recovery?{recoveryWitness:{previousWorkerGone:true}}:{})};
+  const configPath=path.join(x.parent,kill?'crash-start.json':'rebind-start.json');
+  fs.writeFileSync(configPath,JSON.stringify(cfg),{mode:0o600});
+  const p=spawn(process.execPath,[path.join(root,'scripts/project-oneshell-continuous-cli.mjs'),configPath],{stdio:['pipe','pipe','pipe']});
+  let pending='',stderr='',evidence=null;
+  p.stderr.on('data',b=>stderr+=b.toString());
+  p.stdout.on('data',b=>{
+   pending+=b.toString();let split;
+   while((split=pending.indexOf('\n'))>=0){const line=pending.slice(0,split);pending=pending.slice(split+1);
+    let obj;try{obj=JSON.parse(line);}catch{continue;}
+    if(obj.phase==='EDU_READY')p.stdin.write(JSON.stringify({schema:'ikant-host-oneshell-human-turn/v1',liveHead:x.q.sourceHead,humanInput:message,nonce,humanMessageObserved:true})+'\n');
+    if(obj.schema==='ikant-edu-host-language-task/v1'){
+     const t=obj.task, ack=t.schema==='ikant-edu-v2-open-language-task/v1'?{text:'Lettura originale verificabile.',input_sha256:t.plan.input_sha256,ack_plan_sha256:t.plan.plan_sha256}:{text:'Risposta originale per il recupero.',...t.required_ack};
+     p.stdin.write(JSON.stringify({schema:'ikant-edu-host-language-reply/v1',task_id:obj.task_id,...ack})+'\n');
+    }
+    if(obj.ok===true&&['OWNER_TURN','RECOVERED_TURN'].includes(obj.phase)){
+     evidence=obj;
+     if(kill)p.kill('SIGKILL');else p.stdin.end();
+    }
+   }
+  });
+  const code=await new Promise((resolve,reject)=>{p.on('exit',resolve);p.on('error',reject)});
+  assert.equal(code,kill?null:0,stderr+'\n'+JSON.stringify(evidence));
+  assert.equal(evidence?.ok,true,'one original C125/C87 turn required');
+  return evidence;
+ }
+ try{
+  const one=await worker({nonce:'crashed-worker-00001',message:'Prima risposta, poi perdita del processo.',kill:true});
+  assert.equal(one.original_c87_count,1);
+  assert.equal(fs.existsSync(path.join(x.parent,'.oneshell-continuity','.oneshell-owner-lease')),true);
+  const two=await worker({recovery:true,nonce:'crashed-worker-00002',message:'Secondo turno dopo SIGKILL.',kill:false});
+  assert.equal(two.phase,'RECOVERED_TURN');
+  assert.equal(two.original_c87_count,2);
+  assert.equal(one.anchor,two.anchor);
+  const retired=path.join(x.parent,'.oneshell-continuity','.oneshell-retired-000001.json');
+  assert.equal(fs.existsSync(retired),true,'previous worker lease is retained as audit evidence');
+ }finally{fs.rmSync(x.parent,{recursive:true,force:true})}
+});
