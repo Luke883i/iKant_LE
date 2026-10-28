@@ -1460,6 +1460,22 @@
       "active": false,
       "authority": 0,
       "old_postedu_p1_unchanged": true
+    },
+    "oneshell_postaccept_rail": {
+      "schema": "ikant-le-oneshell-postaccept-rail/v1",
+      "phase_start": "AFTER_EXACT_I_ACCEPT_ORIGINAL_C72_ACCEPTED_AND_INTRODUCTION",
+      "module": "host/project-oneshell-postaccept-rail.mjs#projectPostAcceptOneShell",
+      "core": "host/project-oneshell-rail-core.mjs#classifyPostAcceptRail",
+      "c72_owner": "host/c72-public-mode-admission.mjs",
+      "c135_owner": "host/c135-edu-v2-owner.mjs",
+      "persistent_display": false,
+      "continuity_kind": "SAME_CHAT_ORIGINAL_C87_PORTABLE_CHECKPOINT",
+      "pinned_repository": "MAIN_HEAD_AT_FIRST_PROJECT_TURN",
+      "cx_humanist_contract": "contracts/project-oneshell-cx-humanist.json",
+      "owner_source_and_receipt_readback_required": true,
+      "native_ui_attested": false,
+      "authority": 0,
+      "active": false
     }
   }
 }
