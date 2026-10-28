@@ -13,8 +13,8 @@ for(let i=0;i<N;i++){
  const r=classifyPostAcceptRail(x);
  let expected=x.liveHead===H&&x.originalAcceptance&&x.originalIntroduction;
  if(phase!=='ACCEPTED')expected=expected&&x.originalEduSelection;
- if(!['ACCEPTED','EDU_SELECTED','SOURCE_HANDOFF'].includes(phase))expected=expected&&x.verifiedSource;
- if(!['ACCEPTED','EDU_SELECTED','SOURCE_HANDOFF','MATERIALIZED'].includes(phase))expected=expected&&x.ownerReady;
+ if(!['ACCEPTED','EDU_SELECTED','SOURCE_HANDOFF','STOP'].includes(phase))expected=expected&&x.verifiedSource;
+ if(!['ACCEPTED','EDU_SELECTED','SOURCE_HANDOFF','MATERIALIZED','STOP'].includes(phase))expected=expected&&x.ownerReady;
  if(['OWNER_TURN','RECOVERED_TURN'].includes(phase))expected=expected&&x.originalC125S03&&x.independentC87Readback&&x.sameTurnEvidence;
  if(phase==='RECOVERED_TURN')expected=expected&&x.originalPortableC87&&x.workerLossWitness;
  if(r.ok!==!!expected||r.active!==false||r.authority!==0||(!r.ok&&r.voice!=='NO_VOICE')||
