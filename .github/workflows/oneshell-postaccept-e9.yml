@@ -28,7 +28,13 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Verify execution source manifest
         run: node scripts/project-source-manifest.mjs verify
-      - name: Forbid executable PR source pins
+      - name: Pin audit A - check main and onezip metadata
+        run: node scripts/project-oneshell-source-pin-audit.mjs metadata
+      - name: Pin audit B - scan executable PR references
+        run: node scripts/project-oneshell-source-pin-audit.mjs references
+      - name: Pin audit C - forbid historical brand source head
+        run: node scripts/project-oneshell-source-pin-audit.mjs brand
+      - name: Forbid executable PR source pins (complete)
         run: node scripts/project-oneshell-source-pin-audit.mjs
       - name: Falsify 100000 deterministic structural masks
         run: node scripts/project-oneshell-rail-falsify.mjs

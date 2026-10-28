@@ -32,4 +32,11 @@ const report={schema:'ikant-le-shell-main-pin-audit/v1',scope:dirs,files_checked
  historical_PR_dependencies_are_not_proven_source_pins:true,
  all_external_apps_or_native_project_installation_scanned:false,
  status:errors.length?'STOP':'PASS',active:false};
-console.log(JSON.stringify(report,null,2));if(errors.length)process.exitCode=1;
+const category=process.argv[2]||'all';
+const classes={metadata:new Set(['CANONICAL_SOURCE_NOT_MAIN','ONEZIP_SESSION_EPOCH_INVALID','HUMANIST_SOURCE_POLICY_INVALID']),
+ references:new Set(['EXECUTABLE_PR_PIN_OBSERVED']),
+ brand:new Set(['HISTORICAL_ASSET_COMMIT_MISUSED_AS_RUNTIME_SOURCE_HEAD'])};
+if(!['all',...Object.keys(classes)].includes(category))throw Error('AUDIT_UNKNOWN_CATEGORY');
+report.category=category;
+console.log(JSON.stringify(report,null,2));
+if(errors.some(x=>category==='all'||classes[category].has(x)))process.exitCode=1;
