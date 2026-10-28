@@ -1,0 +1,38 @@
+name: EDU OneZIP experimental (source and owner-boundary)
+on:
+  pull_request:
+    paths:
+      - 'scripts/project-edu-*.mjs'
+      - 'scripts/project-edu-*.py'
+      - 'scripts/project-source-manifest.mjs'
+      - 'contracts/project-session-source.json'
+      - 'contracts/project-edu-onezip-field-route.json'
+      - 'project/session-chat/PROMPT.txt'
+      - 'BOOTSTRAP.json'
+      - 'tests/project-edu-onezip-route.test.mjs'
+      - 'tests/test_edu_zip_tree.py'
+      - '.github/workflows/edu-onezip-experimental.yml'
+  workflow_dispatch:
+jobs:
+  source-and-protocol:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check original source closure
+        run: node scripts/project-source-manifest.mjs verify
+      - name: Test ZIP TREE-root recomputation
+        run: python -m unittest discover -s tests -p test_edu_zip_tree.py -v
+      - name: Test Host-language and original-owner fail-closed boundaries
+        run: node --test tests/project-edu-onezip-route.test.mjs
+      - name: Regression original C135 portable C87 and Project prompt
+        run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs

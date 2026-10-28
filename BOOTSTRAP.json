@@ -1358,7 +1358,9 @@
       "contracts/project-host-capability-port.json",
       "host/project-c72-physical-ingress.mjs",
       "host/project-c72-coldstart-seed.mjs",
-      "scripts/project-c72-partial-source-kit.mjs"
+      "scripts/project-c72-partial-source-kit.mjs",
+      "scripts/project-edu-zip-tree.py",
+      "scripts/project-edu-onezip-admission.mjs"
     ],
     "post_mode_immutable_tree_read": "GIT_OBJECT_IDENTITY_VERIFICATION_ONLY",
     "source_trust": "INDEPENDENTLY_FROZEN_HEAD_TREE_AND_API_ORIGINAL_BLOB_HASHES",
@@ -1433,6 +1435,31 @@
     "postaccept_partial_manual_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_ONLY_NO_OWNER_REPLAY",
     "postaccept_partial_source_original_count": 8,
     "postaccept_partial_source_no_full_edu": true,
-    "host_adapter_what_how": "contracts/project-edu-host-what-how-v2.json"
+    "host_adapter_what_how": "contracts/project-edu-host-what-how-v2.json",
+    "postaccept_onezip_fallback": {
+      "schema": "ikant-edu-onezip-postaccept/v1",
+      "status": "EXPERIMENTAL_CANDIDATE_NOT_FIELD_QUALIFIED",
+      "gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_ORIGINAL_C72_AND_EDU_ONLY",
+      "preferred": "OBSERVED_P0_CARRIER",
+      "fallback": "ONE_OFFICIAL_PINNED_COMMIT_ZIP_MANUAL_UPLOAD",
+      "archive": "https://github.com/Luke883i/iKant_LE/archive/{SOURCE_HEAD}.zip",
+      "zip_root_verifier": "scripts/project-edu-zip-tree.py",
+      "independent_commit_tree": "GITHUB_API_COMMIT_TREE_SHA",
+      "tree_entries": "DERIVED_FROM_ZIP_NOT_INDEPENDENT_GITHUB_API_TREE",
+      "original_manual_extractor": "scripts/project-manual-source.py",
+      "original_loader": "scripts/project-repo-loader.mjs",
+      "original_c72_coordinator": "scripts/project-edu-onezip-admission.mjs",
+      "exact_later_mode": "EDU",
+      "edu_owner": "host/project-oneshell-edu.mjs",
+      "host_language_port": "scripts/project-edu-language-stdio.mjs",
+      "one_turn_runner": "scripts/project-edu-onezip-session.mjs",
+      "c87_portable_checkpoint": "PR_179_ORIGINAL_C135_EXPORT_REBIND",
+      "source_epoch": "FROZEN_COMMIT_UNTIL_NEW_SESSION",
+      "native_source_origin_attested": false,
+      "provider_chat_delivery_attested": false,
+      "active": false,
+      "authority": 0,
+      "old_postedu_p1_unchanged": true
+    }
   }
 }
