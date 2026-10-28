@@ -11,6 +11,7 @@ on:
       - 'BOOTSTRAP.json'
       - 'tests/project-edu-onezip-route.test.mjs'
       - 'tests/test_edu_zip_tree.py'
+      - 'tests/project-edu-onezip-full-source.test.mjs'
       - '.github/workflows/edu-onezip-experimental.yml'
   workflow_dispatch:
 jobs:
@@ -34,5 +35,18 @@ jobs:
         run: python -m unittest discover -s tests -p test_edu_zip_tree.py -v
       - name: Test Host-language and original-owner fail-closed boundaries
         run: node --test tests/project-edu-onezip-route.test.mjs
+      - name: Full actual commit ZIP root -> original loader -> C72 -> 2 C135/C87/C125 fixture turns
+        shell: bash
+        run: |
+          set -euo pipefail
+          TMP="$(mktemp -d)"
+          chmod 700 "$TMP"
+          HEAD_SHA="$(git rev-parse HEAD)"
+          TREE_SHA="$(git rev-parse HEAD^{tree})"
+          git archive --format=zip --prefix="iKant_LE-${HEAD_SHA}/" HEAD > "$TMP/source.zip"
+          python scripts/project-edu-zip-tree.py --archive "$TMP/source.zip" --head "$HEAD_SHA" --tree "$TREE_SHA" --output "$TMP/derived-tree.json"
+          python scripts/project-manual-source.py --source-zip "$TMP/source.zip" --api-tree "$TMP/derived-tree.json" --head "$HEAD_SHA" --tree "$TREE_SHA" --output-plan "$TMP/plan.json"
+          node scripts/project-repo-loader.mjs "$TMP/plan.json" "$TMP/materialized" "$HEAD_SHA" "$TREE_SHA"
+          EDU_TEST_SOURCE_ROOT="$TMP/materialized" EDU_TEST_HEAD="$HEAD_SHA" EDU_TEST_TREE="$TREE_SHA" node --test tests/project-edu-onezip-full-source.test.mjs
       - name: Regression original C135 portable C87 and Project prompt
         run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs
