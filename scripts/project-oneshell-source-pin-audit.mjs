@@ -26,7 +26,7 @@ if(boot.project_session?.postaccept_onezip_fallback?.source_epoch!=='FROZEN_COMM
 if(contract.source_policy!=='MAIN_COMMIT_FROZEN_FOR_SESSION_NOT_A_PR_REF')errors.push('HUMANIST_SOURCE_POLICY_INVALID');
 if(runReferences&&findings.length)errors.push('EXECUTABLE_PR_PIN_OBSERVED');
 const brandHost=runBrand?fs.readFileSync(path.join(ROOT,'host/ikant-edu-branded-host.mjs'),'utf8'):'';
-if(/const\s+SOURCE\s*=\s*['\"][a-f0-9]{40}['\"]|source_head:\s*SOURCE/u.test(brandHost))
+if(/const\s+SOURCE\s*=\s*['"][a-f0-9]{40}['"]|source_head:\s*SOURCE/u.test(brandHost))
  errors.push('HISTORICAL_ASSET_COMMIT_MISUSED_AS_RUNTIME_SOURCE_HEAD');
 
 const report={schema:'ikant-le-shell-main-pin-audit/v1',scope:dirs,files_checked:files.length,
