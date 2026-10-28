@@ -34,3 +34,7 @@ Minimum rail: ACCEPTED → EDU_SELECTED → SOURCE_HANDOFF → MATERIALIZED → 
 - Native UI and persistence: UNKNOWN unless a real client/protocol attest it. No CANONICAL ACTIVE from EDU.
 
 Non-DoD: badge color, logo alone, prompt contents alone, CI-only model fixture, attachment that is never reopened, a fake persistent container or assistant-crafted A.
+
+## Concrete legacy pin defect found in executable Host branding
+
+The prior `host/ikant-edu-branded-host.mjs` hardcoded `92cc620299e9ee365386782921036e57d2f6bd0e` as both remote icon source and emitted `source_head`. It is an immutable **historical asset source** rather than the currently frozen main-commit for an EDU session, so using it as runtime source identity was incorrect even though the brand check was valid. E9 now derives the projection `source_head` from the original C135 `ownerTurn.source_head` only. Without such evidence it returns null and omits the remote SVG icon. Original asset integrity contract retains its historical origin hash but is explicitly **not runtime pin authority**. Regression and the PR source-pin audit forbid reintroducing the mistaken adapter field.
