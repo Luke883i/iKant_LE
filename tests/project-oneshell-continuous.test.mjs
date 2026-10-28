@@ -105,3 +105,30 @@ test('physical Node stdio cohost emits one OneShell for each of two real owner t
   assert.equal(events.filter(x=>x.humanist_context?.schema==='ikant-host-humanist-guidance/v1').length,2);
  }finally{fs.rmSync(x.parent,{recursive:true,force:true});}
 });
+
+test('one-owner lease and human control stop without a C87 write',async()=>{
+ const x=setup();let first,second;
+ try{
+  first=await openContinuousOneShell(x.q);assert.equal(first.ok,true);
+  second=await openContinuousOneShell(x.q);
+  assert.equal(second.ok,false);assert.equal(second.voice,'NO_VOICE');
+  assert.equal(second.edge,'ONESHELL_OWNER_LEASE_HELD_OR_UNKNOWN');
+  const control=await first.publishHumanTurn({humanInput:'EXIT IKANT',nonce:'physical-control-0001',humanMessageObserved:true});
+  assert.equal(control.ok,false);assert.equal(control.edge,'ONESHELL_CONTROL_REQUIRES_ORIGINAL_MANAGED_FACADE');
+  assert.equal(first.reopen().count,0);
+  const real=await first.publishHumanTurn({humanInput:'Domanda dopo controllo.',nonce:'physical-real-00001',humanMessageObserved:true});
+  assert.equal(real.ok,true,JSON.stringify(real));assert.equal(first.reopen().count,1);
+ }finally{first?.close();fs.rmSync(x.parent,{recursive:true,force:true});}
+});
+
+test('language failure after a recorded attempt cannot replay or cold-rebind without reconciliation',async()=>{
+ const x=setup();let first;
+ try{
+  first=await openContinuousOneShell({...x.q,languagePort:async()=>{throw Error('HOST_BROKEN');}});assert.equal(first.ok,true);
+  const fail=await first.publishHumanTurn({humanInput:'Non scrivere una voce finta.',nonce:'physical-fail-00001',humanMessageObserved:true});
+  assert.equal(fail.ok,false);assert.equal(fail.voice,'NO_VOICE');
+  first.close();first=null;
+  const again=await openContinuousOneShell(x.q);
+  assert.equal(again.ok,false);assert.equal(again.voice,'NO_VOICE');
+ }finally{first?.close();fs.rmSync(x.parent,{recursive:true,force:true});}
+});
