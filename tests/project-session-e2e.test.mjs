@@ -269,3 +269,69 @@ test('cold rebind after SIGKILL: original EDU keeps a first-turn durable C87 led
   assert.equal(before.count,1);assert.notEqual(r.last,witness.hash);
  }finally{fs.rmSync(parent,{recursive:true,force:true});}
 });
+
+
+
+test('portable original C87 checkpoint survives a fresh Host filesystem; no old voice replay',async()=>{
+ const {plan,expected}=sourceFixture();
+ const parent=fs.mkdtempSync(path.join(os.tmpdir(),'edu-portable-c87-'));
+ const source=path.join(parent,'source'),oldRoot=path.join(parent,'host-old'),newRoot=path.join(parent,'host-new');
+ const input1='Spiega come verificare una fonte.',input2='Riassumi i passaggi di verifica.';
+ const nonce1='portable-c87-first-nonce-001',nonce2='portable-c87-second-nonce-002';
+ const witness={accepted:true,scope:'HOST_WITNESSED_ONLY'};
+ let first,second;
+ try{
+  materializeRepositoryPlan(plan,{...expected,destination:source});
+  fs.mkdirSync(oldRoot,{mode:0o700});fs.mkdirSync(newRoot,{mode:0o700});
+  const terms=createHash('sha256').update(fs.readFileSync(path.join(source,'TERMS.md'))).digest('hex');
+  const offer=issueC72V2LinkedTermsOffer({sourceHead:expected.head,termsDigest:terms});
+  const accepted=acceptC72V2LinkedTerms({offer,humanMessage:'I ACCEPT',termsLinkPresented:true});
+  const selection=selectC72V2Mode({accepted,orientation:presentC72V2Introduction(accepted),humanMessage:'EDU'});
+  const sentOld=[],sentNew=[];
+  const languagePort=async task=>task.required_ack
+   ?{text:'Risposta originale EDU verificabile.',...task.required_ack}
+   :{text:'Risposta originale EDU verificabile.',input_sha256:task.plan.input_sha256,
+      ack_plan_sha256:task.plan.plan_sha256};
+  const common={selection,sourceRoot:source,sourceBinding:expected,afterAcceptWitness:witness,languagePort};
+  first=await createC135EduV2Session({...common,privateParent:oldRoot,send:async x=>sentOld.push(x)});
+  assert.equal(first.ok,true,JSON.stringify(first));
+  const t1=await first.publishTurn({humanInput:input1,nonce:nonce1,priorMessages:[],resetContext:true});
+  assert.equal(t1.ok,true,JSON.stringify(t1));assert.equal(sentOld.length,1);
+  const cp=first.exportPortableC87({priorMessages:[input1]});
+  assert.equal(cp.schema,'ikant-le-c135-portable-c87/v1',JSON.stringify(cp));
+  assert.equal(cp.expectedCount,1);assert.equal(cp.expectedLastHash,first.readSessionState().original_c87_readback.last_hash);
+  assert.equal(cp.ledger_sha256,createHash('sha256').update(cp.ledger_utf8).digest('hex'));
+  assert.equal(Object.hasOwn(cp,'previousWorkerGone'),false);
+  first.close();fs.rmSync(oldRoot,{recursive:true,force:true});
+  const bound={...cp,previousWorkerGone:true};
+  const falsifications=[
+   {...bound,previousWorkerGone:false},
+   {...bound,expectedCount:2},
+   {...bound,expectedLastHash:'f'.repeat(64)},
+   {...bound,source_head:'f'.repeat(40)},
+   {...bound,source_tree:'f'.repeat(40)},
+   {...bound,selection_receipt_sha256:'f'.repeat(64)},
+   {...bound,priorMessages:['finestra inventata']},
+   {...bound,ledger_sha256:'f'.repeat(64)},
+   {...bound,ledger_utf8:bound.ledger_utf8.slice(0,-1)},
+   {...bound,ledger_utf8:bound.ledger_utf8.replace('"sequence":1','"sequence":2')}
+  ];
+  for(const [index,changed] of falsifications.entries()){
+    const root=path.join(parent,'bad-'+index);fs.mkdirSync(root,{mode:0o700});
+    const denied=await createC135EduV2Session({...common,privateParent:root,send:async()=>{throw Error('FAKE_SEND');},resumeFrom:changed});
+    assert.equal(denied.ok,false,'tampered checkpoint '+index+': '+JSON.stringify(denied));
+  }
+  second=await createC135EduV2Session({...common,privateParent:newRoot,send:async x=>sentNew.push(x),resumeFrom:bound});
+  assert.equal(second.ok,true,JSON.stringify(second));
+  assert.equal(second.readSessionState().original_c87_readback.count,1);
+  const duplicate=await second.publishTurn({humanInput:input2,nonce:nonce1,priorMessages:[input1],resetContext:false});
+  assert.equal(duplicate.ok,false);
+  const wrong=await second.publishTurn({humanInput:input2,nonce:'portable-c87-wrong-nonce-003',priorMessages:['altro contesto'],resetContext:false});
+  assert.equal(wrong.ok,false);
+  const t2=await second.publishTurn({humanInput:input2,nonce:nonce2,priorMessages:[input1],resetContext:false});
+  assert.equal(t2.ok,true,JSON.stringify(t2));assert.equal(t2.c87_before,1);assert.equal(t2.c87_after,2);
+  assert.equal(sentNew.length,1);assert.equal(second.readSessionState().original_c87_readback.count,2);
+  const cp2=second.exportPortableC87({priorMessages:[input1,input2]});
+  assert.equal(cp2.expectedCount,2);assert.notEqual(cp2.expectedLastHash,cp.expectedLastHash);
+ }finally{first?.close();second?.close();fs.rmSync(parent,{recursive:true,force:true});}
+});
