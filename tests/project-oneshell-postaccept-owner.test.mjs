@@ -33,7 +33,10 @@ test('real C135 first turn and recovered worker project into the SAME six-slot r
   assert.equal(m.ok,true);assert.equal(e.host_session_anchor_sha256,m.host_session_anchor_sha256);
   const common={selection,sourceRoot,sourceBinding:expected,privateParent:parent,
    afterAcceptWitness:{accepted:true,scope:'HOST_WITNESSED_ONLY'},
-   languagePort:async task=>({text:'Prova EDU localmente attestata, senza ACTIVE.',...task.required_ack})};
+   languagePort:async task=>task.schema==='ikant-edu-v2-open-language-task/v1'
+    ?{text:'Questa verifica e locale: una prova indipendente potrebbe falsificare la conclusione.',
+      input_sha256:task.plan.input_sha256,ack_plan_sha256:task.plan.plan_sha256}
+    :{text:'Questa verifica e locale e richiede riscontri osservabili.',...task.required_ack}};
   a=await startOneShellEdu(common);assert.equal(a.ok,true,JSON.stringify(a.frame));
   const ready=projectPostAcceptOneShell({...base,phase:'EDU_READY',ownerSession:a});
   assert.equal(ready.ok,true,ready.edge);assert.equal(ready.frame.slots.A,'NO_VOICE');
