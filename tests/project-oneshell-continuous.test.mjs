@@ -102,6 +102,17 @@ test('physical Node stdio cohost emits one OneShell for each of two real owner t
   assert.equal(events.filter(x=>x.schema==='ikant-edu-host-language-task/v1').length,2);
   assert.equal(events.filter(x=>x.schema==='ikant-host-oneshell-result/v1'&&x.ok===true).length,3);
   assert.equal(events.at(-1).original_c87_count,2);
+  const ready=events.find(e=>e.schema==='ikant-host-oneshell-result/v1'&&e.phase==='EDU_READY');
+  assert.equal(ready?.chat_presentation?.ok,true,'in-chat packet must be emitted at EDU_READY');
+  assert.equal(ready.chat_presentation.slots.A,'NO_VOICE');
+  assert.equal(ready.chat_presentation.render_plan.focus,'A');
+  for(const e of events.filter(e=>e.original_c87_count>0&&e.ok===true)){
+   assert.equal(e.chat_presentation?.ok,true,'real turns emit in-chat packet');
+   assert.equal(e.chat_presentation.slots.A,e.frame.slots.A);
+   assert.equal(e.chat_presentation.original_voice_sha256,e.frame.original_voice_sha256);
+   assert.equal(e.chat_presentation.report.sha256,e.focus_app.report_sha256);
+   assert.equal(e.chat_presentation.native_ui_attested,false);
+  }
   assert.equal(events.filter(x=>x.humanist_context?.schema==='ikant-host-humanist-guidance/v1').length,2);
  }finally{fs.rmSync(x.parent,{recursive:true,force:true});}
 });
