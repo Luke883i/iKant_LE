@@ -44,6 +44,19 @@ function validate(q){
 }
 export async function selectOriginalC72LaterEDU(q){
  let originals;
+ if(q.transitDirectory!==undefined){
+  // A mode turn reopens the earlier original acceptance, never reconstructs it.
+  try{
+   const transit=await import('../host/project-c72-receipt-transit.mjs');
+   const a=transit.reopenC72Accepted({directory:q.transitDirectory,sourceHead:q.sourceHead});
+   if(!a.ok)return fail(a.edge);
+   if(q.accepted!==undefined&&JSON.stringify(q.accepted)!==JSON.stringify(a.accepted))
+    return fail('C72_TRANSIT_ACCEPTANCE_CONFLICT');
+   if(q.introduction!==undefined&&JSON.stringify(q.introduction)!==JSON.stringify(a.introduction))
+    return fail('C72_TRANSIT_INTRODUCTION_CONFLICT');
+   q={...q,accepted:a.accepted,introduction:a.introduction};
+  }catch{return fail('C72_TRANSIT_READ_UNKNOWN');}
+ }
  try{originals=validate(q);}catch(e){return fail(String(e.message||'C72_LATER_INPUT_INVALID'));}
  let temp=null,attempted=false;
  try{
@@ -57,6 +70,12 @@ export async function selectOriginalC72LaterEDU(q){
   const owner=await import(pathToFileURL(path.join(temp,FILES[1])).href);
   if(!owner.validateC72V2Accepted(q.accepted)||!owner.validateC72V2Orientation(q.introduction,q.accepted))
    return fail('C72_LATER_ORIGINAL_ACCEPTANCE_INVALID');
+  if(q.transitDirectory!==undefined){
+   const transit=await import('../host/project-c72-receipt-transit.mjs');
+   const claimed=transit.claimC72TransitAttempt({directory:q.transitDirectory,
+    sourceHead:q.sourceHead,phase:'EDU'});
+   if(!claimed.ok)return fail(claimed.edge);
+  }
   attempted=true;
   const selection=owner.selectC72V2Mode({accepted:q.accepted,
     orientation:q.introduction,humanMessage:q.humanMessage});
@@ -64,6 +83,12 @@ export async function selectOriginalC72LaterEDU(q){
      selection.acceptance_receipt_sha256!==q.accepted.receipt_sha256||
      selection.orientation_receipt_sha256!==q.introduction.receipt_sha256)
    return {...fail('C72_LATER_ORIGINAL_SELECTION_INVALID'),original_owner_invoked:true};
+  if(q.transitDirectory!==undefined){
+   const transit=await import('../host/project-c72-receipt-transit.mjs');
+   const stored=transit.storeC72Selected({directory:q.transitDirectory,
+    sourceHead:q.sourceHead,selection});
+   if(!stored.ok)return {...fail(stored.edge),original_owner_invoked:true};
+  }
   return {ok:true,status:'C72_ORIGINAL_EDU_MODE_VERIFIED',
    original_owner_invoked:true,verified_file_count:FILES.length,
    source_head:q.sourceHead,selection,original_accepted_sha256:q.accepted.receipt_sha256,

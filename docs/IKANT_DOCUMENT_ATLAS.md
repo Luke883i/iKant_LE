@@ -163,6 +163,7 @@
 - [docs/MCP_EXTERNAL_PREPR_20261020.md](MCP_EXTERNAL_PREPR_20261020.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/NEEDLE_SHADOW_RUNTIME_V1.md](NEEDLE_SHADOW_RUNTIME_V1.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHELL_E12_FOCUS_APP_POST182.md](ONESHELL_E12_FOCUS_APP_POST182.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/ONESHELL_E14_C72_RECEIPT_TRANSIT.md](ONESHELL_E14_C72_RECEIPT_TRANSIT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHELL_EDU_HOST_BOUNDARY_PR.md](ONESHELL_EDU_HOST_BOUNDARY_PR.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHELL_POSTACCEPT_RAIL_AUDIT_E9.md](ONESHELL_POSTACCEPT_RAIL_AUDIT_E9.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/ONESHELL_THREAD_SESSION_V1.md](ONESHELL_THREAD_SESSION_V1.md): Documentazione specialistica. Stato di review: **da verificare**.

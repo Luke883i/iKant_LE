@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {renderOneShell} from './project-oneshell-edu.mjs';
 import {createOneShellVisualModel,verifyOneShellVisualEquivalence} from './project-oneshell-visual.mjs';
 import {classifyOneShellHumanDestination} from './project-oneshell-host-boundary.mjs';
+import {emitVerifiedHostOneShell} from './project-oneshell-emission.mjs';
 const ORDER=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const digest=s=>sha(Buffer.from(s,'utf8'));
@@ -62,6 +63,11 @@ export function makeOneShellChatPresentation({frame,humanInput=null,focusApp=nul
   const visual=createOneShellVisualModel(frame);
   const eq=verifyOneShellVisualEquivalence(visual,frame);
   if(eq.ok!==true||eq.byte_exact!==true)return denied('CHAT_ORIGINAL_VISUAL_UNVERIFIED');
+  // Rich Host HTML is an actual verified SVG-bearing output, never merely a plan.
+  // Its presence does not attest provider mounting, delivery or persistence.
+  const emission=richUiAvailable===true?emitVerifiedHostOneShell(frame,{format:'HTML'}):null;
+  if(emission!==null&&(emission.ok!==true||emission.brand_attested!==true))
+   return denied(emission?.first_edge||'CHAT_BRAND_EMISSION_UNVERIFIED');
   const report=focusApp===null?null:verifiedReport(frame,focusApp);
   const compact=report!==null;
   const brand=visual.brand?.status==='VERIFIED_HOST_SOURCE'&&H64.test(visual.brand.asset_sha256||'');
@@ -96,6 +102,9 @@ export function makeOneShellChatPresentation({frame,humanInput=null,focusApp=nul
    slot_sha256:Object.freeze(Object.fromEntries(ORDER.map(k=>[k,digest(slots[k])]))),
    voice_origin:frame.voice_origin,original_voice_sha256:frame.original_voice_sha256,
    markdown_fallback_utf8:text,markdown_sha256:digest(text),report,
+   verified_host_html_utf8:emission?.html??null,
+   verified_host_html_sha256:emission?.content_sha256??null,
+   verified_host_brand_sha256:emission?.brand_sha256??null,
    host_local_prompts:HOST_PRESENTATION_PROMPTS,
    required_host_action:richUiAvailable===true?'RENDER_SUPPORTED_RICH_HOST_UI_OR_TEXT':'DISPLAY_MARKDOWN',
    native_ui_attested:false,persistent_ui_attested:false,provider_delivery_attested:false,

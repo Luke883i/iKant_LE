@@ -19,6 +19,8 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
  if(!plain(configuration)||configuration.schema!=='ikant-host-oneshell-start/v1'||
     !path.isAbsolute(configuration.privateRoot||'')||typeof configuration.sourceHead!=='string')
   return fail('ONESHELL_HOST_CONFIG_INVALID');
+ const bootStart=process.hrtime.bigint(); // Physical local monotonic interval; NOT provider latency.
+ const elapsedMs=()=>Number((process.hrtime.bigint()-bootStart)/1000000n);
  const rx=createInterface({input,crlfDelay:Infinity});
  let pending=null,closed=false,owner=null,processing=false,head=configuration.liveHead;
  const send=x=>output.write(JSON.stringify(x)+'\n');
@@ -67,6 +69,7 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
   if(readyChat.ok!==true){send(fail(readyChat.edge));return fail(readyChat.edge);}
   send({schema:'ikant-host-oneshell-result/v1',ok:true,phase:'EDU_READY',
    frame:owner.frame,content:owner.content,focus_app:readyApp,chat_presentation:readyChat,
+   host_boot_elapsed_ms:elapsedMs(),host_boot_clock:'NODE_MONOTONIC_ONLY',
    authority:0,active:false,native_ui_attested:false});
   while(!closed){
    const req=await receive();if(req===null)break;

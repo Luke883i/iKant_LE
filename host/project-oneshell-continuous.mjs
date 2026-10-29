@@ -111,9 +111,20 @@ function retireObservedDeadLease(journal,head,selection,current,witness){
 /** One C135 instance when alive; an explicit observed worker-loss witness is
  * required to cold-rebind the ORIGINAL C87 bytes on a new instance. */
 export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,privateRoot,
- accepted,introduction,selection,readMain,languagePort,recoveryWitness=null}={}){
+ accepted,introduction,selection,c72TransitDirectory=null,readMain,languagePort,recoveryWitness=null}={}){
  let journal=null,owner=null;
  try{
+  if(c72TransitDirectory!==null){
+   const {reopenC72Transit}=await import('./project-c72-receipt-transit.mjs');
+   const original=reopenC72Transit({directory:c72TransitDirectory,sourceHead});
+   if(!original.ok)return fail(original.edge);
+   if((accepted!==undefined&&json(accepted)!==json(original.accepted))||
+      (introduction!==undefined&&json(introduction)!==json(original.introduction))||
+      (selection!==undefined&&json(selection)!==json(original.selection)))
+    return fail('ONESHELL_C72_TRANSIT_CONFLICT');
+   ({accepted,introduction,selection}=original);
+  }
+
   if(!H40.test(sourceHead||'')||!H40.test(sourceTree||'')||
      !privateDir(privateRoot)||typeof readMain!=='function'||typeof languagePort!=='function'||
      !validateC72V2Accepted(accepted)||!validateC72V2Orientation(introduction,accepted)||

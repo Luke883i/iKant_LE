@@ -102,6 +102,12 @@ export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.
  const edge=witnessEdge(q);if(edge)return stop(edge);
  try{if(sha(readExact(seedPath))!==q.seedBlobSha1)return stop('C72_SEED_SOURCE_BLOB_DRIFT');}
  catch{return stop('C72_SEED_SOURCE_NOT_VERIFIED');}
+ let transit=null;
+ // Preflight the optional physical receipt sink BEFORE invoking original C72.
+ if(q.transitDirectory!==undefined){
+  try{transit=await import('./project-c72-receipt-transit.mjs');}
+  catch{return stop('C72_TRANSIT_MODULE_NOT_MATERIALIZED');}
+ }
  let files;
  try{files=readSources(q);}catch(e){return stop(String(e.message||'C72_SOURCE_UNKNOWN'));}
  let root,invoked=false;
@@ -116,12 +122,22 @@ export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.
   const verify=await import(pathToFileURL(path.join(root,'host/c72-public-mode-admission.mjs')).href);
   const docs=FIRST.map(p=>({path:p,source_head:q.liveHead,
    blob_sha1:q.expectedBlobShas[p],content:files.get(p).toString('utf8')}));
+  if(transit){
+   const claimed=transit.claimC72TransitAttempt({directory:q.transitDirectory,
+    sourceHead:q.liveHead,phase:'ACCEPT'});
+   if(!claimed.ok)return stop(claimed.edge);
+  }
   invoked=true;
   const r=owner.reenterC72V2PostAccept({sourceHead:q.liveHead,liveHead:q.liveHead,
    humanMessage:q.humanMessage,priorTurnEvidence:q.priorTurnEvidence,documents:docs});
   if(r.ok!==true||!verify.validateC72V2Accepted(r.accepted)||
      !verify.validateC72V2Orientation(r.introduction,r.accepted))
    return {...stop(r.first_edge||'C72_ORIGINAL_RECEIPT_INVALID'),original_owner_invoked:true};
+  if(transit){
+   const stored=transit.storeC72Accepted({directory:q.transitDirectory,
+    sourceHead:q.liveHead,accepted:r.accepted,introduction:r.introduction});
+   if(stored.ok!==true)return {...stop(stored.edge),original_owner_invoked:true};
+  }
   return {ok:true,kind:'C72_ORIGINAL_POSTACCEPT_VERIFIED',
    accepted:r.accepted,introduction:r.introduction,source_head:q.liveHead,
    carrier:q.stageDirectory!==undefined?'HOST_STAGED_PARTIAL_SOURCE':'HOST_SOURCE_PACKET',

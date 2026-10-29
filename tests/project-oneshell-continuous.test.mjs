@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';import {fileURLToPath} from 'node:url';
 import {materializeRepositoryPlan} from '../scripts/project-repo-loader.mjs';
 import {issueC72V2LinkedTermsOffer,acceptC72V2LinkedTerms,presentC72V2Introduction,selectC72V2Mode} from '../host/c72-public-mode-admission.mjs';
 import {openContinuousOneShell} from '../host/project-oneshell-continuous.mjs';
+import {storeC72Accepted,storeC72Selected} from '../host/project-c72-receipt-transit.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const sha=s=>createHash('sha256').update(s).digest('hex');
 const git=(type,b)=>createHash('sha1').update(Buffer.from(type+' '+b.length+'\0')).update(b).digest('hex');
@@ -185,4 +186,24 @@ test('physical SIGKILL leaves original C87 checkpoint; dead lease is reconciled,
   const retired=path.join(x.parent,'.oneshell-continuity','.oneshell-retired-000001.json');
   assert.equal(fs.existsSync(retired),true,'previous worker lease is retained as audit evidence');
  }finally{fs.rmSync(x.parent,{recursive:true,force:true})}
+});
+
+test('C72 physical receipt transit can bootstrap original C135 after loss of Host objects',async()=>{
+ const x=setup();let owner;
+ try{
+  const accepted=storeC72Accepted({directory:x.parent,sourceHead:x.q.sourceHead,
+   accepted:x.q.accepted,introduction:x.q.introduction});
+  assert.equal(accepted.ok,true,JSON.stringify(accepted));
+  const selected=storeC72Selected({directory:x.parent,sourceHead:x.q.sourceHead,selection:x.q.selection});
+  assert.equal(selected.ok,true,JSON.stringify(selected));
+  const {accepted:discard1,introduction:discard2,selection:discard3,...reentry}=x.q;
+  owner=await openContinuousOneShell({...reentry,c72TransitDirectory:x.parent});
+  assert.equal(owner.ok,true,JSON.stringify(owner));
+  assert.equal(owner.frame.slots.A,'NO_VOICE');
+  const turn=await owner.publishHumanTurn({humanInput:'Verifica la continuita C72.',
+   nonce:'c72-transit-c135-00001',humanMessageObserved:true});
+  assert.equal(turn.ok,true,JSON.stringify(turn));
+  assert.equal(turn.original_c87_count,1);
+  assert.equal(owner.reopen().count,1);
+ }finally{owner?.close();fs.rmSync(x.parent,{recursive:true,force:true});}
 });

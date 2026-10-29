@@ -1538,6 +1538,10 @@
       "installed_prompt_is_not_runtime": true,
       "authority": 0,
       "active": false
-    }
+    },
+    "postaccept_original_c72_receipt_transit": "host/project-c72-receipt-transit.mjs",
+    "postaccept_original_c72_transit_rule": "OPTIONAL_PRIVATE_HOST_CARRIER_WX_FSYNC_READBACK_BEFORE_MODE_AND_C135",
+    "original_mode_receipt_reopen": "scripts/project-c72-receipt-reopen-cli.mjs",
+    "rich_host_svg_emission": "VERIFIED_INLINE_SVG_ONLY_WHEN_RENDERER_SUPPORTS_HOST_HTML_NO_NATIVE_MOUNT_CLAIM"
   }
 }
