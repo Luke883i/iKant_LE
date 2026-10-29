@@ -1496,6 +1496,29 @@
       "authority": 0,
       "cli": "scripts/project-oneshell-continuous-cli.mjs",
       "real_transport": "SAME_PROCESS_STDIO_MULTIPLEXED_HOST_LANGUAGE_AND_HUMAN_TURNS"
+    },
+    "oneshell_focus_app": {
+      "schema": "ikant-host-oneshell-focus-app/v1",
+      "contract": "contracts/project-oneshell-focus-app.json",
+      "post_accept": "host/project-oneshell-focus-session.mjs#projectPostAcceptFocusApp",
+      "post_edu": "host/project-oneshell-focus-session.mjs#openFocusOneShellSession",
+      "depends_on": "ORIGINAL_C72_C135_C87_C125_AND_E9_E10",
+      "app": "HOST_OFFLINE_SELF_CONTAINED_HTML_NOT_NATIVE",
+      "focus_slot": "A",
+      "standard_slots": [
+        "ESITO",
+        "A",
+        "B",
+        "PROVA",
+        "EDGE",
+        "NEXT"
+      ],
+      "original_voice": "OWNER_ONLY_NO_REWRITE",
+      "reports": "PRIVATE_UTF8_AND_VERIFIED_DOWNLOAD_AFTER_READBACK",
+      "native_client_mount_attested": false,
+      "provider_delivery_attested": false,
+      "active": false,
+      "authority": 0
     }
   }
 }
