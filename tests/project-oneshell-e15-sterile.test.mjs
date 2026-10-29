@@ -7,6 +7,8 @@ import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {reopenC72Transit} from '../host/project-c72-receipt-transit.mjs';
+import {materializeRepositoryPlan} from '../scripts/project-repo-loader.mjs';
+import {openContinuousOneShell} from '../host/project-oneshell-continuous.mjs';
 import {adjudicateE15,admitE15TransportEnvelope,E15_PROFILE} from '../host/project-oneshell-irred-e15.mjs';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const H='a'.repeat(40);
@@ -24,13 +26,37 @@ function packet(){
  return {docs,blobShas,witness,transitBlobSha1:blob(transit),
   transitSourcePacket:{path:'host/project-c72-receipt-transit.mjs',contentBase64:transit.toString('base64')}};
 }
+function fullSourcePlan(){
+ const names=[...JSON.parse(fs.readFileSync(path.join(ROOT,'contracts/project-session-source.json'))).paths,
+  'contracts/project-session-source.json'];
+ const entries=new Map(names.map(p=>{const b=fs.readFileSync(path.join(ROOT,p));
+  return [p,{path:p,type:'blob',mode:'100644',sha:blob(b)}];})),dirs=new Set();
+ for(const p of names){let d=path.posix.dirname(p);while(d!=='.'){dirs.add(d);d=path.posix.dirname(d);}}
+ const tree=dir=>{
+  const rows=[...entries.values()].filter(e=>path.posix.dirname(e.path)===(dir||'.'))
+   .sort((a,b)=>Buffer.compare(Buffer.from(path.posix.basename(a.path)+(a.type==='tree'?'/':'')),
+    Buffer.from(path.posix.basename(b.path)+(b.type==='tree'?'/':''))));
+  return createHash('sha1').update(Buffer.from('tree '+Buffer.concat(rows.map(e=>Buffer.concat([
+   Buffer.from((e.type==='tree'?'40000':e.mode)+' '+path.posix.basename(e.path)+'\0'),
+   Buffer.from(e.sha,'hex')]))).length+'\0'))
+   .update(Buffer.concat(rows.map(e=>Buffer.concat([
+   Buffer.from((e.type==='tree'?'40000':e.mode)+' '+path.posix.basename(e.path)+'\0'),
+   Buffer.from(e.sha,'hex')])))).digest('hex');
+ };
+ for(const d of [...dirs].sort((a,b)=>b.split('/').length-a.split('/').length))
+  entries.set(d,{path:d,type:'tree',mode:'040000',sha:tree(d)});
+ const t=tree('');
+ return {head:H,tree:t,plan:{source_head:H,live_head:H,source_tree:t,truncated:false,
+  tree:[...entries.values()],files:names.map(p=>({path:p,encoding:'base64',
+   content:fs.readFileSync(path.join(ROOT,p)).toString('base64')}))}};
+}
 function invoke(root,rel,q){
  const child=spawnSync(process.execPath,[path.join(root,rel)],{
   input:JSON.stringify(q),encoding:'utf8',maxBuffer:2*1024*1024,timeout:30000});
  assert.notEqual(child.status,null,'child must terminate: '+child.stderr);
  return JSON.parse(child.stdout.trim());
 }
-test('E15 sterile zero-checkout: accepted + EDU in distinct original-owner child processes; receipt reopened',()=>{
+test('E15 sterile zero-checkout: accepted + EDU in distinct original-owner child processes; receipt reopened',async()=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-e15-sterile-'));
  const privateRoot=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-e15-receipts-'));
  fs.chmodSync(root,0o700);fs.chmodSync(privateRoot,0o700);
@@ -67,6 +93,28 @@ test('E15 sterile zero-checkout: accepted + EDU in distinct original-owner child
   assert.equal(reopened.ok,true,JSON.stringify(reopened));
   assert.equal(reopened.selection.receipt_sha256,mode.selection.receipt_sha256);
   assert.equal(reopened.accepted.receipt_sha256,accept.accepted.receipt_sha256);
+  // Same original C72 receipts MUST survive the later full source handoff and
+  // start original C135/C87 with no second acceptance or mode selection.
+  const fsrc=fullSourcePlan();
+  const sourceRoot=path.join(privateRoot,'source');
+  materializeRepositoryPlan(fsrc.plan,{head:H,tree:fsrc.tree,destination:sourceRoot});
+  const languagePort=async task=>{
+   if(task.schema==='ikant-edu-v2-open-language-task/v1')
+    return {text:'Scelta umana verificabile.',input_sha256:task.plan.input_sha256,
+     ack_plan_sha256:task.plan.plan_sha256};
+   return {text:'Risposta originale owner-bound.',...task.required_ack};
+  };
+  const owner=await openContinuousOneShell({projectProfile:E15_PROFILE,
+   c72TransitDirectory:privateRoot,sourceHead:H,sourceTree:fsrc.tree,
+   sourceRoot,privateRoot,readMain:async()=>H,languagePort});
+  assert.equal(owner.ok,true,JSON.stringify(owner));
+  try{
+   const frame=await owner.publishHumanTurn({humanInput:'Conferma continuità E15.',
+    nonce:'e15-physical-first-00001',humanMessageObserved:true});
+   assert.equal(frame.ok,true,JSON.stringify(frame));
+   assert.equal(frame.original_c87_count,1);
+   assert.equal(frame.frame.slots.A,'Risposta originale owner-bound.');
+  }finally{owner.close();}
   const again=invoke(root,'scripts/project-c72-cold-mode-cli.mjs',{
    schema:'ikant-host-c72-later-mode/v1',humanMessage:'EDU',freshHumanTurn:true,
    priorAcceptanceObserved:true,ownerOutcome:'NOT_INVOKED',sourceHead:H,liveHead:H,
