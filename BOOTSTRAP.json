@@ -1358,6 +1358,7 @@
       "contracts/project-host-capability-port.json",
       "host/project-c72-physical-ingress.mjs",
       "host/project-c72-coldstart-seed.mjs",
+      "host/project-c72-receipt-transit.mjs",
       "scripts/project-c72-partial-source-kit.mjs",
       "scripts/project-edu-zip-tree.py",
       "scripts/project-edu-onezip-admission.mjs"
@@ -1540,8 +1541,13 @@
       "active": false
     },
     "postaccept_original_c72_receipt_transit": "host/project-c72-receipt-transit.mjs",
-    "postaccept_original_c72_transit_rule": "OPTIONAL_PRIVATE_HOST_CARRIER_WX_FSYNC_READBACK_BEFORE_MODE_AND_C135",
+    "postaccept_original_c72_transit_rule": "PROJECT_EDU_E15_REQUIRES_VERIFIED_STERILE_TRANSIT_PACKET_WX_FSYNC_READBACK_BEFORE_C72; LEGACY_SEPARATE",
     "original_mode_receipt_reopen": "scripts/project-c72-receipt-reopen-cli.mjs",
-    "rich_host_svg_emission": "VERIFIED_INLINE_SVG_ONLY_WHEN_RENDERER_SUPPORTS_HOST_HTML_NO_NATIVE_MOUNT_CLAIM"
+    "rich_host_svg_emission": "VERIFIED_INLINE_SVG_ONLY_WHEN_RENDERER_SUPPORTS_HOST_HTML_NO_NATIVE_MOUNT_CLAIM",
+    "project_edu_irred_contract": "contracts/project-oneshell-irred-e15.json",
+    "project_edu_irred_classifier": "host/project-oneshell-irred-e15.mjs#adjudicateE15",
+    "project_edu_falsifier": "scripts/project-oneshell-e15-falsify-1m.mjs",
+    "project_edu_head_guard": "NODE_GITHUB_API_REQUIRED_ON_PHYSICAL_CLI_OR_STOP",
+    "project_edu_verified_logo": "VERIFIED_HOST_HTML_CAPABILITY_ONLY_ELSE_TEXT; NEVER_NATIVE_MOUNT_CLAIM"
   }
 }
