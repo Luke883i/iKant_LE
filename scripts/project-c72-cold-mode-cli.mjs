@@ -42,9 +42,39 @@ function validate(q){
  }
  return originals;
 }
+
+function e15TransitBytes(q){
+ if(q.projectProfile!=='PROJECT_EDU_E15'||typeof q.transitDirectory!=='string'||
+    !path.isAbsolute(q.transitDirectory))throw Error('E15_REQUIRED_PRIVATE_TRANSIT');
+ const p=q.transitSourcePacket;
+ if(!p||p.path!=='host/project-c72-receipt-transit.mjs'||
+    typeof p.contentBase64!=='string'||p.contentBase64.length>350000||
+    p.contentBase64.length%4!==0||!B64.test(p.contentBase64)||
+    !H40.test(q.transitBlobSha1||''))throw Error('E15_VERIFIED_TRANSIT_BLOB_REQUIRED');
+ const b=Buffer.from(p.contentBase64,'base64');
+ if(!b.length||b.length>256000||b.toString('base64')!==p.contentBase64||
+    blob(b)!==q.transitBlobSha1)throw Error('E15_TRANSIT_GIT_BLOB_MISMATCH');
+ const s=new TextDecoder('utf-8',{fatal:true}).decode(b);
+ if(!Buffer.from(s,'utf8').equals(b))throw Error('E15_TRANSIT_UTF8_LOSS');
+ return b;
+}
+function stageE15Transit(root,b){
+ const file=path.join(root,'host/project-c72-receipt-transit.mjs');
+ fs.mkdirSync(path.dirname(file),{recursive:true,mode:0o700});
+ fs.writeFileSync(file,b,{flag:'wx',mode:0o600});
+ if(!fs.readFileSync(file).equals(b))throw Error('E15_TRANSIT_PHYSICAL_READBACK');
+ return file;
+}
+
 export async function selectOriginalC72LaterEDU(q){
- let originals;
- if(q.transitDirectory!==undefined){
+ let originals,projectTransitBytes=null,submittedAccepted=q.accepted,submittedIntroduction=q.introduction;
+ if(q.projectProfile!==undefined&&q.projectProfile!=='PROJECT_EDU_E15')return fail('E15_PROJECT_PROFILE_INVALID');
+ if(q.projectProfile==='PROJECT_EDU_E15'){
+  try{projectTransitBytes=e15TransitBytes(q)}catch(e){return fail(String(e.message||'E15_TRANSIT_PREFLIGHT_UNKNOWN'));}
+  q={...q,accepted:q.accepted??{source_head:q.sourceHead},
+   introduction:q.introduction??{source_head:q.sourceHead}};
+ }
+ if(q.transitDirectory!==undefined&&q.projectProfile!=='PROJECT_EDU_E15'){
   // A mode turn reopens the earlier original acceptance, never reconstructs it.
   try{
    const transit=await import('../host/project-c72-receipt-transit.mjs');
@@ -67,11 +97,21 @@ export async function selectOriginalC72LaterEDU(q){
    const again=fs.readFileSync(target);
    if(!again.equals(b)||blob(again)!==q.expectedBlobShas[p])throw Error('C72_LATER_READBACK_DRIFT');
   }
+  let projectTransit=null;
+  if(projectTransitBytes!==null){
+   projectTransit=await import(pathToFileURL(stageE15Transit(temp,projectTransitBytes)).href);
+   const reopened=projectTransit.reopenC72Accepted({directory:q.transitDirectory,sourceHead:q.sourceHead});
+   if(!reopened.ok)return fail(reopened.edge);
+   if((submittedAccepted!==undefined&&JSON.stringify(submittedAccepted)!==JSON.stringify(reopened.accepted))||
+      (submittedIntroduction!==undefined&&JSON.stringify(submittedIntroduction)!==JSON.stringify(reopened.introduction)))
+    return fail('E15_C72_ORIGINAL_RECEIPT_CONFLICT');
+   q={...q,accepted:reopened.accepted,introduction:reopened.introduction};
+  }
   const owner=await import(pathToFileURL(path.join(temp,FILES[1])).href);
   if(!owner.validateC72V2Accepted(q.accepted)||!owner.validateC72V2Orientation(q.introduction,q.accepted))
    return fail('C72_LATER_ORIGINAL_ACCEPTANCE_INVALID');
   if(q.transitDirectory!==undefined){
-   const transit=await import('../host/project-c72-receipt-transit.mjs');
+   const transit=projectTransit??await import('../host/project-c72-receipt-transit.mjs');
    const claimed=transit.claimC72TransitAttempt({directory:q.transitDirectory,
     sourceHead:q.sourceHead,phase:'EDU'});
    if(!claimed.ok)return fail(claimed.edge);
@@ -84,7 +124,7 @@ export async function selectOriginalC72LaterEDU(q){
      selection.orientation_receipt_sha256!==q.introduction.receipt_sha256)
    return {...fail('C72_LATER_ORIGINAL_SELECTION_INVALID'),original_owner_invoked:true};
   if(q.transitDirectory!==undefined){
-   const transit=await import('../host/project-c72-receipt-transit.mjs');
+   const transit=projectTransit??await import('../host/project-c72-receipt-transit.mjs');
    const stored=transit.storeC72Selected({directory:q.transitDirectory,
     sourceHead:q.sourceHead,selection});
    if(!stored.ok)return {...fail(stored.edge),original_owner_invoked:true};
