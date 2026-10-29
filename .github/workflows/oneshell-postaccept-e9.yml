@@ -19,6 +19,11 @@ on:
       - 'scripts/project-edu-language-stdio.mjs'
       - 'tests/project-oneshell-continuous.test.mjs'
       - 'tests/project-c72-receipt-transit.test.mjs'
+      - 'tests/project-oneshell-e15-sterile.test.mjs'
+      - 'host/project-oneshell-irred-e15.mjs'
+      - 'scripts/project-oneshell-e15-falsify-1m.mjs'
+      - 'contracts/project-oneshell-irred-e15.json'
+      - 'artifacts/qualification/e15-irred-1m.json'
       - 'host/project-c72-receipt-transit.mjs'
       - 'scripts/project-c72-receipt-reopen-cli.mjs'
       - 'contracts/project-c72-receipt-transit.json'
@@ -79,6 +84,12 @@ jobs:
         run: node --test tests/project-oneshell-focus-app.test.mjs tests/project-oneshell-focus-session.test.mjs
       - name: Falsify 2048 voice/layout/download structural masks
         run: node scripts/project-oneshell-focus-falsify.mjs
+      - name: E15 physically isolate original C72 accept and later EDU (no checkout in child)
+        run: node --test tests/project-oneshell-e15-sterile.test.mjs
+      - name: E15 one-million deterministic semantic mutations and pinned trace
+        run: |
+          node scripts/project-oneshell-e15-falsify-1m.mjs > /tmp/e15-1m.json
+          cmp /tmp/e15-1m.json artifacts/qualification/e15-irred-1m.json
       - name: Verify physical cross-process C72 transit with replay/tamper rejection
         run: node --test tests/project-c72-receipt-transit.test.mjs
       - name: Verify E13 in-chat six-slot packet, original voice and lossless evidence (Node20/22)

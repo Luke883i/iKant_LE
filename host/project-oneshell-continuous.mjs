@@ -72,9 +72,9 @@ function inspect(journal,head,tree,selection){
  * existing lease still matches the frozen source. No unverified lease steal.
  * An exclusive recovery gate prevents two concurrent cold rebinds.
  */
-function retireObservedDeadLease(journal,head,selection,current,witness){
+function retireObservedDeadLease(journal,head,selection,current,witness,strictProject=false){
  const lease=path.join(journal,'.oneshell-owner-lease');
- if(!fs.existsSync(lease))return null;
+ if(!fs.existsSync(lease))return strictProject&&current.count>0?'ONESHELL_PREVIOUS_LEASE_MISSING_UNVERIFIED':null;
  if(current.count===0||witness?.previousWorkerGone!==true)
   return 'ONESHELL_OWNER_LEASE_HELD_OR_UNKNOWN';
  let original,st,record;
@@ -111,9 +111,12 @@ function retireObservedDeadLease(journal,head,selection,current,witness){
 /** One C135 instance when alive; an explicit observed worker-loss witness is
  * required to cold-rebind the ORIGINAL C87 bytes on a new instance. */
 export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,privateRoot,
- accepted,introduction,selection,c72TransitDirectory=null,readMain,languagePort,recoveryWitness=null}={}){
+ accepted,introduction,selection,c72TransitDirectory=null,projectProfile=null,readMain,languagePort,recoveryWitness=null}={}){
  let journal=null,owner=null;
  try{
+  if(projectProfile!==null&&projectProfile!=='PROJECT_EDU_E15')return fail('E15_PROJECT_PROFILE_INVALID');
+  if(projectProfile==='PROJECT_EDU_E15'&&c72TransitDirectory===null)
+   return fail('E15_ORIGINAL_C72_TRANSIT_REQUIRED');
   if(c72TransitDirectory!==null){
    const {reopenC72Transit}=await import('./project-c72-receipt-transit.mjs');
    const original=reopenC72Transit({directory:c72TransitDirectory,sourceHead});
@@ -123,6 +126,14 @@ export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,p
       (selection!==undefined&&json(selection)!==json(original.selection)))
     return fail('ONESHELL_C72_TRANSIT_CONFLICT');
    ({accepted,introduction,selection}=original);
+   if(projectProfile==='PROJECT_EDU_E15'){
+    const {adjudicateE15}=await import('./project-oneshell-irred-e15.mjs');
+    const e=adjudicateE15({profile:projectProfile,stage:'EDU',sourceHead,
+     liveHead:await readMain(),orientationWitness:true,transitReadback:true,
+     originalAccepted:validateC72V2Accepted(accepted)&&validateC72V2Orientation(introduction,accepted),
+     originalEduMode:validateC72V2ModeSelection(selection,{mode:'EDU',sourceHead})});
+    if(!e.ok)return fail(e.edge);
+   }
   }
 
   if(!H40.test(sourceHead||'')||!H40.test(sourceTree||'')||
@@ -139,7 +150,8 @@ export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,p
   if(current.count>0&&recoveryWitness?.previousWorkerGone!==true)
    return fail('ONESHELL_ORIGINAL_WORKER_LOSS_WITNESS_REQUIRED');
   if(current.count===0&&recoveryWitness!==null)return fail('ONESHELL_UNEXPECTED_RECOVERY');
-  const retiredEdge=retireObservedDeadLease(journal,sourceHead,selection,current,recoveryWitness);
+  const retiredEdge=retireObservedDeadLease(journal,sourceHead,selection,current,recoveryWitness,
+   projectProfile==='PROJECT_EDU_E15');
   if(retiredEdge)return fail(retiredEdge);
   const resumeFrom=current.count>0?{...current.last.checkpoint,previousWorkerGone:true}:null;
   owner=await startOneShellEdu({selection,sourceRoot,

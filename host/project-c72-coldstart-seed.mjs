@@ -97,14 +97,43 @@ function readSources(q){
  }
  return files;
 }
+
+function e15TransitBytes(q){
+ if(q.projectProfile!=='PROJECT_EDU_E15'||typeof q.transitDirectory!=='string'||
+    !path.isAbsolute(q.transitDirectory))throw Error('E15_REQUIRED_PRIVATE_TRANSIT');
+ const p=q.transitSourcePacket;
+ if(!p||p.path!=='host/project-c72-receipt-transit.mjs'||
+    typeof p.contentBase64!=='string'||p.contentBase64.length>350000||
+    p.contentBase64.length%4!==0||!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u.test(p.contentBase64)||
+    !H40.test(q.transitBlobSha1||''))throw Error('E15_VERIFIED_TRANSIT_BLOB_REQUIRED');
+ const b=Buffer.from(p.contentBase64,'base64');
+ if(!b.length||b.length>256000||b.toString('base64')!==p.contentBase64||
+    sha(b)!==q.transitBlobSha1)throw Error('E15_TRANSIT_GIT_BLOB_MISMATCH');
+ const s=new TextDecoder('utf-8',{fatal:true}).decode(b);
+ if(!Buffer.from(s,'utf8').equals(b))throw Error('E15_TRANSIT_UTF8_LOSS');
+ return b;
+}
+function stageE15Transit(root,b){
+ const file=path.join(root,'host/project-c72-receipt-transit.mjs');
+ fs.mkdirSync(path.dirname(file),{recursive:true,mode:0o700});
+ fs.writeFileSync(file,b,{flag:'wx',mode:0o600});
+ if(!fs.readFileSync(file).equals(b))throw Error('E15_TRANSIT_PHYSICAL_READBACK');
+ return file;
+}
+
 /** No blind retry. A STOP after original owner invocation is terminal. */
 export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.url)}={}){
  const edge=witnessEdge(q);if(edge)return stop(edge);
+ if(q.projectProfile!==undefined&&q.projectProfile!=='PROJECT_EDU_E15')return stop('E15_PROJECT_PROFILE_INVALID');
+ let projectTransitBytes=null;
+ if(q.projectProfile==='PROJECT_EDU_E15'){
+  try{projectTransitBytes=e15TransitBytes(q)}catch(e){return stop(String(e.message||'E15_TRANSIT_PREFLIGHT_UNKNOWN'));}
+ }
  try{if(sha(readExact(seedPath))!==q.seedBlobSha1)return stop('C72_SEED_SOURCE_BLOB_DRIFT');}
  catch{return stop('C72_SEED_SOURCE_NOT_VERIFIED');}
  let transit=null;
  // Preflight the optional physical receipt sink BEFORE invoking original C72.
- if(q.transitDirectory!==undefined){
+ if(q.transitDirectory!==undefined&&q.projectProfile!=='PROJECT_EDU_E15'){
   try{transit=await import('./project-c72-receipt-transit.mjs');}
   catch{return stop('C72_TRANSIT_MODULE_NOT_MATERIALIZED');}
  }
@@ -117,6 +146,10 @@ export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.
    const target=path.join(root,p);fs.mkdirSync(path.dirname(target),{recursive:true,mode:0o700});
    fs.writeFileSync(target,b,{flag:'wx',mode:0o600});
    if(!readExact(target).equals(b))throw Error('C72_REOPEN_DRIFT:'+p);
+  }
+  if(projectTransitBytes!==null){
+   const file=stageE15Transit(root,projectTransitBytes);
+   transit=await import(pathToFileURL(file).href);
   }
   const owner=await import(pathToFileURL(path.join(root,'host/project-c72-postaccept-reentry.mjs')).href);
   const verify=await import(pathToFileURL(path.join(root,'host/c72-public-mode-admission.mjs')).href);

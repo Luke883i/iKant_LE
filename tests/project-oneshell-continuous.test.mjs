@@ -207,3 +207,22 @@ test('C72 physical receipt transit can bootstrap original C135 after loss of Hos
   assert.equal(owner.reopen().count,1);
  }finally{owner?.close();fs.rmSync(x.parent,{recursive:true,force:true});}
 });
+
+test('E15 Project recovery cannot infer dead C135 worker from an absent lease',async()=>{
+ const x=setup();let one;
+ try{
+  assert.equal(storeC72Accepted({directory:x.parent,sourceHead:x.q.sourceHead,
+   accepted:x.q.accepted,introduction:x.q.introduction}).ok,true);
+  assert.equal(storeC72Selected({directory:x.parent,sourceHead:x.q.sourceHead,
+   selection:x.q.selection}).ok,true);
+  const {accepted,introduction,selection,...withoutObjects}=x.q;
+  const q={...withoutObjects,projectProfile:'PROJECT_EDU_E15',c72TransitDirectory:x.parent};
+  one=await openContinuousOneShell(q);assert.equal(one.ok,true,JSON.stringify(one));
+  const turn=await one.publishHumanTurn({humanInput:'Prima domanda E15',
+   nonce:'e15-missing-lease-00001',humanMessageObserved:true});
+  assert.equal(turn.ok,true,JSON.stringify(turn));one.close();one=null;
+  const reopened=await openContinuousOneShell({...q,recoveryWitness:{previousWorkerGone:true}});
+  assert.equal(reopened.ok,false);assert.equal(reopened.voice,'NO_VOICE');
+  assert.equal(reopened.edge,'ONESHELL_PREVIOUS_LEASE_MISSING_UNVERIFIED');
+ }finally{one?.close();fs.rmSync(x.parent,{recursive:true,force:true});}
+});

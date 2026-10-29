@@ -19,10 +19,19 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
  if(!plain(configuration)||configuration.schema!=='ikant-host-oneshell-start/v1'||
     !path.isAbsolute(configuration.privateRoot||'')||typeof configuration.sourceHead!=='string')
   return fail('ONESHELL_HOST_CONFIG_INVALID');
+ const rejectBeforeStdio=edge=>{const r=fail(edge);output.write(JSON.stringify(r)+'\n');return r;};
+ if(configuration.projectProfile!==undefined&&configuration.projectProfile!=='PROJECT_EDU_E15')
+  return rejectBeforeStdio('E15_PROJECT_PROFILE_INVALID');
+ if(configuration.projectProfile==='PROJECT_EDU_E15'&&configuration.headReadPolicy!=='NODE_GITHUB_API')
+  return rejectBeforeStdio('E15_INDEPENDENT_HEAD_READER_REQUIRED');
+ if(configuration.richHostOutput!==undefined&&
+  !['MARKDOWN_ONLY','VERIFIED_HOST_HTML'].includes(configuration.richHostOutput))
+  return rejectBeforeStdio('E15_RICH_HOST_CAPABILITY_INVALID');
  const bootStart=process.hrtime.bigint(); // Physical local monotonic interval; NOT provider latency.
  const elapsedMs=()=>Number((process.hrtime.bigint()-bootStart)/1000000n);
  const rx=createInterface({input,crlfDelay:Infinity});
  let pending=null,closed=false,owner=null,processing=false,head=configuration.liveHead;
+ const rich=configuration.richHostOutput==='VERIFIED_HOST_HTML';
  const send=x=>output.write(JSON.stringify(x)+'\n');
  const queued=[];let resolveLine=null;
  rx.on('line',line=>{
@@ -55,7 +64,15 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
  };
  let cryptoSequence=0;
  try{
-  owner=await openContinuousOneShell({...configuration,readMain:async()=>head,
+  const realReadMain=async()=>{
+   const {readC72GithubJSON}=await import('../host/project-c72-physical-ingress.mjs');
+   const j=await readC72GithubJSON('/repos/Luke883i/iKant_LE/git/ref/heads/main');
+   if(j?.ref!=='refs/heads/main'||j.object?.type!=='commit'||
+     !/^[0-9a-f]{40}$/u.test(j.object?.sha||''))throw Error('E15_REAL_HEAD_INVALID');
+   return j.object.sha;
+  };
+  owner=await openContinuousOneShell({...configuration,
+   readMain:configuration.projectProfile==='PROJECT_EDU_E15'?realReadMain:async()=>head,
    languagePort,recoveryWitness:configuration.recoveryWitness??null});
   if(owner.ok!==true){send(fail(owner.edge));return owner;}
   // Host presentation files are not user-visible attachments until handed off.
@@ -65,7 +82,7 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
     String(owner.count()).padStart(6,'0');
   const readyApp=materializeOneShellFocusApp({frame:owner.frame,outputDirectory:presentations,reportName:readyName});
   if(readyApp.ok!==true){send(fail(readyApp.edge));return fail(readyApp.edge);}
-  const readyChat=makeOneShellChatPresentation({frame:owner.frame,focusApp:readyApp});
+  const readyChat=makeOneShellChatPresentation({frame:owner.frame,focusApp:readyApp,richUiAvailable:rich});
   if(readyChat.ok!==true){send(fail(readyChat.edge));return fail(readyChat.edge);}
   send({schema:'ikant-host-oneshell-result/v1',ok:true,phase:'EDU_READY',
    frame:owner.frame,content:owner.content,focus_app:readyApp,chat_presentation:readyChat,
@@ -87,7 +104,7 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
       const app=materializeOneShellFocusApp({frame:result.frame,outputDirectory:presentations,
        reportName:'turn-'+String(result.original_c87_count).padStart(6,'0')});
       if(app.ok!==true){send(fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY'));return fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY');}
-      const chat=makeOneShellChatPresentation({frame:result.frame,humanInput:req.humanInput,focusApp:app});
+      const chat=makeOneShellChatPresentation({frame:result.frame,humanInput:req.humanInput,focusApp:app,richUiAvailable:rich});
       if(chat.ok!==true){send(fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY'));return fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY');}
       send({schema:'ikant-host-oneshell-result/v1',...result,focus_app:app,chat_presentation:chat,
        host_head_origin_attested:false,native_delivery_attested:false});
