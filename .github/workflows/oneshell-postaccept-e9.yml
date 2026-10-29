@@ -81,5 +81,9 @@ jobs:
         run: node scripts/project-oneshell-chat-falsify.mjs
       - name: Full original C135 first and recovered owner OneShell rail
         run: node --test tests/project-oneshell-postaccept-owner.test.mjs
-      - name: Anti-regression original OneShell C135 and PR180
-        run: node --test tests/project-session-e2e.test.mjs tests/project-oneshell-prompt.test.mjs tests/project-edu-onezip-route.test.mjs
+      - name: Original session e2e independent regression
+        run: node --test tests/project-session-e2e.test.mjs
+      - name: Original project prompt independent regression
+        run: node --test tests/project-oneshell-prompt.test.mjs
+      - name: Original one-ZIP independent regression
+        run: node --test tests/project-edu-onezip-route.test.mjs
