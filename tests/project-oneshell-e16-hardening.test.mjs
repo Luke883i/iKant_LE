@@ -31,6 +31,8 @@ test('E16 negative type matrix and honest native delivery are exact and fail clo
  assert.equal(adjudicateE15(null).ok,false);
  assert.equal(adjudicateE15([]).ok,false);
  assert.equal(adjudicateE15('EDU').ok,false);
+ assert.equal(adjudicateE15({profile:E15_PROFILE,stage:'READY',sourceHead:Symbol('bad'),liveHead:HEAD}).ok,false);
+ assert.equal(admitE15TransportEnvelope({projectProfile:E15_PROFILE,transitDirectory:'/tmp/e16',transitBlobSha1:Symbol('bad'),transitSourcePacket:{path:'host/project-c72-receipt-transit.mjs',contentBase64:'QUJDRA=='}}).ok,false);
  const poisons=[{},[],[true],{ok:false},'true','false',1,-1,Symbol('x'),null,undefined];
  for(const stage of E15_STAGES){
   const base={profile:E15_PROFILE,stage,sourceHead:HEAD,liveHead:HEAD,...all(stage)};

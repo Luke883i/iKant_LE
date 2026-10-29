@@ -25,7 +25,8 @@ const deny=(e)=>Object.freeze({ok:false,edge:e,voice:'NO_VOICE',authority:0,acti
 export function adjudicateE15(q={}){
  if(!plain(q))return deny('E15_PROFILE_OR_STAGE_INVALID');
  if(q.profile!==E15_PROFILE||!E15_STAGES.includes(q.stage))return deny('E15_PROFILE_OR_STAGE_INVALID');
- if(!H40.test(q.sourceHead||'')||q.sourceHead!==q.liveHead)return deny(edge.SOURCE_LOCK);
+ if(typeof q.sourceHead!=='string'||typeof q.liveHead!=='string'||
+    !H40.test(q.sourceHead)||q.sourceHead!==q.liveHead)return deny(edge.SOURCE_LOCK);
  const count=required[q.stage];
  const checks=[true,q.orientationWitness===true,q.transitReadback===true,q.originalAccepted===true,
   q.originalEduMode===true,q.sourceTreeBlobReadback===true,q.originalC135===true,
@@ -50,7 +51,8 @@ export function admitE15TransportEnvelope(q={}){
  if(!plain(p)||p.path!=='host/project-c72-receipt-transit.mjs'||
   typeof p.contentBase64!=='string'||p.contentBase64.length<4||
   p.contentBase64.length>MAX_TRANSIT_B64||p.contentBase64.length%4!==0||
-  !H40.test(q.transitBlobSha1||''))return deny('E15_PINNED_TRANSIT_BLOB_REQUIRED');
+  typeof q.transitBlobSha1!=='string'||!H40.test(q.transitBlobSha1))
+  return deny('E15_PINNED_TRANSIT_BLOB_REQUIRED');
  if(!B64.test(p.contentBase64))return deny('E16_TRANSIT_BASE64_INVALID');
  const bytes=Buffer.from(p.contentBase64,'base64');
  if(bytes.length<1||bytes.length>256000||bytes.toString('base64')!==p.contentBase64)
