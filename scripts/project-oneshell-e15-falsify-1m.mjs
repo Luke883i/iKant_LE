@@ -5,7 +5,7 @@ import {adjudicateE15,E15_PROFILE,E15_STAGES} from '../host/project-oneshell-irr
 const seed=0xE1502026,N=1000000,H='a'.repeat(40),OTHER='b'.repeat(40);
 const trace=createHash('sha256');let pass=0,reject=0,errors=0,first=null;
 let state=seed>>>0;
-const bound={ACCEPT:3,EDU:4,MATERIALIZED:6,READY:7,TURN:10,RECOVERED:11,DELIVERED:13};
+const bound={ACCEPT:4,EDU:5,MATERIALIZED:6,READY:7,TURN:10,RECOVERED:11,DELIVERED:13};
 const keys=['orientationWitness','transitReadback','originalAccepted','originalEduMode',
  'sourceTreeBlobReadback','originalC135','originalC87Readback','originalC125S03',
  'sixSlotsOriginal','workerLossFence','verifiedLogoOrTextFallback','hostDeliveryObserved'];
