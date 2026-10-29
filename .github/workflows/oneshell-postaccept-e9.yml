@@ -18,6 +18,10 @@ on:
       - 'scripts/project-oneshell-continuous-cli.mjs'
       - 'scripts/project-edu-language-stdio.mjs'
       - 'tests/project-oneshell-continuous.test.mjs'
+      - 'tests/project-c72-receipt-transit.test.mjs'
+      - 'host/project-c72-receipt-transit.mjs'
+      - 'scripts/project-c72-receipt-reopen-cli.mjs'
+      - 'contracts/project-c72-receipt-transit.json'
       - 'contracts/project-session-source.json'
       - 'BOOTSTRAP.json'
       - 'contracts/project-oneshell-cx-humanist.json'
@@ -75,6 +79,8 @@ jobs:
         run: node --test tests/project-oneshell-focus-app.test.mjs tests/project-oneshell-focus-session.test.mjs
       - name: Falsify 2048 voice/layout/download structural masks
         run: node scripts/project-oneshell-focus-falsify.mjs
+      - name: Verify physical cross-process C72 transit with replay/tamper rejection
+        run: node --test tests/project-c72-receipt-transit.test.mjs
       - name: Verify E13 in-chat six-slot packet, original voice and lossless evidence (Node20/22)
         run: node --test tests/project-oneshell-chat-presentation.test.mjs
       - name: Falsify 4096 deterministic chat-layout and voice-spoof masks
