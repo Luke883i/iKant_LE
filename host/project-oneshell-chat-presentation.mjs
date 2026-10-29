@@ -13,10 +13,9 @@ const denied=edge=>Object.freeze({ok:false,edge,voice:'NO_VOICE',native_ui_attes
 const escapeMd=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
  .replace(/([\\*_{}\[\]()#+.!|>~-])/gu,'\\$1');
 function excerpt(s,limit){
- const t=s.replace(/\s+/gu,' ').trim(),v=Array.from(t);
- if(v.length<=limit)return t;
- const lead=v.slice(0,limit).join(''),k=lead.lastIndexOf(' ');
- return (k>limit/2?lead.slice(0,k):lead)+'…';
+ // Exact contiguous UTF-8-preserving Unicode prefix: no rewriting even of whitespace.
+ const units=Array.from(s);
+ return units.length<=limit?s:units.slice(0,limit).join('')+'…';
 }
 function exactFence(s){
  const marker=String.fromCharCode(96);

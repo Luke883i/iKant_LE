@@ -70,3 +70,16 @@ test('arbitrary owner slot markdown cannot inject a new Host panel into protecte
  assert.match(r.markdown_fallback_utf8,/&lt;script&gt;/);
  assert.equal(r.slots.B,f.slots.B);
 });
+
+test('Host compression is an exact contiguous source prefix, never an LLM paraphrase',()=>{
+ const dir=temp();try{
+  const f=oneShellFrame({esito:'BLOCCATO',b:'Riga uno.  \n  Riga due! '.repeat(18),
+   prova:'SHA visibile:\n  00 aa  '.repeat(19),edge:'REPLAY_FORBIDDEN',next:'STOP'});
+  const r=makeOneShellChatPresentation({frame:f,focusApp:reportFor(f,dir)});
+  assert.equal(r.ok,true,JSON.stringify(r));
+  for(const key of ['B','PROVA']){
+   assert.equal(f.slots[key].startsWith(r.view[key].slice(0,-1)),true);
+   assert.equal(r.view[key].endsWith('…'),true);
+  }
+ }finally{fs.rmSync(dir,{recursive:true,force:true})}
+});
