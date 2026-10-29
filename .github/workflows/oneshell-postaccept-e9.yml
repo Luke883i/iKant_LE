@@ -7,6 +7,10 @@ on:
       - 'host/project-oneshell-continuous.mjs'
       - 'host/project-oneshell-focus-app.mjs'
       - 'host/project-oneshell-focus-session.mjs'
+      - 'host/project-oneshell-chat-presentation.mjs'
+      - 'contracts/project-oneshell-inchat-presentation.json'
+      - 'tests/project-oneshell-chat-presentation.test.mjs'
+      - 'scripts/project-oneshell-chat-falsify.mjs'
       - 'contracts/project-oneshell-focus-app.json'
       - 'tests/project-oneshell-focus-app.test.mjs'
       - 'tests/project-oneshell-focus-session.test.mjs'
@@ -47,6 +51,8 @@ jobs:
           node --check host/project-oneshell-continuous.mjs
           node --check host/project-oneshell-focus-app.mjs
           node --check host/project-oneshell-focus-session.mjs
+          node --check host/project-oneshell-chat-presentation.mjs
+          node --check scripts/project-oneshell-chat-falsify.mjs
           node --check scripts/project-oneshell-continuous-cli.mjs
           node --check tests/project-oneshell-postaccept-owner.test.mjs
       - name: Verify execution source manifest
@@ -69,6 +75,10 @@ jobs:
         run: node --test tests/project-oneshell-focus-app.test.mjs tests/project-oneshell-focus-session.test.mjs
       - name: Falsify 2048 voice/layout/download structural masks
         run: node scripts/project-oneshell-focus-falsify.mjs
+      - name: Verify E13 in-chat six-slot packet, original voice and lossless evidence (Node20/22)
+        run: node --test tests/project-oneshell-chat-presentation.test.mjs
+      - name: Falsify 4096 deterministic chat-layout and voice-spoof masks
+        run: node scripts/project-oneshell-chat-falsify.mjs
       - name: Full original C135 first and recovered owner OneShell rail
         run: node --test tests/project-oneshell-postaccept-owner.test.mjs
       - name: Anti-regression original OneShell C135 and PR180
