@@ -19,17 +19,18 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
  if(!plain(configuration)||configuration.schema!=='ikant-host-oneshell-start/v1'||
     !path.isAbsolute(configuration.privateRoot||'')||typeof configuration.sourceHead!=='string')
   return fail('ONESHELL_HOST_CONFIG_INVALID');
+ const rejectBeforeStdio=edge=>{const r=fail(edge);output.write(JSON.stringify(r)+'\n');return r;};
+ if(configuration.projectProfile!==undefined&&configuration.projectProfile!=='PROJECT_EDU_E15')
+  return rejectBeforeStdio('E15_PROJECT_PROFILE_INVALID');
+ if(configuration.projectProfile==='PROJECT_EDU_E15'&&configuration.headReadPolicy!=='NODE_GITHUB_API')
+  return rejectBeforeStdio('E15_INDEPENDENT_HEAD_READER_REQUIRED');
+ if(configuration.richHostOutput!==undefined&&
+  !['MARKDOWN_ONLY','VERIFIED_HOST_HTML'].includes(configuration.richHostOutput))
+  return rejectBeforeStdio('E15_RICH_HOST_CAPABILITY_INVALID');
  const bootStart=process.hrtime.bigint(); // Physical local monotonic interval; NOT provider latency.
  const elapsedMs=()=>Number((process.hrtime.bigint()-bootStart)/1000000n);
  const rx=createInterface({input,crlfDelay:Infinity});
  let pending=null,closed=false,owner=null,processing=false,head=configuration.liveHead;
- if(configuration.projectProfile!==undefined&&configuration.projectProfile!=='PROJECT_EDU_E15')
-  return fail('E15_PROJECT_PROFILE_INVALID');
- if(configuration.projectProfile==='PROJECT_EDU_E15'&&configuration.headReadPolicy!=='NODE_GITHUB_API')
-  return fail('E15_INDEPENDENT_HEAD_READER_REQUIRED');
- if(configuration.richHostOutput!==undefined&&
-  !['MARKDOWN_ONLY','VERIFIED_HOST_HTML'].includes(configuration.richHostOutput))
-  return fail('E15_RICH_HOST_CAPABILITY_INVALID');
  const rich=configuration.richHostOutput==='VERIFIED_HOST_HTML';
  const send=x=>output.write(JSON.stringify(x)+'\n');
  const queued=[];let resolveLine=null;
