@@ -26,10 +26,11 @@ export async function openFocusOneShellSession({outputDirectory,readyName='edu-r
   const {openContinuousOneShell}=await import('./project-oneshell-continuous.mjs');
   original=await openContinuousOneShell(source);
   if(original?.ok!==true)return stop(original?.edge||'FOCUS_E10_NOT_READY');
-  const ready=materializeOneShellFocusApp({frame:original.frame,outputDirectory,reportName:readyName});
-  if(ready.ok!==true){original.close();return stop(ready.edge);}
   let count=original.count(),blocked=false;
   if(!Number.isSafeInteger(count)||count<0){original.close();return stop('FOCUS_ORIGINAL_C87_COUNT_INVALID');}
+  const uniqueReadyName=count===0?readyName:readyName+'-rebind-'+String(count).padStart(6,'0');
+  const ready=materializeOneShellFocusApp({frame:original.frame,outputDirectory,reportName:uniqueReadyName});
+  if(ready.ok!==true){original.close();return stop(ready.edge);}
   async function publishHumanTurn(args){
    if(blocked)return stop('FOCUS_UNKNOWN_WRITE_NO_RETRY');
    let result;try{result=await original.publishHumanTurn(args);}catch{blocked=true;return stop('FOCUS_TURN_UNKNOWN_NO_RETRY');}

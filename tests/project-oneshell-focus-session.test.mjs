@@ -55,5 +55,18 @@ test('post-EDU focus app reuses same original C135 for TWO human turns with inde
   assert.equal(first.original_voice_preserved,true);assert.equal(second.focus_app.original_frame_readback,true);
   assert(fs.readFileSync(second.focus_app.report_path,'utf8').includes(second.frame.slots.A));
   assert.equal(second.focus_app.native_ui_attested,false);
+  const beforeReport=fs.readFileSync(second.focus_app.report_path);
+  session.close();session=null;
+  session=await openFocusOneShellSession({sourceHead:f.head,sourceTree:f.tree,sourceRoot,privateRoot:p,
+   accepted:o.accepted,introduction:o.introduction,selection:o.selection,readMain:async()=>f.head,
+   languagePort:lang,outputDirectory:out,recoveryWitness:{previousWorkerGone:true}});
+  assert.equal(session.ok,true,JSON.stringify(session));
+  assert.equal(session.original_c87_count(),2);
+  assert.match(session.focus_ready.app_path,/edu-ready-rebind-000002\.html$/);
+  const third=await session.publishHumanTurn({humanInput:'Dopo recupero C87, che prova resta?',nonce:'focus-recovered-00003',humanMessageObserved:true});
+  assert.equal(third.ok,true,JSON.stringify(third));assert.equal(third.phase,'RECOVERED_TURN');
+  assert.equal(third.original_c87_count,3);
+  assert.deepEqual(fs.readFileSync(second.focus_app.report_path),beforeReport,'previous report must remain unchanged');
+  assert.equal(third.focus_app.host_report_readback,true);
  }finally{session?.close();fs.rmSync(p,{recursive:true,force:true})}
 });
