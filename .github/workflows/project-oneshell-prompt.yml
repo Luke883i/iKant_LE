@@ -19,7 +19,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/project-oneshell-prompt.test.mjs tests/project-bootstrap-responsibility-matrix.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-c72-physical-ingress.test.mjs tests/project-c72-staged-ingress.test.mjs tests/project-host-followthrough.test.mjs
+      - name: Project HEAD-only prompt
+        run: node --test tests/project-oneshell-prompt.test.mjs
+      - name: Project responsibility matrix
+        run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs
+      - name: Original C72 portable bridge
+        run: node --test tests/project-c72-portable-bridge.test.mjs
+      - name: Original C72 physical ingress
+        run: node --test tests/project-c72-physical-ingress.test.mjs
+      - name: Original C72 staged ingress
+        run: node --test tests/project-c72-staged-ingress.test.mjs
+      - name: Host nonauthority followthrough
+        run: node --test tests/project-host-followthrough.test.mjs
       - name: Build immutable HEAD-only prompt
         shell: bash
         run: |

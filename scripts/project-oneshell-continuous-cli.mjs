@@ -9,6 +9,8 @@ import {createInterface} from 'node:readline';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {openContinuousOneShell} from '../host/project-oneshell-continuous.mjs';
+import {materializeOneShellFocusApp} from '../host/project-oneshell-focus-app.mjs';
+import {makeOneShellChatPresentation} from '../host/project-oneshell-chat-presentation.mjs';
 const sha=x=>createHash('sha256').update(Buffer.from(x,'utf8')).digest('hex');
 const fail=edge=>({schema:'ikant-host-oneshell-result/v1',ok:false,voice:'NO_VOICE',edge,authority:0,active:false,native_ui_attested:false});
 const plain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype;
@@ -54,8 +56,18 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
   owner=await openContinuousOneShell({...configuration,readMain:async()=>head,
    languagePort,recoveryWitness:configuration.recoveryWitness??null});
   if(owner.ok!==true){send(fail(owner.edge));return owner;}
+  // Host presentation files are not user-visible attachments until handed off.
+  const presentations=path.join(configuration.privateRoot,'.oneshell-chat-presentations');
+  if(!fs.existsSync(presentations))fs.mkdirSync(presentations,{mode:0o700});
+  const readyName=(configuration.recoveryWitness?.previousWorkerGone===true?'recovered-ready-':'ready-')+
+    String(owner.count()).padStart(6,'0');
+  const readyApp=materializeOneShellFocusApp({frame:owner.frame,outputDirectory:presentations,reportName:readyName});
+  if(readyApp.ok!==true){send(fail(readyApp.edge));return fail(readyApp.edge);}
+  const readyChat=makeOneShellChatPresentation({frame:owner.frame,focusApp:readyApp});
+  if(readyChat.ok!==true){send(fail(readyChat.edge));return fail(readyChat.edge);}
   send({schema:'ikant-host-oneshell-result/v1',ok:true,phase:'EDU_READY',
-   frame:owner.frame,content:owner.content,authority:0,active:false,native_ui_attested:false});
+   frame:owner.frame,content:owner.content,focus_app:readyApp,chat_presentation:readyChat,
+   authority:0,active:false,native_ui_attested:false});
   while(!closed){
    const req=await receive();if(req===null)break;
    if(!plain(req)||req.schema!=='ikant-host-oneshell-human-turn/v1'||
@@ -68,8 +80,18 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
     head=req.liveHead; // Host-supplied GitHub observation, NOT provider-authenticated.
     const result=await owner.publishHumanTurn({humanInput:req.humanInput,
       nonce:req.nonce,humanMessageObserved:req.humanMessageObserved===true});
-    send({schema:'ikant-host-oneshell-result/v1',...result,
-      host_head_origin_attested:false,native_delivery_attested:false});
+    if(result.ok===true){
+      const app=materializeOneShellFocusApp({frame:result.frame,outputDirectory:presentations,
+       reportName:'turn-'+String(result.original_c87_count).padStart(6,'0')});
+      if(app.ok!==true){send(fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY'));return fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY');}
+      const chat=makeOneShellChatPresentation({frame:result.frame,humanInput:req.humanInput,focusApp:app});
+      if(chat.ok!==true){send(fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY'));return fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY');}
+      send({schema:'ikant-host-oneshell-result/v1',...result,focus_app:app,chat_presentation:chat,
+       host_head_origin_attested:false,native_delivery_attested:false});
+    }else{
+      send({schema:'ikant-host-oneshell-result/v1',...result,
+       host_head_origin_attested:false,native_delivery_attested:false});
+    }
    }catch{send(fail('ONESHELL_TURN_OUTCOME_UNKNOWN_NO_RETRY'));}
    finally{processing=false;}
   }

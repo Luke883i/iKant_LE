@@ -47,10 +47,16 @@ test('post-EDU focus app reuses same original C135 for TWO human turns with inde
    accepted:o.accepted,introduction:o.introduction,selection:o.selection,readMain:async()=>f.head,
    languagePort:lang,outputDirectory:out});
   assert.equal(session.ok,true,JSON.stringify(session));assert.equal(session.focus_ready.focus_slot,'A');
+  assert.equal(session.chat_ready.ok,true);
+  assert.equal(session.chat_ready.slots.A,'NO_VOICE');
+  assert.equal(session.chat_ready.render_plan.brand.verified,true);
   const first=await session.publishHumanTurn({humanInput:'Quale valore ha una prova?',nonce:'focus-real-turn-00001',humanMessageObserved:true});
   const second=await session.publishHumanTurn({humanInput:'E quale limite resta?',nonce:'focus-real-turn-00002',humanMessageObserved:true});
   assert.equal(first.ok,true,JSON.stringify(first));assert.equal(second.ok,true,JSON.stringify(second));
   assert.equal(first.original_c87_count,1);assert.equal(second.original_c87_count,2);
+  assert.equal(first.chat_presentation?.ok,true);assert.equal(second.chat_presentation?.ok,true);
+  assert.equal(first.chat_presentation.slots.A,first.frame.slots.A);
+  assert.equal(second.chat_presentation.report.sha256,second.focus_app.report_sha256);
   assert.equal(session.original_c87_count(),2);assert.equal(first.anchor,second.anchor);
   assert.equal(first.original_voice_preserved,true);assert.equal(second.focus_app.original_frame_readback,true);
   assert(fs.readFileSync(second.focus_app.report_path,'utf8').includes(second.frame.slots.A));
@@ -66,6 +72,8 @@ test('post-EDU focus app reuses same original C135 for TWO human turns with inde
   const third=await session.publishHumanTurn({humanInput:'Dopo recupero C87, che prova resta?',nonce:'focus-recovered-00003',humanMessageObserved:true});
   assert.equal(third.ok,true,JSON.stringify(third));assert.equal(third.phase,'RECOVERED_TURN');
   assert.equal(third.original_c87_count,3);
+  assert.equal(third.chat_presentation?.ok,true);
+  assert.equal(third.chat_presentation.slots.A,third.frame.slots.A);
   assert.deepEqual(fs.readFileSync(second.focus_app.report_path),beforeReport,'previous report must remain unchanged');
   assert.equal(third.focus_app.host_report_readback,true);
  }finally{session?.close();fs.rmSync(p,{recursive:true,force:true})}

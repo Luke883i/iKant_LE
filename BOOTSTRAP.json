@@ -1519,6 +1519,25 @@
       "provider_delivery_attested": false,
       "active": false,
       "authority": 0
+    },
+    "oneshell_inchat_presentation": {
+      "schema": "ikant-oneshell-inchat-presentation/v1",
+      "module": "host/project-oneshell-chat-presentation.mjs#makeOneShellChatPresentation",
+      "contract": "contracts/project-oneshell-inchat-presentation.json",
+      "postaccept": "host/project-oneshell-focus-session.mjs",
+      "after_edu": "scripts/project-oneshell-continuous-cli.mjs",
+      "owner": "ORIGINAL_C72_C135_C87_C125_S03",
+      "format": "HOST_SUPPORTED_RICH_PRESENTATION_OR_DETERMINISTIC_MARKDOWN",
+      "primary": "A_OR_NO_VOICE",
+      "logo": "PINNED_VERIFIED_SVG_OR_TEXT",
+      "host": "B_LITERAL_EXCERPT_ONLY",
+      "long_evidence": "E12_ORIGINAL_REPORT_READBACK",
+      "user_ack_required_for_delivery_claim": true,
+      "provider_native_ui_attested": false,
+      "provider_persistence_attested": false,
+      "installed_prompt_is_not_runtime": true,
+      "authority": 0,
+      "active": false
     }
   }
 }
