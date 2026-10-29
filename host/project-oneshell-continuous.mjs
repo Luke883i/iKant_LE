@@ -72,9 +72,9 @@ function inspect(journal,head,tree,selection){
  * existing lease still matches the frozen source. No unverified lease steal.
  * An exclusive recovery gate prevents two concurrent cold rebinds.
  */
-function retireObservedDeadLease(journal,head,selection,current,witness){
+function retireObservedDeadLease(journal,head,selection,current,witness,strictProject=false){
  const lease=path.join(journal,'.oneshell-owner-lease');
- if(!fs.existsSync(lease))return current.count>0?'ONESHELL_PREVIOUS_LEASE_MISSING_UNVERIFIED':null;
+ if(!fs.existsSync(lease))return strictProject&&current.count>0?'ONESHELL_PREVIOUS_LEASE_MISSING_UNVERIFIED':null;
  if(current.count===0||witness?.previousWorkerGone!==true)
   return 'ONESHELL_OWNER_LEASE_HELD_OR_UNKNOWN';
  let original,st,record;
@@ -150,7 +150,8 @@ export async function openContinuousOneShell({sourceHead,sourceTree,sourceRoot,p
   if(current.count>0&&recoveryWitness?.previousWorkerGone!==true)
    return fail('ONESHELL_ORIGINAL_WORKER_LOSS_WITNESS_REQUIRED');
   if(current.count===0&&recoveryWitness!==null)return fail('ONESHELL_UNEXPECTED_RECOVERY');
-  const retiredEdge=retireObservedDeadLease(journal,sourceHead,selection,current,recoveryWitness);
+  const retiredEdge=retireObservedDeadLease(journal,sourceHead,selection,current,recoveryWitness,
+   projectProfile==='PROJECT_EDU_E15');
   if(retiredEdge)return fail(retiredEdge);
   const resumeFrom=current.count>0?{...current.last.checkpoint,previousWorkerGone:true}:null;
   owner=await startOneShellEdu({selection,sourceRoot,
