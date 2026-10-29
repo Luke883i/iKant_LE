@@ -83,6 +83,18 @@ test('E15 sterile zero-checkout: accepted + EDU in distinct original-owner child
    expectedBlobShas:f.blobShas,sourcePacket:f.docs.map(({path,contentBase64})=>({path,contentBase64})),
    seedBlobSha1:blob(fs.readFileSync(path.join(root,'host/project-c72-coldstart-seed.mjs'))),...extra});
   assert.equal(accept.ok,true,JSON.stringify(accept));assert.equal(accept.original_owner_invoked,true);
+  const pinned=JSON.parse(fs.readFileSync(path.join(privateRoot,'c72-e16-source-pin.json'),'utf8'));
+  assert.equal(pinned.schema,'ikant-c72-e16-transport-pin/v1');
+  assert.equal(pinned.blob_sha1,f.transitBlobSha1);
+  assert.equal(pinned.source_head,H);
+  const forged=invoke(root,'scripts/project-c72-cold-mode-cli.mjs',{
+   schema:'ikant-host-c72-later-mode/v1',humanMessage:'EDU',freshHumanTurn:true,
+   priorAcceptanceObserved:true,ownerOutcome:'NOT_INVOKED',sourceHead:H,liveHead:H,
+   expectedBlobShas:f.blobShas,
+   sourcePacket:f.docs.slice(5,7).map(({path,contentBase64})=>({path,contentBase64})),
+   ...extra,transitBlobSha1:'b'.repeat(40)});
+  assert.equal(forged.ok,false);
+  assert.equal(forged.original_owner_invoked,false,'bad pin must not consume original EDU');
   const mode=invoke(root,'scripts/project-c72-cold-mode-cli.mjs',{
    schema:'ikant-host-c72-later-mode/v1',humanMessage:'EDU',freshHumanTurn:true,
    priorAcceptanceObserved:true,ownerOutcome:'NOT_INVOKED',sourceHead:H,liveHead:H,
