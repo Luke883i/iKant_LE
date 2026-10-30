@@ -5,11 +5,11 @@ import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {ACTIONS,screenHostNegativeAction,FIRST_FILES,C72_EIGHT,C72_TRANSIT,POST_ACCEPT_READS,RULE_IDS} from '../host/project-host-negative-rail.mjs';
-const HEAD='90bad7463146b762e46a1fd4c37d434762e9e95a', EPOCH='host-epoch-r2';
+const HEAD='a'.repeat(40), EPOCH='host-epoch-r2';
 const SCHEMA='ikant-le-host-negative-qualification/v2';
 const phases=['ORIENTATION','POST_ACCEPT','AWAIT_MODE','POST_EDU','EDU_TURN','EXIT_PENDING','ENGINEERING'];
 const tags=[false,true,0,1,'true','false',null,undefined,[],{ok:true},'UNKNOWN'];
-let seed=0x187a2026;
+let seed=0x187a3026;
 const rng=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0};
 const pick=x=>x[rng()%x.length];
 const truth=x=>x===true;
@@ -81,7 +81,7 @@ function mutate(q){let e=q.evidence;const mode=rng()%13;
  else if(mode===11)e.path=pick(hostilePaths);
  else e.carrier=pick(['HOST_PACKET','NODE_HTTPS','CALLBACKS','HOST_FILE','UNBOUND',null]);
 }
-const report={schema:SCHEMA,head:HEAD,r1_seed:'0x187c7102',negative_seed:'0x187a2026',positive_seed:'0x187a2027',negative_cases:100000,positive_cases:100000,rules:RULE_IDS.length,actions:ACTIONS.length,original_calls:0,model_calls:0,provider_calls:0,positive_oracle_mismatches:0,negative_oracle_mismatches:0,blocked:0,passed_to_original_check:0,edge_counts:{},counterexamples:[],positive_preserved:0,metamorphic_checks:0};
+const report={schema:SCHEMA,head:'SOURCE_INDEPENDENT_SYNTHETIC_SHA',r1_seed:'0x187c7102',negative_seed:'0x187a3026',positive_seed:'0x187a3027',negative_cases:500000,positive_cases:500000,rules:RULE_IDS.length,actions:ACTIONS.length,original_calls:0,model_calls:0,provider_calls:0,positive_oracle_mismatches:0,negative_oracle_mismatches:0,blocked:0,passed_to_original_check:0,edge_counts:{},counterexamples:[],positive_preserved:0,metamorphic_checks:0};
 const trace=createHash('sha256');
 // Negative/adversarial campaign: broad mutated cases checked against separate positive oracle.
 for(let i=0;i<report.negative_cases;i++){
@@ -95,7 +95,7 @@ for(let i=0;i<report.negative_cases;i++){
 }
 // New independent seed for positive-preservation: mutate ONLY off-path fields, or
 // introduce changes known not to remove a required positive route.
-seed=0x187a2027;
+seed=0x187a3027;
 const essentials={
  READ_SOURCE:['path','orientationNextIndex'],INVOKE_C72:['freshHumanTurn','fiveOriginalShaWitness','nodeReady','physicalIngressReadback','c72SourceReadback','e16TransitPinReadback','attemptRecordExists'],CLAIM_C72:['acceptedReadback','introductionReadback'],
  SELECT_EDU:['freshHumanTurn','acceptedReadback','introductionReadback','originalC72TransitReadback'],START_C135:['originalEduSelectionReadback','sourceTreeReadback','sourceBlobReadback'],CLAIM_A:['c135OwnerReadback','c87SingleWriterReadback','c125S03Readback','sameInput','sameTurn','voiceUtf8ByteEqual'],HOST_ANSWER:['explicitHostAddress','hostOperationalScope'],NODE_HTTPS:['nodeReady','nodeDns','networkChangedObserved'],CLAIM_TRANSFER_FAILED:['physicalTransferFailureObserved'],REQUEST_P1_ZIP:['originalEduSelectionReadback','nodeReady','extractorReady'],REQUEST_P0_ONEZIP:['freshHumanTurn','fiveOriginalShaWitness','originalP0CoordinatorReady','ownerAlreadyAccepted'],CLAIM_NATIVE_UI:['providerUiReceiptObserved'],CLOSE_EXIT:['priorExitExactTurn','c87PrecloseReadback','qualifiedExitOwner'],CLAIM_EXITED:['originalCloseReadback'],CLAIM_ACTIVE:['canonicalOwnerActiveReadback','nativeProviderHookReceipt'],CLAIM_DNS_FAILED:['nodeDns'],CLAIM_BRIDGE:['physicalIngressReadback'],REUSE_C87:['workerLossObserved','c87OriginalCheckpointReadback','uniqueNonce','sameSourceEpoch','singleWriter'],CLAIM_PROMPT_INSTALLED:['projectInstalledPromptBytesObserved']};
@@ -131,6 +131,6 @@ for(const [action,required] of [
  for(const k of required){const x=valid(action);x.evidence[k]=false;if(screenHostNegativeAction(x).disposition!=='STOP')throw Error('missing evidence accepted '+action+' '+k);report.metamorphic_checks++}
 }
 report.trace_sha256=trace.digest('hex');
-const dir=path.dirname(fileURLToPath(import.meta.url));fs.writeFileSync(path.resolve(dir,'../../results/negative_semantic_200k.json'),JSON.stringify(report,null,2)+'\n');
+const dir=path.dirname(fileURLToPath(import.meta.url));const out=process.argv[2]??path.resolve(dir,'../artifacts/qualification/negative-semantic-1m.json');fs.writeFileSync(out,JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({cases:report.negative_cases+report.positive_cases,negative_mismatches:report.negative_oracle_mismatches,positive_mismatches:report.positive_oracle_mismatches,positive_preserved:report.positive_preserved,blocked:report.blocked,metamorphic_checks:report.metamorphic_checks,trace_sha256:report.trace_sha256}));
 if(report.negative_oracle_mismatches||report.positive_oracle_mismatches)process.exitCode=1;
