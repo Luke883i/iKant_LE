@@ -118,6 +118,8 @@ export async function runC72SelectedHostIngress({humanMessage,freshHumanTurn,
   sourcePacket,getGithubJSON,allowNodeGithubHTTPS}):Object.freeze({ok:true,carrier});
  if(!choice.ok)return stop(choice.edge);
  const selected=choice.carrier;
+ if(!['NODE_GITHUB_API','HOST_CALLBACKS','HOST_SOURCE_PACKET'].includes(selected))
+  return stop(selected==='UNBOUND'?'C72_SOURCE_BRIDGE_UNBOUND':'C72_HOST_CARRIER_INVALID');
  const negative=screenC72HostIngress({humanMessage,freshHumanTurn,
   priorTurnEvidence,ownerOutcome,carrier:selected,networkObservation});
  if(negative.disposition==='STOP')return stop(negative.first_edge);
