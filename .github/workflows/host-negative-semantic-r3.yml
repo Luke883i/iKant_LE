@@ -36,8 +36,14 @@ jobs:
           node --check scripts/project-host-negative-falsify.mjs
       - name: Original source closure verification
         run: node scripts/project-source-manifest.mjs verify
-      - name: Original C72 and real carrier regression plus negative rail
-        run: node --test tests/project-host-negative-rail.test.mjs tests/project-c72-physical-ingress.test.mjs tests/project-c72-portable-bridge.test.mjs tests/project-edu-onezip-route.test.mjs
+      - name: R3 negative unit
+        run: node --test tests/project-host-negative-rail.test.mjs
+      - name: Original physical C72
+        run: node --test tests/project-c72-physical-ingress.test.mjs
+      - name: Original portable C72
+        run: node --test tests/project-c72-portable-bridge.test.mjs
+      - name: Original onezip
+        run: node --test tests/project-edu-onezip-route.test.mjs
       - name: Original E15/E16 receipt and later EDU preservation
         run: node --test tests/project-oneshell-e15-sterile.test.mjs tests/project-oneshell-e16-hardening.test.mjs tests/project-c72-receipt-transit.test.mjs
       - name: 1 million seeded negative semantic cases against independent oracle
