@@ -7,6 +7,7 @@ import https from 'node:https';
 import {createHash} from 'node:crypto';
 import {isC98JSONDataTree} from './c98-c82-connector-port.mjs';
 import {executeC72PostAcceptRecovery} from './project-c72-host-recovery.mjs';
+import {screenC72HostIngress} from './project-c72-negative-entry.mjs';
 
 const SOURCE='Luke883i/iKant_LE';
 const PREFIX='/repos/'+SOURCE;
@@ -105,7 +106,8 @@ export function chooseC72HostCarrier({readMain,readPinnedDocument,sourcePacket,
 }
 export async function runC72SelectedHostIngress({humanMessage,freshHumanTurn,
  priorTurnEvidence,carrier='UNBOUND',getGithubJSON,readMain,readPinnedDocument,
- sourcePacket,allowNodeGithubHTTPS=false,ownerOutcome='NOT_INVOKED'}={}){
+ sourcePacket,allowNodeGithubHTTPS=false,ownerOutcome='NOT_INVOKED',
+ networkObservation=null}={}){
  if(humanMessage!=='I ACCEPT'||freshHumanTurn!==true)
   return stop('C72_EXACT_NEW_CONSENT_REQUIRED');
  if(ownerOutcome!=='NOT_INVOKED')
@@ -116,6 +118,11 @@ export async function runC72SelectedHostIngress({humanMessage,freshHumanTurn,
   sourcePacket,getGithubJSON,allowNodeGithubHTTPS}):Object.freeze({ok:true,carrier});
  if(!choice.ok)return stop(choice.edge);
  const selected=choice.carrier;
+ if(!['NODE_GITHUB_API','HOST_CALLBACKS','HOST_SOURCE_PACKET'].includes(selected))
+  return stop(selected==='UNBOUND'?'C72_SOURCE_BRIDGE_UNBOUND':'C72_HOST_CARRIER_INVALID');
+ const negative=screenC72HostIngress({humanMessage,freshHumanTurn,
+  priorTurnEvidence,ownerOutcome,carrier:selected,networkObservation});
+ if(negative.disposition==='STOP')return stop(negative.first_edge);
  let options;
  if(selected==='NODE_GITHUB_API'){
   if(sourcePacket!=null||readMain!==undefined||readPinnedDocument!==undefined)

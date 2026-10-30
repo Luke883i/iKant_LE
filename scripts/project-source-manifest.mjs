@@ -5,6 +5,8 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const boot=JSON.parse(fs.readFileSync(path.join(root,'BOOTSTRAP.json'),'utf8'));
 const roots=['README.md','BOOTSTRAP.json','ADMISSION.json','AGENTS.md','TERMS.md','stile_comunicativo.md',
  'host/c72-public-mode-admission.mjs','contracts/c72-public-mode-admission-v2.json',
+ 'host/project-host-negative-rail.mjs','host/project-c72-negative-entry.mjs',
+ 'contracts/project-host-negative-rail.json','contracts/project-c72-negative-entry.json',
  'host/s02-edu-versioned-consumer.mjs','host/c135-edu-v2-owner.mjs','host/c125-exclusive-shell.mjs',
  'host/project-session-capsule.mjs','host/project-oneshell-edu.mjs','host/project-oneshell-continuous.mjs','host/project-oneshell-focus-session.mjs','host/project-oneshell-chat-presentation.mjs','host/project-oneshell-autopilot.mjs','host/project-c72-preaccept-gate.mjs','host/project-c72-postaccept-reentry.mjs','host/project-c72-host-recovery.mjs','host/project-c72-capability-port.mjs','host/project-c72-physical-ingress.mjs','host/project-c72-coldstart-seed.mjs','host/project-c72-receipt-transit.mjs','host/project-c72-transport-frontier.mjs','scripts/project-c72-partial-source-kit.mjs','scripts/project-c72-verified-staging.mjs','scripts/project-c72-cold-mode-cli.mjs','scripts/project-c72-receipt-reopen-cli.mjs','host/project-oneshell-emission.mjs','host/project-oneshell-compact.mjs','host/project-oneshell-continuity.mjs','host/project-oneshell-visual.mjs','host/project-oneshell-host-boundary.mjs','host/project-oneshell-language-ack.mjs','host/project-oneshell-phases.mjs',
  'host/p1-postmode-source-handoff.mjs','scripts/project-manual-source.py',
