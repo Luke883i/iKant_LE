@@ -85,3 +85,13 @@ test('10,000 independently evaluated mutated mapping cases are rejected and trac
  // Real Git HEAD references remain byte-identical to the checkout on CI.
  assert.equal(original(matrix.source_prompt),read(matrix.source_prompt));
 });
+
+
+test('E16 Project host prompt distinguishes eight-source packet from ninth transit carrier',()=>{
+ const prompt=read(matrix.source_prompt);
+ assert(prompt.includes('\`sourcePacket\` (8 blob), \`transitSourcePacket\` (carrier)'));
+ const pin=boot.postaccept_original_c72_transit_pin;
+ assert.equal(pin?.path,'host/project-c72-receipt-transit.mjs');
+ assert.match(pin?.blob_sha1||'',/^[0-9a-f]{40}$/u);
+ assert.equal(pin?.source,'FIRST_TURN_BOOTSTRAP_SHA_VERIFIED');
+});

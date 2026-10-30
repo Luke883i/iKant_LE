@@ -66,6 +66,33 @@ function stageE15Transit(root,b){
  return file;
 }
 
+
+function e16PrivatePin(directory,sourceHead,sha1,{write=false}={}){
+ const dir=fs.lstatSync(directory);
+ if(!dir.isDirectory()||dir.isSymbolicLink()||(dir.mode&0o077)!==0||
+    fs.realpathSync(directory)!==directory||
+    (process.getuid&&dir.uid!==process.getuid()))throw Error('E16_PIN_ROOT_NOT_PRIVATE');
+ const file=path.join(directory,'c72-e16-source-pin.json');
+ const payload={schema:'ikant-c72-e16-transport-pin/v1',source_head:sourceHead,
+  path:'host/project-c72-receipt-transit.mjs',blob_sha1:sha1,authority:0};
+ const bytes=Buffer.from(JSON.stringify(payload)+'\n','utf8');
+ if(write){
+  const fd=fs.openSync(file,'wx',0o600);
+  try{fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
+ }
+ const st=fs.lstatSync(file);
+ if(!st.isFile()||st.isSymbolicLink()||st.nlink!==1||st.size!==bytes.length||
+    (st.mode&0o077)!==0)throw Error('E16_PIN_READBACK_UNSAFE');
+ const fd=fs.openSync(file,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW||0));
+ try{
+  const before=fs.fstatSync(fd),actual=fs.readFileSync(fd),after=fs.fstatSync(fd);
+  if(!actual.equals(bytes)||before.dev!==after.dev||before.ino!==after.ino||
+     before.size!==after.size||before.mtimeMs!==after.mtimeMs||
+     before.ctimeMs!==after.ctimeMs)throw Error('E16_FIRST_TURN_CARRIER_PIN_MISMATCH');
+ }finally{fs.closeSync(fd);}
+ return true;
+}
+
 export async function selectOriginalC72LaterEDU(q){
  let originals,projectTransitBytes=null,submittedAccepted=q.accepted,submittedIntroduction=q.introduction;
  if(q.projectProfile!==undefined&&q.projectProfile!=='PROJECT_EDU_E15')return fail('E15_PROJECT_PROFILE_INVALID');
@@ -105,6 +132,7 @@ export async function selectOriginalC72LaterEDU(q){
    if((submittedAccepted!==undefined&&JSON.stringify(submittedAccepted)!==JSON.stringify(reopened.accepted))||
       (submittedIntroduction!==undefined&&JSON.stringify(submittedIntroduction)!==JSON.stringify(reopened.introduction)))
     return fail('E15_C72_ORIGINAL_RECEIPT_CONFLICT');
+   e16PrivatePin(q.transitDirectory,q.sourceHead,q.transitBlobSha1);
    q={...q,accepted:reopened.accepted,introduction:reopened.introduction};
   }
   const owner=await import(pathToFileURL(path.join(temp,FILES[1])).href);

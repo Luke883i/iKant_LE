@@ -1541,13 +1541,18 @@
       "active": false
     },
     "postaccept_original_c72_receipt_transit": "host/project-c72-receipt-transit.mjs",
-    "postaccept_original_c72_transit_rule": "PROJECT_EDU_E15_REQUIRES_VERIFIED_STERILE_TRANSIT_PACKET_WX_FSYNC_READBACK_BEFORE_C72; LEGACY_SEPARATE",
+    "postaccept_original_c72_transit_rule": "PROJECT_EDU_E15: FIRST_TURN_VERIFIED_BOOTSTRAP_PINS_CARRIER_BLOB; EXCLUSIVE_PRIVATE_PIN_READBACK_PRE_OWNER; EDU_REOPENS_SAME_PIN; UNKNOWN_STOP_NO_REPLAY; LEGACY_SEPARATE",
     "original_mode_receipt_reopen": "scripts/project-c72-receipt-reopen-cli.mjs",
     "rich_host_svg_emission": "VERIFIED_INLINE_SVG_ONLY_WHEN_RENDERER_SUPPORTS_HOST_HTML_NO_NATIVE_MOUNT_CLAIM",
     "project_edu_irred_contract": "contracts/project-oneshell-irred-e15.json",
     "project_edu_irred_classifier": "host/project-oneshell-irred-e15.mjs#adjudicateE15",
     "project_edu_falsifier": "scripts/project-oneshell-e15-falsify-1m.mjs",
     "project_edu_head_guard": "NODE_GITHUB_API_REQUIRED_ON_PHYSICAL_CLI_OR_STOP",
-    "project_edu_verified_logo": "VERIFIED_HOST_HTML_CAPABILITY_ONLY_ELSE_TEXT; NEVER_NATIVE_MOUNT_CLAIM"
+    "project_edu_verified_logo": "VERIFIED_HOST_HTML_CAPABILITY_ONLY_ELSE_TEXT; NEVER_NATIVE_MOUNT_CLAIM",
+    "postaccept_original_c72_transit_pin": {
+      "path": "host/project-c72-receipt-transit.mjs",
+      "blob_sha1": "c1ae49e65a860e00f8fb6fd842e4de2664198274",
+      "source": "FIRST_TURN_BOOTSTRAP_SHA_VERIFIED"
+    }
   }
 }

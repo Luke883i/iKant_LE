@@ -121,6 +121,33 @@ function stageE15Transit(root,b){
  return file;
 }
 
+
+function e16PrivatePin(directory,sourceHead,sha1,{write=false}={}){
+ const dir=fs.lstatSync(directory);
+ if(!dir.isDirectory()||dir.isSymbolicLink()||(dir.mode&0o077)!==0||
+    fs.realpathSync(directory)!==directory||
+    (process.getuid&&dir.uid!==process.getuid()))throw Error('E16_PIN_ROOT_NOT_PRIVATE');
+ const file=path.join(directory,'c72-e16-source-pin.json');
+ const payload={schema:'ikant-c72-e16-transport-pin/v1',source_head:sourceHead,
+  path:'host/project-c72-receipt-transit.mjs',blob_sha1:sha1,authority:0};
+ const bytes=Buffer.from(JSON.stringify(payload)+'\n','utf8');
+ if(write){
+  const fd=fs.openSync(file,'wx',0o600);
+  try{fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
+ }
+ const st=fs.lstatSync(file);
+ if(!st.isFile()||st.isSymbolicLink()||st.nlink!==1||st.size!==bytes.length||
+    (st.mode&0o077)!==0)throw Error('E16_PIN_READBACK_UNSAFE');
+ const fd=fs.openSync(file,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW||0));
+ try{
+  const before=fs.fstatSync(fd),actual=fs.readFileSync(fd),after=fs.fstatSync(fd);
+  if(!actual.equals(bytes)||before.dev!==after.dev||before.ino!==after.ino||
+     before.size!==after.size||before.mtimeMs!==after.mtimeMs||
+     before.ctimeMs!==after.ctimeMs)throw Error('E16_FIRST_TURN_CARRIER_PIN_MISMATCH');
+ }finally{fs.closeSync(fd);}
+ return true;
+}
+
 /** No blind retry. A STOP after original owner invocation is terminal. */
 export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.url)}={}){
  const edge=witnessEdge(q);if(edge)return stop(edge);
@@ -139,6 +166,16 @@ export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.
  }
  let files;
  try{files=readSources(q);}catch(e){return stop(String(e.message||'C72_SOURCE_UNKNOWN'));}
+ if(projectTransitBytes!==null){
+  try{
+   const pinned=JSON.parse(files.get('BOOTSTRAP.json').toString('utf8'))
+    ?.project_session?.postaccept_original_c72_transit_pin;
+   if(pinned?.path!=='host/project-c72-receipt-transit.mjs'||
+      pinned?.blob_sha1!==q.transitBlobSha1||
+      pinned?.source!=='FIRST_TURN_BOOTSTRAP_SHA_VERIFIED')
+    return stop('E16_CARRIER_NOT_PINNED_IN_VERIFIED_BOOTSTRAP');
+  }catch{return stop('E16_VERIFIED_BOOTSTRAP_PIN_UNAVAILABLE');}
+ }
  let root,invoked=false;
  try{
   root=fs.mkdtempSync(path.join(os.tmpdir(),'ikant-c72-'));fs.chmodSync(root,0o700);
@@ -155,6 +192,11 @@ export async function executeC72Coldstart(q,{seedPath=fileURLToPath(import.meta.
   const verify=await import(pathToFileURL(path.join(root,'host/c72-public-mode-admission.mjs')).href);
   const docs=FIRST.map(p=>({path:p,source_head:q.liveHead,
    blob_sha1:q.expectedBlobShas[p],content:files.get(p).toString('utf8')}));
+  if(projectTransitBytes!==null){
+   // Source pin is taken from independently SHA-verified first-turn BOOTSTRAP bytes.
+   // An unknown write is terminal: this file is exclusive and cannot be replayed.
+   e16PrivatePin(q.transitDirectory,q.liveHead,q.transitBlobSha1,{write:true});
+  }
   if(transit){
    const claimed=transit.claimC72TransitAttempt({directory:q.transitDirectory,
     sourceHead:q.liveHead,phase:'ACCEPT'});

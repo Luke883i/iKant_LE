@@ -20,6 +20,7 @@ on:
       - 'tests/project-oneshell-continuous.test.mjs'
       - 'tests/project-c72-receipt-transit.test.mjs'
       - 'tests/project-oneshell-e15-sterile.test.mjs'
+      - 'tests/project-oneshell-e16-hardening.test.mjs'
       - 'host/project-oneshell-irred-e15.mjs'
       - 'scripts/project-oneshell-e15-falsify-1m.mjs'
       - 'contracts/project-oneshell-irred-e15.json'
@@ -86,6 +87,8 @@ jobs:
         run: node scripts/project-oneshell-focus-falsify.mjs
       - name: E15 physically isolate original C72 accept and later EDU (no checkout in child)
         run: node --test tests/project-oneshell-e15-sterile.test.mjs
+      - name: E16 strict-typing, envelope, native-delivery and 100k retrograde falsification
+        run: node --test tests/project-oneshell-e16-hardening.test.mjs
       - name: E15 one-million deterministic semantic mutations and pinned trace
         run: |
           node scripts/project-oneshell-e15-falsify-1m.mjs > /tmp/e15-1m.json

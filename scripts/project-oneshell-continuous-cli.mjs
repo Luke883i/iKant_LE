@@ -71,9 +71,11 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
      !/^[0-9a-f]{40}$/u.test(j.object?.sha||''))throw Error('E15_REAL_HEAD_INVALID');
    return j.object.sha;
   };
+  const ownerOpenStartMs=elapsedMs();
   owner=await openContinuousOneShell({...configuration,
    readMain:configuration.projectProfile==='PROJECT_EDU_E15'?realReadMain:async()=>head,
    languagePort,recoveryWitness:configuration.recoveryWitness??null});
+  const ownerOpenedMs=elapsedMs();
   if(owner.ok!==true){send(fail(owner.edge));return owner;}
   // Host presentation files are not user-visible attachments until handed off.
   const presentations=path.join(configuration.privateRoot,'.oneshell-chat-presentations');
@@ -84,9 +86,13 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
   if(readyApp.ok!==true){send(fail(readyApp.edge));return fail(readyApp.edge);}
   const readyChat=makeOneShellChatPresentation({frame:owner.frame,focusApp:readyApp,richUiAvailable:rich});
   if(readyChat.ok!==true){send(fail(readyChat.edge));return fail(readyChat.edge);}
+  const projectedMs=elapsedMs();
   send({schema:'ikant-host-oneshell-result/v1',ok:true,phase:'EDU_READY',
    frame:owner.frame,content:owner.content,focus_app:readyApp,chat_presentation:readyChat,
    host_boot_elapsed_ms:elapsedMs(),host_boot_clock:'NODE_MONOTONIC_ONLY',
+   host_phase_timings_ms:{owner_open:ownerOpenedMs-ownerOpenStartMs,
+    verified_host_projection:projectedMs-ownerOpenedMs},
+   host_timing_scope:'PROCESS_LOCAL_ONLY_EXCLUDES_GITHUB_CONNECTOR_ZIP_AND_NATIVE_DELIVERY',
    authority:0,active:false,native_ui_attested:false});
   while(!closed){
    const req=await receive();if(req===null)break;
@@ -96,6 +102,7 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
    }
    if(processing){send(fail('ONESHELL_CONCURRENT_HUMAN_TURN'));continue;}
    processing=true;
+   const turnStartMs=elapsedMs();
    try{
     head=req.liveHead; // Host-supplied GitHub observation, NOT provider-authenticated.
     const result=await owner.publishHumanTurn({humanInput:req.humanInput,
@@ -107,6 +114,8 @@ export async function serveContinuousOneShell({configuration,input=process.stdin
       const chat=makeOneShellChatPresentation({frame:result.frame,humanInput:req.humanInput,focusApp:app,richUiAvailable:rich});
       if(chat.ok!==true){send(fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY'));return fail('ONESHELL_CHAT_PROJECTION_UNKNOWN_NO_RETRY');}
       send({schema:'ikant-host-oneshell-result/v1',...result,focus_app:app,chat_presentation:chat,
+       host_turn_elapsed_ms:elapsedMs()-turnStartMs,
+       host_timing_scope:'PROCESS_LOCAL_ONLY_EXCLUDES_NATIVE_DELIVERY',
        host_head_origin_attested:false,native_delivery_attested:false});
     }else{
       send({schema:'ikant-host-oneshell-result/v1',...result,
