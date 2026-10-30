@@ -151,7 +151,7 @@ test('R3 rejects fake witness before callback; does not claim owner receipt',asy
   getGithubJSON:async()=>{calls++;throw Error('must not call')}});
  assert.equal(result.edge,'R3_C72_FIRST_TURN_OR_CARRIER_UNVERIFIED');
  assert.equal(result.original_owner_invoked,false);assert.equal(calls,0);
- const gate=screenC72HostIngress({...inp(),carrier:'HOST_SOURCE_PACKET'});
+ const gate=screenC72HostIngress({...inp(),ownerOutcome:'NOT_INVOKED',carrier:'HOST_SOURCE_PACKET'});
  assert.equal(gate.disposition,'PASS_TO_ORIGINAL_CHECK');
  assert.equal(gate.permission_granted,false);assert.equal(gate.owner_receipt_issued,false);
 });
