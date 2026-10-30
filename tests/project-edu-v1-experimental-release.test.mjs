@@ -56,7 +56,7 @@ test('accessor-proof release object cannot forge C87',()=>{
  let hits=0;const evidence={...F};Object.defineProperty(evidence,'C87',{enumerable:true,get(){hits++;throw Error('SIDE_EFFECT')}});
  const x=inspectProjectEduExperimentalRelease({sourceHead:H,liveHead:H,evidence});
  assert.equal(x.product_go,false);
- assert.equal(x.first_edge,'ORIGINAL_SINGLE_WRITER_LEDGER_SAME_TURN');
+ assert.equal(x.first_edge,'PROVIDER_CHATGPT_REAL_DELIVERY_RECEIPT');
  assert.equal(hits,0);
 });
 test('hostile proxy and top-level accessor cannot execute while constructing release diagnostics',()=>{
