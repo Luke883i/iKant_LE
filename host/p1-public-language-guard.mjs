@@ -7,6 +7,8 @@ export function qualifyHumanFacingIdentity({method,text}={}){
  if(typeof text==='string'&&MODEL_SELF.test(text.normalize('NFKC')))
   return Object.freeze({ok:false,checked:true,reason:'IKANT_HOST_MODEL_IDENTITY_CONFUSION',rewritten:false});
  if(method!=='DIRECT_IDENTITY')return Object.freeze({ok:true,checked:false,reason:'OTHER_ROUTE'});
+ if(typeof text==='string'&&/[\u202a-\u202e\u2066-\u2069]/u.test(text))
+  return Object.freeze({ok:false,checked:true,reason:'PUBLIC_IDENTITY_BIDI_CONTROL',rewritten:false});
  if(typeof text!=='string'||!text.trim()||JARGON.test(text))
   return Object.freeze({ok:false,checked:true,reason:'PUBLIC_IDENTITY_JARGON',rewritten:false});
  return Object.freeze({ok:true,checked:true,reason:'PUBLIC_IDENTITY_LEXICAL_PASS',rewritten:false,

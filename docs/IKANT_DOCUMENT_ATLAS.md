@@ -178,6 +178,7 @@
 - [docs/PROJECT_C72_HOST_PORT_P0.md](PROJECT_C72_HOST_PORT_P0.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_C72_POSTACCEPT_REENTRY_AND_BRAND.md](PROJECT_C72_POSTACCEPT_REENTRY_AND_BRAND.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_C72_PREACCEPT_REGRESSION.md](PROJECT_C72_PREACCEPT_REGRESSION.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/PROJECT_EDU_V1_EXPERIMENTAL_RELEASE.md](PROJECT_EDU_V1_EXPERIMENTAL_RELEASE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_META_PROMPT_COBOL.md](PROJECT_META_PROMPT_COBOL.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_P0_BRAND_C72_HOST_ENFORCEMENT.md](PROJECT_P0_BRAND_C72_HOST_ENFORCEMENT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_SESSION_REPO_FIRST.md](PROJECT_SESSION_REPO_FIRST.md): Documentazione specialistica. Stato di review: **da verificare**.
