@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {screenC72HostIngress} from '../host/project-c72-negative-entry.mjs';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {validateC72V2Accepted,validateC72V2Orientation} from '../host/c72-public-mode-admission.mjs';
@@ -128,4 +129,29 @@ test('20k deterministic Host auto-selection cases: no fake native evidence',()=>
   n++;
  }
  assert.equal(n,20000);
+});
+
+test('R3 same-epoch DNS denial executes before network callback; packet remains valid',async()=>{
+ let calls=0;
+ const networkObservation={runtimeEpoch:'R3',nodeDns:{status:'FAILED_OBSERVED',host:'api.github.com',epoch:'R3'}};
+ const reject=await runC72SelectedHostIngress({...inp(),carrier:'NODE_GITHUB_API',
+  getGithubJSON:async()=>{calls++;throw Error('should not reach transport')},networkObservation});
+ assert.equal(reject.ok,false);assert.equal(reject.edge,'R3_SAME_EPOCH_NODE_DNS_REPROBE_DENIED');
+ assert.equal(calls,0);assert.equal(reject.original_owner_invoked,false);
+ const valid=await runC72SelectedHostIngress({...inp(),carrier:'HOST_SOURCE_PACKET',
+  sourcePacket:packet(),networkObservation});
+ assert.equal(valid.ok,true,JSON.stringify(valid));
+ assert.equal(validateC72V2Accepted(valid.accepted),true);
+ assert.equal(validateC72V2Orientation(valid.introduction,valid.accepted),true);
+});
+test('R3 rejects fake witness before callback; does not claim owner receipt',async()=>{
+ let calls=0;
+ const q=inp();q.priorTurnEvidence.pinned_blob_shas['TERMS.md']='not-a-sha';
+ const result=await runC72SelectedHostIngress({...q,carrier:'NODE_GITHUB_API',
+  getGithubJSON:async()=>{calls++;throw Error('must not call')}});
+ assert.equal(result.edge,'R3_C72_FIRST_TURN_OR_CARRIER_UNVERIFIED');
+ assert.equal(result.original_owner_invoked,false);assert.equal(calls,0);
+ const gate=screenC72HostIngress({...inp(),carrier:'HOST_SOURCE_PACKET'});
+ assert.equal(gate.disposition,'PASS_TO_ORIGINAL_CHECK');
+ assert.equal(gate.permission_granted,false);assert.equal(gate.owner_receipt_issued,false);
 });
