@@ -205,4 +205,6 @@
   "postaccept_manual_kit_gate": "AFTER_DISTINCT_I_ACCEPT_BEFORE_MODE_WITH_INDEPENDENT_BLOB_PROOF",
   "post_edu_full_zip_gate_unchanged": true,
   "field_e2e_gate": "EIGHT_PINNED_GITHUB_BLOBS_PHYSICALLY_ENTER_NODE_AND_ORIGINAL_C72_RECEIPT"
+  ,"project_edu_e16_unified_runner": "host/project-c72-e16-unified-ingress.mjs#runC72ProjectE16Ingress",
+  "project_edu_e16_legacy_policy": "FIVE_FILE_CALLBACK_AND_HTTPS_NORMALIZE_TO_8_PLUS_CARRIER_BEFORE_E16"
 }
