@@ -16,6 +16,28 @@ on:
       - '.github/workflows/host-negative-semantic-r3.yml'
   workflow_dispatch:
 jobs:
+  diagnostic-physical-c72:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pattern:
+          - 'three carrier paths'
+          - 'Host cannot infer'
+          - 'REST response path'
+          - 'Node request rejection'
+          - '10k preaccept'
+          - 'AUTO binds'
+          - '20k deterministic'
+          - 'R3 same-epoch'
+          - 'R3 rejects'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: One physical test in isolation
+        run: node --test --test-name-pattern="${{ matrix.pattern }}" tests/project-c72-physical-ingress.test.mjs
   original-owners-and-1m:
     runs-on: ubuntu-latest
     timeout-minutes: 35
