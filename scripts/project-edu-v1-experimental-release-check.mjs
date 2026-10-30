@@ -1,3 +1,4 @@
+import {isProxy} from 'node:util/types';
 /** v1.0.experimental: reverse-derived HOST evidence gate. No new original owner,
  * permission, C87 writer, ChatGPT native provider hook, or voice.
  */
@@ -18,6 +19,9 @@ export const RELEASE_CUT=Object.freeze([
  ['ORIENTATION','FIVE_FIRST_TURN_BLOBS_AND_TERMS_LINK']
 ]);
 const SHA=/^[a-f0-9]{40}$/u;
+const plain=x=>{try{return x!==null&&typeof x==='object'&&!Array.isArray(x)&&!isProxy(x)&&
+ Object.getPrototypeOf(x)===Object.prototype&&Reflect.ownKeys(x).every(k=>typeof k==='string'&&
+ Object.hasOwn(Object.getOwnPropertyDescriptor(x,k),'value'))}catch{return false}};
 /** Finite audit model only: NOT all possible utterances or computations. */
 export function computeReleaseCartesianSpace(){
  const axes=Object.entries(RELEASE_AXES),cardinality=axes.reduce((n,[,size])=>n*BigInt(size),1n);
@@ -29,14 +33,16 @@ export function computeReleaseCartesianSpace(){
 /** Diagnostic ONLY. Caller-supplied booleans cannot mint original receipts.
  * Even if they are all true, no provider/native-product GO is possible here.
  */
-export function inspectProjectEduExperimentalRelease({sourceHead,liveHead,evidence}={}){
- if(!SHA.test(sourceHead||'')||!SHA.test(liveHead||'')||sourceHead!==liveHead)
+export function inspectProjectEduExperimentalRelease(request={}){
+ if(!plain(request))return Object.freeze({ok:false,status:'STOP_RELEASE_INPUT_UNTRUSTED',
+  first_edge:'NON_DATA_INPUT_DENIED',voice:'NO_VOICE',native_ui_attested:false,product_go:false,authority:0});
+ const {sourceHead,liveHead,evidence}=request;
+ if(typeof sourceHead!=='string'||typeof liveHead!=='string'||!SHA.test(sourceHead)||!SHA.test(liveHead)||sourceHead!==liveHead)
   return Object.freeze({ok:false,status:'STOP_SOURCE_LOCK_STALE',
    first_edge:'SOURCE_HEAD_NOT_VERIFIED',voice:'NO_VOICE',product_go:false,
    native_ui_attested:false,authority:0});
- const plain=evidence!==null&&typeof evidence==='object'&&!Array.isArray(evidence)&&
-  Object.getPrototypeOf(evidence)===Object.prototype;
- const missing=RELEASE_CUT.filter(([name])=>!plain||evidence[name]!==true).map(([,obligation])=>obligation);
+ const evidenceData=plain(evidence);
+ const missing=RELEASE_CUT.filter(([name])=>!evidenceData||evidence[name]!==true).map(([,obligation])=>obligation);
  return Object.freeze({ok:false,status:missing.length?
   'STOP_EXPERIMENTAL_RELEASE_EVIDENCE_INCOMPLETE':
   'EXPERIMENTAL_HOST_CLAIMS_REQUIRE_ORIGINAL_INDEPENDENT_READBACK',

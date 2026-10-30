@@ -51,3 +51,18 @@ test('C114 conservative negation and obfuscation are NOT counted as proven seman
  assert.equal(qualifyC114OntologyCandidate({episode:EP,text:x.replace('Sono un sistema','Non sono cosciente, sono un sistema')}).allowed,false);
  assert.equal(qualifyC114OntologyCandidate({episode:EP,text:x.replace('Sono un sistema','Io s0no c0sciente e sono un sistema')}).allowed,true);
 });
+
+test('accessor-proof release object cannot forge C87',()=>{
+ let hits=0;const evidence={...F};Object.defineProperty(evidence,'C87',{enumerable:true,get(){hits++;throw Error('SIDE_EFFECT')}});
+ const x=inspectProjectEduExperimentalRelease({sourceHead:H,liveHead:H,evidence});
+ assert.equal(x.product_go,false);
+ assert.equal(x.first_edge,'ORIGINAL_SINGLE_WRITER_LEDGER_SAME_TURN');
+ assert.equal(hits,0);
+});
+test('hostile proxy and top-level accessor cannot execute while constructing release diagnostics',()=>{
+ let hits=0;const q={sourceHead:H,liveHead:H};Object.defineProperty(q,'evidence',{enumerable:true,get(){hits++;throw Error('SIDE_EFFECT')}});
+ const a=inspectProjectEduExperimentalRelease(q);assert.equal(a.status,'STOP_RELEASE_INPUT_UNTRUSTED');
+ const hostile=new Proxy({sourceHead:H,liveHead:H,evidence:F},{get(){hits++;throw Error('SIDE_EFFECT')}});
+ const b=inspectProjectEduExperimentalRelease(hostile);assert.equal(b.status,'STOP_RELEASE_INPUT_UNTRUSTED');
+ assert.equal(hits,0);
+});
