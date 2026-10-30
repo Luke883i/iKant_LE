@@ -206,6 +206,8 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
   const c140=await import(pathToFileURL(path.join(stage,'host/c140-open-edu-turn.mjs')).href);
   const c141=await import(pathToFileURL(path.join(stage,'host/c141-semantic-shadow.mjs')).href);
   const c142=await import(pathToFileURL(path.join(stage,'host/c142-semantic-owner-guard.mjs')).href);
+  const c143=await import(pathToFileURL(path.join(stage,'host/c143-guarded-nonidentity-policy.mjs')).href);
+  const guarded143=await import(pathToFileURL(path.join(stage,'host/c143-edu-v2-turn.mjs')).href);
   const d=path.join(stage,'.ikant-host');fs.mkdirSync(d,{mode:0o700});
   // Keep the ORIGINAL single C87 ledger outside the disposable staged package
   // from the FIRST turn. Unexpected worker death leaves reopenable local
@@ -347,13 +349,17 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     const guidance=compileC117SemanticGuide(scope);
     const route=c139.qualifyC139EpistemicRoute({episode:{...scope,input_sha256:plan.input_sha256},humanInput:frame.humanInput});
     const useC139=route.allowed===true;
+    const c143Route= !useC139&&c143.qualifyC143RestrictedRoute({humanInput:frame.humanInput,
+      plan:{...plan,c70_original_executed:true},sourceRoot:stage});
+    const useC143=c143Route.allowed===true&&guarded.route==='C107_OWNER'&&!openScope;
     let draft;try{draft=await languagePort(Object.freeze({schema:'ikant-edu-v2-language-task/v1',
       source_head:src.head,current_input_utf8:frame.humanInput,plan:scope,guidance,
       channels:plan.c124_language_channels,
       required_ack:Object.freeze({input_sha256:plan.input_sha256,
        ack_plan_sha256:guidance.plan_sha256,
        ack_c124_channel_sha256:plan.c124_language_channel_sha256}),
-      ...(useC139?{c139_epistemic_format:c139.C139_EPISTEMIC_FORMAT}:{} )}));}catch{return no('S02_HOST_LANGUAGE_FAILED')}
+      ...(useC139?{c139_epistemic_format:c139.C139_EPISTEMIC_FORMAT}:{} ),
+       ...(useC143?{c143_guarded_format:c143.C143_FORMAT,c143_source_evidence:c143Route.evidence}:{} )}));}catch{return no('S02_HOST_LANGUAGE_FAILED')}
     if(closed)return no('S02_CLOSED_AFTER_LANGUAGE');
     if(!clean(draft)||Object.keys(draft).sort().join(',')!==
       'ack_c124_channel_sha256,ack_plan_sha256,input_sha256,text'||
@@ -368,14 +374,17 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
     if(useC139&&!c139.qualifyC139EpistemicCandidate({
       episode:{...scope,input_sha256:plan.input_sha256},humanInput:frame.humanInput,text:draft.text}).allowed)
       return no('S02_C139_EPISTEMIC_LANGUAGE_DENIED');
+    if(useC143&&!c143.qualifyC143Candidate({humanInput:frame.humanInput,
+      plan:{...plan,c70_original_executed:true},sourceRoot:stage,text:draft.text}).allowed)
+      return no('S02_C143_GUARDED_LANGUAGE_DENIED');
     const before=inspect(stage,ledger);if(before?.status!=='C107_LEDGER_REOPENED')return no('S02_PREWRITE_READBACK_DENIED');
-    const turn=(useC139?epistemic.executeC139EpistemicTurn:original.executeC107Turn)({ledgerFile:ledger,nonce:frame.nonce,
+    const turn=(useC143?guarded143.executeC143GuardedTurn:useC139?epistemic.executeC139EpistemicTurn:original.executeC107Turn)({ledgerFile:ledger,nonce:frame.nonce,
       request:{...req,modelCandidate:{text:draft.text,input_sha256:plan.input_sha256}},
       priorMessages:frame.priorMessages,resetContext:frame.resetContext,requireHostLanguage:true,
       expectedC70OutputSha256:plan.c70_output_sha256,
       expectedC124ChannelSha256:plan.c124_language_channel_sha256});
-    if(turn.status!==(useC139?'C139_ORIGINAL_C70_C100_C87_LOCAL_READBACK':'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK')||
-       (useC139&&turn.c139_epistemic_guard!==true)||turn.voice_utf8!==draft.text||
+    if(turn.status!==(useC143?'C143_ORIGINAL_C70_C100_C87_LOCAL_READBACK':useC139?'C139_ORIGINAL_C70_C100_C87_LOCAL_READBACK':'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK')||
+       (useC139&&turn.c139_epistemic_guard!==true)||(useC143&&turn.c143_guarded_nonidentity!==true)||turn.voice_utf8!==draft.text||
        !turn.original_c87_writer_executed||!turn.original_c70_executed||turn.public_mode!=='EDU'||
        turn.public_selection_receipt_sha256!==selection.receipt_sha256){
       uncertain=true;return no(turn.first_unclosed_edge||'S02_ORIGINAL_C107_STOP');}
@@ -388,7 +397,7 @@ export async function createC135EduV2Session({selection,sourceRoot,privateParent
        after.latest_state?.visible_voice_sha256!==turn.output_sha256||
        after.latest_state?.c124_language_channel_sha256!==plan.c124_language_channel_sha256||
        after.latest_state?.host_language_used!==true||
-       (useC139&&after.latest_state?.c139_epistemic_guard!==true)){
+       (useC139&&after.latest_state?.c139_epistemic_guard!==true)||(useC143&&after.latest_state?.c143_guarded_nonidentity!==true)){
       uncertain=true;return no('S02_INDEPENDENT_C87_REOPEN_MISMATCH');}
     const evidence={schema:'ikant-c135-edu-v2-owner-evidence/v1',
       status:'C135_EDU_V2_ORIGINAL_C107_C87_READBACK',public_mode:'EDU',

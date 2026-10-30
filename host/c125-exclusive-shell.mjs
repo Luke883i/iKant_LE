@@ -93,6 +93,12 @@ export function emitC125Shell(frame){
      r.original_turn?.c139_epistemic_guard===true&&
      r.original_turn?.c114_limited_ontology_policy===false&&
      w.latest_state?.c139_epistemic_guard===true&&
+     w.latest_state?.c114_limited_ontology_policy===false ||
+     r.original_turn?.status==='C143_ORIGINAL_C70_C100_C87_LOCAL_READBACK'&&
+     r.original_turn?.c143_guarded_nonidentity===true&&
+     r.original_turn?.c114_limited_ontology_policy===false&&
+     r.original_turn?.c139_epistemic_guard===false&&
+     w.latest_state?.c143_guarded_nonidentity===true&&
      w.latest_state?.c114_limited_ontology_policy===false)&&
     r.original_turn?.public_mode==='EDU'&&r.original_turn?.public_selection_receipt_sha256===r.public_selection_receipt_sha256&&
     r.original_turn?.original_c70_executed===true&&r.original_turn?.original_c87_writer_executed===true&&
