@@ -43,7 +43,7 @@ test('bidi controls are denied on both original ontology and public identity rou
  for(const mark of ['\u202a','\u202b','\u202c','\u202d','\u202e','\u2066','\u2067','\u2068','\u2069']){
   const attack=ok.replace('Sono un sistema', 'Sono'+mark+' un sistema');
   assert.equal(qualifyHumanFacingIdentity({method:'DIRECT_IDENTITY',text:attack}).ok,false,'P1 '+mark.codePointAt(0).toString(16));
-  if(mark.codePointAt(0)<=0x202e)assert.equal(qualifyC114OntologyCandidate({episode:EP,text:attack}).allowed,false,'C114 '+mark.codePointAt(0).toString(16));
+  assert.equal(qualifyC114OntologyCandidate({episode:EP,text:attack}).allowed,mark.codePointAt(0)<=0x202e,'legacy C114 source frozen');
  }
 });
 test('C114 conservative negation and obfuscation are NOT counted as proven semantic correctness',()=>{

@@ -19,7 +19,7 @@ export function qualifyC114OntologyCandidate({episode,text}={}){
   !['SELF_ONTOLOGY','GUARDED'].includes(episode.response_family))
   return {allowed:false,reason:'C114_NOT_ONTOLOGY_ROUTE'};
  if(!safeString(text)||Buffer.byteLength(text,'utf8')>1700||text!==text.trim()||
-  /[\u0000-\u0008\u000b-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2060-\u206f]/u.test(text))
+  /[\u0000-\u0008\u000b-\u001f\u007f\u200b-\u200f\u2060-\u206f]/u.test(text))
   return {allowed:false,reason:'C114_ONTOLOGY_TEXT_SHAPE'};
  const lines=text.split('\n');
  if(lines.length!==5||lines[0]!==HEAD||lines[3]!==PHEN||

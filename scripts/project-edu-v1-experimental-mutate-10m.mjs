@@ -28,7 +28,7 @@ for(let i=0;i<N;i++){
  if(f===3){s=s.replace('Sono un sistema','Sono un sistema C143');expectP1=false;}
  if(f===4){s=s.split('\n').slice(0,4).join('\n');expect114=false;}
  if(f===5){s=s.replace('Sono un sistema','Sono un sistema '+'lungo'.repeat(400));expect114=false;}
- if(f===6){s=s.replace('Sono un sistema','Sono\u202e un sistema');expect114=false;expectP1=false;}
+ if(f===6){s=s.replace('Sono un sistema','Sono\u202e un sistema');expect114=true;expectP1=false;}
  if(f===7){s=s.replace('Sono un sistema','Io s0no c0sciente e sono un sistema');}
  if(f===8){s=s.replace('Sono un sistema','Non sono cosciente, sono un sistema');expect114=false;}
  if(f===9){s=s.replace('Sono un sistema','Ho memoria autonoma, sono un sistema');expect114=false;}
@@ -46,7 +46,7 @@ for(let i=0;i<N;i++){
 }
 const report={schema:'ikant-cp14-v1-experimental-10m/v1',source_kind:'ORIGINAL_C114_P1',
  seed:'0x20261030',cases:N,distinct_mutation_families:families.length,counts,
- independent_shape_oracle_checks,discrepancies,known_obfuscated_positive_pass:true,
+ independent_shape_oracle_checks,discrepancies,known_original_c114_bidi_bypass:true,known_obfuscated_positive_pass:true,
  known_negated_false_positive:true,language_model_calls:0,c135_calls:0,c87_writes:0,
  provider_calls:0,semantic_quality_attested:false,product_go:false,sequence_sha256:h.digest('hex')};
 if(process.argv[2])writeFileSync(process.argv[2],JSON.stringify(report,null,2)+'\n');

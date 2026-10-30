@@ -33,7 +33,7 @@ The reverse gate never interprets caller-supplied booleans as original receipts.
 
 ## Mutation result and hardening
 
-The baseline SHA-pinned C114/P1 code accepted a Unicode bidi override U+202E in an otherwise valid ontology answer; C114 also conservatively rejects a negated claim and accepts a digit-obfuscated claim. Fix: deny U+202A–U+202E in C114 shape, U+202A–U+202E and U+2066–U+2069 in P1 DIRECT_IDENTITY. The fix does not relax C114, infer consciousness, or solve semantic classification in general.
+The baseline SHA-pinned C114/P1 code accepted a Unicode bidi override U+202E in an otherwise valid ontology answer; C114 also conservatively rejects a negated claim and accepts a digit-obfuscated claim. Fix: preserve C114's frozen original Git blob required by C134 and deny U+202A–U+202E and U+2066–U+2069 in the P1 DIRECT_IDENTITY prewrite path. The standalone C114 bidi escape remains a documented lexical limitation; original C135 must invoke P1 before C87. No ontology owner alteration, semantic completeness or native UI claim.
 
 The seeded 10-million-case campaign exercises original C114/P1 functions, not models, native provider calls or 10 million independent human utterances. One million independently *structured* shape-oracle checks are executed, limited to formatting invariants; blind semantics and authentic provider delivery remain explicitly unproven. Keep counters for documented obfuscation/negation limits instead of rebranding them as PASS.
 
@@ -43,7 +43,7 @@ The seeded 10-million-case campaign exercises original C114/P1 functions, not mo
 - D04 original C72 ACCEPT/EDU in distinct child processes, D05 private transit/nonce readback, D06 full-source ZIP/TREE verified.
 - D07 C135 original model task, D08 required C124 ACK, D09 C87 single append, D10 C87 reopen and recovery fence.
 - D11 C125/S03 exact bytes, D12 canonical six-slot A preserved, D13 Host B never impersonates A.
-- D14 bidi U+202E negative test, D15 C114/P1 original regression, D16 C143 scope restricted/owner preserved.
+- D14 bidi U+202E P1 prewrite negative test, D15 historic C114 pinned unchanged and P1 route regression, D16 C143 scope restricted/owner preserved.
 - D17 E15/Host-negative-rail nonregression, D18 10m calls completed, D19 1m independent shape checks, D20 deterministic seeds/report.
 - D21 Node20/22 CI, D22 full-repository CI, D23 preserved CP11/PR188 workflows.
 - D24 installation prompt byte readback, D25 native provider hook provenance, D26 same chat two human turns, D27 blind semantic grounding uplift.
