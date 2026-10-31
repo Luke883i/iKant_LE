@@ -23,6 +23,20 @@ jobs:
         run: node --test tests/project-oneshell-prompt.test.mjs
       - name: Project responsibility matrix
         run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs
+      - name: WHAT-first eleven obligations and one million seeded cases twice
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/project-prompt-eleven-falsify-1m.mjs > "$RUNNER_TEMP/what11-a.json"
+          node scripts/project-prompt-eleven-falsify-1m.mjs > "$RUNNER_TEMP/what11-b.json"
+          cmp "$RUNNER_TEMP/what11-a.json" "$RUNNER_TEMP/what11-b.json"
+          node --input-type=module -e "import fs from 'node:fs';const q=JSON.parse(fs.readFileSync(process.argv[1]));if(q.cases!==1000000||q.families!==40||q.divergences!==0||q.unsafe_promotions!==0||q.prompt_command_errors.length||q.llm_adherence_proved!==false)process.exit(1)" "$RUNNER_TEMP/what11-a.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: what-first-11-seeded-one-million
+          path: ${{ runner.temp }}/what11-a.json
+          if-no-files-found: error
+          retention-days: 30
       - name: Original C72 portable bridge
         run: node --test tests/project-c72-portable-bridge.test.mjs
       - name: Original C72 physical ingress
