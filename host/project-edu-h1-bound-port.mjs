@@ -68,16 +68,39 @@ function writeReopen(root,p,bytes){
  * The caller supplies a function, NOT a boolean claiming it is OBSERVED.
  * Checksums authenticate consistency only, not callback/GitHub origin.
  */
-export async function prepareH1OriginalSources(q,{readMain,readPinned}={}){
+export async function prepareH1OriginalSources(q,{readMain,readPinned,readCommit,readTree}={}){
  const edge=validateH1Gate(q);if(edge)return stop(edge);
- if(typeof readMain!=='function'||typeof readPinned!=='function')return stop('H1_CAPABILITY_NOT_BOUND');
+ if([readMain,readPinned,readCommit,readTree].some(fn=>typeof fn!=='function'))return stop('H1_CAPABILITY_NOT_BOUND');
  let stageDirectory=null,transitDirectory=null;
  try{
   const h=await readMain(),head=typeof h==='string'?h:h?.object?.sha;
   if(!SHA.test(head||'')||head!==q.sourceHead)return stop('STOP_SOURCE_LOCK_STALE');
+  // Independent Git commit -> TREE -> path -> blob lookup, not the content callback.
+  // GitHub API responses must be authenticated by the actual deployment. SHA alone
+  // does not prove provider identity. This is a read-only pre-owner preflight.
+  const commit=await readCommit({ref:head});
+  const treeSha=commit?.tree?.sha;
+  if(commit?.sha!==head||!SHA.test(treeSha||''))throw Error('H1_COMMIT_TREE_LINK_INVALID');
+  const tree=await readTree({sha:treeSha,recursive:true});
+  if(tree?.sha!==treeSha||tree?.truncated!==false||!Array.isArray(tree.tree))
+   throw Error('H1_TREE_COMPLETENESS_UNVERIFIED');
+  const entryMap=new Map();
+  for(const entry of tree.tree){
+   if(typeof entry?.path!=='string'||!SHA.test(entry.sha||'')||
+      !['blob','tree','commit'].includes(entry.type)||entryMap.has(entry.path))
+    throw Error('H1_TREE_ENTRY_UNTRUSTED');
+   entryMap.set(entry.path,entry);
+  }
+  for(const file of [...H1_FILES,H1_TRANSIT,H1_SEED]){
+   const entry=entryMap.get(file);
+   if(entry?.type!=='blob'||!['100644','100755'].includes(entry.mode))
+    throw Error('H1_REQUIRED_PATH_NOT_IN_HEAD_TREE:'+file);
+  }
   const got=new Map();let total=0;
   for(const p of [...H1_FILES,H1_TRANSIT,H1_SEED]){
    const answer=await readPinned({path:p,ref:head}),bytes=exactBytes(answer);
+   // Reject even a self-consistent SHA/content pair if it belongs to another path.
+   if(answer.sha!==entryMap.get(p).sha)throw Error('H1_HEAD_PATH_BLOB_MISMATCH:'+p);
    total+=bytes.length;if(total>750000)throw Error('H1_SOURCE_TOTAL_LIMIT');
    if(FIRST.includes(p)&&answer.sha!==q.priorTurnEvidence.pinned_blob_shas[p])
     throw Error('H1_FIRST_TURN_BLOB_DRIFT');
