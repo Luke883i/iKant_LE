@@ -18,6 +18,7 @@ on:
       - 'contracts/project-review-readiness-v1.json'
       - 'scripts/project-review-callsites.mjs'
       - 'tests/project-review-readiness.test.mjs'
+      - 'tests/project-review-physical.test.mjs'
       - 'tests/project-edu-h1-*.test.mjs'
       - '.github/workflows/project-review-readiness.yml'
   workflow_dispatch:
