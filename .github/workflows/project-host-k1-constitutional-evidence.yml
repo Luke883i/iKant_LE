@@ -4,6 +4,7 @@ on:
     paths:
       - 'host/project-host-k1-constitutional-audit.mjs'
       - 'scripts/project-host-k1-evidence-falsify-1m.mjs'
+      - 'scripts/project-host-k1-reticulum-verify.mjs'
       - 'tests/project-host-k1-constitutional-audit.test.mjs'
       - 'contracts/project-host-k1-evidence-reticulum.json'
       - '.github/workflows/project-host-k1-constitutional-evidence.yml'
@@ -32,8 +33,11 @@ jobs:
         run: |
           node --check host/project-host-k1-constitutional-audit.mjs
           node --check scripts/project-host-k1-evidence-falsify-1m.mjs
+          node --check scripts/project-host-k1-reticulum-verify.mjs
           node --check tests/project-host-k1-constitutional-audit.test.mjs
           node -e "const c=require('./contracts/project-host-k1-evidence-reticulum.json');if(c.nodes.length!==18||c.edge_tests.length!==3||c.authority!==0)process.exit(1)"
+      - name: Verify 18-node R2 DoD DAG, release stays fail-closed
+        run: node scripts/project-host-k1-reticulum-verify.mjs > "$RUNNER_TEMP/reticulum.json"
       - name: Original C72, original voice WeakSet, Git objects and private file tests
         run: node --test tests/project-host-k1-constitutional-audit.test.mjs tests/project-host-k1-real-source.test.mjs tests/project-host-effect-decision.test.mjs > "$RUNNER_TEMP/real-owner-tests.tap"
       - name: One million unique pre-seeded cases twice
