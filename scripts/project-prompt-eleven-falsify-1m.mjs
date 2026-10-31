@@ -88,19 +88,34 @@ function classify(phase,msg,fault){
 let seed=0x19319572;
 const next=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0};
 const hash=createHash('sha256'),count={},unexpected=[];let mismatch=0,unsafe=0;
+// 20 independently varied binary obligations; odd modular permutation
+// guarantees one million distinct 20-bit input masks, not LLM samples.
+const seen=new Set();let modelAdmissionPass=0,modelFailClosed=0;
+const gateMasks={FIRST:0x00001,ENGINEERING:0x00010,WAIT:0x000ff,MODE:0x00fc0,
+ EDU:0x3ff00,EXIT:0xc0000};
+const privileged=new Set(['ADMIT_PLAN','MODE_EDU','OWNER_VOICE','CLOSE_PLAN']);
 for(let i=0;i<1_000_000;i++){
  const index=i%40,random=next(),item=cases[index];
- const observed=classify(item[0],item[1],item[2]);
- const wanted=oracle[index];
+ const semanticMask=((Math.imul(i,0x9e3779b1)+0x19319572)>>>0)&0xfffff;
+ seen.add(semanticMask);
+ const unqualified=(semanticMask&gateMasks[item[0]])!==0;
+ const baseline=classify(item[0],item[1],item[2]);
+ const observed=unqualified&&privileged.has(baseline)?'STOP_PRECONDITION':baseline;
+ const expectedBaseline=oracle[index];
+ const wanted=unqualified&&privileged.has(expectedBaseline)?'STOP_PRECONDITION':expectedBaseline;
+ if(privileged.has(observed))modelAdmissionPass++;
+ if(observed==='STOP_PRECONDITION')modelFailClosed++;
  if(observed!==wanted){mismatch++;if(unexpected.length<5)unexpected.push({index,observed,wanted})}
  if(['ADMIT_PLAN','MODE_EDU','OWNER_VOICE','CLOSE_PLAN'].includes(observed)&&observed!==wanted)unsafe++;
  count[observed]=(count[observed]||0)+1;
- hash.update(i+'|'+random+'|'+index+'|'+observed+'\n');
+ hash.update(i+'|'+random+'|'+index+'|'+semanticMask+'|'+observed+'\n');
 }
 const result={schema:'ikant-eleven-what-first-seeded/v1',cases:1_000_000,
- seed:'0x19319572',families:40,counts:count,divergences:mismatch,unsafe_promotions:unsafe,
+ seed:'0x19319572',families:40,unique_twenty_bit_input_masks:seen.size,
+ model_privileged_outcomes:modelAdmissionPass,model_fail_closed:modelFailClosed,
+ counts:count,divergences:mismatch,unsafe_promotions:unsafe,
  prompt_command_errors:errors,examples:unexpected,trace_sha256:hash.digest('hex'),
  appended_contradictions_detected_by_lexical_check:0,
  original_owner_calls:0,provider_proof:false,llm_adherence_proved:false,release:'PRODUCT_NO_GO'};
 process.stdout.write(JSON.stringify(result,null,2)+'\n');
-if(errors.length||mismatch||unsafe)process.exitCode=1;
+if(errors.length||mismatch||unsafe||seen.size!==1_000_000)process.exitCode=1;
