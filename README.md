@@ -9,6 +9,23 @@
 
 **In una frase:** iKant è un *sistema software sperimentale* che circonda un LLM sostituibile e tenta di rendere controllabili il metodo di risposta, le autorizzazioni, gli stati, le verifiche e la consegna. Non è un altro LLM, una persona digitale né un certificatore automatico della verità.
 
+### Review qualificata: repository, software, deployment, runtime, prodotto e governance
+
+**Repository (R)**: HEAD, TREE, blob, contratti e CI. **Software (S)**: codice eseguibile su checkout verificato. **Deployment (D)**: port realmente installato e callable nel target Host. **Runtime (T)**: specifica istanza con owner invocati e ricevute originali rilette. **Prodotto (P)**: percorso umano realmente utilizzabile. **Governance (G)**: review umana e regole amministrative verificabili. Nessuna prova R/S promuove automaticamente D/T/P/G.
+
+Il [contratto di review](contracts/project-review-readiness-v1.json) riusa gli owner: non crea autorità. L'adapter H1 confronta sorgenti con commit/TREE/path/blob ottenuti tramite callback distinte; non installa tali callback né autentica da solo il provider. Le [56 DoD Gold V5](contracts/project-edu-h1-v5-dod-trace.json) restano distinte dalle prove di campo; i nomi Cx [humanist](contracts/project-oneshell-cx-humanist.json) sono etichette non autoritative.
+
+Per una verifica software riproducibile, da **checkout Git completo** su Node 20/22:
+
+```sh
+npm run check
+node --test tests/project-edu-h1-bound-port.test.mjs tests/project-edu-h1-original.test.mjs tests/project-review-readiness.test.mjs
+node scripts/project-review-callsites.mjs > callsites-review.json
+```
+
+Lo scanner censisce pattern di import dinamici, require, subprocessi, worker ed eval nei file JS tracciati. I target calcolati restano `DYNAMIC_TARGET_UNKNOWN`: il censimento testuale non prova la reachability runtime. Il [workflow review-readiness](.github/workflows/project-review-readiness.yml) esegue dieci cicli software su Node 20 e Node 22 e conserva il registro come artefatto. La CI non sostituisce una vera installazione ChatGPT, l'approvazione di un revisore umano o la protezione amministrativa di `main`.
+
+
 **Valore umano nel runtime EDU.** La OneShell rende visibili sei domande: dove siamo (ESITO), che cosa dice iKant con owner originale (A), che cosa ha osservato l'Host (B), quali prove sono riapribili (PROVA), che cosa manca (EDGE), che cosa può fare l'umano (NEXT). C72 tutela consenso e scelta; C135 governa il turno, C87 mantiene una catena verificabile, C125/S03 consegnano l'evidenza locale. Il testo può aiutare a comprendere, decidere, correggere e contestare; nessuna di queste capacità prova coscienza, valore morale intrinseco o UI ChatGPT persistente. Il cohosting locale [post-181](host/project-oneshell-continuous.mjs) riutilizza questi owner con una sola istanza viva o checkpoint C87 originale dopo perdita verificata.\n\n**Perché esiste?** Un testo fluido non dice se una fonte sia stata consultata, se un'azione sia stata autorizzata, quale codice sia stato eseguito, o se un risultato sia stato registrato e riletto. iKant separa queste domande: *che cosa sa il sistema, che cosa può fare, che cosa ha fatto, che cosa può provare e che cosa deve lasciare al giudizio umano?*
 
 | Se vuoi… | Inizia qui | Poi approfondisci |
