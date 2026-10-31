@@ -53,5 +53,6 @@ jobs:
           path: |
             ${{ runner.temp }}/first.json
             ${{ runner.temp }}/real-owner-tests.tap
+            ${{ runner.temp }}/reticulum.json
           if-no-files-found: warn
           retention-days: 30
