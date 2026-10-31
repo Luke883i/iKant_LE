@@ -57,6 +57,15 @@ test('K1 real pinned Git source: original H1 10/10, staged 9/9, seed+closure, cr
   for(const v of ['original_owner_invoked','source_origin_attested','provider_installation_attested',
     'native_event_attested','native_delivery_attested','active'])assert.equal(r[v],false,v);
   assert.equal(r.edge,'K1_PROVIDER_TOOL_ID_AND_FIELD_INSTALLATION_UNATTESTED');
+  if(process.env.K1_EVIDENCE_JSON){
+   const proof={schema:'ikant-k1-checkout-source-evidence/v1',source_head:head,
+    evidence_scope:'GITHUB_ACTIONS_CHECKOUT_ONLY_NOT_CHATGPT_PROVIDER',
+    original_sources:10,staged_files:9,installed_seed:true,installed_owner_adjacent_files:10,
+    independent_subprocess_readback:true,original_owner_invoked:false,provider_installation_attested:false,
+    native_human_event_attested:false,git_first_five:request().priorTurnEvidence.pinned_blob_shas,
+    first_edge:r.edge};
+   fs.writeFileSync(process.env.K1_EVIDENCE_JSON,JSON.stringify(proof,null,2)+'\n',{flag:'wx',mode:0o600});
+  }
   for(const [p,ref] of Object.entries(request().priorTurnEvidence.pinned_blob_shas)){
    const b=fs.readFileSync(path.join(r.stageDirectory,p));
    const gitBlob=createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
