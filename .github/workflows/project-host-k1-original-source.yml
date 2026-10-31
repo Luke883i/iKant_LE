@@ -1,0 +1,45 @@
+name: K1 integrated WHAT-HOW physical original-source evidence
+on:
+  pull_request:
+    paths:
+      - 'host/project-host-k1-preowner.mjs'
+      - 'tests/project-host-k1-real-source.test.mjs'
+      - '.github/workflows/project-host-k1-original-source.yml'
+      - 'docs/PROJECT_HOST_K1_INTEGRATED_DOD.md'
+  push:
+    branches: [main]
+    paths:
+      - 'host/project-host-k1-preowner.mjs'
+      - 'tests/project-host-k1-real-source.test.mjs'
+      - '.github/workflows/project-host-k1-original-source.yml'
+      - 'docs/PROJECT_HOST_K1_INTEGRATED_DOD.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  k1-original-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20','22']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Syntax and main-line source integrity
+        run: |
+          node --check host/project-host-k1-preowner.mjs
+          node --check tests/project-host-k1-real-source.test.mjs
+          node scripts/project-source-manifest.mjs verify
+      - name: Actual original pinned Git blobs + independent Node subprocess (NO C72)
+        env:
+          K1_PINNED_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: node --test tests/project-host-k1-real-source.test.mjs tests/project-host-effect-decision.test.mjs
+      - name: Original owner software regression, never user field proof
+        run: node --test tests/project-edu-h1-bound-port.test.mjs tests/project-edu-h1-original.test.mjs tests/project-c72-e16-unified-ingress.test.mjs tests/project-c72-e16-unified-original.test.mjs
