@@ -7,6 +7,7 @@ on:
       - 'contracts/project-review-readiness-v1.json'
       - 'scripts/project-review-callsites.mjs'
       - 'tests/project-review-readiness.test.mjs'
+      - 'tests/project-review-physical.test.mjs'
       - 'tests/project-edu-h1-*.test.mjs'
       - '.github/workflows/project-review-readiness.yml'
   push:
@@ -50,7 +51,7 @@ jobs:
           for round in $(seq 1 10); do
             echo "=== R6 cycle ${round} of 10 ==="
             npm run check
-            node --test tests/project-review-readiness.test.mjs tests/project-edu-h1-bound-port.test.mjs tests/project-edu-h1-original.test.mjs tests/project-edu-h1-dod-trace.test.mjs
+            node --test tests/project-review-readiness.test.mjs tests/project-review-physical.test.mjs tests/project-edu-h1-bound-port.test.mjs tests/project-edu-h1-original.test.mjs tests/project-edu-h1-dod-trace.test.mjs
             node scripts/project-review-callsites.mjs > "${RUNNER_TEMP}/r6-callsite-${round}.json"
             node --input-type=module -e "import fs from 'node:fs';let x=JSON.parse(fs.readFileSync(process.argv[1]));if(x.schema!=='ikant-host-callsite-census/v1'||x.tracked_file_count<1300||x.js_files_parsed<700||x.authority!==0)process.exit(1)" "${RUNNER_TEMP}/r6-callsite-${round}.json"
             if [ "$round" -gt 1 ]; then
