@@ -11,7 +11,7 @@ import {execFileSync} from 'node:child_process';
 import {createHash,randomBytes} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {decideK0Effect,K0_SCHEMA} from './project-host-effect-decision.mjs';
-import {prepareH1OriginalSources,H1_FILES,H1_SEED,H1_TRANSIT} from './project-edu-h1-bound-port.mjs';
+import {prepareH1OriginalSources,H1_FILES,H1_SEED,H1_TRANSIT,H1_SCHEMA} from './project-edu-h1-bound-port.mjs';
 
 export const K1_SCHEMA='ikant-host-k1-original-source-preowner/v1';
 export const K1_ORIGINAL_PATHS=Object.freeze([...H1_FILES,H1_TRANSIT,H1_SEED]);
@@ -92,7 +92,7 @@ export async function runK1PreOwner(q,port={}){
  const req={...q,schema:K0_SCHEMA,phase:'POST_ACCEPT'};
  const pair={
   probe:async()=>localChallenge(root),
-  invoke:async()=>prepareH1OriginalSources(req,port)
+  invoke:async()=>prepareH1OriginalSources({...req,schema:H1_SCHEMA},port)
  };
  const decision=decideK0Effect(req,{SAME_NODE_CALLBACKS:pair});
  if(decision.kind!=='PROBE_REQUIRED')return stop(decision.first_edge||'K0_PREOWNER_GATE_DENIED');
