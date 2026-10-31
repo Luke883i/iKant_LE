@@ -10,6 +10,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {createHash,randomBytes} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {isProxy} from 'node:util/types';
 import {decideK0Effect,K0_SCHEMA} from './project-host-effect-decision.mjs';
 import {prepareH1OriginalSources,H1_FILES,H1_SEED,H1_TRANSIT,H1_SCHEMA} from './project-edu-h1-bound-port.mjs';
 
@@ -32,7 +33,7 @@ const gitBlob=bytes=>createHash('sha1').update(Buffer.from('blob '+bytes.length+
 const stop=edge=>Object.freeze({ok:false,kind:'STOP',edge,authority:0,
  original_owner_invoked:false,source_origin_attested:false,provider_installation_attested:false,
  native_event_attested:false,native_delivery_attested:false,active:false});
-const plain=x=>{try{return !!x&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype&&Reflect.ownKeys(x).every(k=>typeof k==='string'&&Object.hasOwn(Object.getOwnPropertyDescriptor(x,k),'value'));}catch{return false;}};
+const plain=x=>{try{return !!x&&typeof x==='object'&&!Array.isArray(x)&&!isProxy(x)&&Object.getPrototypeOf(x)===Object.prototype&&Reflect.ownKeys(x).every(k=>typeof k==='string'&&Object.hasOwn(Object.getOwnPropertyDescriptor(x,k),'value'));}catch{return false;}};
 const here=path.dirname(fileURLToPath(import.meta.url));
 function independentReadback(stageDirectory,expected,seedFile){
  const script=String.raw`
@@ -75,7 +76,7 @@ function localChallenge(root){
  * provider by the caller; checkout-backed fixtures are SOFTWARE proof only.
  */
 export async function runK1PreOwner(q,port={}){
- if(!plain(q)||q.schema!==K1_SCHEMA||q.requestedCarrier!=='SAME_NODE_CALLBACKS')
+ if(!plain(q)||q.schema!==K1_SCHEMA||q.phase!=='POST_ACCEPT'||q.requestedCarrier!=='SAME_NODE_CALLBACKS')
   return stop('K1_PROFILE_OR_CARRIER_UNBOUND');
  if(!plain(port)||['readMain','readCommit','readTree','readPinned'].some(k=>typeof port[k]!=='function'))
   return stop('K1_SOURCE_CALLBACKS_UNBOUND');
