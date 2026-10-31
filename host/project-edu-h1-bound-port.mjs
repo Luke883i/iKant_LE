@@ -132,7 +132,24 @@ export function reserveH1HumanEvent({privateRoot,sourceHead,humanTurnRef}={}){
 }
 
 /** Original effect only. No E16 issuer replacement or alternative owner injection. */
+function preflightDurableEvent(q,port){
+ const root=port?.privateRoot,ref=q?.humanTurnRef;
+ if(typeof root!=='string'||!path.isAbsolute(root)||typeof ref!=='string'||
+    !/^[A-Za-z0-9_-]{16,160}$/u.test(ref))return stop('H1_DURABLE_EVENT_BINDING_REQUIRED');
+ try{
+  const st=fs.lstatSync(root);
+  if(!st.isDirectory()||st.isSymbolicLink()||(st.mode&0o077)!==0||
+     fs.realpathSync(root)!==root||
+     (process.getuid&&st.uid!==process.getuid()))return stop('H1_PRIVATE_ROOT_INVALID');
+  const name=digest(q.sourceHead+'\0'+ref);
+  if(fs.existsSync(path.join(root,'accept-'+name)))
+   return stop('H1_EVENT_ALREADY_RESERVED_OR_UNKNOWN_NO_REPLAY');
+ }catch{return stop('H1_PRIVATE_ROOT_INVALID');}
+ return null;
+}
 export async function runH1OriginalAdmission(q,port){
+ const gate=validateH1Gate(q);if(gate)return stop(gate);
+ const preflight=preflightDurableEvent(q,port);if(preflight)return preflight;
  let original,files;
  try{
   ({runC72ProjectE16Ingress:original}=await import('./project-c72-e16-unified-ingress.mjs'));
