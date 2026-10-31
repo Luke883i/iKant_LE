@@ -1,3 +1,4 @@
+import {assertSevenThreePrompt} from './project-prompt-seven-three-guard.mjs';
 #!/usr/bin/env node
 /** One exact Git HEAD -> immutable Project prompt artifacts; not an installer. */
 import fs from 'node:fs';
@@ -81,7 +82,7 @@ if(!Array.isArray(routes)||routes.length!==13||
  throw Error('PROMPT_RESPONSIBILITY_MATRIX_INVALID');
 for(const row of routes){
  const raw=original(row.module).toString('utf8');
- if(row.export===null){if(row.route!=='ENGINEERING'||!raw.includes('HOST_ENGINEERING.'))
+ if(row.export===null){if(row.route!=='ENGINEERING'||!raw.includes('HOST_ENGINEERING'))
   throw Error('PROMPT_HOST_ENGINEERING_OWNER_MISSING');continue}
  if(typeof row.export!=='string'||!/^[A-Za-z][A-Za-z0-9_]*$/.test(row.export)||
   !new RegExp('export\\s+(?:async\\s+)?(?:function|const|class)\\s+'+row.export+'\\b').test(raw))
@@ -90,8 +91,8 @@ for(const row of routes){
 const members=[...new Set([...matrix.required_orientation,matrix.source_prompt,
  matrix.oneshell_contract,...CRITICAL,matrix.host_port_standard,
  'host/project-c72-capability-port.mjs',matrix.host_port_cli,
- 'contracts/project-prompt-generation.json'])];
-if(members.length!==13)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
+ 'contracts/project-prompt-generation.json','scripts/project-prompt-seven-three-guard.mjs'])];
+if(members.length!==14)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
 const refs={};
 for(const p of members){
  if(!/^[A-Za-z0-9._/-]+$/.test(p)||p.split('/').some(s=>s===''||s==='..'))
@@ -106,18 +107,7 @@ if(matrix.project_instruction_limit_chars!==8000||
  [...source].length>matrix.project_instruction_limit_chars||
  Buffer.byteLength(source,'utf8')>matrix.project_instruction_limit_utf8_bytes)
  throw Error('PROJECT_INSTRUCTIONS_EXCEED_8000');
-for(const word of ['OneShell','NO_VOICE','I ACCEPT','CANONICAL','EDU','P1','project-repo-loader',
- 'STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION',
- 'INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','EXPLICIT_REPIN_REQUIRES_FRESH_C72',
- 'project/session-chat/PROMPT.txt',
- 'RIENTRO POST-ACCEPT P0','host/project-c72-host-recovery.mjs',
- 'host/project-c72-postaccept-reentry.mjs','host/project-oneshell-emission.mjs','HOST_ENGINEERING.','mostra i cinque SHA in PROVA',
- 'executeC72PostAcceptRecovery','AUTO significa eseguire e osservare',
- 'project-c72-capability-port.mjs','project-c72-portable-cli.mjs',
- 'C72_SOURCE_BRIDGE_UNBOUND','senza invio osservato NON dire trasferimento fallito',
- 'MEMORIA HOST SENZA AUTORITÀ','contracts/project-host-followthrough.json','PR merged',
- 'project-c72-physical-ingress.mjs','HTTPS GitHub in Node'])
- if(!source.includes(word))throw Error('PROMPT_REQUIRED_SEMANTIC_ANCHOR_MISSING:'+word);
+assertSevenThreePrompt(source);
 async function liveHead(){
  return new Promise((resolve,reject)=>{
   const req=https.get('https://api.github.com/repos/Luke883i/iKant_LE/git/ref/heads/main',

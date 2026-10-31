@@ -12,8 +12,8 @@ test('single source of truth: no preaccept tree exception in prompt, contract or
  const guard=JSON.parse(read('contracts/project-c72-preaccept-gate.json'));
  assert.equal(matrix.orientation_read_scope,'ONLY_HEAD_AND_FIVE_PINNED_DOCUMENTS_PREACCEPT_NO_TREE_OR_BLOBS');
  assert(generator.includes(matrix.orientation_read_scope));
- for(const word of ['GATE ANTICIPATO.','ZERO letture','MAI scaricarlo pre-consenso',
-  'non ricostruire l’introduzione','HARD senza esito owner'])assert(prompt.includes(word),word);
+ for(const word of ['A1 CLASSIFICA.','ZERO letture','NO TREE/storia/extra/script/gateway scaricato',
+  'riporta ricevuta+introduzione INTEGRE','HARD senza owner'])assert(prompt.includes(word),word);
  assert(!prompt.includes('PROMPT_BLOB_TREE_METADATA_ALLOWED'));
  assert.equal(guard.gateway_can_prove_global_host_tool_exclusivity,false);
  assert.equal(guard.acceptance,'ORIGINAL_C72_V2_ONLY');
