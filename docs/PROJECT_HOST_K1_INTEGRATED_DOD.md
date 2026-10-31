@@ -42,3 +42,7 @@ Original H1/E16/source seed paths are not changed. No cleanup, delete, repin, mo
 - [ ] Real ChatGPT tool installation ID and invocation physically verified (separate field evidence).
 - [ ] Authenticated GitHub connector→target transfer and independent challenge readback (field).
 - [ ] Installed prompt equivalence verified after merge, not inferred from source.
+
+## Explicit local installation (K1 software closure)
+
+`node scripts/project-host-k1-install-cli.mjs --repo "$PWD" --head "$(git rev-parse HEAD)" --target "$NEW_PRIVATE_ABSOLUTE_PATH"` performs a Git-object-pinned local installation of twelve original/adapter dependency files. It prevalidates every blob, writes exclusively with fsync and independently reopens SHA-1 identities. The installer produces `K1_PRIVATE_NODE_INSTALLATION_ONLY` and never a native ChatGPT tool or issuer. The target must not already exist; any unknown write is terminal without blind retry. The Node 20/22 CI additionally executes this installer and imports the installed K1 module.
