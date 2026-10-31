@@ -32,7 +32,18 @@ test('8+1 original Git bytes, C72/v2 accepted and introduction reopened; replay 
    const bytes=fs.readFileSync(path.join(root,p));
    return {encoding:'utf-8',content:bytes.toString('utf8'),sha:gitSha(bytes)};
   };
-  const result=await runH1OriginalAdmission(q,{readMain,readPinned,privateRoot});
+  const treeSha=execFileSync('git',['rev-parse','HEAD^{tree}'],{cwd:root,encoding:'utf8'}).trim();
+  const rawTree=execFileSync('git',['ls-tree','-r','-z','HEAD'],{cwd:root,encoding:'utf8'});
+  const entries=rawTree.split('\0').filter(Boolean).map(line=>{
+   const sep=line.indexOf('\t'),[mode,type,sha]=line.slice(0,sep).split(' ');
+   return {mode,type,sha,path:line.slice(sep+1)};
+  });
+  const readCommit=async ({ref})=>{assert.equal(ref,sourceHead);return {sha:sourceHead,tree:{sha:treeSha}}};
+  const readTree=async ({sha,recursive})=>{
+   assert.equal(sha,treeSha);assert.equal(recursive,true);
+   return {sha:treeSha,truncated:false,tree:entries};
+  };
+  const result=await runH1OriginalAdmission(q,{readMain,readPinned,readCommit,readTree,privateRoot});
   assert.equal(result.ok,true,JSON.stringify({kind:result.kind,edge:result.edge}));
   assert.equal(result.original_owner_invoked,true);
   assert.equal(result.verified_file_count,9);
@@ -43,7 +54,7 @@ test('8+1 original Git bytes, C72/v2 accepted and introduction reopened; replay 
   assert.equal(reopened.ok,true,JSON.stringify(reopened));
   assert.deepEqual(reopened.accepted,result.accepted);
   assert.deepEqual(reopened.introduction,result.introduction);
-  const replay=await runH1OriginalAdmission(q,{readMain,readPinned,privateRoot});
+  const replay=await runH1OriginalAdmission(q,{readMain,readPinned,readCommit,readTree,privateRoot});
   assert.equal(replay.ok,false);
   assert.equal(replay.edge,'H1_EVENT_ALREADY_RESERVED_OR_UNKNOWN_NO_REPLAY');
  }finally{fs.rmSync(privateRoot,{recursive:true,force:true});}

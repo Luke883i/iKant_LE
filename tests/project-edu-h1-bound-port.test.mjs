@@ -22,7 +22,15 @@ function fixture(){
   assert.equal(ref,HEAD);reads.push(p);const b=bytes.get(p);
   return b&&{content:b.toString('utf8'),encoding:'utf-8',sha:gitSha(b)};
  };
- return {q,bytes,reads,readMain,readPinned};
+ const treeSha='c'.repeat(40);
+ const readCommit=async ({ref})=>{assert.equal(ref,HEAD);return {sha:HEAD,tree:{sha:treeSha}}};
+ const readTree=async ({sha,recursive})=>{
+  assert.equal(sha,treeSha);assert.equal(recursive,true);
+  return {sha:treeSha,truncated:false,tree:[...H1_FILES,H1_TRANSIT,H1_SEED].map(p=>({
+   path:p,sha:gitSha(bytes.get(p)),type:'blob',mode:'100644'
+  }))};
+ };
+ return {q,bytes,reads,readMain,readPinned,readCommit,readTree};
 }
 test('absent callbacks are not a connected capability',async()=>{
  const f=fixture();assert.equal((await prepareH1OriginalSources(f.q)).edge,'H1_CAPABILITY_NOT_BOUND');
@@ -86,4 +94,24 @@ test('stable write-once human event reservation denies replay',()=>{
 });
 test('event reservation without a persistent root refuses',()=>{
  assert.equal(reserveH1HumanEvent({sourceHead:HEAD}).edge,'H1_DURABLE_EVENT_BINDING_REQUIRED');
+});
+
+test('self-consistent wrong blob for a different path is denied by HEAD tree',async()=>{
+ const f=fixture(),victim=H1_FILES[5],wrong=f.bytes.get(H1_FILES[6]);
+ const r=await prepareH1OriginalSources(f.q,{...f,readPinned:async a=>{
+  if(a.path===victim)return {content:wrong.toString('utf8'),encoding:'utf-8',sha:gitSha(wrong)};
+  return f.readPinned(a);
+ }});
+ assert.equal(r.edge,'H1_HEAD_PATH_BLOB_MISMATCH:'+victim);
+});
+test('truncated tree and mismatched commit are fail-closed before source read',async()=>{
+ const f=fixture();const bad=await prepareH1OriginalSources(f.q,{
+  ...f,readTree:async()=>({sha:'c'.repeat(40),truncated:true,tree:[]})
+ });
+ assert.equal(bad.edge,'H1_TREE_COMPLETENESS_UNVERIFIED');
+ assert.equal(f.reads.length,0);
+ const badCommit=await prepareH1OriginalSources(f.q,{
+  ...f,readCommit:async()=>({sha:'f'.repeat(40),tree:{sha:'c'.repeat(40)}})
+ });
+ assert.equal(badCommit.edge,'H1_COMMIT_TREE_LINK_INVALID');
 });
