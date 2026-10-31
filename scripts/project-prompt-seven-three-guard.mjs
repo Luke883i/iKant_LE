@@ -3,15 +3,15 @@ export const LAW_IDS=Object.freeze(['AUTORITÀ','CAPACITÀ','SOURCE_LOCK','GATE 
 export const ACTION_IDS=Object.freeze(['CLASSIFICA','AGISCI','VERIFICA O FERMA']);
 const words=[
  ['Host≠iKant','C72','C135','C87','C125/S03','≠ owner/ricevuta/runtime'],
- ['realmente invocabili QUI','GitHub via connettore/API disponibile','non presupporre HTTPS','STOP_UNBOUND','UNKNOWN≠assente'],
+ ['realmente invocabili QUI','GitHub via connettore/API disponibile','non presupporre HTTPS','STOP_UNBOUND','UNKNOWN≠assente','MACHINE_CAPS={GITHUB_SOURCE,NODE_EXEC,HOST_TOOL_ARGUMENT_COURIER}','CARRIERS={HOST_TOOL_ARG_RELAY>SAME_NODE_CALLBACKS>HOST_SOURCE_PACKET>NODE_GITHUB_HTTPS}','JSON≠binding'],
  ['Luke883i/iKant_LE/main','SHA-1+permalink','Congela HEAD/witness','STOP_SOURCE_LOCK_STALE'],
  ['PRIMO messaggio','ORIENTATION','HOST_ENGINEERING','I ACCEPT⇒C72','EDU/CANONICAL','CANONICAL legacy⇒STOP','EXIT IKANT','CONFERMO EXIT IKANT','ANNULLA EXIT IKANT'],
  ['Avanza ⇔','evento umano distinto','effetto osservato','readback indipendente','ricevuta owner','non certificano origine'],
  ['UNKNOWN⇒STOP senza retry','POST-ACCEPT','mai consenso/stato/receipt','C87/checkpoint'],
  ['ESITO | A | B | PROVA | EDGE | NEXT','NO_VOICE','owner-bound','Host:','@Host','SEMANTIC_RETENTION_NOT_ATTESTED'],
  ['ORIENTATION','GitHub tool disponibile','SOLO HEAD','README.md, BOOTSTRAP.json, ADMISSION.json, AGENTS.md, TERMS.md','cinque SHA in PROVA','ZERO letture','NO TREE','gateway scaricato','STOP'],
- ['I ACCEPT autentico','GitHub connector→argomento tool→file privato/Node','PROJECT_EDU_E15','sourcePacket (8 blob)','transitSourcePacket (carrier)','10/10','9/9','C72 originale UNA volta','INTEGRE','Dopo EDU distinto','project/session-chat/PROMPT.txt','C135/C87/C125/S03'],
- ['original required_ack','stesso turno','C72_SOURCE_BRIDGE_UNBOUND','INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION','PR merged','POST-MERGE','EXPLICIT_REPIN_REQUIRES_FRESH_C72']
+ ['I ACCEPT autentico','GOLD_FIRST','MACHINE_POST_ACCEPT=contracts/project-host-tool-grounding-abi.json','probe fisico obbligatorio','No ricerche web o LZ77 improvvisati','GitHub connector→argomento tool→file privato/Node','PROJECT_EDU_E15','sourcePacket (8 blob)','transitSourcePacket (carrier)','10/10','9/9','C72 originale UNA volta','INTEGRE','Dopo EDU distinto','project/session-chat/PROMPT.txt','C135/C87/C125/S03'],
+ ['original required_ack','stesso turno','NEGATIVE={TOOL_GUESSED,TWO_TOOLS_AUTO_BRIDGE,UNOBSERVED_TRANSFER,SELF_SIGNED_SHA,OWNER_UNKNOWN,FAKE_RECEIPT}','piano≠esecuzione','C72_SOURCE_BRIDGE_UNBOUND','INSTALLED_PROMPT_EQUIVALENCE_UNKNOWN','STOP_PROMPT_HEAD_PREFLIGHT','STOP_PROJECT_PROMPT_STALE_INSTALLATION','PR merged','POST-MERGE','EXPLICIT_REPIN_REQUIRES_FRESH_C72']
 ];
 const fail=code=>{throw Error('PROMPT_7X3_'+code)};
 export function assertSevenThreePrompt(raw){

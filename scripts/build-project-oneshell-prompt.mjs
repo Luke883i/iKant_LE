@@ -91,8 +91,9 @@ for(const row of routes){
 const members=[...new Set([...matrix.required_orientation,matrix.source_prompt,
  matrix.oneshell_contract,...CRITICAL,matrix.host_port_standard,
  'host/project-c72-capability-port.mjs',matrix.host_port_cli,
- 'contracts/project-prompt-generation.json','scripts/project-prompt-seven-three-guard.mjs'])];
-if(members.length!==14)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
+ 'contracts/project-prompt-generation.json','scripts/project-prompt-seven-three-guard.mjs',
+ 'contracts/project-host-tool-grounding-abi.json','host/project-host-tool-grounding.mjs'])];
+if(members.length!==16)throw Error('PROMPT_ANCHOR_MATRIX_INVALID');
 const refs={};
 for(const p of members){
  if(!/^[A-Za-z0-9._/-]+$/.test(p)||p.split('/').some(s=>s===''||s==='..'))

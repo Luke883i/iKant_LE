@@ -26,7 +26,8 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.deepEqual(matrix.head_critical_contracts,
    ['contracts/project-oneshell-compact-continuity.json','contracts/project-oneshell-visual-v2.json']);
   for(const p of [...matrix.head_critical_contracts,matrix.host_port_standard,
-   'host/project-c72-capability-port.mjs',matrix.host_port_cli]){
+   'host/project-c72-capability-port.mjs',matrix.host_port_cli,
+    'contracts/project-host-tool-grounding-abi.json','host/project-host-tool-grounding.mjs']){
    assert.equal(receipt.source_blobs[p].git_blob_sha1,git('rev-parse','HEAD:'+p));
    assert.equal(receipt.source_blobs[p].bytes,
     execFileSync('git',['show','HEAD:'+p]).length);
@@ -39,6 +40,8 @@ test('one HEAD gives byte identical generated prompt and receipts; no stale or m
   assert.equal(lock.live_main_verified,false);
 
   assert(p.includes(head)&&p.includes(tree)&&p.includes('OneShell'));
+  assert(p.includes('MACHINE_POST_ACCEPT=contracts/project-host-tool-grounding-abi.json'));
+  assert(p.includes('HOST_TOOL_ARG_RELAY'));
   assert.equal(receipt.product_release,'PRODUCT_NO_GO');assert.equal(receipt.live_main_verified,false);
   assert.notEqual(run('candidate','f'.repeat(40),tree,path.join(dir,'wrong-head')).status,0);
   assert.notEqual(run('candidate',head,'f'.repeat(40),path.join(dir,'wrong-tree')).status,0);

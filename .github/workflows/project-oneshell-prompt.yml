@@ -37,6 +37,24 @@ jobs:
           path: ${{ runner.temp }}/what11-a.json
           if-no-files-found: error
           retention-days: 30
+      - name: Machine-readable Gold-first grounding and original C72 stager
+        run: |
+          node --test tests/project-host-tool-grounding.test.mjs
+          node --test tests/project-c72-host-assisted-local-file.test.mjs
+      - name: 100k pre-seeded grounding mutations repeated byte-identically
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/project-host-tool-grounding-falsify-100k.mjs > "$RUNNER_TEMP/grounding-a.json"
+          node scripts/project-host-tool-grounding-falsify-100k.mjs > "$RUNNER_TEMP/grounding-b.json"
+          cmp "$RUNNER_TEMP/grounding-a.json" "$RUNNER_TEMP/grounding-b.json"
+          node --input-type=module -e "import fs from 'node:fs';const x=JSON.parse(fs.readFileSync(process.argv[1]));if(x.cases!==100000||x.unique_states!==100000||x.unexpected!==0||x.privileged_promotions!==0||x.actual_c72_invocations!==0||x.release!=='PRODUCT_NO_GO')process.exit(1)" "$RUNNER_TEMP/grounding-a.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: host-tool-grounding-100k
+          path: ${{ runner.temp }}/grounding-a.json
+          if-no-files-found: error
+          retention-days: 30
       - name: Original C72 portable bridge
         run: node --test tests/project-c72-portable-bridge.test.mjs
       - name: Original C72 physical ingress
