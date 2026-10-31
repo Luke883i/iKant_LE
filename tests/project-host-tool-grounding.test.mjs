@@ -78,7 +78,11 @@ test('20+ structural faults in machine contract cannot mint a usable route',()=>
   c=>{c.truth.product='PRODUCT_GO'},
   c=>{c.no_native_provider_installation_claim=false},
   c=>{c.no_attested_host_tool_binding_from_json=false},
-  c=>{c.no_synthetic_consent=false}
+  c=>{c.no_synthetic_consent=false},
+  c=>{delete c.receiver_abi},
+  c=>{c.receiver_abi.operations.put.schema='not-original'},
+  c=>{c.receiver_abi.command='invented executable'},
+  c=>{c.receiver_abi.no_new_receiver=false}
  ];
  for(const mutation of mutations){
   const copy=structuredClone(originalMap);mutation(copy);

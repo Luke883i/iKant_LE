@@ -33,6 +33,23 @@ export function validateGroundingMap(c=map){
  if(carriers[0].receiver!=='scripts/project-c72-verified-staging.mjs'||
     carriers[0].receive_ops.join('|')!=='init|put|put-local|verify')
   fail('ORIGINAL_STAGER_NOT_BOUND');
+ const a=c.receiver_abi;
+ if(!plain(a)||a.command!=='node scripts/project-c72-verified-staging.mjs'||
+  a.transport!=='ONE_UTF8_JSON_ON_STDIN_POST_ACCEPT_ONLY'||
+  a.original_stager!==carriers[0].receiver||!plain(a.operations)||
+  Object.keys(a.operations).join('|')!=='init|put|put-local|verify'||
+  !Array.isArray(a.preflight)||a.preflight.length!==4||
+  !Array.isArray(a.readback)||a.readback.length!==3||
+  a.no_new_receiver!==true)
+  fail('ORIGINAL_STAGER_ABI_INVALID');
+ const pairs=[['init','ikant-host-c72-verified-staging/v1'],
+  ['put','ikant-host-c72-verified-put/v1'],
+  ['put-local','ikant-host-c72-verified-put-local/v1'],
+  ['verify','ikant-host-c72-verified-verify/v1']];
+ for(const [op,schema] of pairs)
+  if(!plain(a.operations[op])||a.operations[op].op!==op||
+     a.operations[op].schema!==schema)fail('STAGER_OP_SCHEMA_'+op);
+
  if(!Array.isArray(steps)||steps.length!==6||
     steps.map(x=>x.id).join('|')!=='REOPEN_PIN|BOUND_TOOLS|TRANSFER|STAGE8|CLOSURE|ORIGINAL_OWNER'||
     steps.some((x,i)=>!plain(x)||x.seq!==i+1||!x.action||!x.proof||

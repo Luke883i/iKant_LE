@@ -221,5 +221,52 @@
   ],
   "no_native_provider_installation_claim": true,
   "no_attested_host_tool_binding_from_json": true,
-  "no_synthetic_consent": true
+  "no_synthetic_consent": true,
+  "receiver_abi": {
+    "command": "node scripts/project-c72-verified-staging.mjs",
+    "transport": "ONE_UTF8_JSON_ON_STDIN_POST_ACCEPT_ONLY",
+    "original_stager": "scripts/project-c72-verified-staging.mjs",
+    "operations": {
+      "init": {
+        "op": "init",
+        "schema": "ikant-host-c72-verified-staging/v1",
+        "stageDirectory": "<fresh-private-absolute-path>",
+        "source_head": "<frozen-HEAD-SHA1>",
+        "expectedBlobShas": "<8-original-Git-tree-path-to-blob-SHA>",
+        "priorTurnEvidence": "<first-turn-witness>"
+      },
+      "put": {
+        "op": "put",
+        "schema": "ikant-host-c72-verified-put/v1",
+        "stageDirectory": "<private-stage>",
+        "path": "<one-of-original-8-paths>",
+        "contentBase64": "<canonical-base64-from-original-GitHub-source-tool-output>"
+      },
+      "put-local": {
+        "op": "put-local",
+        "schema": "ikant-host-c72-verified-put-local/v1",
+        "stageDirectory": "<private-stage>",
+        "path": "<one-of-original-8-paths>",
+        "sourceFile": "<real-0600-non-symlink-absolute-file-written-via-tool-argument>"
+      },
+      "verify": {
+        "op": "verify",
+        "schema": "ikant-host-c72-verified-verify/v1",
+        "stageDirectory": "<private-stage>"
+      }
+    },
+    "preflight": [
+      "POST_ACCEPT_ONLY",
+      "LIVE_HEAD_EQUALS_FIRST_HEAD",
+      "FIRST_FIVE_SHA_COVERED_BY_WITNESS",
+      "NO_UNOBSERVED_TOOL_CALL"
+    ],
+    "readback": [
+      "NATIVE_NODE_RESULT_READ",
+      "8_OF_8_ORIGINAL_GIT_BLOB_SHA",
+      "NO_ORIGINAL_OWNER_INVOKED"
+    ],
+    "post_stage": "HAND_OFF_TO_EXISTING_E16_FOR_TRANSIT_AND_SEED_ORIGINAL_OWNER_ONLY",
+    "no_new_receiver": true
+  }
 }
