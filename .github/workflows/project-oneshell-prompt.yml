@@ -23,18 +23,36 @@ jobs:
         run: node --test tests/project-oneshell-prompt.test.mjs
       - name: Project responsibility matrix
         run: node --test tests/project-bootstrap-responsibility-matrix.test.mjs
-      - name: WHAT-first eleven obligations and one million seeded cases twice
+      - name: Constitutional 7 laws + 3 actions, one million seeded cases twice
         shell: bash
         run: |
           set -euo pipefail
-          node scripts/project-prompt-eleven-falsify-1m.mjs > "$RUNNER_TEMP/what11-a.json"
-          node scripts/project-prompt-eleven-falsify-1m.mjs > "$RUNNER_TEMP/what11-b.json"
+          node scripts/project-prompt-seven-three-falsify-1m.mjs > "$RUNNER_TEMP/what11-a.json"
+          node scripts/project-prompt-seven-three-falsify-1m.mjs > "$RUNNER_TEMP/what11-b.json"
           cmp "$RUNNER_TEMP/what11-a.json" "$RUNNER_TEMP/what11-b.json"
-          node --input-type=module -e "import fs from 'node:fs';const q=JSON.parse(fs.readFileSync(process.argv[1]));if(q.cases!==1000000||q.families!==40||q.divergences!==0||q.unsafe_promotions!==0||q.prompt_command_errors.length||q.llm_adherence_proved!==false)process.exit(1)" "$RUNNER_TEMP/what11-a.json"
+          node --input-type=module -e "import fs from 'node:fs';const q=JSON.parse(fs.readFileSync(process.argv[1]));if(q.scenarios!==1000000||q.unique_masks!==1000000||q.families!==40||q.divergences!==0||q.unsafe_promotions!==0||q.structural_counterexamples!==q.structurally_rejected||q.installed_prompt_attested!==false)process.exit(1)" "$RUNNER_TEMP/what11-a.json"
       - uses: actions/upload-artifact@v4
         with:
-          name: what-first-11-seeded-one-million
+          name: prompt-7x3-seeded-one-million
           path: ${{ runner.temp }}/what11-a.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Machine-readable Gold-first grounding and original C72 stager
+        run: |
+          node --test tests/project-host-tool-grounding.test.mjs
+          node --test tests/project-c72-host-assisted-local-file.test.mjs
+      - name: 100k pre-seeded grounding mutations repeated byte-identically
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/project-host-tool-grounding-falsify-100k.mjs > "$RUNNER_TEMP/grounding-a.json"
+          node scripts/project-host-tool-grounding-falsify-100k.mjs > "$RUNNER_TEMP/grounding-b.json"
+          cmp "$RUNNER_TEMP/grounding-a.json" "$RUNNER_TEMP/grounding-b.json"
+          node --input-type=module -e "import fs from 'node:fs';const x=JSON.parse(fs.readFileSync(process.argv[1]));if(x.cases!==100000||x.unique_states!==100000||x.unexpected!==0||x.privileged_promotions!==0||x.actual_c72_invocations!==0||x.release!=='PRODUCT_NO_GO')process.exit(1)" "$RUNNER_TEMP/grounding-a.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: host-tool-grounding-100k
+          path: ${{ runner.temp }}/grounding-a.json
           if-no-files-found: error
           retention-days: 30
       - name: Original C72 portable bridge

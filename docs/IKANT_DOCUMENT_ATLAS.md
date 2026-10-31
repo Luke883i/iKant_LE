@@ -184,6 +184,7 @@
 - [docs/PROJECT_HOST_K0_WHAT_HOW_R4.md](PROJECT_HOST_K0_WHAT_HOW_R4.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_HOST_K1_CONSTITUTIONAL_EVIDENCE.md](PROJECT_HOST_K1_CONSTITUTIONAL_EVIDENCE.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_HOST_K1_INTEGRATED_DOD.md](PROJECT_HOST_K1_INTEGRATED_DOD.md): Documentazione specialistica. Stato di review: **da verificare**.
+- [docs/PROJECT_HOST_TOOL_GROUNDING_ABI.md](PROJECT_HOST_TOOL_GROUNDING_ABI.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_META_PROMPT_COBOL.md](PROJECT_META_PROMPT_COBOL.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_P0_BRAND_C72_HOST_ENFORCEMENT.md](PROJECT_P0_BRAND_C72_HOST_ENFORCEMENT.md): Documentazione specialistica. Stato di review: **da verificare**.
 - [docs/PROJECT_SESSION_REPO_FIRST.md](PROJECT_SESSION_REPO_FIRST.md): Documentazione specialistica. Stato di review: **da verificare**.

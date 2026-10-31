@@ -47,8 +47,8 @@ test('PR163 rebase: short Project prompt obeys 8k and preaccept scope',()=>{
  assert([...p].length<=8000);
  assert(Buffer.byteLength(p,'utf8')<=8000);
  assert(Buffer.byteLength(p,'utf8')+210<=8000,'pinned HEAD/TREE variant overhead');
- for(const anchor of ['VIETATI pre-consenso Tree API','SOLO POST-MODE','congela l\'orientamento',
-    'badge di stato non interattivo','CONFINE HOST/IKANT.','required_ack','SEMANTIC_RETENTION_NOT_ATTESTED'])
+ for(const anchor of ['Pre-consenso NO TREE','POST-ACCEPT','dopo Terms ZERO letture',
+    'ESITO | A | B | PROVA | EDGE | NEXT','B=Host, solo checkup/documentazione','required_ack','SEMANTIC_RETENTION_NOT_ATTESTED'])
   assert(p.includes(anchor),anchor);
  assert(!p.includes('tinta rossa tenue'));
 });

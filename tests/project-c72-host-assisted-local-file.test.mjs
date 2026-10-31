@@ -72,9 +72,9 @@ test('tool-assisted local input is unsafe on relative path, public file, symlink
 });
 test('portable project prompt routes callable Host tool to physical relay before STOP',()=>{
  const p=fs.readFileSync(new URL('../project/session-chat/PROMPT.txt',import.meta.url),'utf8');
- for(const s of ['tenta PRIMA di STOP','Host→file privato→SHA','put-local',
-  'non servono DNS Node o adapter persistente','C72_SOURCE_BRIDGE_UNBOUND',
-  'senza invio osservato NON dire trasferimento fallito'])
+ for(const s of ['GitHub connector→argomento tool→file privato/Node','senza richiedere DNS Node',
+  'C72_SOURCE_BRIDGE_UNBOUND','readback (10/10 originali',
+  'GitHub tool disponibile','Tool non vincolato⇒STOP_UNBOUND'])
   assert(p.includes(s),s);
  assert(Buffer.byteLength(p,'utf8')<=8000);
 });
