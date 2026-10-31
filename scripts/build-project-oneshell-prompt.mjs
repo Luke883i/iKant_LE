@@ -1,5 +1,5 @@
-import {assertSevenThreePrompt} from './project-prompt-seven-three-guard.mjs';
 #!/usr/bin/env node
+import {assertSevenThreePrompt} from './project-prompt-seven-three-guard.mjs';
 /** One exact Git HEAD -> immutable Project prompt artifacts; not an installer. */
 import fs from 'node:fs';
 import path from 'node:path';
