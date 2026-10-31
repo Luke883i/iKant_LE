@@ -43,7 +43,7 @@ test('human distinct consent, owner outcome, source epoch cannot be reconstructe
 });
 test('live HEAD mismatch stops before any source acquisition',async()=>{
  const f=fixture(),r=await prepareH1OriginalSources(f.q,{
-  readMain:async()=>({object:{sha:'f'.repeat(40)}}),readPinned:f.readPinned
+  ...f,readMain:async()=>({object:{sha:'f'.repeat(40)}}),readPinned:f.readPinned
  });
  assert.equal(r.edge,'STOP_SOURCE_LOCK_STALE');assert.equal(f.reads.length,0);
 });
