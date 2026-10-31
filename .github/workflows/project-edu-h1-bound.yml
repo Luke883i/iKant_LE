@@ -33,7 +33,7 @@ jobs:
           node scripts/project-source-manifest.mjs verify
       - name: Original C72 and H1 physical staging
         run: |
-          node --test tests/project-edu-h1-bound-port.test.mjs tests/project-edu-h1-original.test.mjs
+          node --test tests/project-edu-h1-bound-port.test.mjs tests/project-edu-h1-original.test.mjs tests/project-edu-h1-dod-trace.test.mjs
           node --test tests/project-c72-e16-unified-ingress.test.mjs tests/project-c72-e16-unified-original.test.mjs
           node --test tests/project-oneshell-e15-sterile.test.mjs tests/project-c72-receipt-transit.test.mjs
       - name: One thousand candidates and one million deterministic guards
