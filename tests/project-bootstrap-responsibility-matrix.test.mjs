@@ -15,7 +15,7 @@ function ownerCheck(rows){
    !/^[A-Za-z0-9._/-]+$/.test(row.module||''))return false;
   let code;
   try{code=sourceCache.get(row.module);if(typeof code!=='string')return false}catch{return false}
-  if(row.export===null){if(row.route!=='ENGINEERING'||!code.includes('HOST_ENGINEERING.'))return false;continue}
+  if(row.export===null){if(row.route!=='ENGINEERING'||!code.includes('HOST_ENGINEERING'))return false;continue}
   if(!/^[A-Za-z][A-Za-z0-9_]*$/.test(row.export||'')||
    !new RegExp('export\\s+(?:async\\s+)?(?:function|const|class)\\s+'+row.export+'\\b').test(code))return false;
  }
@@ -53,10 +53,10 @@ test('portable release and runtime reauthorization are not interchangeable',()=>
  assert.equal(matrix.no_auto_repin,true);
  assert.equal(boot.host_engineering,'SEPARATE_ENGINEERING_HEAD_NO_C72_OR_IKANT_RUNTIME');
  const prompt=read(matrix.source_prompt);
- assert(prompt.includes('PROMPT INNESCO: genera solo POST-MERGE'));
+ assert(prompt.includes('PR merged + richiesta Host')&&prompt.includes('POST-MERGE'));
  assert(prompt.includes('EXPLICIT_REPIN_REQUIRES_FRESH_C72'));
- assert(prompt.includes('GATE ANTICIPATO.'));
- assert(prompt.includes('badge di stato non interattivo'));
+ assert(prompt.includes('A1 CLASSIFICA.'));
+ assert(prompt.includes('ESITO | A | B | PROVA | EDGE | NEXT'));
  assert.equal(Buffer.byteLength(prompt,'utf8')+210<=8000,true);
 });
 test('10,000 independently evaluated mutated mapping cases are rejected and traceable',()=>{
@@ -89,7 +89,7 @@ test('10,000 independently evaluated mutated mapping cases are rejected and trac
 
 test('E16 Project host prompt distinguishes eight-source packet from ninth transit carrier',()=>{
  const prompt=read(matrix.source_prompt);
- assert(prompt.includes('\`sourcePacket\` (8 blob), \`transitSourcePacket\` (carrier)'));
+ assert(prompt.includes('sourcePacket (8 blob), transitSourcePacket (carrier)'));
  const pin=boot.postaccept_original_c72_transit_pin;
  assert.equal(pin?.path,'host/project-c72-receipt-transit.mjs');
  assert.match(pin?.blob_sha1||'',/^[0-9a-f]{40}$/u);

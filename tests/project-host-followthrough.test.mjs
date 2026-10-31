@@ -36,12 +36,12 @@ test('one linked HEAD contract appears in BOOTSTRAP, prompt matrix and prompt on
  assert.equal(boot.host_followthrough_rule,'READONLY_AFTER_MODE_OWNER_READBACK_FIRST_NO_NEW_PERSISTENCE_OR_AUTHORITY');
  assert.equal(matrix.host_followthrough_policy,'HOST_READONLY_FROM_ORIGINAL_RECEIPTS_NOT_STORAGE');
  assert.equal(matrix.postmerge_human_trigger,'PR merged');
- assert(prompt.includes('MEMORIA HOST SENZA AUTORITÀ.'));
- assert(prompt.includes('SOLO POST-MODE usa `contracts/project-host-followthrough.json`'));
- assert(prompt.includes('Solo nuovo messaggio Host `PR merged` dopo merge'));
- assert(prompt.indexOf('MEMORIA HOST SENZA AUTORITÀ.')>prompt.indexOf('BOOTSTRAP EDU AUTOMATICO.'));
- assert(prompt.indexOf('GATE ANTICIPATO.')<prompt.indexOf('AMMISSIONE C72/v2.'));
- assert(prompt.includes('CANONICAL legacy: STOP'));
+ assert(prompt.includes('Registro Host solo tecnico POST-ACCEPT'));
+ assert(prompt.includes('mai consenso/stato/receipt'));
+ assert(prompt.includes('PR merged + richiesta Host'));
+ assert(prompt.indexOf('Registro Host solo tecnico POST-ACCEPT')>prompt.indexOf('L4 GATE UMANI.'));
+ assert(prompt.indexOf('L3 SOURCE_LOCK.')<prompt.indexOf('A1 CLASSIFICA.'));
+ assert(prompt.includes('CANONICAL legacy⇒STOP'));
  assert(Buffer.byteLength(prompt,'utf8')+210<=8000);
  assert.equal(execFileSync('git',['show','HEAD:'+matrix.source_prompt],{encoding:'utf8'}),prompt);
 });
