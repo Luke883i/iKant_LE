@@ -30,7 +30,7 @@ export function declareEduExperimentalBoundary(options={}){
  const waivers=options.waivers===undefined?[]:options.waivers;
  if(!Array.isArray(waivers)||isProxy(waivers)||waivers.length>10||
    Object.keys(waivers).length!==waivers.length||
-   waivers.some((_,i)=>!Object.hasOwn(Object.getOwnPropertyDescriptor(waivers,String(i))||{},'value'))||
+   Object.keys(waivers).some(k=>!Object.hasOwn(Object.getOwnPropertyDescriptor(waivers,k)||{},'value'))||
    new Set(waivers).size!==waivers.length||
    waivers.some(id=>typeof id!=='string'||!Object.hasOwn(EXPERIMENTAL_NONCLAIMS,id)))
   return deny('EDU_UNSUPPORTED_EXPERIMENTAL_WAIVER');
@@ -46,8 +46,10 @@ export function declareEduExperimentalBoundary(options={}){
  * inside startOneShellEdu. Even a PASS is a Host consistency check, not an
  * independent issuer of C135/C87 receipts or provider delivery.
  */
-export function checkEduExperimentalOriginalTurn({turn,frame,c125Bytes,readback}={}){
+export function checkEduExperimentalOriginalTurn(input={}){
  try{
+  if(!plain(input))return deny('EDU_BOUNDARY_UNSAFE_OR_UNREADABLE_EVIDENCE');
+  const {turn,frame,c125Bytes,readback}=input;
   if(!plain(turn)||!plain(frame)||!plain(readback)||
      turn.ok!==true||turn.active!==false||turn.native_event_attested!==false||
      typeof frame.humanInput!=='string'||typeof frame.nonce!=='string'||
@@ -63,9 +65,9 @@ export function checkEduExperimentalOriginalTurn({turn,frame,c125Bytes,readback}
      origin.input_sha256!==hash(frame.humanInput)||
      origin.output_sha256!==hash(s.original_voice_utf8)||
      typeof c125Bytes!=='string'||c125Bytes!==s.c125_original_bytes||
-     s.original_voice_utf8!==c125Bytes||
-     s.original_voice_sha256!==hash(c125Bytes)||
-     r.latest_state.visible_voice_sha256!==hash(c125Bytes))
+     s.original_voice_sha256!==hash(s.original_voice_utf8)||
+     s.c125_original_sha256!==hash(c125Bytes)||
+     r.latest_state.visible_voice_sha256!==hash(s.original_voice_utf8))
     return deny('EDU_BOUNDARY_OWNER_READBACK_MISMATCH');
   const open=origin.c140_open_route===true;
   if(open){

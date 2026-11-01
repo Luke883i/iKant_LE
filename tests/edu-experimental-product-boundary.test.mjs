@@ -4,11 +4,11 @@ import {createHash} from 'node:crypto';
 import {declareEduExperimentalBoundary,checkEduExperimentalOriginalTurn,EXPERIMENTAL_NONCLAIMS} from '../host/edu-experimental-product-boundary.mjs';
 const h=x=>createHash('sha256').update(x).digest('hex');
 function fixture(open=false){
- const text='EDU local response',input='Question',nonce='nonce_123456789012',event='b'.repeat(64),head='a'.repeat(40);
- return {frame:{humanInput:input,nonce},c125Bytes:text,turn:{ok:true,active:false,native_event_attested:false,
+ const text='EDU local response',shell='<<<VOICE_UTF8_START>>>\n'+text+'\n<<<VOICE_UTF8_END>>>',input='Question',nonce='nonce_123456789012',event='b'.repeat(64),head='a'.repeat(40);
+ return {frame:{humanInput:input,nonce},c125Bytes:shell,turn:{ok:true,active:false,native_event_attested:false,
  source_head:head,c87_before:0,c87_after:1,original_turn:{status:open?'C140_ORIGINAL_C100_C87_LOCAL_READBACK':'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK',
  input_sha256:h(input),output_sha256:h(text),ledger_event_sha256:event,original_c70_executed:!open,...(open?{c140_open_route:true}:{})},
- s03_host_projection:{ok:true,same_turn_local_owner_evidence_checked:true,original_voice_utf8:text,original_voice_sha256:h(text),c125_original_bytes:text}},
+ s03_host_projection:{ok:true,same_turn_local_owner_evidence_checked:true,original_voice_utf8:text,original_voice_sha256:h(text),c125_original_bytes:shell,c125_original_sha256:h(shell)}},
  readback:{original_c87_readback:{count:1,last_hash:event,latest_state:{nonce,source_head:head,visible_voice_sha256:h(text),...(open?{c140_open_route:true,c140_original_c70_executed:false}:{})}}}};
 }
 test('waiver descriptions are negative scope only, never original permissions',()=>{
@@ -39,4 +39,12 @@ test('hostile getters and proxies do not become owner evidence',()=>{
  Object.defineProperty(x.turn,'ok',{enumerable:true,get(){reads++;throw Error('getter');}});
  assert.equal(checkEduExperimentalOriginalTurn(x).ok,false);assert.equal(reads,0);
  assert.equal(declareEduExperimentalBoundary({waivers:new Proxy(['NATIVE_EVENT'],{})}).ok,false);
+});
+
+test('hostile accessor waiver or post-turn input must not execute',()=>{
+ let reads=0;const arr=['NATIVE_EVENT'];Object.defineProperty(arr,'0',{enumerable:true,get(){reads++;throw Error('bad getter');}});
+ assert.equal(declareEduExperimentalBoundary({waivers:arr}).ok,false);
+ const top={};Object.defineProperty(top,'turn',{enumerable:true,get(){reads++;throw Error('bad getter');}});
+ assert.equal(checkEduExperimentalOriginalTurn(top).ok,false);
+ assert.equal(reads,0);
 });

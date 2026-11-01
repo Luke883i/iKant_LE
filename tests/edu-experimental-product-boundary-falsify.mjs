@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {declareEduExperimentalBoundary,checkEduExperimentalOriginalTurn} from '../host/edu-experimental-product-boundary.mjs';
 const H=x=>createHash('sha256').update(x).digest('hex');
-const input='Epistemic question',voice='Guided local answer',nonce='nonce_123456789012',source='a'.repeat(40);
+const input='Epistemic question',voice='Guided local answer',shell='<<<VOICE_UTF8_START>>>\n'+voice+'\n<<<VOICE_UTF8_END>>>',nonce='nonce_123456789012',source='a'.repeat(40);
 function base(open){const event='b'.repeat(64);
- return {frame:{humanInput:input,nonce},c125Bytes:voice,
+ return {frame:{humanInput:input,nonce},c125Bytes:shell,
  turn:{ok:true,active:false,native_event_attested:false,source_head:source,c87_before:0,c87_after:1,
  original_turn:{status:open?'C140_ORIGINAL_C100_C87_LOCAL_READBACK':'C107_ORIGINAL_C70_C100_C87_LOCAL_READBACK',
  input_sha256:H(input),output_sha256:H(voice),ledger_event_sha256:event,original_c70_executed:!open,...(open?{c140_open_route:true}:{})},
- s03_host_projection:{ok:true,same_turn_local_owner_evidence_checked:true,original_voice_utf8:voice,original_voice_sha256:H(voice),c125_original_bytes:voice}},
+ s03_host_projection:{ok:true,same_turn_local_owner_evidence_checked:true,original_voice_utf8:voice,original_voice_sha256:H(voice),c125_original_bytes:shell,c125_original_sha256:H(shell)}},
  readback:{original_c87_readback:{count:1,last_hash:event,latest_state:{nonce,source_head:source,visible_voice_sha256:H(voice),
  ...(open?{c140_open_route:true,c140_original_c70_executed:false}:{})}}}};
 }
