@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {validateC72V2ModeSelection} from './c72-public-mode-admission.mjs';
 import {planP1PostModeSourceHandoff} from './p1-postmode-source-handoff.mjs';
 import {createC135EduV2Session} from './c135-edu-v2-owner.mjs';
+import {declareEduExperimentalBoundary,checkEduExperimentalOriginalTurn} from './edu-experimental-product-boundary.mjs';
 
 const digest=s=>createHash('sha256').update(Buffer.from(s,'utf8')).digest('hex');
 const KEYS=Object.freeze(['ESITO','A','B','PROVA','EDGE','NEXT']);
@@ -88,9 +89,11 @@ export function planOneShellEduSource({selection,sourceState='SOURCE_UNKNOWN',
  * as an additional host message. OneShell is released only AFTER original S03.
  * No native platform-delivery receipt is asserted by this capture. */
 export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,privateParent,
- languagePort,afterAcceptWitness,resumeFrom=null}={}){
+ languagePort,afterAcceptWitness,resumeFrom=null,experimentalWaivers=[]}={}){
  if(!validateC72V2ModeSelection(selection,{mode:'EDU'}))
   return Object.freeze({ok:false,frame:failure('C72_EDU_SELECTION_REQUIRED')});
+ const experiment=declareEduExperimentalBoundary({waivers:experimentalWaivers});
+ if(experiment.ok!==true)return Object.freeze({ok:false,frame:failure(experiment.first_edge)});
  if(typeof languagePort!=='function')
   return Object.freeze({ok:false,frame:failure('EDU_LANGUAGE_PORT_NOT_CALLABLE')});
  let c125=null,blocked=false,publishing=false,lastEvidence=null;
@@ -116,7 +119,11 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
   const s=turn.s03_host_projection;
   const readback=original.readSessionState();
   if(readback?.original_c87_readback?.count!==turn.c87_after){blocked=true;return failure('EDU_INDEPENDENT_LEDGER_REOPEN_REQUIRED');}
-  lastEvidence=Object.freeze({source_head:turn.source_head,source_tree:turn.source_tree,
+  const boundaryCheck=checkEduExperimentalOriginalTurn({turn,frame,c125Bytes:c125,readback});
+  if(boundaryCheck.ok!==true){blocked=true;return failure(boundaryCheck.first_edge);}
+  lastEvidence=Object.freeze({experimental_boundary_check:boundaryCheck,
+    experimental_nonclaims:experiment.declarations,
+    source_head:turn.source_head,source_tree:turn.source_tree,
     original_c125_utf8:s.c125_original_bytes,original_c125_sha256:s.c125_original_sha256,
     original_c87_readback:readback.original_c87_readback,authority:0,native_delivery_attested:false});
   return originalOwnerFrame({esito:'RISPOSTA EDU VERIFICATA',b:'Risposta originale iKant verificata: il suo valore dipende da utilita, limiti, decisione umana e riscontri; consegna nativa non attestata.',
@@ -127,6 +134,7 @@ export async function startOneShellEdu({selection,sourceRoot,sourceBinding=null,
  }
  return Object.freeze({ok:true,mode:'EDU',runtime_ready:true,active:false,provider_delivery_attested:false,
   recovered_original_ledger:original.recovered_original_ledger,
+  experimental_boundary:experiment,
    frame:oneShellFrame({esito:'iKant EDU PRONTO',b:'iKant e pronto a discutere la tua domanda con criteri di utilita umana, responsabilita e incertezza; nessuna voce ancora emessa.',
    edge:'FIRST_EDU_TURN_PENDING',next:'AWAIT_HUMAN_INPUT'}),
   publishTurn,readSessionState:()=>original.readSessionState(),
