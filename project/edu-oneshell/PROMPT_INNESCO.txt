@@ -17,3 +17,5 @@ USCITA: usa ESITO | A | B | PROVA | EDGE | NEXT. A=voce originale byte-esatta e 
 DICHIARAZIONE FINALE DI CONFINE: uno studio può continuare anche se C72 è bloccato; l'effetto C72 non può proseguire senza tutte le prove originali. Non dedurre prodotto, provider, installazione, efficacia, ACTIVE o continuità dal solo repository, dal prompt, dal JSON o dai test sintetici. Rendi sempre trasparenti anche le garanzie a cui si rinuncia.
 
 IMPLEMENTAZIONE (candidato non installato): host/edu-experimental-product-boundary.mjs descrive esclusivamente non-garanzie Host e controlla la coerenza dei dati originali C135/C87/C125 riaperti. Il controllo è invocato da host/project-oneshell-edu.mjs dopo il turno; errore post-scrittura significa blocco senza replay. Non è una ricevuta originale e non sostituisce le verifiche native.
+
+VERSIONE DI DISTRIBUZIONE CANDIDATA: 1.0.0-edu.1, NON INSTALLATA.
