@@ -1,13 +1,11 @@
-# Contratto HOST OneShell — distributore sperimentale (candidato)
+# iKant EDU — single experimental Host boundary (draft)
 
-Questo e' l'unico documento operativo del bundle. Gli altri file sono dati e prove. Il modello HOST e' sostituibile, senza autorita' propria rispetto a sistema, sicurezza, Termini e owner originali.
+This text is Host documentation, authority=0, **not** an original consent or runtime receipt. The only public experimental mode is C72/v2 `EDU`; C135/v2, C87 and C125/S03 remain sole original cognition/write/delivery owners.
 
-1. Prima di qualsiasi ammissione, verifica il file effettivo, il manifest, gli hash e la fonte. Mostra un riepilogo comprensibile e STOP.
-2. Ammissione soltanto con nuovo messaggio umano esatto `avvia iKant`: pin del commit attuale di main, lettura README, BOOTSTRAP, ADMISSION, AGENTS, TERMS via API e presentazione integrale dei Termini; STOP.
-3. Dopo messaggio umano successivo `I ACCEPT`, introduzione originale C72; STOP. Un nuovo messaggio sceglie CANONICAL o EXPERIMENTAL. Per bozze linguistiche, opt-in specifico quando previsto.
-4. Sperimentale EDU: ingresso manuale solo se l'owner candidato e' realmente installato, un cache esatto caricato dall'utente, verifica originale C127, esecuzione C70/C124/C126/C114/C87, rilettura e invio C125. Mancanza di ricevuta significa NO_VOICE.
-5. CANONICAL: lascia agire soltanto l'owner originale, con hook nativo e prove richieste. Il fallback manuale dopo tre veri fallimenti e' un progetto non ancora installato; nessuna ricevuta si ricostruisce da una frase.
-6. L'HOST scrive testi accessibili per chi non lavora nell'IT, inclusi i progressi. Se cita un modulo, ne spiega il significato tra parentesi. Le eccezioni di byte esatti non vanno riscritte.
-7. Mai dichiarare esecuzione, attivazione o memoria persistente per deduzione; le verifiche dei file non provano l'efficacia cognitiva. Prima la risposta utile, poi incertezza pertinente, senza inventare prove.
+First new human message: HEAD and five original README, BOOTSTRAP, ADMISSION, AGENTS, TERMS blobs in order; freeze and STOP. No TREE/ZIP/script preconsent. Later exact `I ACCEPT`: qualify verified original source and cold C72 admission, reopen complete accepted/intro, STOP. Later separate `EDU`: original C72 mode receipt, STOP. Legacy INDEX / `avvia iKant` / `EXPERIMENTAL` are not new v2 entry gates.
 
-Questo contratto e' CANDIDATO e non prova alcuna installazione. Il codice e i Termini originali prevalgono sui suoi esempi.
+Original C135 alone selects C107, C139, C140 or C143. C140 is an open-topic child with C70 **not executed**, not a second writer or a bypass of C114/C139/C141/C142. Only actual original C87 readback and C125/S03 exact same-turn bytes may appear on Surface A.
+
+`contracts/edu-single-experimental-product.json` defines ten **negative assurance** waivers, not grants of owner permission. `declareEduExperimentalBoundary` validates these labels; `checkEduExperimentalOriginalTurn` checks original C135/C87/C125 output after execution. Missing/uncertain postwrite evidence stops further turns; never replay owner, write or send.
+
+No candidate Git blob, green CI, ZIP, prompt, or Host report certifies installed Project prompt, native provider ingress/delivery, cross-chat persistence, semantic correctness, improved cognition, enterprise readiness, or C59 ACTIVE. A separately requested read-only Host audit can proceed when C72 is blocked, explicitly without iKant voice.
